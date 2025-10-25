@@ -42,7 +42,7 @@ export function Footer() {
           </div>
         </div>
         <div className="py-6 text-center text-sm text-foreground/60">
-          © {new Date().getFullYear()} DGEN Technologies Pvt. Ltd. All rights reserved.
+          © {new Date().getFullYear()} DGEN Technologies Pvt. Ltd. All rights reserved. Made in India.
         </div>
       </div>
     </footer>

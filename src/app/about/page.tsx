@@ -29,7 +29,7 @@ export default function AboutPage() {
           <div className="flex flex-col items-center space-y-4 text-center">
             <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary">Our Story</Badge>
             <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/80">
-              Powering the Future with Technology
+              Powering India's Future with Technology
             </h1>
             <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">
               Learn about our journey, our mission, and the values that drive us to innovate.
@@ -44,7 +44,7 @@ export default function AboutPage() {
           <div className="space-y-4">
             <h2 className="text-3xl font-headline font-bold tracking-tighter">Our Journey</h2>
             <p className="text-foreground/70">
-              Founded in 2025, DGEN Technologies began with a simple mission: to make cutting-edge technology accessible to businesses of all sizes. What started as a small team of passionate developers has grown into a full-service technology consultancy dedicated to solving complex challenges and driving digital transformation. We believe in the power of technology to not only improve business processes but to inspire new possibilities.
+              Founded in 2025, DGEN Technologies began with a simple mission: to make cutting-edge technology accessible to businesses of all sizes across India. What started as a small team of passionate developers in Bengaluru has grown into a full-service technology consultancy dedicated to solving complex challenges and driving digital transformation. We believe in the power of technology to not only improve business processes but to inspire new possibilities.
             </p>
             <p className="text-foreground/70">
               Our vision is to be a global leader in technology solutions, known for our innovative approach, unwavering commitment to quality, and a client-centric focus that turns partnerships into long-term success stories.
