@@ -5,10 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle } from 'lucide-react';
 
 const teamMembers = [
-  { name: 'Alex Thompson', role: 'CEO & Founder', imageId: 'team-member-1' },
-  { name: 'Samantha Carter', role: 'Chief Technology Officer', imageId: 'team-member-2' },
-  { name: 'Marcus Chen', role: 'Chief Operating Officer', imageId: 'team-member-3' },
-  { name: 'Jessica Rodriguez', role: 'Lead Solutions Architect', imageId: 'team-member-4' },
+  { name: 'Tirthankar Dasgupta', role: 'CEO & CTO', imageId: 'team-member-1' },
+  { name: 'Sukomal Debnath', role: 'CFO', imageId: 'team-member-2' },
+  { name: 'Sagnik Mandal', role: 'CMO', imageId: 'team-member-3' },
+  { name: 'Arpan Bairagi', role: 'COO', imageId: 'team-member-4' },
 ];
 
 const values = [
