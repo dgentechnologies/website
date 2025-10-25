@@ -5,10 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle } from 'lucide-react';
 
 const teamMembers = [
-  { name: 'Tirthankar Dasgupta', role: 'CEO & CTO', imageId: 'team-member-1' },
-  { name: 'Sukomal Debnath', role: 'CFO', imageId: 'team-member-2' },
-  { name: 'Sagnik Mandal', role: 'CMO', imageId: 'team-member-3' },
-  { name: 'Arpan Bairagi', role: 'COO', imageId: 'team-member-4' },
+  { name: 'Tirthankar Dasgupta', role: 'CEO & CTO', image: '/images/tirthankar-dasgupta.jpg' },
+  { name: 'Sukomal Debnath', role: 'CFO', image: '/images/sukomal-debnath.jpg' },
+  { name: 'Sagnik Mandal', role: 'CMO', image: '/images/sagnik-mandal.png' },
+  { name: 'Arpan Bairagi', role: 'COO', image: '/images/arpan-bairagi.jpg' },
 ];
 
 const values = [
@@ -86,11 +86,10 @@ export default function AboutPage() {
           <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-12">Meet the Leadership</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member) => {
-              const memberImage = PlaceHolderImages.find(img => img.id === member.imageId);
               return (
                 <div key={member.name} className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
                   <Avatar className="w-24 h-24 mb-4 border-2 border-primary">
-                    {memberImage && <AvatarImage src={memberImage.imageUrl} alt={member.name} data-ai-hint={memberImage.imageHint} />}
+                    <AvatarImage src={member.image} alt={member.name} />
                     <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                   </Avatar>
                   <h3 className="text-lg font-bold font-headline">{member.name}</h3>
