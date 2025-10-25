@@ -36,7 +36,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold">Our Office</h3>
-                                    <p className="text-foreground/70">123 Tech Park, Koramangala, Bengaluru, Karnataka 560034, India</p>
+                                    <p className="text-foreground/70">123 Tech Road, Kolkata, West Bengal 700001, India</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
