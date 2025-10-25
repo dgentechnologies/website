@@ -36,7 +36,7 @@ export function Footer() {
               <ul className="mt-4 space-y-2 text-sm">
                 <li><a href="#" className="flex items-center gap-2 text-foreground/60 hover:text-foreground"><Linkedin size={16}/> LinkedIn</a></li>
                 <li><a href="#" className="flex items-center gap-2 text-foreground/60 hover:text-foreground"><Twitter size={16}/> Twitter</a></li>
-                <li><a href="#" className="flex items-center gap-2 text-foreground/60 hover:text-foreground"><Github size={16}/> GitHub</a></li>
+                <li><a href="https://github.com/dgentechnologies" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground/60 hover:text-foreground"><Github size={16}/> GitHub</a></li>
               </ul>
             </div>
           </div>
