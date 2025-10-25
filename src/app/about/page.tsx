@@ -70,7 +70,7 @@ export default function AboutPage() {
           <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-12">Our Core Values</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value) => (
-              <div key={value.title} className="flex flex-col items-start text-left p-4 rounded-lg transition-all transform hover:-translate-y-1 hover:bg-background/50">
+              <div key={value.title} className="flex flex-col items-start text-left p-4 rounded-lg transition-all transform hover:-translate-y-2 hover:bg-background/50 hover:shadow-primary/10 hover:shadow-lg">
                 <CheckCircle className="h-8 w-8 text-primary mb-4"/>
                 <h3 className="text-xl font-headline font-bold mb-2">{value.title}</h3>
                 <p className="text-foreground/70">{value.description}</p>
@@ -87,7 +87,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member) => {
               return (
-                <div key={member.name} className="flex flex-col items-center text-center p-6 bg-card rounded-lg transition-all transform hover:-translate-y-1 hover:shadow-primary/10 hover:shadow-lg">
+                <div key={member.name} className="flex flex-col items-center text-center p-6 bg-card rounded-lg transition-all transform hover:-translate-y-2 hover:shadow-primary/10 hover:shadow-lg">
                   <Avatar className="w-24 h-24 mb-4 border-2 border-primary">
                     <AvatarImage src={member.image} alt={member.name} className="object-cover" />
                     <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
