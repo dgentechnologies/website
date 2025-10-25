@@ -44,7 +44,7 @@ export default function AboutPage() {
           <div className="space-y-4">
             <h2 className="text-3xl font-headline font-bold tracking-tighter">Our Journey</h2>
             <p className="text-foreground/70">
-              Founded in 2020, DGEN Technologies began with a simple mission: to make cutting-edge technology accessible to businesses of all sizes. What started as a small team of passionate developers has grown into a full-service technology consultancy dedicated to solving complex challenges and driving digital transformation. We believe in the power of technology to not only improve business processes but to inspire new possibilities.
+              Founded in 2025, DGEN Technologies began with a simple mission: to make cutting-edge technology accessible to businesses of all sizes. What started as a small team of passionate developers has grown into a full-service technology consultancy dedicated to solving complex challenges and driving digital transformation. We believe in the power of technology to not only improve business processes but to inspire new possibilities.
             </p>
             <p className="text-foreground/70">
               Our vision is to be a global leader in technology solutions, known for our innovative approach, unwavering commitment to quality, and a client-centric focus that turns partnerships into long-term success stories.
