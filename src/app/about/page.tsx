@@ -89,7 +89,7 @@ export default function AboutPage() {
               return (
                 <div key={member.name} className="flex flex-col items-center text-center p-6 bg-card rounded-lg">
                   <Avatar className="w-24 h-24 mb-4 border-2 border-primary">
-                    <AvatarImage src={member.image} alt={member.name} />
+                    <AvatarImage src={member.image} alt={member.name} className="object-cover" />
                     <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                   </Avatar>
                   <h3 className="text-lg font-bold font-headline">{member.name}</h3>
