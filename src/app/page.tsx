@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full py-24 md:py-32 lg:py-40 bg-card">
+      <section className="relative w-full py-20 md:py-32 lg:py-40 bg-card">
         <div className="container max-w-screen-xl px-4 md:px-6 grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-6 text-center md:text-left">
             <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary">Next-Gen Technology Partners</Badge>
