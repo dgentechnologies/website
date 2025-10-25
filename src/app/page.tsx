@@ -86,7 +86,7 @@ export default function Home() {
           </div>
           <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-4 mt-12">
             {services.map((service, index) => (
-              <Card key={index} className="bg-card/50 hover:bg-card transition-all transform hover:-translate-y-1">
+              <Card key={index} className="bg-card/50 hover:bg-card transition-all transform hover:-translate-y-1 hover:shadow-primary/10 hover:shadow-lg">
                 <CardHeader className="flex flex-col items-start gap-4">
                   {service.icon}
                   <CardTitle className="font-headline">{service.title}</CardTitle>
@@ -112,21 +112,21 @@ export default function Home() {
             </p>
           </div>
           <div className="mx-auto w-full max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
-            <div className="flex flex-col items-center space-y-2 p-4">
+            <div className="flex flex-col items-center space-y-2 p-4 rounded-lg transition-all transform hover:-translate-y-1 hover:bg-background/50">
               <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
                 <BrainCircuit className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-lg font-bold font-headline">Innovative Solutions</h3>
               <p className="text-sm text-foreground/70">We stay at the forefront of technology to deliver future-proof solutions.</p>
             </div>
-             <div className="flex flex-col items-center space-y-2 p-4">
+             <div className="flex flex-col items-center space-y-2 p-4 rounded-lg transition-all transform hover:-translate-y-1 hover:bg-background/50">
               <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-primary"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
               </div>
               <h3 className="text-lg font-bold font-headline">Client-Centric Approach</h3>
               <p className="text-sm text-foreground/70">Your goals are our priority. We collaborate closely to ensure project success.</p>
             </div>
-             <div className="flex flex-col items-center space-y-2 p-4">
+             <div className="flex flex-col items-center space-y-2 p-4 rounded-lg transition-all transform hover:-translate-y-1 hover:bg-background/50">
               <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-primary"><path d="M12 15l-3-3-3 3"/><path d="M12 9l-3-3-3 3"/><path d="M21 9a9 9 0 0 0-13.86 6.86"/><path d="M3 15a9 9 0 0 0 13.86-6.86"/></svg>
               </div>
