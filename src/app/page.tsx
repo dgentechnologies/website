@@ -81,14 +81,16 @@ export default function Home() {
             </div>
             <div className="relative h-64 md:h-80 lg:h-96 w-full">
               {heroImage && (
-                <Image
-                  src={heroImage.imageUrl}
-                  alt={heroImage.description}
-                  fill
-                  className="object-cover rounded-xl shadow-2xl shadow-primary/10"
-                  data-ai-hint={heroImage.imageHint}
-                  priority
-                />
+                <div className="relative h-full w-full overflow-hidden rounded-xl shadow-2xl shadow-primary/10">
+                    <Image
+                      src={heroImage.imageUrl}
+                      alt={heroImage.description}
+                      fill
+                      className="object-cover animate-hero-image"
+                      data-ai-hint={heroImage.imageHint}
+                      priority
+                    />
+                </div>
               )}
             </div>
           </div>
@@ -98,16 +100,16 @@ export default function Home() {
       {/* Services Overview Section */}
       <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
         <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 animate-fade-in-up">
             <Badge variant="default">Our Core Expertise</Badge>
             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Elevating Your Business with Technology</h2>
             <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
               We provide a comprehensive suite of technology services designed to solve complex challenges and drive growth.
             </p>
           </div>
-          <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">
-            {services.map((service) => (
-              <Card key={service.title} className="bg-background/50 hover:bg-background border-border/50 transition-all transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 flex flex-col">
+          <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
+            {services.map((service, index) => (
+              <Card key={service.title} className="bg-background/50 hover:bg-background border-border/50 transition-all transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 flex flex-col" style={{ animationDelay: `${index * 100}ms` }}>
                 <CardHeader className="flex flex-col items-start gap-4">
                   {service.icon}
                   <CardTitle className="font-headline text-lg">{service.title}</CardTitle>
@@ -123,7 +125,7 @@ export default function Home() {
 
       {/* Why Choose Us Section */}
       <section className="w-full py-16 md:py-24 lg:py-32">
-         <div className="container px-4 md:px-6">
+         <div className="container px-4 md:px-6 animate-fade-in-up">
           <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
             <div className="space-y-6">
               <Badge variant="outline" className="border-primary/50 text-primary">The DGEN Advantage</Badge>
@@ -135,7 +137,7 @@ export default function Home() {
               </p>
                <div className="space-y-6 pt-4">
                 {advantages.map((advantage) => (
-                  <div key={advantage.title} className="flex items-start gap-4">
+                  <div key={advantage.title} className="flex items-start gap-4 p-4 rounded-lg hover:bg-card transition-colors">
                     <div className="p-3 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
                       {advantage.icon}
                     </div>
@@ -164,7 +166,7 @@ export default function Home() {
       
       {/* Call to Action Section */}
       <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
-        <div className="container max-w-screen-md px-4 md:px-6 text-center">
+        <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70">
                 Ready to Build the Future?
             </h2>
