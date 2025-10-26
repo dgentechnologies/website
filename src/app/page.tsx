@@ -55,133 +55,132 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full pt-24 pb-12 md:pt-32 md:pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-        <div className="container max-w-screen-xl px-4 md:px-6">
-          <div className="grid md:grid-cols-2 gap-10 xl:gap-16 items-center">
-            <div className="space-y-6 text-center md:text-left">
-              <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary text-sm">Next-Gen Technology Partners</Badge>
-              <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight bg-200% animate-hero-gradient">
-                Innovate. Integrate. Inspire.
-              </h1>
-              <p className="max-w-xl mx-auto md:mx-0 text-foreground/80 md:text-lg lg:text-xl">
-                DGEN Technologies delivers cutting-edge solutions to propel your business into the future. From custom software to AI integration, we are your partners in digital transformation.
-              </p>
-              <div className="flex flex-col gap-4 sm:flex-row justify-center md:justify-start pt-2">
-                <Button asChild size="lg" className="group">
-                  <Link href="/services">
-                    Explore Our Services <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link href="/contact">
-                    Request a Consultation
-                  </Link>
-                </Button>
-              </div>
+      <section className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden flex items-center justify-center text-center">
+        <div className="absolute inset-0 z-0">
+          {heroImage && (
+            <Image
+              src={heroImage.imageUrl}
+              alt={heroImage.description}
+              fill
+              className="object-cover fixed h-screen w-screen"
+              data-ai-hint={heroImage.imageHint}
+              priority
+            />
+          )}
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6">
+          <div className="space-y-6">
+            <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary text-sm backdrop-blur-sm">Next-Gen Technology Partners</Badge>
+            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight bg-200% animate-hero-gradient">
+              Innovate. Integrate. Inspire.
+            </h1>
+            <p className="max-w-2xl mx-auto text-foreground/80 md:text-lg lg:text-xl">
+              DGEN Technologies delivers cutting-edge solutions to propel your business into the future. From custom software to AI integration, we are your partners in digital transformation.
+            </p>
+            <div className="flex flex-col gap-4 sm:flex-row justify-center pt-2">
+              <Button asChild size="lg" className="group">
+                <Link href="/services">
+                  Explore Our Services <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/contact">
+                  Request a Consultation
+                </Link>
+              </Button>
             </div>
-            <div className="relative h-64 md:h-80 lg:h-96 w-full">
-              {heroImage && (
-                <div className="relative h-full w-full overflow-hidden rounded-xl shadow-2xl shadow-primary/10">
-                    <Image
-                      src={heroImage.imageUrl}
-                      alt={heroImage.description}
-                      fill
-                      className="object-cover animate-hero-image"
-                      data-ai-hint={heroImage.imageHint}
-                      priority
-                    />
+          </div>
+        </div>
+      </section>
+
+      <div className="relative z-10 bg-background">
+        {/* Services Overview Section */}
+        <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 animate-fade-in-up">
+              <Badge variant="default">Our Core Expertise</Badge>
+              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Elevating Your Business with Technology</h2>
+              <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
+                We provide a comprehensive suite of technology services designed to solve complex challenges and drive growth.
+              </p>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
+              {services.map((service, index) => (
+                <Card key={service.title} className="bg-background/50 hover:bg-background border-border/50 transition-all transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 flex flex-col" style={{ animationDelay: `${index * 100}ms` }}>
+                  <CardHeader className="flex flex-col items-start gap-4">
+                    {service.icon}
+                    <CardTitle className="font-headline text-lg">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-sm text-foreground/70">{service.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose Us Section */}
+        <section className="w-full py-16 md:py-24 lg:py-32">
+           <div className="container px-4 md:px-6 animate-fade-in-up">
+            <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
+              <div className="space-y-6">
+                <Badge variant="outline" className="border-primary/50 text-primary">The DGEN Advantage</Badge>
+                <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
+                  Your Partner for Digital Excellence
+                </h2>
+                <p className="text-foreground/80 md:text-lg">
+                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don’t just build products; we build partnerships.
+                </p>
+                 <div className="space-y-6 pt-4">
+                  {advantages.map((advantage) => (
+                    <div key={advantage.title} className="flex items-start gap-4 p-4 rounded-lg hover:bg-card transition-colors">
+                      <div className="p-3 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                        {advantage.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-headline font-bold">{advantage.title}</h3>
+                        <p className="text-sm text-foreground/70 mt-1">{advantage.description}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Overview Section */}
-      <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 animate-fade-in-up">
-            <Badge variant="default">Our Core Expertise</Badge>
-            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Elevating Your Business with Technology</h2>
-            <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
-              We provide a comprehensive suite of technology services designed to solve complex challenges and drive growth.
-            </p>
-          </div>
-          <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
-            {services.map((service, index) => (
-              <Card key={service.title} className="bg-background/50 hover:bg-background border-border/50 transition-all transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 flex flex-col" style={{ animationDelay: `${index * 100}ms` }}>
-                <CardHeader className="flex flex-col items-start gap-4">
-                  {service.icon}
-                  <CardTitle className="font-headline text-lg">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="text-sm text-foreground/70">{service.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us Section */}
-      <section className="w-full py-16 md:py-24 lg:py-32">
-         <div className="container px-4 md:px-6 animate-fade-in-up">
-          <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
-            <div className="space-y-6">
-              <Badge variant="outline" className="border-primary/50 text-primary">The DGEN Advantage</Badge>
-              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
-                Your Partner for Digital Excellence
-              </h2>
-              <p className="text-foreground/80 md:text-lg">
-                Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don’t just build products; we build partnerships.
-              </p>
-               <div className="space-y-6 pt-4">
-                {advantages.map((advantage) => (
-                  <div key={advantage.title} className="flex items-start gap-4 p-4 rounded-lg hover:bg-card transition-colors">
-                    <div className="p-3 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
-                      {advantage.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-headline font-bold">{advantage.title}</h3>
-                      <p className="text-sm text-foreground/70 mt-1">{advantage.description}</p>
-                    </div>
-                  </div>
-                ))}
+              </div>
+              <div className="relative h-80 lg:h-full w-full">
+                  {ctaImage && (
+                      <Image
+                          src={ctaImage.imageUrl}
+                          alt={ctaImage.description}
+                          fill
+                          className="object-cover rounded-xl shadow-lg shadow-primary/10"
+                          data-ai-hint={ctaImage.imageHint}
+                      />
+                  )}
               </div>
             </div>
-            <div className="relative h-80 lg:h-full w-full">
-                {ctaImage && (
-                    <Image
-                        src={ctaImage.imageUrl}
-                        alt={ctaImage.description}
-                        fill
-                        className="object-cover rounded-xl shadow-lg shadow-primary/10"
-                        data-ai-hint={ctaImage.imageHint}
-                    />
-                )}
-            </div>
           </div>
-        </div>
-      </section>
-      
-      {/* Call to Action Section */}
-      <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
-        <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
-            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70">
-                Ready to Build the Future?
-            </h2>
-            <p className="mt-4 text-foreground/80 md:text-lg">
-                Let's discuss how DGEN Technologies can help you achieve your business goals. Schedule a free, no-obligation consultation with our experts today.
-            </p>
-            <div className="mt-8">
-                <Button asChild size="lg" className="group">
-                    <Link href="/contact">
-                        Get in Touch <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                </Button>
-            </div>
-        </div>
-      </section>
+        </section>
+        
+        {/* Call to Action Section */}
+        <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
+          <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
+              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70">
+                  Ready to Build the Future?
+              </h2>
+              <p className="mt-4 text-foreground/80 md:text-lg">
+                  Let's discuss how DGEN Technologies can help you achieve your business goals. Schedule a free, no-obligation consultation with our experts today.
+              </p>
+              <div className="mt-8">
+                  <Button asChild size="lg" className="group">
+                      <Link href="/contact">
+                          Get in Touch <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                  </Button>
+              </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
