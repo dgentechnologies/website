@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CodeXml, CloudCog, BrainCircuit, GanttChartSquare, ArrowRight } from 'lucide-react';
+import { CodeXml, CloudCog, BrainCircuit, GanttChartSquare, ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const services = [
@@ -29,69 +29,90 @@ const services = [
   },
 ];
 
+const advantages = [
+    {
+      icon: <BrainCircuit className="h-8 w-8 text-primary" />,
+      title: 'Innovative Solutions',
+      description: 'We stay at the forefront of technology to deliver future-proof solutions that give you a competitive edge.'
+    },
+    {
+      icon: <Users className="h-8 w-8 text-primary" />,
+      title: 'Client-Centric Approach',
+      description: 'Your goals are our priority. We collaborate closely to ensure project success and build lasting partnerships.'
+    },
+    {
+      icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+      title: 'Quality & Reliability',
+      description: 'We are committed to delivering high-quality, reliable solutions with a focus on robust engineering and security.'
+    }
+];
+
 const heroImage = PlaceHolderImages.find(img => img.id === 'hero-home');
+const ctaImage = PlaceHolderImages.find(img => img.id === 'about-story');
+
 
 export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full py-20 md:py-32 lg:py-40 bg-card">
-        <div className="container max-w-screen-xl px-4 md:px-6 grid md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-6 text-center md:text-left">
-            <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary">Next-Gen Technology Partners</Badge>
-            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/80">
-              Innovate. Integrate. Inspire.
-            </h1>
-            <p className="max-w-[600px] text-foreground/80 md:text-xl">
-              DGEN Technologies delivers cutting-edge solutions to propel your business into the future. From custom software to AI integration, we are your partners in digital transformation.
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row justify-center md:justify-start">
-              <Button asChild size="lg" className="group">
-                <Link href="/services">
-                  Explore Our Services <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/contact">
-                  Request a Consultation
-                </Link>
-              </Button>
+      <section className="relative w-full pt-24 pb-12 md:pt-32 md:pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <div className="container max-w-screen-xl px-4 md:px-6">
+          <div className="grid md:grid-cols-2 gap-10 xl:gap-16 items-center">
+            <div className="space-y-6 text-center md:text-left">
+              <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary text-sm">Next-Gen Technology Partners</Badge>
+              <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight">
+                Innovate. Integrate. Inspire.
+              </h1>
+              <p className="max-w-xl mx-auto md:mx-0 text-foreground/80 md:text-lg lg:text-xl">
+                DGEN Technologies delivers cutting-edge solutions to propel your business into the future. From custom software to AI integration, we are your partners in digital transformation.
+              </p>
+              <div className="flex flex-col gap-4 sm:flex-row justify-center md:justify-start pt-2">
+                <Button asChild size="lg" className="group">
+                  <Link href="/services">
+                    Explore Our Services <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/contact">
+                    Request a Consultation
+                  </Link>
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="relative h-64 md:h-full w-full">
-            {heroImage && (
-              <Image
-                src={heroImage.imageUrl}
-                alt={heroImage.description}
-                fill
-                className="object-cover rounded-lg shadow-2xl shadow-primary/20"
-                data-ai-hint={heroImage.imageHint}
-                priority
-              />
-            )}
+            <div className="relative h-64 md:h-80 lg:h-96 w-full">
+              {heroImage && (
+                <Image
+                  src={heroImage.imageUrl}
+                  alt={heroImage.description}
+                  fill
+                  className="object-cover rounded-xl shadow-2xl shadow-primary/10"
+                  data-ai-hint={heroImage.imageHint}
+                  priority
+                />
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Services Overview Section */}
-      <section className="w-full py-16 md:py-24 lg:py-32">
+      <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
         <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Our Core Expertise</h2>
-              <p className="max-w-[900px] text-foreground/80 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                We provide a comprehensive suite of technology services designed to elevate your business.
-              </p>
-            </div>
+          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+            <Badge variant="default">Our Core Expertise</Badge>
+            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Elevating Your Business with Technology</h2>
+            <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
+              We provide a comprehensive suite of technology services designed to solve complex challenges and drive growth.
+            </p>
           </div>
-          <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-4 mt-12">
-            {services.map((service, index) => (
-              <Card key={index} className="bg-card/50 hover:bg-card transition-all transform hover:-translate-y-2 hover:shadow-primary/10 hover:shadow-lg">
+          <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">
+            {services.map((service) => (
+              <Card key={service.title} className="bg-background/50 hover:bg-background border-border/50 transition-all transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 flex flex-col">
                 <CardHeader className="flex flex-col items-start gap-4">
                   {service.icon}
-                  <CardTitle className="font-headline">{service.title}</CardTitle>
+                  <CardTitle className="font-headline text-lg">{service.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-grow">
                   <p className="text-sm text-foreground/70">{service.description}</p>
                 </CardContent>
               </Card>
@@ -101,39 +122,62 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
+      <section className="w-full py-16 md:py-24 lg:py-32">
+         <div className="container px-4 md:px-6">
+          <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
+            <div className="space-y-6">
+              <Badge variant="outline" className="border-primary/50 text-primary">The DGEN Advantage</Badge>
+              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
+                Your Partner for Digital Excellence
+              </h2>
+              <p className="text-foreground/80 md:text-lg">
+                Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don’t just build products; we build partnerships.
+              </p>
+               <div className="space-y-6 pt-4">
+                {advantages.map((advantage) => (
+                  <div key={advantage.title} className="flex items-start gap-4">
+                    <div className="p-3 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                      {advantage.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-headline font-bold">{advantage.title}</h3>
+                      <p className="text-sm text-foreground/70 mt-1">{advantage.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="relative h-80 lg:h-full w-full">
+                {ctaImage && (
+                    <Image
+                        src={ctaImage.imageUrl}
+                        alt={ctaImage.description}
+                        fill
+                        className="object-cover rounded-xl shadow-lg shadow-primary/10"
+                        data-ai-hint={ctaImage.imageHint}
+                    />
+                )}
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Call to Action Section */}
       <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
-         <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
-          <div className="space-y-3">
-            <h2 className="text-3xl font-headline font-bold tracking-tighter md:text-4xl/tight">
-              The DGEN Advantage
+        <div className="container max-w-screen-md px-4 md:px-6 text-center">
+            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70">
+                Ready to Build the Future?
             </h2>
-            <p className="mx-auto max-w-[600px] text-foreground/80 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Partner with us for unparalleled quality, innovation, and a commitment to your success.
+            <p className="mt-4 text-foreground/80 md:text-lg">
+                Let's discuss how DGEN Technologies can help you achieve your business goals. Schedule a free, no-obligation consultation with our experts today.
             </p>
-          </div>
-          <div className="mx-auto w-full max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
-            <div className="flex flex-col items-center space-y-2 p-4 rounded-lg transition-all transform hover:-translate-y-1 hover:bg-background/50">
-              <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
-                <BrainCircuit className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold font-headline">Innovative Solutions</h3>
-              <p className="text-sm text-foreground/70">We stay at the forefront of technology to deliver future-proof solutions.</p>
+            <div className="mt-8">
+                <Button asChild size="lg" className="group">
+                    <Link href="/contact">
+                        Get in Touch <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                </Button>
             </div>
-             <div className="flex flex-col items-center space-y-2 p-4 rounded-lg transition-all transform hover:-translate-y-1 hover:bg-background/50">
-              <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-primary"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
-              </div>
-              <h3 className="text-lg font-bold font-headline">Client-Centric Approach</h3>
-              <p className="text-sm text-foreground/70">Your goals are our priority. We collaborate closely to ensure project success.</p>
-            </div>
-             <div className="flex flex-col items-center space-y-2 p-4 rounded-lg transition-all transform hover:-translate-y-1 hover:bg-background/50">
-              <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-primary"><path d="M12 15l-3-3-3 3"/><path d="M12 9l-3-3-3 3"/><path d="M21 9a9 9 0 0 0-13.86 6.86"/><path d="M3 15a9 9 0 0 0 13.86-6.86"/></svg>
-              </div>
-              <h3 className="text-lg font-bold font-headline">Agile Delivery</h3>
-              <p className="text-sm text-foreground/70">We employ agile methodologies for rapid, iterative, and high-quality delivery.</p>
-            </div>
-          </div>
         </div>
       </section>
     </div>
