@@ -60,7 +60,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-10 xl:gap-16 items-center">
             <div className="space-y-6 text-center md:text-left">
               <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary text-sm">Next-Gen Technology Partners</Badge>
-              <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight">
+              <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight bg-200% animate-hero-gradient">
                 Innovate. Integrate. Inspire.
               </h1>
               <p className="max-w-xl mx-auto md:mx-0 text-foreground/80 md:text-lg lg:text-xl">
