@@ -55,14 +55,14 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden flex items-center justify-center text-center">
+      <section className="relative w-full h-screen overflow-hidden flex items-center justify-center text-center">
         <div className="absolute inset-0 z-0">
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
               alt={heroImage.description}
               fill
-              className="object-cover fixed h-screen w-screen"
+              className="object-cover fixed h-screen w-screen animate-hero-image"
               data-ai-hint={heroImage.imageHint}
               priority
             />
@@ -75,8 +75,8 @@ export default function Home() {
             <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight bg-200% animate-hero-gradient">
               Innovate. Integrate. Inspire.
             </h1>
-            <p className="max-w-2xl mx-auto text-foreground/80 md:text-lg lg:text-xl">
-              DGEN Technologies delivers cutting-edge solutions to propel your business into the future. From custom software to AI integration, we are your partners in digital transformation.
+            <p className="max-w-3xl mx-auto text-foreground/80 md:text-lg lg:text-xl">
+              Dgen Technologies is transforming India with B2B smart city solutions like "Auralis," our smart street light with a fault detection system. We are now expanding into the B2C market to make every home smarter.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row justify-center pt-2">
               <Button asChild size="lg" className="group">
