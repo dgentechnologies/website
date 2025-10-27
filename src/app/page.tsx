@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Building2, Router, BrainCircuit, Home, ArrowRight, ShieldCheck, Users } from 'lucide-react';
+import { Building2, Router, BrainCircuit, Home as HomeIcon, ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const services = [
@@ -24,7 +24,7 @@ const services = [
     description: 'Leveraging AI to provide intelligent fault detection, data analysis, and operational efficiency.',
   },
   {
-    icon: <Home className="h-8 w-8 text-primary" />,
+    icon: <HomeIcon className="h-8 w-8 text-primary" />,
     title: 'Smart Home Integration',
     description: 'Expanding into the B2C market to make every home smarter with intuitive and connected technology.',
   },
