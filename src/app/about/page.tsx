@@ -12,8 +12,8 @@ export const teamMembers = [
     role: 'CEO & CTO', 
     image: '/images/tirthankar-dasgupta.jpg',
     slug: 'tirthankar-dasgupta',
-    bio: 'Tirthankar is a visionary leader with over 15 years of experience in the technology sector. As the founder of DGEN Technologies, he drives the company\'s technical strategy and innovation. His passion for smart city solutions led to the creation of "Auralis," our flagship product. He holds a degree in Computer Science from a prestigious Indian university and has been instrumental in shaping the future of urban technology in India. His expertise in IoT and AI is the cornerstone of our company\'s success.',
-    linkedin: '#',
+    bio: 'Tirthankar is a visionary leader with a background in Electronics and Communication Engineering (ECE). As the founder of DGEN Technologies, he drives the company\'s technical strategy and innovation. His passion for smart city solutions led to the creation of "Auralis," our flagship product. He is currently a student of ECE and has been instrumental in shaping the future of urban technology in India. His expertise in IoT and AI is the cornerstone of our company\'s success.',
+    linkedin: 'https://www.linkedin.com/in/tirthankardasguptaprofile',
     twitter: '#',
   },
   { 
