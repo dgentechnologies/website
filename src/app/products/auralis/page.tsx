@@ -4,7 +4,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Check, Zap, Wifi, Tool, BarChart } from 'lucide-react';
+import { ArrowRight, Check, Zap, Wifi, Wrench, BarChart } from 'lucide-react';
 import Link from 'next/link';
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
@@ -22,7 +22,7 @@ const features = [
         description: 'LoRaWAN and 4G/5G ready for seamless integration into your smart city network infrastructure.',
     },
     {
-        icon: <Tool className="h-8 w-8 text-primary" />,
+        icon: <Wrench className="h-8 w-8 text-primary" />,
         title: 'Predictive Maintenance',
         description: 'AI-powered fault detection alerts you to potential issues before they cause an outage, saving time and money.',
     },
