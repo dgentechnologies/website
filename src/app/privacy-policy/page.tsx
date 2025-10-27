@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
       <section className="w-full py-16 md:py-24">
         <div className="container max-w-screen-lg px-4 md:px-6 prose prose-invert prose-lg mx-auto">
           <p>
-            DGEN Technologies Pvt. Ltd. ("us", "we", or "our") operates the https://dgen.tech website (the "Service"). This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
+            DGEN Technologies Pvt. Ltd. ("us", "we", or "our") operates the https://dgentechnologies.com website (the "Service"). This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
           </p>
 
           <h2>1. Information Collection and Use</h2>
