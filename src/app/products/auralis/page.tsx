@@ -71,7 +71,7 @@ export default function AuralisPage() {
                             src={heroImage.imageUrl}
                             alt={heroImage.description}
                             fill
-                            className="object-cover fixed h-screen w-screen animate-hero-image"
+                            className="object-cover"
                             data-ai-hint={heroImage.imageHint}
                             priority
                         />
