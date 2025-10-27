@@ -1,31 +1,32 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CodeXml, CloudCog, BrainCircuit, GanttChartSquare, ArrowRight, ShieldCheck, Users } from 'lucide-react';
+import { Building2, Router, BrainCircuit, Home, ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const services = [
   {
-    icon: <CodeXml className="h-8 w-8 text-primary" />,
-    title: 'Custom Software Development',
-    description: 'Bespoke solutions tailored to your unique business needs, from web apps to enterprise software.',
+    icon: <Building2 className="h-8 w-8 text-primary" />,
+    title: 'Smart City Solutions',
+    description: 'Pioneering smart city infrastructure like our "Auralis" street light system to build a connected future.',
   },
   {
-    icon: <CloudCog className="h-8 w-8 text-primary" />,
-    title: 'Cloud Infrastructure',
-    description: 'Scalable and secure cloud solutions on AWS, Azure, and Google Cloud to power your business.',
+    icon: <Router className="h-8 w-8 text-primary" />,
+    title: 'IoT & Connected Devices',
+    description: 'Developing and integrating IoT devices for both large-scale urban projects and smart home applications.',
   },
   {
     icon: <BrainCircuit className="h-8 w-8 text-primary" />,
-    title: 'AI & Machine Learning',
-    description: 'Integrate intelligent automation and data-driven insights into your operations.',
+    title: 'AI-Powered Analytics',
+    description: 'Leveraging AI to provide intelligent fault detection, data analysis, and operational efficiency.',
   },
   {
-    icon: <GanttChartSquare className="h-8 w-8 text-primary" />,
-    title: 'IT Strategy & Consulting',
-    description: 'Expert guidance to align your technology roadmap with your long-term business goals.',
+    icon: <Home className="h-8 w-8 text-primary" />,
+    title: 'Smart Home Integration',
+    description: 'Expanding into the B2C market to make every home smarter with intuitive and connected technology.',
   },
 ];
 

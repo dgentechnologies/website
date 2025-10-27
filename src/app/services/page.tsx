@@ -1,43 +1,43 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CodeXml, CloudCog, BrainCircuit, GanttChartSquare, Palette, ShieldCheck, Check } from 'lucide-react';
+import { Building2, Router, BrainCircuit, Home, Lightbulb, ShieldCheck, Check } from 'lucide-react';
 
 const servicesList = [
     {
-        icon: <CodeXml className="h-10 w-10 text-primary" />,
-        title: 'Custom Software Development',
-        description: 'We build scalable, secure, and high-performance applications tailored to your specific business requirements.',
-        features: ['Web & Mobile Applications', 'Enterprise Software', 'API Development & Integration', 'Legacy System Modernization']
+        icon: <Building2 className="h-10 w-10 text-primary" />,
+        title: 'Smart City Solutions',
+        description: 'We develop and deploy integrated solutions for urban environments, enhancing efficiency and quality of life.',
+        features: ['Smart Street Lighting (Auralis)', 'Traffic Management Systems', 'Public Safety Technology', 'Environmental Monitoring']
     },
     {
-        icon: <CloudCog className="h-10 w-10 text-primary" />,
-        title: 'Cloud Infrastructure Management',
-        description: 'Leverage the power of the cloud with our expert management, optimization, and migration services.',
-        features: ['Cloud Migration & Strategy', 'DevOps & CI/CD Automation', 'Infrastructure as Code (IaC)', 'Cost Optimization']
+        icon: <Router className="h-10 w-10 text-primary" />,
+        title: 'IoT & Connected Devices',
+        description: 'From sensors to gateways, we build the hardware and software for a truly connected world.',
+        features: ['Custom IoT Hardware Design', 'Firmware Development', 'IoT Platform Integration', 'Device Management & Security']
     },
     {
         icon: <BrainCircuit className="h-10 w-10 text-primary" />,
-        title: 'AI & Machine Learning Solutions',
-        description: 'Unlock the potential of your data with our AI and machine learning services for automation and insights.',
-        features: ['Predictive Analytics', 'Natural Language Processing (NLP)', 'Computer Vision', 'Custom AI Model Development']
+        title: 'AI & Machine Learning',
+        description: 'Our AI services turn data into actionable insights, powering predictive maintenance and intelligent automation.',
+        features: ['Predictive Analytics & Fault Detection', 'Computer Vision for Urban Monitoring', 'Natural Language Processing', 'Custom AI Model Development']
     },
     {
-        icon: <GanttChartSquare className="h-10 w-10 text-primary" />,
-        title: 'IT Strategy & Consulting',
-        description: 'Our expert consultants help you build a technology roadmap that aligns with your business goals and drives growth.',
-        features: ['Digital Transformation Strategy', 'Technology Audits', 'Agile & Scrum Consulting', 'Project Management']
+        icon: <Home className="h-10 w-10 text-primary" />,
+        title: 'B2C Smart Home Products',
+        description: 'As we expand into the B2C market, we are developing a range of products to make homes smarter and more automated.',
+        features: ['Smart Lighting & Climate Control', 'Home Security Solutions', 'Energy Management Systems', 'Voice Assistant Integration']
     },
     {
-        icon: <Palette className="h-10 w-10 text-primary" />,
-        title: 'UI/UX Design',
-        description: 'Creating intuitive, engaging, and user-friendly digital experiences that delight your users and meet business objectives.',
-        features: ['User Research & Personas', 'Wireframing & Prototyping', 'Usability Testing', 'Responsive Design Systems']
+        icon: <Lightbulb className="h-10 w-10 text-primary" />,
+        title: 'Product Strategy & Design',
+        description: 'We help you navigate the product lifecycle, from initial concept and design to market launch and scaling.',
+        features: ['Market Research & Validation', 'UI/UX for IoT & Smart Devices', 'Prototyping & User Testing', 'Go-to-Market Strategy']
     },
     {
         icon: <ShieldCheck className="h-10 w-10 text-primary" />,
-        title: 'Cybersecurity Services',
-        description: 'Protect your digital assets with our comprehensive cybersecurity solutions, from threat detection to compliance.',
-        features: ['Security Audits & Penetration Testing', 'Threat Monitoring & Response', 'Compliance & Governance (GDPR, etc.)', 'Employee Security Training']
+        title: 'IoT Security',
+        description: 'Protect your connected devices and data with our comprehensive cybersecurity solutions for the IoT landscape.',
+        features: ['Device & Network Penetration Testing', 'Threat Modeling & Risk Assessment', 'Secure Firmware Development', 'End-to-End Encryption']
     }
 ];
 
@@ -53,7 +53,7 @@ export default function ServicesPage() {
                             Comprehensive Tech Solutions
                         </h1>
                         <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">
-                            We offer a wide range of services to meet your business needs, from development to cybersecurity.
+                            From smart cities to smart homes, we offer a wide range of services to build a connected future.
                         </p>
                     </div>
                 </div>

@@ -44,10 +44,10 @@ export default function AboutPage() {
           <div className="space-y-4">
             <h2 className="text-3xl font-headline font-bold tracking-tighter">Our Journey</h2>
             <p className="text-foreground/70">
-              Founded in 2025, DGEN Technologies began with a simple mission: to make cutting-edge technology accessible to businesses of all sizes across India. What started as a small team of passionate developers in Bengaluru has grown into a full-service technology consultancy dedicated to solving complex challenges and driving digital transformation. We believe in the power of technology to not only improve business processes but to inspire new possibilities.
+              Founded in 2025, DGEN Technologies began with a mission to pioneer smart city solutions in India. Our flagship B2B product, "Auralis," a smart street light with an advanced fault detection system, set the standard for urban innovation. From our headquarters in Bengaluru, we have been dedicated to solving complex urban challenges through technology.
             </p>
             <p className="text-foreground/70">
-              Our vision is to be a global leader in technology solutions, known for our innovative approach, unwavering commitment to quality, and a client-centric focus that turns partnerships into long-term success stories.
+              As we continue to transform cityscapes, we are also expanding our vision to the B2C market. Our goal is to bring the same level of intelligence and connectivity to every home, making daily life smarter and more efficient. We are committed to leading India's technological revolution, one smart device at a time.
             </p>
           </div>
           <div className="relative h-80 w-full">
