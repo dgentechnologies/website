@@ -1,14 +1,48 @@
+
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle } from 'lucide-react';
+import Link from 'next/link';
 
-const teamMembers = [
-  { name: 'Tirthankar Dasgupta', role: 'CEO & CTO', image: '/images/tirthankar-dasgupta.jpg' },
-  { name: 'Sukomal Debnath', role: 'CFO', image: '/images/sukomal-debnath.jpg' },
-  { name: 'Sagnik Mandal', role: 'CMO', image: '/images/sagnik-mandal.png' },
-  { name: 'Arpan Bairagi', role: 'COO', image: '/images/arpan-bairagi.jpg' },
+export const teamMembers = [
+  { 
+    name: 'Tirthankar Dasgupta', 
+    role: 'CEO & CTO', 
+    image: '/images/tirthankar-dasgupta.jpg',
+    slug: 'tirthankar-dasgupta',
+    bio: 'Tirthankar is a visionary leader with over 15 years of experience in the technology sector. As the founder of DGEN Technologies, he drives the company\'s technical strategy and innovation. His passion for smart city solutions led to the creation of "Auralis," our flagship product. He holds a degree in Computer Science from a prestigious Indian university and has been instrumental in shaping the future of urban technology in India. His expertise in IoT and AI is the cornerstone of our company\'s success.',
+    linkedin: '#',
+    twitter: '#',
+  },
+  { 
+    name: 'Sukomal Debnath', 
+    role: 'CFO', 
+    image: '/images/sukomal-debnath.jpg',
+    slug: 'sukomal-debnath',
+    bio: 'Sukomal manages the financial strategy and operations at DGEN Technologies, ensuring the company\'s sustainable growth. With a background in corporate finance and investment banking, he brings a wealth of experience in financial planning and risk management. He is dedicated to aligning our financial goals with our mission to innovate and expand into new markets, including the upcoming B2C smart home sector.',
+    linkedin: '#',
+    twitter: '#',
+  },
+  { 
+    name: 'Sagnik Mandal', 
+    role: 'CMO', 
+    image: '/images/sagnik-mandal.png',
+    slug: 'sagnik-mandal',
+    bio: 'Sagnik leads our marketing and communication efforts, building the DGEN brand and driving market adoption of our products. His creative approach and deep understanding of the tech landscape have been vital in positioning "Auralis" as a leading smart city solution. He is now focused on crafting the go-to-market strategy for our new line of B2C smart home devices, bringing our innovation to a wider audience.',
+    linkedin: '#',
+    twitter: '#',
+  },
+  { 
+    name: 'Arpan Bairagi', 
+    role: 'COO', 
+    image: '/images/arpan-bairagi.jpg',
+    slug: 'arpan-bairagi',
+    bio: 'Arpan oversees the day-to-day operations at DGEN Technologies, ensuring excellence in product delivery and client satisfaction. His expertise in supply chain management and operational efficiency has been crucial in scaling our B2B solutions. Arpan is committed to maintaining the highest standards of quality as we expand our manufacturing capabilities for the B2C market.',
+    linkedin: '#',
+    twitter: '#',
+  },
 ];
 
 const values = [
@@ -85,9 +119,9 @@ export default function AboutPage() {
         <div className="container max-w-screen-xl px-4 md:px-6">
           <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-12">Meet the Leadership</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member) => {
-              return (
-                <div key={member.name} className="flex flex-col items-center text-center p-6 bg-card rounded-lg transition-all transform hover:-translate-y-2 hover:shadow-primary/10 hover:shadow-lg">
+            {teamMembers.map((member) => (
+              <Link key={member.slug} href={`/about/${member.slug}`} className="block">
+                <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg transition-all transform hover:-translate-y-2 hover:shadow-primary/10 hover:shadow-lg h-full">
                   <Avatar className="w-24 h-24 mb-4 border-2 border-primary">
                     <AvatarImage src={member.image} alt={member.name} className="object-cover" />
                     <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
@@ -95,8 +129,8 @@ export default function AboutPage() {
                   <h3 className="text-lg font-bold font-headline">{member.name}</h3>
                   <p className="text-primary text-sm">{member.role}</p>
                 </div>
-              );
-            })}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
