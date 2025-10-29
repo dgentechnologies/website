@@ -4,9 +4,38 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, UserCircle, Calendar } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 
-const blogImage = PlaceHolderImages.find(img => img.id === 'blog-placeholder');
+const blogPosts = [
+  {
+    slug: '#',
+    title: 'The Future is Bright: How Smart Street Lights are Transforming Our Cities',
+    description: 'Dive deep into the technology behind smart street lights like Auralis. Discover how they reduce energy consumption, enhance public safety, and create a connected infrastructure for the cities of tomorrow.',
+    author: 'Tirthankar Dasgupta',
+    date: 'October 26, 2025',
+    image: PlaceHolderImages.find(img => img.id === 'auralis-features'),
+    tags: ['Smart Cities', 'IoT', 'Auralis']
+  },
+  {
+    slug: '#',
+    title: 'Beyond Connectivity: The Real-World Impact of IoT in Urban India',
+    description: 'The Internet of Things (IoT) is more than just a buzzword. We explore how connected devices are solving practical problems in Indian cities, from waste management to real-time traffic monitoring.',
+    author: 'Sagnik Mandal',
+    date: 'October 20, 2025',
+    image: PlaceHolderImages.find(img => img.id === 'hero-home'),
+    tags: ['IoT', 'Urban Development', 'Technology']
+  },
+  {
+    slug: '#',
+    title: 'Case Study: Predictive Fault Detection with Auralis in Kolkata',
+    description: 'A look at the successful pilot program of our Auralis system. This case study examines how our AI-powered predictive maintenance saved the city thousands in operational costs and improved lighting uptime by over 40%.',
+    author: 'Arpan Bairagi',
+    date: 'October 15, 2025',
+    image: PlaceHolderImages.find(img => img.id === 'auralis-hero'),
+    tags: ['Case Study', 'AI', 'Maintenance']
+  }
+];
 
 export default function BlogPage() {
   return (
@@ -26,33 +55,51 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Coming Soon Section */}
+      {/* Blog Posts Section */}
       <section className="w-full py-16 md:py-24">
-        <div className="container max-w-screen-lg px-4 md:px-6 text-center">
-            <div className="relative h-80 w-full max-w-3xl mx-auto mb-12">
-                {blogImage && (
+        <div className="container max-w-screen-xl px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogPosts.map((post) => (
+              <Card key={post.title} className="flex flex-col overflow-hidden bg-card/50 hover:bg-card hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
+                {post.image && (
+                  <div className="relative h-48 w-full">
                     <Image
-                        src={blogImage.imageUrl}
-                        alt={blogImage.description}
-                        fill
-                        className="object-cover rounded-lg shadow-lg"
-                        data-ai-hint={blogImage.imageHint}
+                      src={post.image.imageUrl}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      data-ai-hint={post.image.imageHint}
                     />
+                  </div>
                 )}
-            </div>
-          <h2 className="text-3xl font-headline font-bold tracking-tighter mb-4">Coming Soon!</h2>
-          <p className="text-foreground/70 md:text-lg max-w-2xl mx-auto">
-            We are busy writing our first series of articles on smart city technology and the impact of IoT. Soon, this space will be filled with insightful posts, case studies, and industry news.
-          </p>
-          <p className="text-foreground/70 md:text-lg max-w-2xl mx-auto mt-4">
-            Stay tuned for articles like "The Benefits of Smart Street Lights," "How IoT is Changing City Infrastructure," and "Case Studies in Street Light Fault Detection."
-          </p>
-          <div className="mt-8">
-            <Button asChild size="lg" variant="outline">
-              <Link href="/">
-                Return to Homepage <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+                <CardHeader>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {post.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                  </div>
+                  <CardTitle className="font-headline text-xl h-20">{post.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <CardDescription>{post.description}</CardDescription>
+                </CardContent>
+                <CardFooter className="flex-col items-start gap-4">
+                  <div className="flex items-center text-sm text-foreground/70 space-x-4">
+                      <div className="flex items-center gap-2">
+                          <UserCircle className="h-4 w-4" />
+                          <span>{post.author}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4" />
+                          <span>{post.date}</span>
+                      </div>
+                  </div>
+                  <Button asChild variant="outline" className="w-full" disabled={post.slug === '#'}>
+                    <Link href={post.slug}>
+                      Read More <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
