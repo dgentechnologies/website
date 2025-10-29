@@ -39,14 +39,6 @@ export default function BlogPage() {
       {/* Blog Posts Section */}
       <section className="w-full py-16 md:py-24">
         <div className="container max-w-screen-xl px-4 md:px-6">
-           <div className="flex justify-end mb-8">
-            <Button asChild>
-              <Link href="/admin/blog/create">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Create New Post
-              </Link>
-            </Button>
-          </div>
           {loading && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[...Array(3)].map((_, i) => (
