@@ -1,0 +1,68 @@
+{
+  "entities": {
+    "blogPost": {
+      "title": "Blog Post",
+      "description": "Represents a single blog post entry.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the blog post."
+        },
+        "description": {
+          "type": "string",
+          "description": "A short meta description for the blog post."
+        },
+        "slug": {
+          "type": "string",
+          "description": "The URL-friendly slug for the blog post."
+        },
+        "author": {
+          "type": "string",
+          "description": "The name of the author."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "The publication date."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Relevant tags for the blog post."
+        },
+        "content": {
+          "type": "string",
+          "description": "The full content of the blog post, formatted as HTML."
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "imageUrl": {
+              "type": "string",
+              "format": "uri"
+            },
+            "imageHint": {
+              "type": "string"
+            }
+          },
+          "required": ["imageUrl", "imageHint"]
+        }
+      },
+      "required": ["title", "description", "slug", "author", "date", "content", "image"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/blogPosts/{postId}": {
+      "schema": {
+        "$ref": "#/entities/blogPost"
+      },
+      "description": "Stores individual blog post documents."
+    }
+  }
+}
