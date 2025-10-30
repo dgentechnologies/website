@@ -48,7 +48,7 @@ Crucially, you must **not** suggest a topic that is too similar to the following
 - "{{this}}"
 {{/each}}
 
-Generate one single, concise, and engaging blog post title as a single JSON string. Do not add any markdown formatting (e.g. \`\`\`json\`) to the output.
+Generate one single, concise, and engaging blog post title as a JSON-formatted string. Do not add any markdown formatting (e.g. \`\`\`json\`) or other text to the output.
 `;
 
 const suggestBlogTopicFlow = ai.defineFlow(
@@ -63,10 +63,6 @@ const suggestBlogTopicFlow = ai.defineFlow(
         prompt: prompt,
         input,
         model: 'googleai/gemini-2.5-flash',
-        output: {
-            format: 'json',
-            schema: SuggestBlogTopicOutputSchema,
-        },
         config: {
             temperature: 0.9,
         }

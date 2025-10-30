@@ -69,7 +69,7 @@ You must also source a relevant, high-quality hero image from a stock photo prov
 1.  **Adopt the Persona:** Write the entire blog post from the perspective of the chosen author: **{{author}}**.
 2.  **Topic:** The blog post must be about: **{{topic}}**.
 3.  **Content:** Generate a comprehensive blog post of at least 500 words. Structure it with a clear introduction, body, and conclusion. Use HTML tags for formatting (e.g., \`<h3>\`, \`<p>\`, \`<ul>\`, \`<li>\`).
-4.  **Output Format:** Provide the output as a valid JSON object. Do not add any markdown formatting (e.g. \`\`\`json\`) to the output. The date should be today's date.
+4.  **Output Format:** Provide the output as a valid JSON object that conforms to the provided output schema. Do not add any markdown formatting (e.g. \`\`\`json\`) or other text to the output. The date should be today's date.
 `;
 
 const generateBlogPostFlow = ai.defineFlow(
@@ -79,17 +79,12 @@ const generateBlogPostFlow = ai.defineFlow(
     outputSchema: BlogPostOutputSchema,
   },
   async (input) => {
-
     const { output } = await ai.generate({
         prompt: personaPrompt,
         input,
         model: 'googleai/gemini-2.5-flash',
-        output: {
-            format: 'json',
-            schema: BlogPostOutputSchema,
-        },
         config: {
-            temperature: 0.9,
+            temperature: 1,
         }
     });
 
