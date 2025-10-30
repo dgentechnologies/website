@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI flow to suggest a new, trending blog post topic.
@@ -70,6 +71,12 @@ const suggestBlogTopicFlow = ai.defineFlow(
         }
     });
 
-    return output!;
+    // If the model fails to return a topic (e.g., if existingTitles is empty),
+    // provide a default topic to prevent a null response.
+    if (!output) {
+      return "The Impact of 5G on Smart City Infrastructure in India";
+    }
+
+    return output;
   }
 );
