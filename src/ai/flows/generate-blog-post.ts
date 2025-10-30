@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI flow to generate blog posts.
@@ -87,7 +88,7 @@ const generateBlogPostFlow = ai.defineFlow(
             schema: BlogPostOutputSchema,
         },
         config: {
-            temperature: 0.8,
+            temperature: 0.9,
         }
     });
 
