@@ -69,7 +69,24 @@ You must also source a relevant, high-quality hero image from a stock photo prov
 1.  **Adopt the Persona:** Write the entire blog post from the perspective of the chosen author: **{{author}}**.
 2.  **Topic:** The blog post must be about: **{{topic}}**.
 3.  **Content:** Generate a comprehensive blog post of at least 500 words. Structure it with a clear introduction, body, and conclusion. Use HTML tags for formatting (e.g., \`<h3>\`, \`<p>\`, \`<ul>\`, \`<li>\`).
-4.  **Output Format:** Provide the output as a valid JSON object that conforms to the provided output schema. Do not add any markdown formatting (e.g. \`\`\`json\`) or other text to the output. The date should be today's date.
+4.  **Output Format:** Provide the output as a single, valid JSON object that conforms to the schema. Do not add any markdown formatting (e.g., \`\`\`json\`) or other text to the output. The date should be today's date. The 'slug' should be a URL-friendly version of the title.
+
+**JSON Output Example:**
+\`\`\`json
+{
+  "title": "Example Title of the Blog Post",
+  "description": "A concise and SEO-friendly summary of the blog post, around 150 characters.",
+  "slug": "example-title-of-the-blog-post",
+  "author": "Sagnik Mandal",
+  "date": "July 31, 2024",
+  "tags": ["Smart Cities", "IoT", "Innovation"],
+  "content": "<h3>Introduction</h3><p>This is the full HTML content of the blog post...</p>",
+  "image": {
+    "imageUrl": "https://images.unsplash.com/photo-12345.jpg",
+    "imageHint": "technology abstract"
+  }
+}
+\`\`\`
 `;
 
 const generateBlogPostFlow = ai.defineFlow(
