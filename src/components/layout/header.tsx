@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, BotMessageSquare } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import Image from 'next/image';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -23,7 +24,7 @@ export function Header() {
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <div className="mr-4 flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <BotMessageSquare className="h-6 w-6 text-primary" />
+            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={32} height={32} />
             <span className="font-bold font-headline inline-block">DGEN</span>
           </Link>
           <nav className="hidden gap-6 md:flex">
@@ -53,7 +54,7 @@ export function Header() {
             <SheetContent side="left" className="pr-0">
               <div className="flex items-center justify-between">
                 <Link href="/" className="mr-6 flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-                  <BotMessageSquare className="h-6 w-6 text-primary" />
+                  <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={32} height={32} />
                   <span className="font-bold font-headline inline-block">DGEN</span>
                 </Link>
                 <Button variant="ghost" className="mr-4 px-0" onClick={() => setIsMobileMenuOpen(false)}>

@@ -1,5 +1,6 @@
-import { BotMessageSquare, Github, Linkedin, Twitter } from 'lucide-react';
+import { Github, Linkedin, Twitter } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 py-14 md:grid-cols-3">
           <div className="flex flex-col items-start gap-4">
             <Link href="/" className="flex items-center space-x-2">
-              <BotMessageSquare className="h-6 w-6 text-primary" />
+              <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={28} height={28} />
               <span className="font-bold font-headline text-lg inline-block">DGEN Technologies</span>
             </Link>
             <p className="text-sm text-foreground/60">
