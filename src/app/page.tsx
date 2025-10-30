@@ -73,7 +73,7 @@ export default function Home() {
         <div className="relative z-10 container max-w-screen-xl px-4 md:px-6">
           <div className="space-y-6">
             <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary text-sm backdrop-blur-sm">Next-Gen Technology Partners</Badge>
-            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight bg-200% animate-hero-gradient">
+            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary leading-tight bg-200% animate-hero-gradient">
               Innovate. Integrate. Inspire.
             </h1>
             <p className="max-w-3xl mx-auto text-white/90 md:text-lg lg:text-xl">
@@ -166,7 +166,7 @@ export default function Home() {
         {/* Call to Action Section */}
         <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
           <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
-              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70">
+              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">
                   Ready to Build the Future?
               </h2>
               <p className="mt-4 text-foreground/80 md:text-lg">

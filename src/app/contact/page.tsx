@@ -11,7 +11,7 @@ export default function ContactPage() {
                 <div className="container max-w-screen-xl px-4 md:px-6">
                     <div className="flex flex-col items-center space-y-4 text-center">
                         <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary">Get In Touch</Badge>
-                        <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/80">
+                        <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">
                             Contact Us
                         </h1>
                         <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">

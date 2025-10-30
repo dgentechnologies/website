@@ -210,7 +210,7 @@ export default function AuralisPage() {
                 {/* CTA Section */}
                 <section className="w-full py-16 md:py-24 lg:py-32">
                   <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
-                      <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70">
+                      <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">
                           Ready to Modernize Your Infrastructure?
                       </h2>
                       <p className="mt-4 text-foreground/80 md:text-lg">
