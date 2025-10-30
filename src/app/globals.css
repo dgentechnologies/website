@@ -43,9 +43,9 @@
 
 @layer utilities {
   .text-gradient {
-    background-image: linear-gradient(to right, #082122, #295b53, #19b35c, #fcff9a);
+    background-image: linear-gradient(to right,  #295b53, #19b35c, #fcff9a);
     background-size: 200% 200%;
-    animation: hero-gradient 8s ease infinite;
+    animation: hero-gradient 15s ease infinite;
     @apply bg-clip-text text-transparent;
   }
 
