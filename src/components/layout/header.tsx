@@ -21,12 +21,14 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center">
-        <div className="mr-4 flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={50} height={50} />
+      <div className="container flex h-24 max-w-screen-2xl items-center justify-between">
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center space-x-2">
+            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={90} height={90} />
           </Link>
-          <nav className="hidden gap-6 md:flex">
+        </div>
+
+        <nav className="hidden items-center gap-6 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -36,10 +38,16 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-          </nav>
-        </div>
-
-        <div className="flex flex-1 items-center justify-end space-x-2">
+        </nav>
+        
+        <div className="flex items-center space-x-2">
+           <div className="hidden md:flex">
+             <Button asChild>
+                <Link href="/contact">
+                    Get a Quote
+                </Link>
+            </Button>
+           </div>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button
@@ -53,7 +61,7 @@ export function Header() {
             <SheetContent side="left" className="pr-0">
               <div className="flex items-center justify-between">
                 <Link href="/" className="mr-6 flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={50} height={50} />
+                  <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={90} height={90} />
                 </Link>
                 <Button variant="ghost" className="mr-4 px-0" onClick={() => setIsMobileMenuOpen(false)}>
                   <X className="h-6 w-6"/>
@@ -71,17 +79,17 @@ export function Header() {
                       {link.label}
                     </Link>
                   ))}
+                  <div className="pt-4">
+                    <Button asChild>
+                        <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                            Get a Quote
+                        </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </SheetContent>
           </Sheet>
-          <nav className="hidden items-center space-x-2 md:flex">
-             <Button asChild>
-                <Link href="/contact">
-                    Get a Quote
-                </Link>
-            </Button>
-          </nav>
         </div>
       </div>
     </header>
