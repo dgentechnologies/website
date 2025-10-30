@@ -76,7 +76,7 @@ export default function Home() {
             <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight bg-200% animate-hero-gradient">
               Innovate. Integrate. Inspire.
             </h1>
-            <p className="max-w-3xl mx-auto text-foreground/80 md:text-lg lg:text-xl">
+            <p className="max-w-3xl mx-auto text-white/90 md:text-lg lg:text-xl">
               Pioneering smart city solutions with flagship products like 'Auralis' while bringing our innovation to the consumer smart home market.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row justify-center pt-2">
