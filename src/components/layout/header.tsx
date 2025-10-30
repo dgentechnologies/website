@@ -21,10 +21,10 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
+      <div className="container flex h-16 max-w-screen-2xl items-center">
         <div className="mr-4 flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={40} height={40} />
+            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={50} height={50} />
           </Link>
           <nav className="hidden gap-6 md:flex">
             {navLinks.map((link) => (
@@ -53,7 +53,7 @@ export function Header() {
             <SheetContent side="left" className="pr-0">
               <div className="flex items-center justify-between">
                 <Link href="/" className="mr-6 flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={40} height={40} />
+                  <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={50} height={50} />
                 </Link>
                 <Button variant="ghost" className="mr-4 px-0" onClick={() => setIsMobileMenuOpen(false)}>
                   <X className="h-6 w-6"/>
