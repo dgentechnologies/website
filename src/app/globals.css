@@ -6,7 +6,7 @@
   :root {
     --background: 0 0% 98%; /* #FAFAFA */
     --foreground: 224 71.4% 4.1%; /* #2f2f2f */
-    --card: 0 0% 98%; /* #FAFAFA */
+    --card: 0 0% 100%; /* #FFFFFF */
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
@@ -14,8 +14,8 @@
     --primary-foreground: 355.7 100% 97.3%;
     --secondary: 170 46% 26%; /* #295b53 */
     --secondary-foreground: 355.7 100% 97.3%;
-    --muted: 188 74% 7%;
-    --muted-foreground: 188 74% 20%; /* #082122 */
+    --muted: 188 74% 7%; /* #082122 */
+    --muted-foreground: 188 74% 20%;
     --accent: 65 96% 80%; /* #fcff9a */
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
@@ -42,6 +42,10 @@
 }
 
 @layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#082122] via-[#295b53] to-[#19b35c];
+  }
+
   @keyframes fade-in-up {
     from {
       opacity: 0;

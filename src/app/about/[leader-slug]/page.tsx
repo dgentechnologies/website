@@ -30,7 +30,7 @@ export default function LeaderDetailPage({ params }: { params: { 'leader-slug': 
                 <AvatarImage src={member.image} alt={member.name} className="object-cover" />
                 <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
             </Avatar>
-            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">
+            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-gradient">
               {member.name}
             </h1>
             <Badge variant="default" className="py-1 px-3 text-lg">{member.role}</Badge>
