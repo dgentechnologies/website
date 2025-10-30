@@ -44,6 +44,8 @@
 @layer utilities {
   .text-gradient {
     background-image: linear-gradient(to right, #082122, #295b53, #19b35c, #fcff9a);
+    background-size: 200% 200%;
+    animation: hero-gradient 8s ease infinite;
     @apply bg-clip-text text-transparent;
   }
 
@@ -74,5 +76,14 @@
   .animate-hero-image {
     animation: hero-image-animation linear forwards;
     animation-timeline: view(150% 200%);
+  }
+
+  @keyframes hero-gradient {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
   }
 }
