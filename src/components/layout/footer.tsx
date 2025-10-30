@@ -9,8 +9,8 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 py-14 md:grid-cols-3">
           <div className="flex flex-col items-start gap-4">
             <Link href="/" className="flex items-center space-x-2">
-              <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={40} height={40} />
-              <span className="font-bold font-headline text-lg inline-block">DGEN Technologies</span>
+              <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={125} height={250} />
+              {/* <span className="font-bold font-headline text-lg inline-block">DGEN Technologies</span> */}
             </Link>
             <p className="text-sm text-foreground/60">
               Innovate. Integrate. Inspire.
