@@ -4,9 +4,9 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96.9%; /* #f7f7f7 */
+    --background: 0 0% 98%; /* #FAFAFA */
     --foreground: 224 71.4% 4.1%; /* #2f2f2f */
-    --card: 0 0% 96.9%; /* #f7f7f7 */
+    --card: 0 0% 98%; /* #FAFAFA */
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
