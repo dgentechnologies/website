@@ -77,7 +77,7 @@ export default function Home() {
               Innovate. Integrate. Inspire.
             </h1>
             <p className="max-w-3xl mx-auto text-foreground/80 md:text-lg lg:text-xl">
-              Dgen Technologies is transforming India with B2B smart city solutions like "Auralis," our smart street light with a fault detection system. We are now expanding into the B2C market to make every home smarter.
+              Pioneering smart city solutions with flagship products like 'Auralis' while bringing our innovation to the consumer smart home market.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row justify-center pt-2">
               <Button asChild size="lg" className="group">
