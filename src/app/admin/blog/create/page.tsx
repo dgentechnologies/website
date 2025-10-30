@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -28,8 +27,9 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { BlogPostInput, generateBlogPost } from "@/ai/flows/generate-blog-post";
+import { suggestBlogTopic } from '@/ai/flows/suggest-blog-topic';
 import { firestore } from '@/firebase/client';
-import { Loader2, Wand2 } from 'lucide-react';
+import { Loader2, Wand2, Sparkles } from 'lucide-react';
 import { BlogPostOutput } from '@/ai/flows/generate-blog-post';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -44,6 +44,7 @@ export default function CreateBlogPage() {
   const { toast } = useToast();
   const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSuggesting, setIsSuggesting] = useState(false);
   const [generatedPost, setGeneratedPost] = useState<BlogPostOutput | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -52,6 +53,27 @@ export default function CreateBlogPage() {
       topic: "",
     },
   });
+
+  async function handleSuggestTopic() {
+    setIsSuggesting(true);
+    try {
+        const topic = await suggestBlogTopic();
+        form.setValue('topic', topic);
+        toast({
+            title: "Topic Suggested!",
+            description: "A new topic has been added to the form.",
+        });
+    } catch (error) {
+        console.error("Error suggesting topic:", error);
+        toast({
+            variant: "destructive",
+            title: "Suggestion Failed",
+            description: "Could not suggest a new topic. Please try again.",
+        });
+    } finally {
+        setIsSuggesting(false);
+    }
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsGenerating(true);
@@ -113,11 +135,21 @@ export default function CreateBlogPage() {
                             render={({ field }) => (
                                 <FormItem>
                                 <FormLabel>Blog Post Topic</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="e.g., 'The role of 5G in smart cities'" {...field} />
-                                </FormControl>
+                                <div className="flex gap-2">
+                                  <FormControl>
+                                      <Input placeholder="e.g., 'The role of 5G in smart cities'" {...field} />
+                                  </FormControl>
+                                  <Button type="button" variant="outline" onClick={handleSuggestTopic} disabled={isSuggesting}>
+                                    {isSuggesting ? (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                        <Sparkles className="h-4 w-4" />
+                                    )}
+                                    <span className="sr-only sm:not-sr-only sm:ml-2">Suggest</span>
+                                  </Button>
+                                </div>
                                 <FormDescription>
-                                    Enter a topic or a full title for the blog post.
+                                    Enter a topic or let AI suggest a trending one for you.
                                 </FormDescription>
                                 <FormMessage />
                                 </FormItem>
@@ -149,7 +181,7 @@ export default function CreateBlogPage() {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" disabled={isGenerating} className="w-full">
+                        <Button type="submit" disabled={isGenerating || isSuggesting} className="w-full">
                             {isGenerating ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -189,4 +221,3 @@ export default function CreateBlogPage() {
       )}
     </div>
   );
-}
