@@ -4,9 +4,9 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* #FAFAFA */
+    --background: 240 10% 98.5%; /* #FAFAFA */
     --foreground: 224 71.4% 4.1%; /* #2f2f2f */
-    --card: 0 0% 100%; /* #FFFFFF */
+    --card: 240 10% 98.5%; /* #FAFAFA */
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
@@ -43,7 +43,8 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#082122] via-[#295b53] to-[#19b35c];
+    background-image: linear-gradient(to right, #082122, #295b53, #19b35c, #fcff9a);
+    @apply bg-clip-text text-transparent;
   }
 
   @keyframes fade-in-up {
