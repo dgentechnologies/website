@@ -29,7 +29,7 @@ const features = [
     {
         icon: <BarChart className="h-8 w-8 text-primary" />,
         title: 'Centralized Control',
-        description: 'A powerful dashboard allows for remote monitoring and control of your entire street light network.',
+        description: 'A powerful dashboard allows for remote monitoring and control of your entire smart city network.',
     }
 ];
 
@@ -81,11 +81,11 @@ export default function AuralisPage() {
                 <div className="relative z-10 container max-w-screen-xl px-4 md:px-6">
                     <div className="space-y-4">
                         <Badge variant="default" className="py-1 px-3 text-lg">Auralis</Badge>
-                        <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-primary/70 leading-tight">
-                            The Future of Urban Lighting
+                        <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-gradient leading-tight">
+                            The Future of Urban Intelligence
                         </h1>
                         <p className="max-w-2xl mx-auto text-foreground/80 md:text-lg lg:text-xl">
-                            Intelligent, efficient, and reliable. Auralis is the smart street light system designed to illuminate India's future.
+                            Intelligent, efficient, and integrated. Auralis is the smart city brand designed to empower India's future.
                         </p>
                     </div>
                 </div>
@@ -98,10 +98,10 @@ export default function AuralisPage() {
                         <div className="space-y-4 animate-fade-in-up">
                             <Badge variant="outline" className="border-primary/50 text-primary">What is Auralis?</Badge>
                             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
-                                More Than Just Light
+                                A Unified Smart City Ecosystem
                             </h2>
                             <p className="text-foreground/80 md:text-lg">
-                                Auralis is DGEN Technologies' flagship B2B smart street light, engineered for the demands of modern Indian cities. It combines robust hardware with an intelligent, AI-powered fault detection and management system. This isn't just about illumination; it's about creating a safer, more efficient, and sustainable urban environment.
+                                Auralis is the brand under which DGEN Technologies sells all its smart city solutions. From smart street and traffic light systems to security cameras and environmental sensors, Auralis represents a unified ecosystem for creating safer, more efficient, and sustainable urban environments.
                             </p>
                             <Button asChild size="lg" className="group mt-4">
                                 <Link href="/contact?subject=Auralis+Inquiry">
@@ -130,7 +130,7 @@ export default function AuralisPage() {
                             <Badge variant="default">Core Features</Badge>
                             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Intelligence Built-In</h2>
                             <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
-                                Every Auralis unit is packed with technology to maximize efficiency and reliability.
+                                Every Auralis product is packed with technology to maximize efficiency and reliability.
                             </p>
                         </div>
                         <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
@@ -188,6 +188,7 @@ export default function AuralisPage() {
                             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Technical Specifications</h2>
                         </div>
                         <div className="mx-auto max-w-4xl animate-fade-in-up">
+                            <p className="text-center text-foreground/70 mb-8">The following specifications are for the Auralis Smart Street Light, one of our core products. Contact us for details on other Auralis solutions.</p>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {Object.entries(techSpecs).map(([category, specs]) => (
                               <div key={category}>
@@ -214,7 +215,7 @@ export default function AuralisPage() {
                           Ready to Modernize Your Infrastructure?
                       </h2>
                       <p className="mt-4 text-foreground/80 md:text-lg">
-                          Let's discuss how Auralis can transform your city's lighting network. Schedule a personalized demo with our smart city experts today.
+                          Let's discuss how the Auralis ecosystem can transform your city's infrastructure. Schedule a personalized demo with our smart city experts today.
                       </p>
                       <div className="mt-8">
                           <Button asChild size="lg" className="group">
