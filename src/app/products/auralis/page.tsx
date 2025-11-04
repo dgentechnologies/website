@@ -84,7 +84,7 @@ export default function AuralisPage() {
                         <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-gradient leading-tight">
                             The Future of Urban Intelligence
                         </h1>
-                        <p className="max-w-2xl mx-auto text-foreground/80 md:text-lg lg:text-xl">
+                        <p className="max-w-2xl mx-auto text-white/80 md:text-lg lg:text-xl">
                             Intelligent, efficient, and integrated. Auralis is the smart city brand designed to empower India's future.
                         </p>
                     </div>
