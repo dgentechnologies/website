@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: 'DGEN Technologies | Smart City & IoT Solutions',
     description: 'Pioneering smart city solutions in India with our flagship product "Auralis" and expanding into smart home technology.',
     url: 'https://dgentechnologies.com',
-    siteName: 'DGEN Technologies',
+    siteName: 'Dgen Technologies Pvt. Ltd.',
     images: [
       {
         url: 'https://dgentechnologies.com/og-image.png', // It's good practice to have an OG image
