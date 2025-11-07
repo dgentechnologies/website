@@ -27,7 +27,7 @@ const BlogPostOutputSchema = z.object({
     date: z.string().describe('The publication date in "Month Day, Year" format.'),
     tags: z.array(z.string()).describe('An array of 2-3 relevant tags for the blog post.'),
     content: z.string().describe('The full content of the blog post, formatted as an HTML string with paragraphs, headings, and lists. Do not use Markdown.'),
-    image: z.string().describe('URL for a relevant hero image for the blog post from an image provider like Unsplash.'),
+    image: z.string().describe('URL for a relevant hero image for the blog post.'),
     imageHint: z.string().describe('Two-word hint for the image content, e.g., "technology abstract".'),
 });
 export type BlogPostOutput = z.infer<typeof BlogPostOutputSchema>;
@@ -96,27 +96,37 @@ ${input.author} — follow this exact persona’s tone and focus.
       day: 'numeric',
     });
 
-    // ✅ Robust Image Handling: Use hint to find a local placeholder, or use a fallback.
-    let selectedImage = PlaceHolderImages.find(img => img.id === 'blog-fallback'); // Default fallback
-
+    // Fetch image from Unsplash API route
+    let imageUrl = '';
     if (finalOutput.imageHint) {
-        const hintWords = finalOutput.imageHint.toLowerCase().split(' ');
-        // Try to find a more relevant image from our pre-approved list
-        const foundImage = PlaceHolderImages.find(p_img => 
-            hintWords.some(h_word => p_img.imageHint.toLowerCase().includes(h_word)) && p_img.id !== 'blog-fallback'
-        );
-        if (foundImage) {
-            selectedImage = foundImage;
+        try {
+            // Use a full URL for server-side fetch
+            const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:9002';
+            const response = await fetch(`${baseUrl}/api/unsplash?query=${encodeURIComponent(finalOutput.imageHint)}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.url) {
+                    imageUrl = data.url;
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch image from Unsplash API:', error);
         }
     }
 
-    if (selectedImage) {
-        finalOutput.image = selectedImage.imageUrl;
-        finalOutput.imageHint = selectedImage.imageHint;
+    if (imageUrl) {
+        finalOutput.image = imageUrl;
     } else {
-        // This case should ideally not be hit if blog-fallback exists, but it's a safeguard.
-        finalOutput.image = 'https://picsum.photos/seed/dgen/1200/800';
-        finalOutput.imageHint = 'technology abstract';
+        // Fallback to a placeholder if Unsplash fetch fails
+        const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
+        if (fallbackImage) {
+            finalOutput.image = fallbackImage.imageUrl;
+            finalOutput.imageHint = fallbackImage.imageHint;
+        } else {
+            // Ultimate fallback
+            finalOutput.image = 'https://picsum.photos/seed/dgen/1200/800';
+            finalOutput.imageHint = 'technology abstract';
+        }
     }
     
     // ✅ Force correct author (if model tries to alter)
