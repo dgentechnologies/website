@@ -83,9 +83,9 @@ ${input.author} — follow this exact persona’s tone and focus.
 
     const finalOutput = output as any;
 
-    // Handle potential inconsistencies in image property naming
-    if (finalOutput.hero_image_url && !finalOutput.image) {
-      finalOutput.image = finalOutput.hero_image_url;
+    // Handle potential inconsistencies in property naming
+    if (finalOutput.body && !finalOutput.content) {
+      finalOutput.content = finalOutput.body;
     }
 
     // ✅ Force today's date if model gives wrong one
@@ -96,14 +96,18 @@ ${input.author} — follow this exact persona’s tone and focus.
       day: 'numeric',
     });
 
-    // ✅ Always use fallback image, preventing hallucinated 404 URLs
-    const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
-    if (fallbackImage) {
-      finalOutput.image = fallbackImage.imageUrl;
-      // If the AI gives a hint, use it, otherwise use the fallback hint.
-      finalOutput.imageHint = finalOutput.imageHint || fallbackImage.imageHint;
+    // ✅ Dynamically generate image URL from hint, with a fallback
+    if (finalOutput.imageHint) {
+      const searchTerms = finalOutput.imageHint.split(' ').join(',');
+      finalOutput.image = `https://source.unsplash.com/1200x800/?${searchTerms}`;
+    } else {
+      const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
+      if (fallbackImage) {
+        finalOutput.image = fallbackImage.imageUrl;
+        finalOutput.imageHint = fallbackImage.imageHint;
+      }
     }
-
+    
     // ✅ Force correct author (if model tries to alter)
     finalOutput.author = input.author;
 
