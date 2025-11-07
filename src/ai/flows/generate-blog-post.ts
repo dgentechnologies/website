@@ -130,7 +130,7 @@ ${input.author} — follow this exact persona’s tone and focus.
       day: 'numeric',
     });
 
-    // ✅ Add fallback image if missing
+    // ✅ Add fallback image if missing or invalid
     if (!output.image || !output.image.startsWith('http')) {
       const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
       if (fallbackImage) {
