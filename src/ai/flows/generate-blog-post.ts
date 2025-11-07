@@ -19,6 +19,7 @@ const BlogPostInputSchema = z.object({
 });
 export type BlogPostInput = z.infer<typeof BlogPostInputSchema>;
 
+// The final output returned to the client should not contain the hints array.
 const BlogPostOutputSchema = z.object({
     title: z.string().describe('The title of the blog post.'),
     description: z.string().describe('A short meta description for the blog post, optimized for SEO.'),
@@ -28,9 +29,15 @@ const BlogPostOutputSchema = z.object({
     tags: z.array(z.string()).describe('An array of 2-3 relevant tags for the blog post.'),
     content: z.string().describe('The full content of the blog post, formatted as an HTML string with paragraphs, headings, and lists. Do not use Markdown.'),
     image: z.string().describe('URL for a relevant hero image for the blog post.'),
-    imageHint: z.string().describe('Two-word hint for the image content, e.g., "technology abstract".'),
+    imageHint: z.string().describe('The two-word hint that was successfully used to find the image.'),
 });
 export type BlogPostOutput = z.infer<typeof BlogPostOutputSchema>;
+
+// The AI model's output will include the hints.
+const AIModelOutputSchema = BlogPostOutputSchema.extend({
+    imageHints: z.array(z.string()).describe('An array of 3-4 different two-word hints for the image content, e.g., ["technology abstract", "city skyline", "data network"].'),
+});
+
 
 export async function generateBlogPost(input: BlogPostInput): Promise<BlogPostOutput> {
   return generateBlogPostFlow(input);
@@ -40,14 +47,14 @@ const generateBlogPostFlow = ai.defineFlow(
   {
     name: 'generateBlogPostFlow',
     inputSchema: BlogPostInputSchema,
-    outputSchema: BlogPostOutputSchema,
+    outputSchema: AIModelOutputSchema,
   },
   async (input) => {
     const prompt = `
 You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging, reflecting the unique voice and perspective of the specified author.
 
 The blog post MUST be about the following topic: **${input.topic}**.
-You must generate all required fields for the blog post: 'title', 'description', 'slug', 'author', 'date', 'tags', 'content', and 'imageHint'.
+You must generate all required fields for the blog post: 'title', 'description', 'slug', 'author', 'date', 'tags', 'content', and 'imageHints'.
 
 - The 'title' MUST directly relate to the topic above.
 - The 'description' MUST be a short, SEO-friendly meta description.
@@ -56,7 +63,7 @@ You must generate all required fields for the blog post: 'title', 'description',
 - The 'date' MUST be the current date in "Month Day, Year" format.
 - The 'slug' MUST be a URL-friendly version of the title.
 - The 'image' field should be IGNORED.
-- The 'imageHint' MUST be a two-word hint for the image content (e.g., "technology abstract").
+- The 'imageHints' MUST be an array of 3-4 different two-word hints for the image content (e.g., ["technology abstract", "city data", "urban network"]).
 
 **Author Persona:**
 ${input.author} — follow this exact persona’s tone and focus.
@@ -65,7 +72,7 @@ ${input.author} — follow this exact persona’s tone and focus.
 1. Do NOT change or reinterpret the topic. The post must be about: "${input.topic}".
 2. Do NOT generate random or unrelated topics.
 3. Do NOT invent a new author. The author must be ${input.author}.
-4. Do NOT generate an 'image' URL. You will only generate an 'imageHint'.
+4. Do NOT generate an 'image' URL. You will only generate 'imageHints'.
 5. Output a single valid JSON object matching the output schema (no markdown).
 `;
 
@@ -96,28 +103,36 @@ ${input.author} — follow this exact persona’s tone and focus.
       day: 'numeric',
     });
 
-    // Fetch image from Unsplash API route
+    // Fetch image from Unsplash API route by iterating through hints
     let imageUrl = '';
-    if (finalOutput.imageHint) {
-        try {
-            // Use a full URL for server-side fetch
-            const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:9002';
-            const response = await fetch(`${baseUrl}/api/unsplash?query=${encodeURIComponent(finalOutput.imageHint)}`);
-            if (response.ok) {
-                const data = await response.json();
-                if (data.url) {
-                    imageUrl = data.url;
+    let usedHint = '';
+    if (finalOutput.imageHints && Array.isArray(finalOutput.imageHints)) {
+        for (const hint of finalOutput.imageHints) {
+            try {
+                // Use a full URL for server-side fetch
+                const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:9002';
+                const response = await fetch(`${baseUrl}/api/unsplash?query=${encodeURIComponent(hint)}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.url) {
+                        imageUrl = data.url;
+                        usedHint = hint;
+                        console.log(`Successfully fetched image for hint: "${hint}"`);
+                        break; // Stop on the first successful fetch
+                    }
                 }
+            } catch (error) {
+                console.error(`Failed to fetch image for hint "${hint}":`, error);
             }
-        } catch (error) {
-            console.error('Failed to fetch image from Unsplash API:', error);
         }
     }
 
     if (imageUrl) {
         finalOutput.image = imageUrl;
+        finalOutput.imageHint = usedHint;
     } else {
-        // Fallback to a placeholder if Unsplash fetch fails
+        // Fallback to a placeholder if all Unsplash hints fail
+        console.log('All image hints failed. Using fallback image.');
         const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
         if (fallbackImage) {
             finalOutput.image = fallbackImage.imageUrl;
@@ -131,6 +146,9 @@ ${input.author} — follow this exact persona’s tone and focus.
     
     // ✅ Force correct author (if model tries to alter)
     finalOutput.author = input.author;
+
+    // Clean up hints array before returning
+    delete finalOutput.imageHints;
 
     return finalOutput as BlogPostOutput;
   }
