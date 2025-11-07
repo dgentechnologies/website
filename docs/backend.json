@@ -38,20 +38,16 @@
           "description": "The full content of the blog post, formatted as HTML."
         },
         "image": {
-          "type": "object",
-          "properties": {
-            "imageUrl": {
-              "type": "string",
-              "format": "uri"
-            },
-            "imageHint": {
-              "type": "string"
-            }
-          },
-          "required": ["imageUrl", "imageHint"]
+          "type": "string",
+          "format": "uri",
+          "description": "URL for a relevant hero image for the blog post."
+        },
+        "imageHint": {
+          "type": "string",
+          "description": "Two-word hint for the image content, e.g., 'technology abstract'."
         }
       },
-      "required": ["title", "description", "slug", "author", "date", "content", "image"]
+      "required": ["title", "description", "slug", "author", "date", "content", "image", "imageHint"]
     }
   },
   "auth": {

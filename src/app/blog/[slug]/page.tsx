@@ -66,11 +66,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         {blogPost.image && (
             <div className="absolute inset-0 z-0">
                  <Image
-                    src={blogPost.image.imageUrl}
+                    src={blogPost.image}
                     alt={blogPost.title}
                     fill
                     className="object-cover"
-                    data-ai-hint={blogPost.image.imageHint}
+                    data-ai-hint={blogPost.imageHint}
                     priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>

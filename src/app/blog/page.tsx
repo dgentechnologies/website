@@ -68,11 +68,11 @@ export default function BlogPage() {
                     {post.image && (
                       <div className="relative h-48 w-full">
                         <Image
-                          src={post.image.imageUrl}
+                          src={post.image}
                           alt={post.title}
                           fill
                           className="object-cover"
-                          data-ai-hint={post.image.imageHint}
+                          data-ai-hint={post.imageHint}
                         />
                       </div>
                     )}

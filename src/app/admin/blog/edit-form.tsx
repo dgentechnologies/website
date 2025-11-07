@@ -28,6 +28,8 @@ const formSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters."),
   description: z.string().min(20, "Description must be at least 20 characters.").max(160, "Description should be less than 160 characters for SEO."),
   content: z.string().min(100, "Content must be at least 100 characters."),
+  image: z.string().url("Must be a valid URL."),
+  imageHint: z.string(),
 });
 
 type EditBlogFormProps = {
@@ -45,6 +47,8 @@ export function EditBlogForm({ post }: EditBlogFormProps) {
       title: post.title,
       description: post.description,
       content: post.content,
+      image: post.image,
+      imageHint: post.imageHint,
     },
   });
 
@@ -114,6 +118,35 @@ export function EditBlogForm({ post }: EditBlogFormProps) {
               </FormControl>
               <FormDescription>
                 You can use HTML tags like &lt;p&gt;, &lt;h3&gt;, &lt;ul&gt;, etc. for formatting.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Image URL</FormLabel>
+              <FormControl>
+                <Input placeholder="https://example.com/image.jpg" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="imageHint"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Image Hint</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., 'technology abstract'" {...field} />
+              </FormControl>
+              <FormDescription>
+                A two-word hint for the image content.
               </FormDescription>
               <FormMessage />
             </FormItem>

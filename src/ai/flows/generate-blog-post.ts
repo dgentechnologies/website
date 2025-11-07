@@ -26,10 +26,8 @@ const BlogPostOutputSchema = z.object({
     date: z.string().describe('The publication date in "Month Day, Year" format.'),
     tags: z.array(z.string()).describe('An array of 2-3 relevant tags for the blog post.'),
     content: z.string().describe('The full content of the blog post, formatted as an HTML string with paragraphs, headings, and lists.'),
-    image: z.object({
-        imageUrl: z.string().describe('URL for a relevant hero image for the blog post from an image provider like Unsplash.'),
-        imageHint: z.string().describe('Two-word hint for the image content, e.g., "technology abstract".'),
-    }).describe('A relevant hero image for the blog post.'),
+    image: z.string().describe('URL for a relevant hero image for the blog post from an image provider like Unsplash.'),
+    imageHint: z.string().describe('Two-word hint for the image content, e.g., "technology abstract".'),
 });
 export type BlogPostOutput = z.infer<typeof BlogPostOutputSchema>;
 

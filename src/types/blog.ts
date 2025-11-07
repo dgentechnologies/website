@@ -6,8 +6,6 @@ export interface BlogPost {
   date: string;
   tags: string[];
   content: string;
-  image: {
-    imageUrl: string;
-    imageHint: string;
-  };
+  image: string;
+  imageHint: string;
 }
