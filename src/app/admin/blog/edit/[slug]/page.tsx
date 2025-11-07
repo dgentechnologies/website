@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 
 import { firestore } from '@/firebase/client';
 import { BlogPost } from '@/types/blog';
-import { EditBlogForm } from '../edit-form';
+import { EditBlogForm } from '@/app/admin/blog/edit-form';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
 
