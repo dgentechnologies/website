@@ -10,8 +10,6 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { firestore } from '@/firebase/server';
-import { BlogPost } from '@/types/blog';
 
 const SuggestBlogTopicInputSchema = z.object({
     existingTitles: z.array(z.string()).describe('A list of existing blog post titles to avoid duplication.'),
@@ -22,17 +20,8 @@ export type SuggestBlogTopicInput = z.infer<typeof SuggestBlogTopicInputSchema>;
 const SuggestBlogTopicOutputSchema = z.string().describe('A new, trending blog post topic related to smart cities or IoT.');
 export type SuggestBlogTopicOutput = z.infer<typeof SuggestBlogTopicOutputSchema>;
 
-export async function suggestBlogTopic(suggestionHistory: string[] = []): Promise<SuggestBlogTopicOutput> {
-    const existingTitles = await getExistingTitles();
-    return suggestBlogTopicFlow({ existingTitles, suggestionHistory });
-}
-
-async function getExistingTitles(): Promise<string[]> {
-    const snapshot = await firestore.collection('blogPosts').get();
-    if (snapshot.empty) {
-        return [];
-    }
-    return snapshot.docs.map(doc => (doc.data() as BlogPost).title);
+export async function suggestBlogTopic(input: SuggestBlogTopicInput): Promise<SuggestBlogTopicOutput> {
+    return suggestBlogTopicFlow(input);
 }
 
 const prompt = `

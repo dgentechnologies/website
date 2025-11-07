@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import { firestore } from '@/firebase/client';
 import { Loader2, Wand2, Sparkles } from 'lucide-react';
 import { BlogPostOutput } from '@/ai/flows/generate-blog-post';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BlogPost } from '@/types/blog';
 
 const formSchema = z.object({
   author: z.enum(['Tirthankar Dasgupta', 'Sukomal Debnath', 'Sagnik Mandal', 'Arpan Bairagi']),
@@ -56,10 +57,19 @@ export default function CreateBlogPage() {
     },
   });
 
+  async function getExistingTitles(): Promise<string[]> {
+    const snapshot = await getDocs(collection(firestore, 'blogPosts'));
+    if (snapshot.empty) {
+        return [];
+    }
+    return snapshot.docs.map(doc => (doc.data() as BlogPost).title);
+  }
+
   async function handleSuggestTopic() {
     setIsSuggesting(true);
     try {
-        const topic = await suggestBlogTopic(suggestionHistory);
+        const existingTitles = await getExistingTitles();
+        const topic = await suggestBlogTopic({ existingTitles, suggestionHistory });
         form.setValue('topic', topic);
         setSuggestionHistory(prev => [...prev, topic]);
         toast({
