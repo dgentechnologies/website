@@ -1,4 +1,4 @@
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { Github, Linkedin, Twitter, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -39,6 +39,7 @@ export function Footer() {
               <ul className="mt-4 space-y-2 text-sm">
                 <li><a href="https://www.linkedin.com/company/dgentechnologies" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground/60 hover:text-foreground"><Linkedin size={16}/> LinkedIn</a></li>
                 <li><a href="https://x.com/dgen_tec" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground/60 hover:text-foreground"><Twitter size={16}/> Twitter</a></li>
+                <li><a href="https://www.instagram.com/dgen_technologies/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground/60 hover:text-foreground"><Instagram size={16}/> Instagram</a></li>
                 <li><a href="https://github.com/dgentechnologies" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground/60 hover:text-foreground"><Github size={16}/> GitHub</a></li>
               </ul>
             </div>
