@@ -10,7 +10,33 @@ const unsplash = createApi({
   accessKey: process.env.UNSPLASH_ACCESS_KEY,
 });
 
+// --- In-memory rate limiter ---
+const RATE_LIMIT_COUNT = 50;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const requestTimestamps: number[] = [];
+
+const isRateLimited = () => {
+  const now = Date.now();
+  // Remove timestamps older than the time window
+  while (requestTimestamps.length > 0 && requestTimestamps[0] < now - RATE_LIMIT_WINDOW_MS) {
+    requestTimestamps.shift();
+  }
+  // Check if the number of requests exceeds the limit
+  if (requestTimestamps.length >= RATE_LIMIT_COUNT) {
+    return true;
+  }
+  return false;
+};
+// --- End of rate limiter ---
+
 export async function GET(request: Request) {
+  if (isRateLimited()) {
+    return NextResponse.json(
+      { error: `Rate limit exceeded. Only ${RATE_LIMIT_COUNT} requests are allowed per hour.` },
+      { status: 429 }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('query');
 
@@ -34,6 +60,7 @@ export async function GET(request: Request) {
     const photo = result.response?.results[0];
 
     if (photo) {
+      requestTimestamps.push(Date.now()); // Record successful request
       return NextResponse.json({ url: photo.urls.regular });
     } else {
       return NextResponse.json({ error: 'No image found for the query' }, { status: 404 });

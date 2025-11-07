@@ -98,13 +98,18 @@ export default function CreateBlogPage() {
         title: "Blog Post Generated!",
         description: "Review the post below and save it to publish.",
       });
-    } catch (error) {
-      console.error("Error generating blog post:", error);
-      toast({
-        variant: "destructive",
-        title: "Generation Failed",
-        description: "Could not generate the blog post. Please try again.",
-      });
+    } catch (error: any) {
+        console.error("Error generating blog post:", error);
+        let description = "Could not generate the blog post. Please try again.";
+        // Check for a rate limit error message
+        if (error.message && error.message.includes('Rate limit exceeded')) {
+            description = "Rate limit reached. Please wait a while before generating a new post.";
+        }
+        toast({
+            variant: "destructive",
+            title: "Generation Failed",
+            description: description,
+        });
     } finally {
       setIsGenerating(false);
     }
