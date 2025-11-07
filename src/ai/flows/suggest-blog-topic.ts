@@ -28,17 +28,11 @@ export async function suggestBlogTopic(suggestionHistory: string[] = []): Promis
 }
 
 async function getExistingTitles(): Promise<string[]> {
-    try {
-        const snapshot = await firestore.collection('blogPosts').get();
-        if (snapshot.empty) {
-            return [];
-        }
-        return snapshot.docs.map(doc => (doc.data() as BlogPost).title);
-    } catch (error) {
-        console.error("Error fetching existing blog titles:", error);
-        // In case of error, return an empty array to prevent the flow from breaking.
+    const snapshot = await firestore.collection('blogPosts').get();
+    if (snapshot.empty) {
         return [];
     }
+    return snapshot.docs.map(doc => (doc.data() as BlogPost).title);
 }
 
 const prompt = `
@@ -91,7 +85,7 @@ const suggestBlogTopicFlow = ai.defineFlow(
     });
 
     if (!output) {
-      return "The Impact of 5G on Smart City Infrastructure in India";
+      throw new Error("Failed to generate a blog topic suggestion.");
     }
 
     return output;
