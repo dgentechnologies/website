@@ -15,15 +15,16 @@ import { BlogPost } from '@/types/blog';
 
 const SuggestBlogTopicInputSchema = z.object({
     existingTitles: z.array(z.string()).describe('A list of existing blog post titles to avoid duplication.'),
+    suggestionHistory: z.array(z.string()).optional().describe('A list of topics already suggested in this session.'),
 });
 export type SuggestBlogTopicInput = z.infer<typeof SuggestBlogTopicInputSchema>;
 
 const SuggestBlogTopicOutputSchema = z.string().describe('A new, trending blog post topic related to smart cities or IoT.');
 export type SuggestBlogTopicOutput = z.infer<typeof SuggestBlogTopicOutputSchema>;
 
-export async function suggestBlogTopic(): Promise<SuggestBlogTopicOutput> {
+export async function suggestBlogTopic(suggestionHistory: string[] = []): Promise<SuggestBlogTopicOutput> {
     const existingTitles = await getExistingTitles();
-    return suggestBlogTopicFlow({ existingTitles });
+    return suggestBlogTopicFlow({ existingTitles, suggestionHistory });
 }
 
 async function getExistingTitles(): Promise<string[]> {
@@ -45,7 +46,9 @@ You are a senior content strategist for DGEN Technologies, a tech company specia
 
 Your task is to generate a compelling, new, and trending blog post topic. The topic should be relevant to smart cities, IoT, urban technology, or related fields.
 
-Crucially, you must **not** suggest a topic that is too similar to the following existing blog posts:
+Crucially, you must **not** suggest a topic that is too similar to any of the following existing blog posts or previously suggested topics:
+
+**Existing Blog Posts:**
 {{#if existingTitles}}
 {{#each existingTitles}}
 - "{{this}}"
@@ -53,6 +56,16 @@ Crucially, you must **not** suggest a topic that is too similar to the following
 {{else}}
 (No existing titles provided)
 {{/if}}
+
+**Previously Suggested Topics in this Session:**
+{{#if suggestionHistory}}
+{{#each suggestionHistory}}
+- "{{this}}"
+{{/each}}
+{{else}}
+(No previous suggestions in this session)
+{{/if}}
+
 
 Generate one single, concise, and engaging blog post title. Your entire output should be just the title string itself, without any JSON formatting or markdown.
 
@@ -84,4 +97,3 @@ const suggestBlogTopicFlow = ai.defineFlow(
     return output;
   }
 );
-

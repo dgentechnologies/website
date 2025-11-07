@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -46,6 +47,7 @@ export default function CreateBlogPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [generatedPost, setGeneratedPost] = useState<BlogPostOutput | null>(null);
+  const [suggestionHistory, setSuggestionHistory] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,8 +59,9 @@ export default function CreateBlogPage() {
   async function handleSuggestTopic() {
     setIsSuggesting(true);
     try {
-        const topic = await suggestBlogTopic();
+        const topic = await suggestBlogTopic(suggestionHistory);
         form.setValue('topic', topic);
+        setSuggestionHistory(prev => [...prev, topic]);
         toast({
             title: "Topic Suggested!",
             description: "A new topic has been added to the form.",
