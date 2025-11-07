@@ -81,6 +81,12 @@ const suggestBlogTopicFlow = ai.defineFlow(
         model: 'googleai/gemini-2.5-flash',
         config: {
             temperature: 0.9,
+            safetySettings: [
+                {
+                  category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+                  threshold: 'BLOCK_NONE',
+                },
+            ],
         }
     });
 
