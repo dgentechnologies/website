@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useMemo } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
@@ -22,9 +23,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 // }
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const [post, loading, error] = useDocumentData(
-    doc(firestore, 'blogPosts', params.slug)
-  );
+  const postRef = useMemo(() => doc(firestore, 'blogPosts', params.slug), [params.slug]);
+  const [post, loading, error] = useDocumentData(postRef);
 
   if (loading) {
     return (
