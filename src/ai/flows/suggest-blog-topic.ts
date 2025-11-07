@@ -10,7 +10,6 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from '@/firebase/server';
 import { BlogPost } from '@/types/blog';
 
@@ -29,14 +28,17 @@ export async function suggestBlogTopic(): Promise<SuggestBlogTopicOutput> {
 
 async function getExistingTitles(): Promise<string[]> {
     try {
-        const querySnapshot = await getDocs(collection(firestore, 'blogPosts'));
-        return querySnapshot.docs.map(doc => (doc.data() as BlogPost).title);
+        const snapshot = await firestore.collection('blogPosts').get();
+        if (snapshot.empty) {
+            return [];
+        }
+        return snapshot.docs.map(doc => (doc.data() as BlogPost).title);
     } catch (error) {
         console.error("Error fetching existing blog titles:", error);
+        // In case of error, return an empty array to prevent the flow from breaking.
         return [];
     }
 }
-
 
 const prompt = `
 You are a senior content strategist for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions in India.
@@ -44,11 +46,18 @@ You are a senior content strategist for DGEN Technologies, a tech company specia
 Your task is to generate a compelling, new, and trending blog post topic. The topic should be relevant to smart cities, IoT, urban technology, or related fields.
 
 Crucially, you must **not** suggest a topic that is too similar to the following existing blog posts:
+{{#if existingTitles}}
 {{#each existingTitles}}
 - "{{this}}"
 {{/each}}
+{{else}}
+(No existing titles provided)
+{{/if}}
 
-Generate one single, concise, and engaging blog post title as a JSON-formatted string. Do not add any markdown formatting (e.g. \`\`\`json\`\`\`) or other text to the output.
+Generate one single, concise, and engaging blog post title. Your entire output should be just the title string itself, without any JSON formatting or markdown.
+
+Example Output:
+The Impact of 5G on Smart City Infrastructure in India
 `;
 
 const suggestBlogTopicFlow = ai.defineFlow(
@@ -68,8 +77,6 @@ const suggestBlogTopicFlow = ai.defineFlow(
         }
     });
 
-    // If the model fails to return a topic (e.g., if existingTitles is empty),
-    // provide a default topic to prevent a null response.
     if (!output) {
       return "The Impact of 5G on Smart City Infrastructure in India";
     }
