@@ -47,7 +47,7 @@ const generateBlogPostFlow = ai.defineFlow(
 You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging, reflecting the unique voice and perspective of the specified author.
 
 The blog post MUST be about the following topic: **${input.topic}**.
-You must generate all required fields for the blog post: 'title', 'description', 'slug', 'author', 'date', 'tags', 'content', 'image', and 'imageHint'.
+You must generate all required fields for the blog post: 'title', 'description', 'slug', 'author', 'date', 'tags', 'content', and 'imageHint'.
 
 - The 'title' MUST directly relate to the topic above.
 - The 'description' MUST be a short, SEO-friendly meta description.
@@ -55,7 +55,8 @@ You must generate all required fields for the blog post: 'title', 'description',
 - The 'tags' MUST include 2-3 relevant tags.
 - The 'date' MUST be the current date in "Month Day, Year" format.
 - The 'slug' MUST be a URL-friendly version of the title.
-- The 'image' and 'imageHint' MUST be a relevant hero image (Unsplash/stock style).
+- The 'image' field should be IGNORED.
+- The 'imageHint' MUST be a two-word hint for the image content (e.g., "technology abstract").
 
 **Author Persona:**
 ${input.author} — follow this exact persona’s tone and focus.
@@ -64,7 +65,8 @@ ${input.author} — follow this exact persona’s tone and focus.
 1. Do NOT change or reinterpret the topic. The post must be about: "${input.topic}".
 2. Do NOT generate random or unrelated topics.
 3. Do NOT invent a new author. The author must be ${input.author}.
-4. Output a single valid JSON object matching the output schema (no markdown).
+4. Do NOT generate an 'image' URL. You will only generate an 'imageHint'.
+5. Output a single valid JSON object matching the output schema (no markdown).
 `;
 
     const { output } = await ai.generate({
@@ -77,7 +79,6 @@ ${input.author} — follow this exact persona’s tone and focus.
       throw new Error('Failed to generate blog post content.');
     }
     
-    // Log the raw AI output for debugging
     console.log('Raw AI Output:', JSON.stringify(output, null, 2));
 
     const finalOutput = output as any;
@@ -95,13 +96,12 @@ ${input.author} — follow this exact persona’s tone and focus.
       day: 'numeric',
     });
 
-    // ✅ Add fallback image if missing or invalid
-    if (!finalOutput.image || !finalOutput.image.startsWith('http')) {
-      const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
-      if (fallbackImage) {
-        finalOutput.image = fallbackImage.imageUrl;
-        finalOutput.imageHint = fallbackImage.imageHint;
-      }
+    // ✅ Always use fallback image, preventing hallucinated 404 URLs
+    const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
+    if (fallbackImage) {
+      finalOutput.image = fallbackImage.imageUrl;
+      // If the AI gives a hint, use it, otherwise use the fallback hint.
+      finalOutput.imageHint = finalOutput.imageHint || fallbackImage.imageHint;
     }
 
     // ✅ Force correct author (if model tries to alter)
