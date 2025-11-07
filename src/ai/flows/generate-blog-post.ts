@@ -39,10 +39,14 @@ export async function generateBlogPost(input: BlogPostInput): Promise<BlogPostOu
 const personaPrompt = `
 You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging, reflecting the unique voice and perspective of the specified author.
 
-You must also source a relevant, high-quality hero image from a stock photo provider like Unsplash and provide the URL and a two-word hint for the image.
+You must generate all the required fields for the blog post, including: 'title', 'description', 'slug', 'author', 'date', 'tags', 'content', 'image', and 'imageHint'.
 
-The 'date' field MUST be the current date, formatted as "Month Day, Year". For example: "August 1, 2024".
-The 'slug' field should be a URL-friendly version of the title.
+- The 'description' MUST be a short, SEO-friendly meta description.
+- The 'content' MUST be the full blog post formatted as an HTML string.
+- The 'tags' MUST be an array of 2-3 relevant string tags.
+- The 'date' MUST be the current date, formatted as "Month Day, Year". For example: "August 1, 2024".
+- The 'slug' MUST be a URL-friendly version of the title.
+- You must source a relevant, high-quality hero image from a stock photo provider like Unsplash and provide the URL for 'image' and a two-word hint for 'imageHint'.
 
 **Author Personas:**
 
@@ -70,7 +74,7 @@ The 'slug' field should be a URL-friendly version of the title.
 
 1.  **Adopt the Persona:** Write the entire blog post from the perspective of the chosen author: **{{author}}**.
 2.  **Topic:** The blog post must be about: **{{topic}}**.
-3.  **Content:** Generate a comprehensive blog post of at least 500 words. Structure it with a clear introduction, body, and conclusion. Use HTML tags for formatting (e.g., \`<h3>\`, \`<p>\`, \`<ul>\`, \`<li>\`).
+3.  **Content:** Generate a comprehensive blog post of at least 500 words for the 'content' field. Structure it with a clear introduction, body, and conclusion. Use HTML tags for formatting (e.g., \`<h3>\`, \`<p>\`, \`<ul>\`, \`<li>\`).
 4.  **Output Format:** Provide the output as a single, valid JSON object that conforms to the schema. Do not add any markdown formatting (e.g., \`\`\`json\`) or other text to the output.
 `;
 
