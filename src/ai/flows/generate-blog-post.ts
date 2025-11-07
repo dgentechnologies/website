@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const BlogPostInputSchema = z.object({
   author: z.enum(['Tirthankar Dasgupta', 'Sukomal Debnath', 'Sagnik Mandal', 'Arpan Bairagi'])
@@ -104,6 +105,15 @@ const generateBlogPostFlow = ai.defineFlow(
             day: 'numeric',
         });
     }
+
+    if (!output.image || !output.image.startsWith('http')) {
+        const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
+        if (fallbackImage) {
+            output.image = fallbackImage.imageUrl;
+            output.imageHint = fallbackImage.imageHint;
+        }
+    }
+
 
     return output;
   }
