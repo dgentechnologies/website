@@ -26,7 +26,7 @@ const BlogPostOutputSchema = z.object({
     author: z.string().describe('The name of the author.'),
     date: z.string().describe('The publication date in "Month Day, Year" format.'),
     tags: z.array(z.string()).describe('An array of 2-3 relevant tags for the blog post.'),
-    content: z.string().describe('The full content of the blog post, formatted as an HTML string with paragraphs, headings, and lists.'),
+    content: z.string().describe('The full content of the blog post, formatted as an HTML string with paragraphs, headings, and lists. Do not use Markdown.'),
     image: z.string().describe('URL for a relevant hero image for the blog post from an image provider like Unsplash.'),
     imageHint: z.string().describe('Two-word hint for the image content, e.g., "technology abstract".'),
 });
@@ -51,7 +51,7 @@ You must generate all required fields for the blog post: 'title', 'description',
 
 - The 'title' MUST directly relate to the topic above.
 - The 'description' MUST be a short, SEO-friendly meta description.
-- The 'content' MUST be a full blog post in HTML format, at least 500 words, written entirely in the style of ${input.author}.
+- The 'content' MUST be a full blog post in HTML format, at least 500 words, written entirely in the style of ${input.author}. Do NOT use any markdown characters like '*' or '#'. Use HTML tags like '<h3>' or '<p>'.
 - The 'tags' MUST include 2-3 relevant tags.
 - The 'date' MUST be the current date in "Month Day, Year" format.
 - The 'slug' MUST be a URL-friendly version of the title.
@@ -63,7 +63,7 @@ ${input.author} — follow this exact persona’s tone and focus.
 **CRITICAL RULES:**
 1. Do NOT change or reinterpret the topic. The post must be about: "${input.topic}".
 2. Do NOT generate random or unrelated topics.
-3. Do NOT invent a new author.
+3. Do NOT invent a new author. The author must be ${input.author}.
 4. Output a single valid JSON object matching the output schema (no markdown).
 `;
 
@@ -76,27 +76,37 @@ ${input.author} — follow this exact persona’s tone and focus.
     if (!output) {
       throw new Error('Failed to generate blog post content.');
     }
+    
+    // Log the raw AI output for debugging
+    console.log('Raw AI Output:', JSON.stringify(output, null, 2));
+
+    const finalOutput = output as any;
+
+    // Handle potential inconsistencies in image property naming
+    if (finalOutput.hero_image_url && !finalOutput.image) {
+      finalOutput.image = finalOutput.hero_image_url;
+    }
 
     // ✅ Force today's date if model gives wrong one
     const today = new Date();
-    output.date = today.toLocaleDateString('en-US', {
+    finalOutput.date = today.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
 
     // ✅ Add fallback image if missing or invalid
-    if (!output.image || !output.image.startsWith('http')) {
+    if (!finalOutput.image || !finalOutput.image.startsWith('http')) {
       const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
       if (fallbackImage) {
-        output.image = fallbackImage.imageUrl;
-        output.imageHint = fallbackImage.imageHint;
+        finalOutput.image = fallbackImage.imageUrl;
+        finalOutput.imageHint = fallbackImage.imageHint;
       }
     }
 
     // ✅ Force correct author (if model tries to alter)
-    output.author = input.author;
+    finalOutput.author = input.author;
 
-    return output;
+    return finalOutput as BlogPostOutput;
   }
 );
