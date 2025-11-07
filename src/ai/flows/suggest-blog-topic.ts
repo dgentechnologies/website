@@ -11,7 +11,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { collection, getDocs } from 'firebase/firestore';
-import { firestore } from '@/firebase/client';
+import { firestore } from '@/firebase/server';
 import { BlogPost } from '@/types/blog';
 
 const SuggestBlogTopicInputSchema = z.object({
@@ -48,7 +48,7 @@ Crucially, you must **not** suggest a topic that is too similar to the following
 - "{{this}}"
 {{/each}}
 
-Generate one single, concise, and engaging blog post title as a JSON-formatted string. Do not add any markdown formatting (e.g. \`\`\`json\`) or other text to the output.
+Generate one single, concise, and engaging blog post title as a JSON-formatted string. Do not add any markdown formatting (e.g. \`\`\`json\`\`\`) or other text to the output.
 `;
 
 const suggestBlogTopicFlow = ai.defineFlow(

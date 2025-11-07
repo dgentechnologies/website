@@ -1,15 +1,20 @@
+
 /**
  * @file Firestore Security Rules for the blogPosts collection.
  *
  * Core Philosophy:
- * This ruleset prioritizes ease of access for blog post reads and writes, allowing anonymous users to freely create, read, update, and delete blog posts.
+ * This ruleset prioritizes ease of access for blog post reads and writes for prototyping.
+ * It allows anonymous users to freely interact with blog posts while also enabling
+ * server-side admin access for backend processes like AI flows.
  *
  * Data Structure:
  * Blog posts are stored in the top-level `/blogPosts/{postId}` collection.
  *
  * Key Security Decisions:
- * - Blog posts are fully open, allowing any user (including anonymous users) to create, read, update, and delete any post. This is appropriate for prototyping but should be revisited for a production application.
- * - No user-specific restrictions are enforced.
+ * - Client-side access is fully open (create, read, update, delete) for any user,
+ *   including anonymous ones, to facilitate rapid prototyping.
+ * - Server-side access (via Admin SDK) is implicitly allowed and bypasses these
+ *   client-facing rules, which is necessary for backend services.
  *
  */
 rules_version = '2';
@@ -26,8 +31,7 @@ service cloud.firestore {
      * @principle Allows any user to perform any operation on any blog post, enabling rapid prototyping.
      */
     match /blogPosts/{postId} {
-      allow get, list: if true;
-      allow create, update, delete: if true;
+      allow read, write: if true;
     }
   }
 }
