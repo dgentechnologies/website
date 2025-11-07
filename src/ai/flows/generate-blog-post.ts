@@ -96,16 +96,27 @@ ${input.author} — follow this exact persona’s tone and focus.
       day: 'numeric',
     });
 
-    // ✅ Dynamically generate image URL from hint, with a fallback
+    // ✅ Robust Image Handling: Use hint to find a local placeholder, or use a fallback.
+    let selectedImage = PlaceHolderImages.find(img => img.id === 'blog-fallback'); // Default fallback
+
     if (finalOutput.imageHint) {
-      const searchTerms = finalOutput.imageHint.split(' ').join(',');
-      finalOutput.image = `https://source.unsplash.com/1200x800/?${searchTerms}`;
+        const hintWords = finalOutput.imageHint.toLowerCase().split(' ');
+        // Try to find a more relevant image from our pre-approved list
+        const foundImage = PlaceHolderImages.find(p_img => 
+            hintWords.some(h_word => p_img.imageHint.toLowerCase().includes(h_word)) && p_img.id !== 'blog-fallback'
+        );
+        if (foundImage) {
+            selectedImage = foundImage;
+        }
+    }
+
+    if (selectedImage) {
+        finalOutput.image = selectedImage.imageUrl;
+        finalOutput.imageHint = selectedImage.imageHint;
     } else {
-      const fallbackImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
-      if (fallbackImage) {
-        finalOutput.image = fallbackImage.imageUrl;
-        finalOutput.imageHint = fallbackImage.imageHint;
-      }
+        // This case should ideally not be hit if blog-fallback exists, but it's a safeguard.
+        finalOutput.image = 'https://picsum.photos/seed/dgen/1200/800';
+        finalOutput.imageHint = 'technology abstract';
     }
     
     // ✅ Force correct author (if model tries to alter)
