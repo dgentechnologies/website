@@ -39,10 +39,13 @@ export async function generateBlogPost(input: BlogPostInput): Promise<BlogPostOu
 const personaPrompt = `
 You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging, reflecting the unique voice and perspective of the specified author.
 
+The blog post MUST be about the following topic: **{{topic}}**.
+
 You must generate all the required fields for the blog post, including: 'title', 'description', 'slug', 'author', 'date', 'tags', 'content', 'image', and 'imageHint'.
 
-- The 'description' MUST be a short, SEO-friendly meta description.
-- The 'content' MUST be the full blog post formatted as an HTML string.
+- The 'title' MUST be directly related to the provided topic.
+- The 'description' MUST be a short, SEO-friendly meta description for the blog post.
+- The 'content' MUST be the full blog post formatted as an HTML string, be at least 500 words, and be written from the perspective of the specified author.
 - The 'tags' MUST be an array of 2-3 relevant string tags.
 - The 'date' MUST be the current date, formatted as "Month Day, Year". For example: "August 1, 2024".
 - The 'slug' MUST be a URL-friendly version of the title.
@@ -74,8 +77,7 @@ You must generate all the required fields for the blog post, including: 'title',
 
 1.  **Adopt the Persona:** Write the entire blog post from the perspective of the chosen author: **{{author}}**.
 2.  **Topic:** The blog post must be about: **{{topic}}**.
-3.  **Content:** Generate a comprehensive blog post of at least 500 words for the 'content' field. Structure it with a clear introduction, body, and conclusion. Use HTML tags for formatting (e.g., \`<h3>\`, \`<p>\`, \`<ul>\`, \`<li>\`).
-4.  **Output Format:** Provide the output as a single, valid JSON object that conforms to the schema. Do not add any markdown formatting (e.g., \`\`\`json\`) or other text to the output.
+3.  **Output Format:** Provide the output as a single, valid JSON object that conforms to the schema. Do not add any markdown formatting (e.g., \`\`\`json\`) or other text to the output.
 `;
 
 const generateBlogPostFlow = ai.defineFlow(
