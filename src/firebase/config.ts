@@ -1,11 +1,11 @@
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDJ0hqkP3ZRmcZvkaC_sfpUaZxnFslIDaU",
-  authDomain: "studio-951303789-35daa.firebaseapp.com",
-  projectId: "studio-951303789-35daa",
-  storageBucket: "studio-951303789-35daa.appspot.com",
-  messagingSenderId: "725261438868",
-  appId: "1:725261438868:web:04251cfc16776ca3e64981"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 export default firebaseConfig;
