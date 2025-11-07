@@ -34,7 +34,7 @@ const BlogPostOutputSchema = z.object({
 export type BlogPostOutput = z.infer<typeof BlogPostOutputSchema>;
 
 // The AI model's output will include the hints.
-const AIModelOutputSchema = BlogPostOutputSchema.extend({
+const AIModelOutputSchema = BlogPostOutputSchema.omit({ image: true, imageHint: true }).extend({
     imageHints: z.array(z.string()).describe('An array of 3-4 different two-word hints for the image content, e.g., ["technology abstract", "city skyline", "data network"].'),
 });
 
@@ -47,7 +47,7 @@ const generateBlogPostFlow = ai.defineFlow(
   {
     name: 'generateBlogPostFlow',
     inputSchema: BlogPostInputSchema,
-    outputSchema: AIModelOutputSchema,
+    outputSchema: BlogPostOutputSchema,
   },
   async (input) => {
     const prompt = `
@@ -80,6 +80,7 @@ ${input.author} — follow this exact persona’s tone and focus.
       model: 'googleai/gemini-2.5-flash',
       prompt: prompt,
       config: { temperature: 0.8 },
+      output: { schema: AIModelOutputSchema }
     });
 
     if (!output) {
@@ -88,11 +89,11 @@ ${input.author} — follow this exact persona’s tone and focus.
     
     console.log('Raw AI Output:', JSON.stringify(output, null, 2));
 
-    const finalOutput = output as any;
+    const finalOutput: Partial<BlogPostOutput> & { imageHints?: string[] } = output;
 
     // Handle potential inconsistencies in property naming
-    if (finalOutput.body && !finalOutput.content) {
-      finalOutput.content = finalOutput.body;
+    if ((finalOutput as any).body && !finalOutput.content) {
+      finalOutput.content = (finalOutput as any).body;
     }
 
     // ✅ Force today's date if model gives wrong one
