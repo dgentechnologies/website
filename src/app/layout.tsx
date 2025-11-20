@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: 'DGEN Technologies | Smart City & IoT Solutions',
     description: 'Pioneering smart city solutions in India with our flagship product "Auralis" and expanding into smart home technology.',
     url: 'https://dgentechnologies.com',
-    siteName: 'Dgen Technologies Pvt. Ltd.',
+    siteName: 'DGEN Technologies',
     images: [
       {
         url: 'https://dgentechnologies.com/og-image.png', // It's good practice to have an OG image
@@ -59,12 +59,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "DGEN Technologies",
+    "alternateName": ["Dgen Tech", "Dgen Technologies Pvt Ltd"],
+    "url": "https://www.dgentechnologies.com/"
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body className="font-body antialiased" suppressHydrationWarning>
         <Header />
