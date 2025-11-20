@@ -89,9 +89,9 @@ ${input.author} — follow this exact persona’s tone and focus.
 
     let output: AIModelOutput;
     try {
-        output = JSON.parse(text());
+        output = JSON.parse(text);
     } catch (e) {
-        console.error("Failed to parse AI output as JSON:", text());
+        console.error("Failed to parse AI output as JSON:", text);
         throw new Error("The AI returned invalid JSON. Please try again.");
     }
     
