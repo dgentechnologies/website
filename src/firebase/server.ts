@@ -1,3 +1,4 @@
+
 // src/firebase/server.ts
 import { initializeApp, getApps, getApp, App, cert } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
@@ -97,4 +98,4 @@ if (!getApps().length) {
 
 firestore = getFirestore(app);
 
-export { app, firestore };
+export { app as adminApp, firestore as adminFirestore };

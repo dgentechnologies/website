@@ -1,64 +1,75 @@
 
-'use client';
-
-import { useMemo } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, UserCircle } from 'lucide-react';
+import { Calendar, UserCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { doc } from 'firebase/firestore';
-import { firestore } from '@/firebase/client';
+import { adminFirestore } from '@/firebase/server';
 import { BlogPost } from '@/types/blog';
-import { Skeleton } from '@/components/ui/skeleton';
+import type { Metadata } from 'next';
 
-// This function can be used for generating static pages at build time
-// export async function generateStaticParams() {
-//   // For now, we will rely on on-demand rendering.
-//   // This can be populated from Firestore during a build step in the future.
-//   return [];
-// }
-
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const postRef = useMemo(() => doc(firestore, 'blogPosts', params.slug), [params.slug]);
-  const [post, loading, error] = useDocumentData(postRef);
-
-  if (loading) {
-    return (
-       <div className="flex flex-col">
-        <section className="relative w-full h-[50vh] bg-card flex items-end justify-start">
-            <div className="relative z-10 container max-w-screen-lg px-4 md:px-6 pb-12 space-y-4">
-                 <Skeleton className="h-8 w-1/4" />
-                 <Skeleton className="h-12 w-3/4" />
-                 <Skeleton className="h-6 w-1/2" />
-            </div>
-        </section>
-         <section className="w-full py-12 md:py-20">
-            <div className="container max-w-screen-md px-4 md:px-6 space-y-6">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-5/6" />
-                <Skeleton className="h-4 w-full mt-4" />
-                <Skeleton className="h-4 w-full" />
-            </div>
-        </section>
-      </div>
-    );
+async function getPost(slug: string): Promise<BlogPost | null> {
+  const postDoc = await adminFirestore.collection('blogPosts').doc(slug).get();
+  if (!postDoc.exists) {
+    return null;
   }
+  return postDoc.data() as BlogPost;
+}
 
-  if (error) {
-    console.error(error);
-    return <div>Error loading post.</div>;
-  }
+export async function generateStaticParams() {
+  const postsSnapshot = await adminFirestore.collection('blogPosts').get();
+  const slugs = postsSnapshot.docs.map(doc => ({
+    slug: doc.id,
+  }));
+  return slugs;
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await getPost(params.slug);
 
   if (!post) {
-    notFound();
+    return {
+      title: 'Post Not Found',
+      robots: {
+        index: false,
+      },
+    };
   }
 
-  const blogPost = post as BlogPost;
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: 'article',
+      url: `https://dgentechnologies.com/blog/${post.slug}`,
+      images: [
+        {
+          url: post.image,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [post.image],
+    },
+  };
+}
+
+
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const blogPost = await getPost(params.slug);
+
+  if (!blogPost) {
+    notFound();
+  }
 
   return (
     <div className="flex flex-col">
@@ -117,6 +128,3 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     </div>
   );
 }
-
-// Metadata can also be generated dynamically if needed
-// export async function generateMetadata({ params }: { params: { slug: string } }) { ... }

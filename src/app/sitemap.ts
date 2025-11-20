@@ -1,9 +1,12 @@
-import { MetadataRoute } from 'next'
+
+import { MetadataRoute } from 'next';
+import { adminFirestore } from '@/firebase/server';
+import { BlogPost } from '@/types/blog';
  
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://dgentechnologies.com';
 
-  return [
+  const staticRoutes = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -52,5 +55,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
-  ]
+  ];
+
+  const postsSnapshot = await adminFirestore.collection('blogPosts').get();
+  const blogRoutes = postsSnapshot.docs.map(doc => {
+    const post = doc.data() as BlogPost;
+    return {
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.date), // Assuming post.date is a valid date string
+      changeFrequency: 'monthly' as 'monthly',
+      priority: 0.7,
+    };
+  });
+
+  return [...staticRoutes, ...blogRoutes];
 }
