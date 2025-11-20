@@ -37,6 +37,7 @@ export type BlogPostOutput = z.infer<typeof BlogPostOutputSchema>;
 const AIModelOutputSchema = BlogPostOutputSchema.omit({ image: true, imageHint: true }).extend({
     imageHints: z.array(z.string()).describe('An array of 3-4 different two-word hints for the image content, e.g., ["technology abstract", "city skyline", "data network"].'),
 });
+type AIModelOutput = z.infer<typeof AIModelOutputSchema>;
 
 
 export async function generateBlogPost(input: BlogPostInput): Promise<BlogPostOutput> {
@@ -73,18 +74,25 @@ ${input.author} — follow this exact persona’s tone and focus.
 2. Do NOT generate random or unrelated topics.
 3. Do NOT invent a new author. The author must be ${input.author}.
 4. Do NOT generate an 'image' URL. You will only generate 'imageHints'.
-5. Output a single valid JSON object matching the output schema (no markdown).
+5. Output ONLY a single, valid JSON object matching the required structure. Do not include any markdown formatting like \`\`\`json.
 `;
 
-    const { output } = await ai.generate({
+    const { text } = await ai.generate({
       model: 'googleai/gemini-2.5-flash',
       prompt: prompt,
       config: { temperature: 0.8 },
-      output: { schema: AIModelOutputSchema }
     });
+    
+    if (!text) {
+        throw new Error('Failed to generate blog post content. The AI returned an empty response.');
+    }
 
-    if (!output) {
-      throw new Error('Failed to generate blog post content.');
+    let output: AIModelOutput;
+    try {
+        output = JSON.parse(text());
+    } catch (e) {
+        console.error("Failed to parse AI output as JSON:", text());
+        throw new Error("The AI returned invalid JSON. Please try again.");
     }
     
     console.log('Raw AI Output:', JSON.stringify(output, null, 2));
