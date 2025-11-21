@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 
 export default function PrivacyPolicyPage() {
+  const lastUpdatedDate = "November 7, 2025";
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -12,7 +13,7 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">
-              Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              Last Updated: {lastUpdatedDate}
             </p>
           </div>
         </div>
@@ -21,48 +22,70 @@ export default function PrivacyPolicyPage() {
       {/* Content Section */}
       <section className="w-full py-16 md:py-24">
         <div className="container max-w-screen-lg px-4 md:px-6 prose prose-invert prose-lg mx-auto">
+          <h2>1. Introduction</h2>
           <p>
-            DGEN Technologies Pvt. Ltd. ("us", "we", or "our") operates the https://dgentechnologies.com website (the "Service"). This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
+            DGEN Technologies Pvt. Ltd. ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, https://dgentechnologies.com (the "Site"). Please read this policy carefully. By using the Site, you consent to the data practices described in this statement.
           </p>
 
-          <h2>1. Information Collection and Use</h2>
+          <h2>2. Information We Collect</h2>
           <p>
-            We collect several different types of information for various purposes to provide and improve our Service to you.
+            We may collect information about you in a variety of ways. The information we may collect on the Site includes:
           </p>
-          <h3>Types of Data Collected</h3>
+          <h3>Personal Data</h3>
+          <p>
+            Personally identifiable information, such as your name, email address, and telephone number, that you voluntarily give to us when you fill out a contact form or otherwise interact with the Site.
+          </p>
+          <h3>Derivative Data</h3>
+          <p>
+            Information our servers automatically collect when you access the Site, such as your IP address, browser type, operating system, access times, and the pages you have viewed directly before and after accessing the Site. This is collected to ensure the security and optimal operation of our services.
+          </p>
+
+          <h2>3. How We Use Your Information</h2>
+          <p>
+            Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you via the Site to:
+          </p>
           <ul>
-            <li><strong>Personal Data:</strong> While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). Personally identifiable information may include, but is not limited to: Email address, First name and last name, Phone number, Cookies and Usage Data.</li>
-            <li><strong>Usage Data:</strong> We may also collect information on how the Service is accessed and used ("Usage Data"). This Usage Data may include information such as your computer's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that you visit, the time and date of your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</li>
+            <li>Respond to your product and customer service requests.</li>
+            <li>Monitor and analyze usage and trends to improve your experience with the Site.</li>
+            <li>Prevent fraudulent transactions, monitor against theft, and protect against criminal activity.</li>
+            <li>Deliver targeted advertising, coupons, newsletters, and other information regarding promotions and the Site to you, with your consent.</li>
           </ul>
 
-          <h2>2. Use of Data</h2>
+          <h2>4. Disclosure of Your Information</h2>
           <p>
-            DGEN Technologies uses the collected data for various purposes: to provide and maintain the Service, to notify you about changes to our Service, to allow you to participate in interactive features of our Service when you choose to do so, to provide customer care and support, to provide analysis or valuable information so that we can improve the Service, to monitor the usage of the Service, and to detect, prevent and address technical issues.
+            We do not sell, trade, or rent your personal information to others. We may share information we have collected about you in certain situations. Your information may be disclosed as follows:
+          </p>
+          <h3>By Law or to Protect Rights</h3>
+          <p>
+            If we believe the release of information about you is necessary to respond to legal process, to investigate or remedy potential violations of our policies, or to protect the rights, property, and safety of others, we may share your information as permitted or required by any applicable law, rule, or regulation.
+          </p>
+          <h3>Third-Party Service Providers</h3>
+          <p>
+            We may share your information with third parties that perform services for us or on our behalf, including data analysis, hosting services, customer service, and marketing assistance.
           </p>
 
-          <h2>3. Transfer of Data</h2>
+          <h2>5. Security of Your Information</h2>
           <p>
-            Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ from those from your jurisdiction.
+            We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse.
           </p>
 
-          <h2>4. Disclosure of Data</h2>
+          <h2>6. Your Rights Regarding Your Information</h2>
           <p>
-            DGEN Technologies may disclose your Personal Data in the good faith belief that such action is necessary to: comply with a legal obligation, to protect and defend the rights or property of DGEN Technologies, to prevent or investigate possible wrongdoing in connection with the Service, to protect the personal safety of users of the Service or the public, and to protect against legal liability.
+            You have certain rights regarding your personal information, including the right to access, correct, or delete the information we hold about you. If you wish to exercise these rights, please contact us using the contact information provided below.
           </p>
 
-          <h2>5. Security of Data</h2>
+          <h2>7. Changes to This Privacy Policy</h2>
           <p>
-            The security of your data is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security.
+            We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date. You are advised to review this Privacy Policy periodically for any changes.
           </p>
 
-          <h2>6. Changes to This Privacy Policy</h2>
+          <h2>8. Contact Us</h2>
           <p>
-            We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. We will let you know via email and/or a prominent notice on our Service, prior to the change becoming effective and update the "effective date" at the top of this Privacy Policy.
-          </p>
-
-          <h2>7. Contact Us</h2>
-          <p>
-            If you have any questions about this Privacy Policy, please contact us by email: contact@dgentechnologies.com
+            If you have questions or comments about this Privacy Policy, please contact us at:
+            <br/>
+            DGEN Technologies Pvt. Ltd.
+            <br/>
+            Email: <a href="mailto:contact@dgentechnologies.com">contact@dgentechnologies.com</a>
           </p>
         </div>
       </section>
