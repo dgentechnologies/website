@@ -1,3 +1,4 @@
+
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Mail, MapPin, Phone } from 'lucide-react';
@@ -45,7 +46,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold">Phone</h3>
-                                    <p className="text-foreground/70">+91 98765 43210</p>
+                                    <p className="text-foreground/70">+91 90646 06348</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
