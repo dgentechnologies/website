@@ -6,10 +6,35 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ArrowRight, Lightbulb, Network, TrafficCone, BarChart, Wifi } from 'lucide-react';
 import Link from 'next/link';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
 const smartCityImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
 const streetLightImage = PlaceHolderImages.find(img => img.id === 'auralis-features');
+
+const qna = [
+    {
+        question: "What is the goal of a Smart City?",
+        answer: "The primary goal of a smart city is to improve the quality of life for its citizens. It uses technology and data to enhance urban services like transportation, energy, public safety, and governance, making them more efficient, sustainable, and responsive to residents' needs."
+    },
+    {
+        question: "Which are some of the top smart cities in India?",
+        answer: "Under India's Smart Cities Mission, cities like Bhubaneswar, Pune, Ahmedabad, Chennai, and Indore are often recognized as leaders. They have made significant strides in implementing smart solutions in areas like urban mobility, solid waste management, and digital governance."
+    },
+    {
+        question: "What is Auralis?",
+        answer: "Auralis is DGEN Technologies' umbrella brand for all our smart city solutions. It represents a unified ecosystem of connected devices, starting with intelligent street lighting and expanding to include traffic management, environmental sensors, and public safety technology."
+    },
+    {
+        question: "How does Auralis help build a smart city?",
+        answer: "Auralis provides the foundational hardware and software required for a smart city. Our products, like smart street lights, act as a network backbone that can host various sensors and communication modules. This allows a city to build a scalable and integrated network for collecting data and managing services efficiently."
+    }
+];
 
 export default function AuralisBrandPage() {
     return (
@@ -153,8 +178,28 @@ export default function AuralisBrandPage() {
                      </div>
                 </section>
                 
+                 {/* Q&A Section */}
+                <section className="w-full py-16 md:py-24 bg-card">
+                    <div className="container max-w-screen-lg px-4 md:px-6 animate-fade-in-up">
+                        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                            <Badge variant="outline" className="border-primary/50 text-primary">Learn More</Badge>
+                            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Common Questions</h2>
+                        </div>
+                        <Accordion type="single" collapsible className="w-full">
+                            {qna.map((item, index) => (
+                                <AccordionItem key={index} value={`item-${index}`}>
+                                    <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
+                                    <AccordionContent className="text-base text-foreground/80">
+                                        {item.answer}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </div>
+                </section>
+
                 {/* CTA Section */}
-                <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
+                <section className="w-full py-16 md:py-24 lg:py-32">
                   <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
                       <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-gradient">
                           Ready to Modernize Your Infrastructure?
