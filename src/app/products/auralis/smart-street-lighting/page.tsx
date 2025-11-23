@@ -19,12 +19,12 @@ const features = [
     {
         icon: <Zap className="h-8 w-8 text-primary" />,
         title: 'Energy Efficient',
-        description: 'Utilizes advanced LED technology and smart dimming to reduce energy consumption by up to 60%.',
+        description: 'Utilizes advanced LED technology and smart dimming to reduce energy consumption by up to 60%, offering one of the most affordable smart lighting systems for urban streetlights.',
     },
     {
         icon: <Wifi className="h-8 w-8 text-primary" />,
         title: 'Wireless Connectivity',
-        description: 'LoRaWAN and 4G/5G ready for seamless integration into your smart city network infrastructure.',
+        description: 'LoRaWAN and 4G/5G ready for seamless integration into your smart city network infrastructure, fulfilling a key part of the smart cities mission.',
     },
     {
         icon: <Wrench className="h-8 w-8 text-primary" />,
@@ -34,7 +34,7 @@ const features = [
     {
         icon: <BarChart className="h-8 w-8 text-primary" />,
         title: 'Centralized Control',
-        description: 'A powerful dashboard allows for remote monitoring and control of your entire street light network.',
+        description: 'A powerful dashboard allows for remote monitoring and control of your entire street light network, a core tenet of the #smartcities movement.',
     }
 ];
 
@@ -76,11 +76,11 @@ const qna = [
     },
     {
         question: "Is Auralis compatible with our city's existing infrastructure?",
-        answer: "Yes, Auralis is designed for seamless integration. Our smart street lights can replace existing fixtures with minimal retrofitting. The platform can also integrate with other city management systems and IoT devices through standard APIs and protocols."
+        answer: "Yes, Auralis is designed for seamless integration in line with Smart Cities Mission guidelines. Our smart street lights can replace existing fixtures with minimal retrofitting. The platform can also integrate with other city management systems and IoT devices through standard APIs and protocols."
     },
     {
-        question: "What kind of security measures are in place?",
-        answer: "Security is a top priority. The Auralis network uses end-to-end encryption for all data transmission. We implement robust IoT security best practices, including secure boot, encrypted firmware updates, and access control policies to protect the network from cyber threats."
+        question: "What kind of security measures are in place for #smartcitiesindia?",
+        answer: "Security is a top priority for all of India's smart cities. The Auralis network uses end-to-end encryption for all data transmission. We implement robust IoT security best practices, including secure boot, encrypted firmware updates, and access control policies to protect the network from cyber threats."
     },
     {
         question: "Can Auralis be customized for our specific needs?",

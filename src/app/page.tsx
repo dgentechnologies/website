@@ -11,22 +11,22 @@ const services = [
   {
     icon: <Building2 className="h-8 w-8 text-primary" />,
     title: 'Smart City Solutions',
-    description: 'Pioneering smart city infrastructure like our "Auralis" street light system to build a connected future.',
+    description: 'Pioneering smart city infrastructure and contributing to the Smart Cities Mission in India with our "Auralis" street light system.',
   },
   {
     icon: <Router className="h-8 w-8 text-primary" />,
     title: 'IoT & Connected Devices',
-    description: 'Developing and integrating IoT devices for both large-scale urban projects and smart home applications.',
+    description: 'Developing and integrating IoT devices for large-scale urban projects, including affordable smart lighting systems for urban streetlights.',
   },
   {
     icon: <BrainCircuit className="h-8 w-8 text-primary" />,
     title: 'AI-Powered Analytics',
-    description: 'Leveraging AI to provide intelligent fault detection, data analysis, and operational efficiency.',
+    description: 'Leveraging AI to provide intelligent fault detection and data analysis, which is central to the smart cities meaning and function.',
   },
   {
     icon: <HomeIcon className="h-8 w-8 text-primary" />,
     title: 'Smart Home Integration',
-    description: 'Expanding into the B2C market to make every home smarter with intuitive and connected technology.',
+    description: 'Expanding our innovation from smart cities to the B2C market to make every home smarter and more connected.',
   },
 ];
 
@@ -34,17 +34,17 @@ const advantages = [
     {
       icon: <BrainCircuit className="h-8 w-8 text-primary" />,
       title: 'Innovative Solutions',
-      description: 'We stay at the forefront of technology to deliver future-proof solutions that give you a competitive edge.'
+      description: 'We stay at the forefront of technology to deliver future-proof solutions, helping build India\'s smart cities.'
     },
     {
       icon: <Users className="h-8 w-8 text-primary" />,
       title: 'Client-Centric Approach',
-      description: 'Your goals are our priority. We collaborate closely to ensure project success and build lasting partnerships.'
+      description: 'Your goals are our priority. We collaborate closely to ensure project success and build lasting partnerships in the #smartcitiesindia ecosystem.'
     },
     {
       icon: <ShieldCheck className="h-8 w-8 text-primary" />,
       title: 'Quality & Reliability',
-      description: 'We are committed to delivering high-quality, reliable solutions with a focus on robust engineering and security.'
+      description: 'We are committed to delivering high-quality, reliable solutions with a focus on robust engineering and security for all #smartcities projects.'
     }
 ];
 
@@ -103,7 +103,7 @@ export default function Home() {
               <Badge variant="default">Our Core Expertise</Badge>
               <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Elevating Your Business with Technology</h2>
               <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
-                We provide a comprehensive suite of technology services designed to solve complex challenges and drive growth.
+                We provide a comprehensive suite of technology services designed to solve complex challenges and drive growth for India's smart cities.
               </p>
             </div>
             <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
@@ -132,7 +132,7 @@ export default function Home() {
                   Your Partner for Digital Excellence
                 </h2>
                 <p className="text-foreground/80 md:text-lg">
-                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don’t just build products; we build partnerships.
+                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don’t just build products; we build partnerships for #smartcities.
                 </p>
                  <div className="space-y-6 pt-4">
                   {advantages.map((advantage) => (

@@ -19,20 +19,20 @@ const streetLightImage = PlaceHolderImages.find(img => img.id === 'auralis-featu
 
 const qna = [
     {
-        question: "What is the goal of a Smart City?",
-        answer: "The primary goal of a smart city is to improve the quality of life for its citizens. It uses technology and data to enhance urban services like transportation, energy, public safety, and governance, making them more efficient, sustainable, and responsive to residents' needs."
+        question: "What is the meaning of a Smart City?",
+        answer: "The essential smart cities meaning is an urban area that uses IoT technology to collect data. Insights gained from that data are used to manage assets, resources, and services efficiently. The primary goal is to improve the quality of life for its citizens by enhancing urban services like transportation, energy, and public safety, making them more efficient, sustainable, and responsive to residents' needs."
     },
     {
-        question: "Which are some of the top smart cities in India?",
-        answer: "Under India's Smart Cities Mission, cities like Bhubaneswar, Pune, Ahmedabad, Chennai, and Indore are often recognized as leaders. They have made significant strides in implementing smart solutions in areas like urban mobility, solid waste management, and digital governance."
+        question: "Which are some of India's smart cities?",
+        answer: "Under the Smart Cities Mission India, cities like Bhubaneswar, Pune, Ahmedabad, Chennai, and Indore are often recognized as leaders. They have made significant strides in implementing smart solutions in areas like urban mobility, solid waste management, and digital governance, setting a benchmark for other of India's smart cities."
     },
     {
-        question: "What is Auralis?",
-        answer: "Auralis is DGEN Technologies' umbrella brand for all our smart city solutions. It represents a unified ecosystem of connected devices, starting with intelligent street lighting and expanding to include traffic management, environmental sensors, and public safety technology."
+        question: "What is the Smart Cities Mission launch date and ministry?",
+        answer: "The Smart Cities Mission launch date was June 25, 2015. The Smart Cities Mission is under which ministry? It is managed by the Ministry of Housing and Urban Affairs (MoHUA), Government of India."
     },
     {
-        question: "How does Auralis help build a smart city?",
-        answer: "Auralis provides the foundational hardware and software required for a smart city. Our products, like smart street lights, act as a network backbone that can host various sensors and communication modules. This allows a city to build a scalable and integrated network for collecting data and managing services efficiently."
+        question: "How does Auralis help build a #smartcity?",
+        answer: "Auralis provides the foundational hardware and software required for a smart city. Our products, like our affordable smart lighting systems for urban streetlights, act as a network backbone that can host various sensors and communication modules. This allows a city to build a scalable and integrated network for collecting data and managing services efficiently, in line with the Smart Cities Mission guidelines."
     }
 ];
 
@@ -61,7 +61,7 @@ export default function AuralisBrandPage() {
                             The Future of Urban Intelligence
                         </h1>
                         <p className="max-w-2xl mx-auto text-white/80 md:text-lg lg:text-xl">
-                            Intelligent, efficient, and integrated. Auralis is the smart city brand designed to empower India's future.
+                            Intelligent, efficient, and integrated. Auralis is the smart city brand designed to empower India's future. #smartcities
                         </p>
                     </div>
                 </div>
@@ -74,10 +74,10 @@ export default function AuralisBrandPage() {
                         <div className="space-y-4 animate-fade-in-up">
                             <Badge variant="outline" className="border-primary/50 text-primary">The Vision</Badge>
                             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
-                                What is a Smart City?
+                                What is the Meaning of a Smart City?
                             </h2>
                             <p className="text-foreground/80 md:text-lg">
-                                A smart city is an urban area that uses IoT (Internet of Things) sensors and technology to collect data. Insights gained from that data are used to manage assets, resources, and services efficiently. The goal is to improve the quality of life for citizens by enhancing everything from transportation and energy efficiency to public safety and governance.
+                                The smart cities meaning revolves around using IoT (Internet of Things) sensors and technology to collect data. Insights from that data are used to manage assets and services efficiently, with the goal of improving quality of life. A smart city enhances everything from transportation and energy efficiency to public safety and governance.
                             </p>
                             <div className="flex items-center gap-4 pt-4 text-sm text-foreground/70">
                                 <Lightbulb className="h-6 w-6 text-primary" /><span>Smarter Infrastructure</span>
@@ -103,10 +103,10 @@ export default function AuralisBrandPage() {
                     <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
                         <Badge variant="default">National Initiative</Badge>
                         <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl mt-4">
-                           Powering India's Smart Cities Mission
+                           Powering the Smart Cities Mission India
                         </h2>
                         <p className="mt-4 text-foreground/80 md:text-lg">
-                            India's Smart Cities Mission is a visionary initiative by the Government of India to drive economic growth and improve quality of life by enabling local area development and harnessing technology. DGEN Technologies is proud to contribute to this mission by building the foundational infrastructure that will power the smart cities of tomorrow.
+                            The Smart Cities Mission India is a visionary initiative by the Government to drive economic growth and improve quality of life. Adhering to the Smart Cities Mission guidelines, DGEN Technologies is proud to contribute by building the foundational infrastructure that will power the #smartcitiesindia of tomorrow.
                         </p>
                     </div>
                 </section>
@@ -141,7 +141,7 @@ export default function AuralisBrandPage() {
                                     <CardTitle className="font-headline text-xl">Smart Street Lighting</CardTitle>
                                 </CardHeader>
                                 <CardContent className="flex-grow">
-                                    <CardDescription>Our flagship product, an intelligent street lighting system that forms the backbone of the Auralis network with predictive maintenance and energy-saving features.</CardDescription>
+                                    <CardDescription>Our flagship product, offering affordable smart lighting systems for urban streetlights that form the backbone of the Auralis network.</CardDescription>
                                 </CardContent>
                                 <div className="p-6 pt-0">
                                     <Button asChild className="w-full group">
