@@ -6,6 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Check, Zap, Wifi, Wrench, BarChart } from 'lucide-react';
 import Link from 'next/link';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
+
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
 const featuresImage = PlaceHolderImages.find(img => img.id === 'auralis-features');
@@ -59,6 +66,29 @@ const techSpecs = {
         "Optics": "Type II, III, IV, V (customizable)"
     }
 };
+
+const qna = [
+    {
+        question: "What is Auralis?",
+        answer: "Auralis is DGEN Technologies' umbrella brand for all our smart city solutions. It represents a unified ecosystem of connected devices, starting with intelligent street lighting and expanding to include traffic management, environmental sensors, and public safety technology."
+    },
+    {
+        question: "How does the predictive maintenance feature work?",
+        answer: "Our AI-powered platform analyzes real-time operational data (like power consumption and voltage levels) from each Auralis device. By identifying patterns and anomalies that precede a failure, the system can issue a maintenance alert, allowing your team to fix the problem proactively before an outage occurs."
+    },
+    {
+        question: "Is Auralis compatible with our city's existing infrastructure?",
+        answer: "Yes, Auralis is designed for seamless integration. Our smart street lights can replace existing fixtures with minimal retrofitting. The platform can also integrate with other city management systems and IoT devices through standard APIs and protocols."
+    },
+    {
+        question: "What kind of security measures are in place?",
+        answer: "Security is a top priority. The Auralis network uses end-to-end encryption for all data transmission. We implement robust IoT security best practices, including secure boot, encrypted firmware updates, and access control policies to protect the network from cyber threats."
+    },
+    {
+        question: "Can Auralis be customized for our specific needs?",
+        answer: "Absolutely. Auralis is a flexible platform. We can customize sensor packages, lighting optics, and connectivity options to meet the unique requirements of your project, whether it's a large municipality, a private campus, or an industrial park."
+    }
+];
 
 export default function AuralisPage() {
     return (
@@ -208,8 +238,28 @@ export default function AuralisPage() {
                     </div>
                 </section>
 
+                {/* Q&A Section */}
+                <section className="w-full py-16 md:py-24">
+                    <div className="container max-w-screen-lg px-4 md:px-6 animate-fade-in-up">
+                        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+                            <Badge variant="outline" className="border-primary/50 text-primary">Have Questions?</Badge>
+                            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Frequently Asked Questions</h2>
+                        </div>
+                        <Accordion type="single" collapsible className="w-full">
+                            {qna.map((item, index) => (
+                                <AccordionItem key={index} value={`item-${index}`}>
+                                    <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
+                                    <AccordionContent className="text-base text-foreground/80">
+                                        {item.answer}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </div>
+                </section>
+
                 {/* CTA Section */}
-                <section className="w-full py-16 md:py-24 lg:py-32">
+                <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
                   <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
                       <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-gradient">
                           Ready to Modernize Your Infrastructure?
