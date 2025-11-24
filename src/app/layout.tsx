@@ -23,10 +23,10 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: 'DGEN Technologies | Build Smart Cities & Homes with IoT Solutions',
+    default: 'DGEN Technologies | Smart City & IoT Solutions',
     template: '%s | DGEN Technologies',
   },
-  description: 'DGEN Technologies pioneers B2B smart city solutions in India, featuring our flagship product "Auralis," a smart street light with advanced fault detection. We build integrated systems for smart cities and are expanding into the B2C market to make every home smarter.',
+  description: 'DGEN Technologies pioneers B2B smart city solutions in India with our flagship product "Auralis," a smart street light with advanced fault detection. We build integrated IoT systems and are expanding into the B2C smart home market.',
   keywords: ['smart city', 'IoT', 'Auralis', 'smart street light', 'India', 'technology solutions', 'B2B technology', 'urban innovation', 'smart home', 'smart cities mission', 'smart cities india', 'affordable smart lighting'],
   authors: [{ name: 'DGEN Technologies' }],
   openGraph: {
