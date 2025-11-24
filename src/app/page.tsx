@@ -74,7 +74,7 @@ export default function Home() {
           <div className="space-y-6">
             <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary text-sm backdrop-blur-sm">Next-Gen Technology Partners</Badge>
             <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-gradient leading-tight">
-              Innovate. Integrate. Inspire.
+              Build Smart Cities with Integrated Solutions
             </h1>
             <p className="max-w-3xl mx-auto text-white/90 md:text-lg lg:text-xl">
               Pioneering smart city solutions with flagship products like 'Auralis' while bringing our innovation to the consumer smart home market.
@@ -101,9 +101,9 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 animate-fade-in-up">
               <Badge variant="default">Our Core Expertise</Badge>
-              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Elevating Your Business with Technology</h2>
+              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Smart Solutions for a Connected Future</h2>
               <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
-                We provide a comprehensive suite of technology services designed to solve complex challenges and drive growth for India's smart cities.
+                We provide a comprehensive suite of technology services and solutions designed to solve complex challenges and drive growth for India's smart cities and homes.
               </p>
             </div>
             <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
@@ -129,7 +129,7 @@ export default function Home() {
               <div className="space-y-6">
                 <Badge variant="outline" className="border-primary/50 text-primary">The DGEN Advantage</Badge>
                 <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
-                  Your Partner for Digital Excellence
+                  Your Partner to Build Digital Excellence
                 </h2>
                 <p className="text-foreground/80 md:text-lg">
                   Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don’t just build products; we build partnerships for #smartcities.
@@ -167,10 +167,10 @@ export default function Home() {
         <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
           <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
               <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-gradient">
-                  Ready to Build the Future?
+                  Ready to Build the Future of Smart Cities?
               </h2>
               <p className="mt-4 text-foreground/80 md:text-lg">
-                  Let's discuss how DGEN Technologies can help you achieve your business goals. Schedule a free, no-obligation consultation with our experts today.
+                  Let's discuss how DGEN Technologies can help you build your smart city and home solutions. Schedule a free, no-obligation consultation with our experts today.
               </p>
               <div className="mt-8">
                   <Button asChild size="lg" className="group">
