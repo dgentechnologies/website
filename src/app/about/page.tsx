@@ -84,7 +84,7 @@ export default function AboutPage() {
               As we continue to transform cityscapes, we are also expanding our vision to the B2C market. Our goal is to bring the same level of intelligence and connectivity to every home, making daily life smarter and more efficient. We are committed to leading India's technological revolution, one smart device at a time.
             </p>
           </div>
-          <div className="relative h-80 w-full">
+          <div className="relative aspect-video w-full">
             {storyImage && (
               <Image
                 src={storyImage.imageUrl}

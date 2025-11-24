@@ -110,7 +110,7 @@ export default function SmartStreetLightingPage() {
                 {/* Product Section */}
                 <section className="w-full py-16 md:py-24">
                     <div className="container px-4 md:px-6">
-                        <div className="relative h-80 lg:h-[450px] w-full animate-fade-in-up mb-12" style={{ animationDelay: '200ms' }}>
+                        <div className="relative aspect-video w-full animate-fade-in-up mb-12" style={{ animationDelay: '200ms' }}>
                            {streetLightImage && (
                                 <Image
                                     src={streetLightImage.imageUrl}

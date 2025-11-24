@@ -46,7 +46,7 @@ export default async function BlogPage() {
               {blogPosts.map((post) => (
                 <Card key={post.slug} className="flex flex-col overflow-hidden bg-card/50 hover:bg-card hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
                   {post.image && (
-                    <div className="relative h-48 w-full">
+                    <div className="relative aspect-video w-full">
                       <Image
                         src={post.image}
                         alt={post.title}

@@ -26,7 +26,7 @@ const services = [
   {
     icon: <HomeIcon className="h-8 w-8 text-primary" />,
     title: 'Smart Home Integration',
-    description: 'Expanding our innovation from smart cities to the B2C market to make every home smarter and more connected.',
+    description: 'We are expanding our innovation from smart cities to the B2C market with a new range of smart home products to make every home smarter.',
   },
 ];
 
@@ -63,7 +63,7 @@ export default function Home() {
               src={heroImage.imageUrl}
               alt={heroImage.description}
               fill
-              className="object-cover fixed h-screen w-screen animate-hero-image"
+              className="object-cover animate-hero-image"
               data-ai-hint={heroImage.imageHint}
               priority
             />
@@ -77,7 +77,7 @@ export default function Home() {
               Build Smart Cities with Integrated Solutions
             </h1>
             <p className="max-w-3xl mx-auto text-white/90 md:text-lg lg:text-xl">
-              We help you build the future with intelligent, connected solutions. From pioneering smart city infrastructure with 'Auralis' to bringing innovation into the consumer smart home, we deliver the technology for a smarter tomorrow.
+              DGEN Technologies helps you build the future with intelligent, connected solutions. From pioneering smart city infrastructure with 'Auralis' to bringing innovation into the consumer smart home, we deliver the technology that powers a smarter tomorrow.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row justify-center pt-2">
               <Button asChild size="lg" className="group">
@@ -103,7 +103,7 @@ export default function Home() {
               <Badge variant="default">Our Core Expertise</Badge>
               <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Smart Solutions for a Connected Future</h2>
               <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
-                We provide end-to-end technology services designed to solve complex challenges. Let us help you build tailored solutions for your smart city and smart home projects.
+                We provide end-to-end technology services designed to solve complex challenges. Let our team help you build tailored solutions that bring value to your smart city and smart home projects.
               </p>
             </div>
             <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
@@ -148,7 +148,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <div className="relative h-80 lg:h-full w-full">
+              <div className="relative aspect-video w-full">
                   {ctaImage && (
                       <Image
                           src={ctaImage.imageUrl}
