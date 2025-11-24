@@ -84,7 +84,7 @@ export default function AuralisBrandPage() {
                                 <Network className="h-6 w-6 text-primary" /><span>Connected Ecosystems</span>
                             </div>
                         </div>
-                        <div className="relative aspect-video w-full animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+                        <div className="relative aspect-[16/9] w-full animate-fade-in-up" style={{ animationDelay: '200ms' }}>
                            {smartCityImage && (
                                 <Image
                                     src={smartCityImage.imageUrl}
@@ -126,7 +126,7 @@ export default function AuralisBrandPage() {
                             {/* Product 1: Smart Street Lighting */}
                             <Card className="flex flex-col overflow-hidden bg-card/50 hover:bg-card hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
                                 {streetLightImage && (
-                                    <div className="relative aspect-video w-full">
+                                    <div className="relative aspect-[16/9] w-full">
                                         <Image
                                             src={streetLightImage.imageUrl}
                                             alt="Auralis smart street light"
@@ -154,7 +154,7 @@ export default function AuralisBrandPage() {
 
                              {/* Product 2: Automatic Traffic Control */}
                             <Card className="flex flex-col overflow-hidden bg-card/50">
-                                <div className="relative aspect-video w-full bg-muted flex items-center justify-center">
+                                <div className="relative aspect-[16/9] w-full bg-muted flex items-center justify-center">
                                     <div className="flex items-center gap-6 text-primary/50">
                                         <TrafficCone className="h-10 w-10" />
                                         <BarChart className="h-10 w-10" />
