@@ -77,7 +77,7 @@ export default function Home() {
               Build Smart Cities with Integrated Solutions
             </h1>
             <p className="max-w-3xl mx-auto text-white/90 md:text-lg lg:text-xl">
-              Pioneering smart city solutions with flagship products like 'Auralis' while bringing our innovation to the consumer smart home market.
+              We help you build the future with intelligent, connected solutions. From pioneering smart city infrastructure with 'Auralis' to bringing innovation into the consumer smart home, we deliver the technology for a smarter tomorrow.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row justify-center pt-2">
               <Button asChild size="lg" className="group">
@@ -103,7 +103,7 @@ export default function Home() {
               <Badge variant="default">Our Core Expertise</Badge>
               <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Smart Solutions for a Connected Future</h2>
               <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
-                We provide a comprehensive suite of technology services and solutions designed to solve complex challenges and drive growth for India's smart cities and homes.
+                We provide end-to-end technology services designed to solve complex challenges. Let us help you build tailored solutions for your smart city and smart home projects.
               </p>
             </div>
             <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
