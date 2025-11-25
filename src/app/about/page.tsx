@@ -22,7 +22,7 @@ export const teamMembers = [
     image: '/images/sukomal-debnath.jpg',
     slug: 'sukomal-debnath',
     bio: 'Sukomal manages the financial strategy and operations at DGEN Technologies, ensuring the company\'s sustainable growth. With a background in corporate finance and investment banking, he brings a wealth of experience in financial planning and risk management. He is dedicated to aligning our financial goals with our mission to innovate and expand into new markets, including the upcoming B2C smart home sector.',
-    linkedin: '#',
+    linkedin: 'https://www.linkedin.com/in/sukomaldebnath/',
     twitter: '#',
   },
   { 
