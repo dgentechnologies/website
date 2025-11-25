@@ -27,7 +27,7 @@ export default function LeaderDetailPage({ params }: { params: { 'leader-slug': 
         <div className="container max-w-screen-xl px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <Avatar className="w-32 h-32 mb-4 border-4 border-primary">
-                <AvatarImage src={member.image} alt={member.name} className="object-cover" />
+                <AvatarImage src={member.image} alt={`${member.name} - ${member.role} at DGEN Technologies`} className="object-cover" />
                 <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
             </Avatar>
             <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-gradient">

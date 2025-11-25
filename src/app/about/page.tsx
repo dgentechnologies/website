@@ -123,7 +123,7 @@ export default function AboutPage() {
               <Link key={member.slug} href={`/about/${member.slug}`} className="block">
                 <div className="flex flex-col items-center text-center p-6 bg-card rounded-lg transition-all transform hover:-translate-y-2 hover:shadow-primary/10 hover:shadow-lg h-full">
                   <Avatar className="w-24 h-24 mb-4 border-2 border-primary">
-                    <AvatarImage src={member.image} alt={member.name} className="object-cover" />
+                    <AvatarImage src={member.image} alt={`${member.name} - ${member.role}`} className="object-cover" />
                     <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                   </Avatar>
                   <h3 className="text-lg font-bold font-headline">{member.name}</h3>
