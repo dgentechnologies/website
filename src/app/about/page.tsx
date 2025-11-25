@@ -31,7 +31,7 @@ export const teamMembers = [
     image: '/images/sagnik-mandal.png',
     slug: 'sagnik-mandal',
     bio: 'Sagnik leads our marketing and communication efforts, building the DGEN brand and driving market adoption of our products. His creative approach and deep understanding of the tech landscape have been vital in positioning "Auralis" as a leading smart city solution. He is now focused on crafting the go-to-market strategy for our new line of B2C smart home devices, bringing our innovation to a wider audience.',
-    linkedin: '#',
+    linkedin: 'https://www.linkedin.com/in/sagnik-mandal/',
     twitter: '#',
   },
   { 
@@ -40,7 +40,7 @@ export const teamMembers = [
     image: '/images/arpan-bairagi.jpg',
     slug: 'arpan-bairagi',
     bio: 'Arpan oversees the day-to-day operations at DGEN Technologies, ensuring excellence in product delivery and client satisfaction. His expertise in supply chain management and operational efficiency has been crucial in scaling our B2B solutions. Arpan is committed to maintaining the highest standards of quality as we expand our manufacturing capabilities for the B2C market.',
-    linkedin: '#',
+    linkedin: 'https://www.linkedin.com/in/arpan-bairagi-2a8b02274/',
     twitter: '#',
   },
 ];
