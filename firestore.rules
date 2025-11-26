@@ -43,7 +43,7 @@ service cloud.firestore {
      */
     match /contactMessages/{messageId} {
       allow create: if true;
-      allow read: if request.auth != null && request.auth.token.email == 'dgentechnologiespltd@gmail.com';
+      allow read: if request.auth != null;
       allow update, delete: if false;
     }
   }
