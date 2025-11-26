@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword, useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/firebase/client';
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -29,6 +29,8 @@ const formSchema = z.object({
 
 export default function AdminLoginPage() {
   const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, newUser, creating, createError] = useCreateUserWithEmailAndPassword(auth);
+  
   const { toast } = useToast();
   const router = useRouter();
 
@@ -40,22 +42,35 @@ export default function AdminLoginPage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSignIn(values: z.infer<typeof formSchema>) {
     signInWithEmailAndPassword(values.email, values.password);
   }
 
+  async function handleCreateUser(values: z.infer<typeof formSchema>) {
+    await createUserWithEmailAndPassword(values.email, values.password);
+  }
+
   useEffect(() => {
-    if (user) {
+    if (user || newUser) {
       toast({ title: 'Login Successful', description: 'Redirecting to admin dashboard.' });
       router.push('/admin');
     }
-  }, [user, router, toast]);
+  }, [user, newUser, router, toast]);
 
   useEffect(() => {
     if (error) {
       toast({ variant: 'destructive', title: 'Login Failed', description: error.message });
     }
   }, [error, toast]);
+
+  useEffect(() => {
+    if (createError) {
+      toast({ variant: 'destructive', title: 'Creation Failed', description: createError.message });
+    }
+    if (newUser) {
+        toast({ title: 'User Created Successfully!', description: 'You have been logged in.' });
+    }
+  }, [createError, newUser, toast]);
 
 
   return (
@@ -67,7 +82,7 @@ export default function AdminLoginPage() {
         </CardHeader>
         <CardContent>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <form onSubmit={form.handleSubmit(onSignIn)} className="space-y-6">
                 <FormField
                     control={form.control}
                     name="email"
@@ -94,9 +109,20 @@ export default function AdminLoginPage() {
                     </FormItem>
                     )}
                 />
-                <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Sign In'}
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-2">
+                    <Button type="submit" className="w-full" disabled={loading || creating}>
+                        {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Sign In'}
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full"
+                        onClick={form.handleSubmit(handleCreateUser)}
+                        disabled={loading || creating}
+                    >
+                        {creating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Create Admin User'}
+                    </Button>
+                </div>
                 </form>
             </Form>
         </CardContent>
