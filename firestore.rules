@@ -5,7 +5,7 @@
  * Core Philosophy:
  * This ruleset prioritizes ease of access for public content (blog posts) and
  * allows any user to submit a contact form message, while restricting access
- * to sensitive data.
+ * to sensitive data to a specific admin user.
  *
  * Data Structure:
  * - Blog posts are stored in `/blogPosts/{postId}`.
@@ -14,7 +14,8 @@
  * Key Security Decisions:
  * - Blog posts are publicly readable and writable for prototyping.
  * - Any user (authenticated or anonymous) can create a contact message.
- * - Reading or modifying contact messages is denied to all client-side users.
+ * - Only the designated admin can read contact messages.
+ * - Modifying or deleting contact messages is denied to all client-side users.
  * - Server-side access (via Admin SDK) is implicitly allowed and bypasses these rules.
  *
  */
@@ -33,16 +34,16 @@ service cloud.firestore {
     }
 
     /**
-     * @description Allows any user to submit a message, but only authenticated users can read them.
+     * @description Allows any user to submit a message, but only a specific admin can read them.
      * @path /contactMessages/{messageId}
      * @allow (create) - Any user can send a contact message.
-     * @allow (read) - Authenticated users (admins) can read messages.
+     * @allow (read) - Only the admin user can read messages.
      * @allow (update, delete) - No client-side user can access submitted messages.
-     * @principle Secures user messages by making them write-only from the client.
+     * @principle Secures user messages by restricting read access to a designated admin.
      */
     match /contactMessages/{messageId} {
       allow create: if true;
-      allow read: if request.auth != null;
+      allow read: if request.auth != null && request.auth.token.email == 'dgentechnologiespltd@gmail.com';
       allow update, delete: if false;
     }
   }

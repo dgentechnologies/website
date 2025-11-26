@@ -13,7 +13,8 @@ import {
 } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
-import { Badge } from '@/components/ui/badge';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/firebase/client';
 
 interface ContactMessage {
     id: string;
@@ -28,9 +29,13 @@ interface ContactMessage {
 }
 
 export default function AdminMessagesPage() {
-  const [messages, loading, error] = useCollection(
-    query(collection(firestore, 'contactMessages'), orderBy('createdAt', 'desc'))
-  );
+  const [user, userLoading] = useAuthState(auth);
+  const messagesCollection = collection(firestore, 'contactMessages');
+  const messagesQuery = user ? query(messagesCollection, orderBy('createdAt', 'desc')) : null;
+
+  const [messages, loading, error] = useCollection(messagesQuery);
+
+  const isLoading = userLoading || loading;
 
   return (
     <div className="container max-w-screen-lg py-12">
@@ -51,7 +56,7 @@ export default function AdminMessagesPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading &&
+            {isLoading &&
               Array.from({ length: 5 }).map((_, i) => (
                 <TableRow key={i}>
                   <TableCell>
@@ -74,14 +79,14 @@ export default function AdminMessagesPage() {
                 </TableCell>
               </TableRow>
             )}
-            {!loading && messages?.docs.length === 0 && (
+            {!isLoading && messages?.docs.length === 0 && (
                 <TableRow>
                     <TableCell colSpan={3} className="text-center text-foreground/70 py-10">
                         No messages have been received yet.
                     </TableCell>
                 </TableRow>
             )}
-            {!loading &&
+            {!isLoading &&
               messages?.docs.map((doc) => {
                 const message = { id: doc.id, ...doc.data() } as ContactMessage;
                 const sentDate = message.createdAt
