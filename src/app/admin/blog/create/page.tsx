@@ -138,13 +138,13 @@ export default function CreateBlogPage() {
 
 
   return (
-    <div className="container max-w-screen-md py-12">
-        <div className="text-center mb-12">
-            <h1 className="text-4xl font-headline font-bold">Create a New Blog Post</h1>
-            <p className="text-foreground/70 mt-2">Use AI to generate a new blog post based on a topic and author persona.</p>
+    <div className="flex-1 p-4 md:p-8 space-y-8 max-w-screen-md mx-auto">
+        <div className="mb-8">
+            <h1 className="text-3xl font-headline font-bold">Create New Blog Post</h1>
+            <p className="text-foreground/70 mt-1">Use AI to generate a new blog post based on a topic and author persona.</p>
         </div>
-        <Card className="mb-8">
-            <CardContent className="p-8">
+        <Card>
+            <CardContent className="p-6 md:p-8">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField

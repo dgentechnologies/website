@@ -8,6 +8,20 @@ import { auth } from '@/firebase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { signOut } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarProvider,
+  SidebarTrigger,
+  SidebarInset
+} from "@/components/ui/sidebar";
+import { LayoutDashboard, FileText, MessageSquare, PlusCircle, LogOut, Settings } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AdminLayout({
   children,
@@ -44,14 +58,54 @@ export default function AdminLayout({
   }
 
   return (
-    <div>
-        <header className="bg-card border-b p-4">
-            <div className="container max-w-screen-lg flex justify-between items-center">
-                <h1 className="text-xl font-bold">Admin Dashboard</h1>
-                <Button variant="outline" onClick={() => signOut(auth)}>Sign Out</Button>
+    <SidebarProvider>
+        <Sidebar>
+            <SidebarHeader>
+                <div className="flex items-center gap-2 p-2">
+                    <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
+                    <SidebarTrigger/>
+                </div>
+            </SidebarHeader>
+            <SidebarContent>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild isActive={pathname === '/admin'}>
+                           <Link href="/admin"><LayoutDashboard /> Dashboard</Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild isActive={pathname.startsWith('/admin/blog')}>
+                             <Link href="/admin/blog/manage"><FileText /> Blog</Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                     <SidebarMenuItem>
+                        <SidebarMenuButton asChild isActive={pathname === '/admin/messages'}>
+                           <Link href="/admin/messages"><MessageSquare /> Messages</Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarContent>
+            <div className="mt-auto p-2">
+                 <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton onClick={() => signOut(auth)}>
+                            <LogOut /> Sign Out
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                 </SidebarMenu>
             </div>
-        </header>
-        {children}
-    </div>
+        </Sidebar>
+        <SidebarInset>
+            <header className="bg-card/50 border-b p-2 md:hidden">
+                <div className="container max-w-screen-lg flex justify-between items-center h-12">
+                     <Link href="/admin" className="flex items-center space-x-2">
+                        <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
+                    </Link>
+                    <SidebarTrigger/>
+                </div>
+            </header>
+            {children}
+        </SidebarInset>
+    </SidebarProvider>
     );
 }

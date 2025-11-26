@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -17,7 +18,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Pencil, Trash2, PlusCircle } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,6 +39,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function ManageBlogPage() {
   const [blogPosts, loading, error] = useCollection(
@@ -76,82 +78,89 @@ export default function ManageBlogPage() {
 
   return (
     <>
-      <div className="container max-w-screen-lg py-12">
-        <div className="text-center mb-12">
-            <h1 className="text-4xl font-headline font-bold">Manage Blog Posts</h1>
-            <p className="text-foreground/70 mt-2">Edit or delete existing blog posts.</p>
+      <div className="flex-1 p-4 md:p-8 space-y-8">
+        <div className="flex items-center justify-between">
+            <div>
+                <h1 className="text-3xl font-headline font-bold">Manage Blog Posts</h1>
+                <p className="text-foreground/70 mt-1">Edit or delete existing blog posts.</p>
+            </div>
+            <Button asChild>
+                <Link href="/admin/blog/create"><PlusCircle /> Create New</Link>
+            </Button>
         </div>
         
-        <div className="rounded-lg border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead className="hidden md:table-cell">Author</TableHead>
-                <TableHead className="hidden sm:table-cell">Date</TableHead>
-                <TableHead>
-                  <span className="sr-only">Actions</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading &&
-                Array.from({ length: 5 }).map((_, i) => (
-                  <TableRow key={i}>
-                    <TableCell><Skeleton className="h-5 w-48" /></TableCell>
-                    <TableCell className="hidden md:table-cell"><Skeleton className="h-5 w-24" /></TableCell>
-                    <TableCell className="hidden sm:table-cell"><Skeleton className="h-5 w-20" /></TableCell>
-                    <TableCell><Skeleton className="h-8 w-8" /></TableCell>
-                  </TableRow>
-                ))}
-              {error && (
+        <Card>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center text-destructive">
-                    Error loading posts.
-                  </TableCell>
+                  <TableHead>Title</TableHead>
+                  <TableHead className="hidden md:table-cell">Author</TableHead>
+                  <TableHead className="hidden sm:table-cell">Date</TableHead>
+                  <TableHead>
+                    <span className="sr-only">Actions</span>
+                  </TableHead>
                 </TableRow>
-              )}
-              {!loading && blogPosts?.docs.map((doc) => {
-                const post = doc.data() as BlogPost;
-                return (
-                  <TableRow key={post.slug}>
-                    <TableCell className="font-medium">
-                      <Link href={`/blog/${post.slug}`} className="hover:underline" target="_blank">
-                        {post.title}
-                      </Link>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">{post.author}</TableCell>
-                    <TableCell className="hidden sm:table-cell">{post.date}</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button aria-haspopup="true" size="icon" variant="ghost">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem asChild>
-                            <Link href={`/admin/blog/edit/${post.slug}`} className="flex items-center gap-2 cursor-pointer">
-                                <Pencil className="h-4 w-4" /> Edit
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
-                            onClick={() => handleDeleteClick(post)}
-                          >
-                            <Trash2 className="h-4 w-4" /> Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+              </TableHeader>
+              <TableBody>
+                {loading &&
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell><Skeleton className="h-5 w-48" /></TableCell>
+                      <TableCell className="hidden md:table-cell"><Skeleton className="h-5 w-24" /></TableCell>
+                      <TableCell className="hidden sm:table-cell"><Skeleton className="h-5 w-20" /></TableCell>
+                      <TableCell><Skeleton className="h-8 w-8" /></TableCell>
+                    </TableRow>
+                  ))}
+                {error && (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center text-destructive">
+                      Error loading posts.
                     </TableCell>
                   </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
+                )}
+                {!loading && blogPosts?.docs.map((doc) => {
+                  const post = doc.data() as BlogPost;
+                  return (
+                    <TableRow key={post.slug}>
+                      <TableCell className="font-medium">
+                        <Link href={`/blog/${post.slug}`} className="hover:underline" target="_blank">
+                          {post.title}
+                        </Link>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">{post.author}</TableCell>
+                      <TableCell className="hidden sm:table-cell">{post.date}</TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button aria-haspopup="true" size="icon" variant="ghost">
+                              <MoreHorizontal className="h-4 w-4" />
+                              <span className="sr-only">Toggle menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem asChild>
+                              <Link href={`/admin/blog/edit/${post.slug}`} className="flex items-center gap-2 cursor-pointer">
+                                  <Pencil className="h-4 w-4" /> Edit
+                              </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
+                              onClick={() => handleDeleteClick(post)}
+                            >
+                              <Trash2 className="h-4 w-4" /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
 
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>

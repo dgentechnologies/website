@@ -1,3 +1,4 @@
+
 'use client';
 
 import { doc } from 'firebase/firestore';
@@ -17,10 +18,10 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
 
   if (loading) {
     return (
-      <div className="container max-w-screen-md py-12">
-        <div className="text-center mb-12">
-            <Skeleton className="h-10 w-3/4 mx-auto" />
-            <Skeleton className="h-5 w-1/2 mx-auto mt-4" />
+      <div className="flex-1 p-4 md:p-8 space-y-8 max-w-screen-md mx-auto">
+        <div className="mb-8">
+            <Skeleton className="h-10 w-3/4" />
+            <Skeleton className="h-5 w-1/2 mt-4" />
         </div>
         <Card>
             <CardContent className="p-8 space-y-6">
@@ -49,13 +50,13 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
   const blogPost = post as BlogPost;
 
   return (
-    <div className="container max-w-screen-md py-12">
-        <div className="text-center mb-12">
-            <h1 className="text-4xl font-headline font-bold">Edit Blog Post</h1>
-            <p className="text-foreground/70 mt-2">Make changes to your existing blog post.</p>
+    <div className="flex-1 p-4 md:p-8 space-y-8 max-w-screen-md mx-auto">
+        <div className="mb-8">
+            <h1 className="text-3xl font-headline font-bold">Edit Blog Post</h1>
+            <p className="text-foreground/70 mt-1">Make changes to your existing blog post.</p>
         </div>
         <Card>
-            <CardContent className="p-8">
+            <CardContent className="p-6 md:p-8">
                 <EditBlogForm post={blogPost} />
             </CardContent>
         </Card>

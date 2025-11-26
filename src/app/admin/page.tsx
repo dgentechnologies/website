@@ -1,42 +1,68 @@
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, MessageSquare, PlusCircle } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { FileText, MessageSquare, PlusCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminDashboardPage() {
     return (
-        <div className="container max-w-screen-lg py-12">
-            <div className="text-center mb-12">
-                <h1 className="text-4xl font-headline font-bold">Welcome, Admin</h1>
-                <p className="text-foreground/70 mt-2">Manage your website content and view messages.</p>
+        <div className="flex-1 p-4 md:p-8 space-y-8">
+            <div className="mb-8">
+                <h1 className="text-3xl font-headline font-bold">Admin Dashboard</h1>
+                <p className="text-foreground/70 mt-1">Manage your website content and view messages.</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Blog Management</CardTitle>
-                        <CardDescription>Create, edit, or delete blog posts.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <Button asChild className="w-full">
-                            <Link href="/admin/blog/create"><PlusCircle className="mr-2"/> Create New Post</Link>
-                        </Button>
-                        <Button asChild variant="outline" className="w-full">
-                            <Link href="/admin/blog/manage"><FileText className="mr-2"/> Manage Existing Posts</Link>
-                        </Button>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Contact Messages</CardTitle>
-                        <CardDescription>View messages submitted by your site visitors.</CardDescription>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Blog Posts</CardTitle>
+                        <FileText className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <Button asChild className="w-full">
-                            <Link href="/admin/messages"><MessageSquare className="mr-2"/> View Messages</Link>
-                        </Button>
+                        <div className="text-2xl font-bold">Manage Content</div>
+                        <p className="text-xs text-muted-foreground">
+                            Create, edit, or delete blog posts.
+                        </p>
                     </CardContent>
+                     <CardFooter>
+                        <Button asChild size="sm" className="w-full">
+                           <Link href="/admin/blog/manage">View Posts <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Create New Post</CardTitle>
+                        <PlusCircle className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">Generate with AI</div>
+                         <p className="text-xs text-muted-foreground">
+                            Use AI to generate a new post from a topic.
+                        </p>
+                    </CardContent>
+                    <CardFooter>
+                        <Button asChild size="sm" className="w-full">
+                           <Link href="/admin/blog/create">Create Post <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+                <Card>
+                     <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Contact Messages</CardTitle>
+                        <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">View Messages</div>
+                        <p className="text-xs text-muted-foreground">
+                           Read submissions from your site visitors.
+                        </p>
+                    </CardContent>
+                    <CardFooter>
+                        <Button asChild size="sm" className="w-full">
+                           <Link href="/admin/messages">View Messages <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                        </Button>
+                    </CardFooter>
                 </Card>
             </div>
         </div>
