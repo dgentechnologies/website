@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "blogPost": {
@@ -81,7 +82,7 @@
     }
   },
   "auth": {
-    "providers": ["anonymous"]
+    "providers": ["anonymous", "email_password"]
   },
   "firestore": {
     "/blogPosts/{postId}": {
