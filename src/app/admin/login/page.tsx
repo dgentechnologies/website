@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useSignInWithEmailAndPassword, useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/firebase/client';
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -29,7 +29,6 @@ const formSchema = z.object({
 
 export default function AdminLoginPage() {
   const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
-  const [createUserWithEmailAndPassword, newUser, creating, createError] = useCreateUserWithEmailAndPassword(auth);
   
   const { toast } = useToast();
   const router = useRouter();
@@ -46,31 +45,18 @@ export default function AdminLoginPage() {
     signInWithEmailAndPassword(values.email, values.password);
   }
 
-  async function handleCreateUser(values: z.infer<typeof formSchema>) {
-    await createUserWithEmailAndPassword(values.email, values.password);
-  }
-
   useEffect(() => {
-    if (user || newUser) {
+    if (user) {
       toast({ title: 'Login Successful', description: 'Redirecting to admin dashboard.' });
       router.push('/admin');
     }
-  }, [user, newUser, router, toast]);
+  }, [user, router, toast]);
 
   useEffect(() => {
     if (error) {
       toast({ variant: 'destructive', title: 'Login Failed', description: error.message });
     }
   }, [error, toast]);
-
-  useEffect(() => {
-    if (createError) {
-      toast({ variant: 'destructive', title: 'Creation Failed', description: createError.message });
-    }
-    if (newUser) {
-        toast({ title: 'User Created Successfully!', description: 'You have been logged in.' });
-    }
-  }, [createError, newUser, toast]);
 
 
   return (
@@ -110,17 +96,8 @@ export default function AdminLoginPage() {
                     )}
                 />
                 <div className="flex flex-col sm:flex-row gap-2">
-                    <Button type="submit" className="w-full" disabled={loading || creating}>
+                    <Button type="submit" className="w-full" disabled={loading}>
                         {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Sign In'}
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full"
-                        onClick={form.handleSubmit(handleCreateUser)}
-                        disabled={loading || creating}
-                    >
-                        {creating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Create Admin User'}
                     </Button>
                 </div>
                 </form>
