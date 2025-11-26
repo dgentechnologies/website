@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
+import { firestore } from '@/firebase/client';
+import { useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -37,6 +40,7 @@ const formSchema = z.object({
 
 export function ContactForm() {
   const { toast } = useToast();
+  const [isSending, setIsSending] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,14 +52,29 @@ export function ContactForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting us. We will get back to you shortly.",
-      variant: "default",
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSending(true);
+    try {
+      await addDoc(collection(firestore, 'contactMessages'), {
+        ...values,
+        createdAt: serverTimestamp(),
+      });
+
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for contacting us. We will get back to you shortly.",
+      });
+      form.reset();
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast({
+        variant: "destructive",
+        title: "Submission Failed",
+        description: "Could not send your message. Please try again later.",
+      });
+    } finally {
+      setIsSending(false);
+    }
   }
 
   return (
@@ -118,9 +137,18 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" size="lg">
-          Send Message
-          <Send className="ml-2 h-4 w-4" />
+        <Button type="submit" className="w-full" size="lg" disabled={isSending}>
+          {isSending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            <>
+              Send Message
+              <Send className="ml-2 h-4 w-4" />
+            </>
+          )}
         </Button>
       </form>
     </Form>

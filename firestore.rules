@@ -1,20 +1,21 @@
 
 /**
- * @file Firestore Security Rules for the blogPosts collection.
+ * @file Firestore Security Rules for the DGEN Technologies website.
  *
  * Core Philosophy:
- * This ruleset prioritizes ease of access for blog post reads and writes for prototyping.
- * It allows anonymous users to freely interact with blog posts while also enabling
- * server-side admin access for backend processes like AI flows.
+ * This ruleset prioritizes ease of access for public content (blog posts) and
+ * allows any user to submit a contact form message, while restricting access
+ * to sensitive data.
  *
  * Data Structure:
- * Blog posts are stored in the top-level `/blogPosts/{postId}` collection.
+ * - Blog posts are stored in `/blogPosts/{postId}`.
+ * - Contact messages are stored in `/contactMessages/{messageId}`.
  *
  * Key Security Decisions:
- * - Client-side access is fully open (create, read, update, delete) for any user,
- *   including anonymous ones, to facilitate rapid prototyping.
- * - Server-side access (via Admin SDK) is implicitly allowed and bypasses these
- *   client-facing rules, which is necessary for backend services.
+ * - Blog posts are publicly readable and writable for prototyping.
+ * - Any user (authenticated or anonymous) can create a contact message.
+ * - Reading or modifying contact messages is denied to all client-side users.
+ * - Server-side access (via Admin SDK) is implicitly allowed and bypasses these rules.
  *
  */
 rules_version = '2';
@@ -24,14 +25,23 @@ service cloud.firestore {
     /**
      * @description Allows any user to create, read, update and delete blog posts.
      * @path /blogPosts/{postId}
-     * @allow (create) - Any user can create a blog post.
-     * @allow (get) - Any user can read a blog post.
-     * @allow (update) - Any user can update a blog post.
-     * @allow (delete) - Any user can delete a blog post.
-     * @principle Allows any user to perform any operation on any blog post, enabling rapid prototyping.
+     * @allow (read, write) - Open access for prototyping purposes.
+     * @principle Enables rapid prototyping by allowing any user to interact with blog data.
      */
     match /blogPosts/{postId} {
       allow read, write: if true;
+    }
+
+    /**
+     * @description Allows any user to submit a message, but no one can read or modify them.
+     * @path /contactMessages/{messageId}
+     * @allow (create) - Any user can send a contact message.
+     * @allow (read, update, delete) - No client-side user can access submitted messages.
+     * @principle Secures user messages by making them write-only from the client.
+     */
+    match /contactMessages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if false;
     }
   }
 }

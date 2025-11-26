@@ -48,6 +48,36 @@
         }
       },
       "required": ["title", "description", "slug", "author", "date", "content", "image", "imageHint"]
+    },
+    "contactMessage": {
+      "title": "Contact Message",
+      "description": "Represents a message submitted through the contact form.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The sender's name."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The sender's email address."
+        },
+        "subject": {
+          "type": "string",
+          "description": "The subject of the message."
+        },
+        "message": {
+          "type": "string",
+          "description": "The content of the message."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the message was submitted."
+        }
+      },
+      "required": ["name", "email", "subject", "message", "createdAt"]
     }
   },
   "auth": {
@@ -59,6 +89,12 @@
         "$ref": "#/entities/blogPost"
       },
       "description": "Stores individual blog post documents."
+    },
+    "/contactMessages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/contactMessage"
+      },
+      "description": "Stores messages submitted through the contact form."
     }
   }
 }
