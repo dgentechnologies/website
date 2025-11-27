@@ -68,18 +68,18 @@ const generateBlogPostFlow = ai.defineFlow(
   async (input) => {
     // Isolate server-side imports
     const { adminFirestore } = await import('@/firebase/server');
-    const { collection, getDocs, query, where, addDoc, FieldValue } = await import('firebase-admin/firestore');
+    const fsAdmin = await import('firebase-admin/firestore');
 
     // Function to get recently used image hints from Firestore
     async function getRecentHints(): Promise<string[]> {
         const sixtyDaysAgo = new Date();
         sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
 
-        const hintsCollection = collection(adminFirestore, 'usedImageHints');
-        const q = query(hintsCollection, where('createdAt', '>=', sixtyDaysAgo));
+        const hintsCollection = fsAdmin.collection(adminFirestore, 'usedImageHints');
+        const q = fsAdmin.query(hintsCollection, fsAdmin.where('createdAt', '>=', sixtyDaysAgo));
         
         try {
-            const querySnapshot = await getDocs(q);
+            const querySnapshot = await fsAdmin.getDocs(q);
             const hints = querySnapshot.docs.map(doc => doc.data().hint as string);
             return [...new Set(hints)]; // Return unique hints
         } catch (error) {
@@ -183,9 +183,9 @@ ${recentHintsText}
             console.log(`Successfully fetched image from Unsplash for hint: "${hint}"`);
             
             // Save the used hint to Firestore
-            await addDoc(collection(adminFirestore, 'usedImageHints'), {
+            await fsAdmin.addDoc(fsAdmin.collection(adminFirestore, 'usedImageHints'), {
                 hint: usedHint,
-                createdAt: FieldValue.serverTimestamp(),
+                createdAt: fsAdmin.FieldValue.serverTimestamp(),
             });
 
             // Prioritize two-word hints for more specificity
