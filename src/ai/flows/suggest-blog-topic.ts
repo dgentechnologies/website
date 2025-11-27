@@ -61,10 +61,6 @@ Example format:
   ]
 }
 `,
-    output: {
-      format: 'json',
-      schema: SuggestBlogTopicOutputSchema,
-    },
   });
 
   if (!text) {
