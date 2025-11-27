@@ -35,7 +35,7 @@ export type BlogPostOutput = z.infer<typeof BlogPostOutputSchema>;
 
 // The AI model's output will include the hints.
 const AIModelOutputSchema = BlogPostOutputSchema.omit({ image: true, imageHint: true }).extend({
-    imageHints: z.array(z.string()).describe('An array of 3-4 different two-word hints for the image content, e.g., ["technology abstract", "city skyline", "data network"].'),
+    imageHints: z.array(z.string()).describe('An array of at least 10 diverse, single-word or two-word keywords for the image content, e.g., ["technology", "abstract", "city skyline", "data network", "innovation", "future", "smart grid", "IoT", "connection", "urban"].'),
 });
 type AIModelOutput = z.infer<typeof AIModelOutputSchema>;
 
@@ -64,7 +64,7 @@ You must generate all required fields for the blog post: 'title', 'description',
 - The 'date' MUST be the current date in "Month Day, Year" format.
 - The 'slug' MUST be a URL-friendly version of the title.
 - The 'image' field should be IGNORED.
-- The 'imageHints' MUST be an array of 3-4 different two-word hints for the image content (e.g., ["technology abstract", "city data", "urban network"]).
+- The 'imageHints' MUST be an array of at least 10 diverse, single-word or two-word keywords for the image content (e.g., ["technology", "abstract", "city data", "urban network", "innovation", "future", "smart grid", "IoT", "connection", "sustainability"]).
 
 **Author Persona:**
 ${input.author} — follow this exact persona’s tone and focus.
