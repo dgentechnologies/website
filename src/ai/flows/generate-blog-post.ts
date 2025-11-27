@@ -44,6 +44,16 @@ export async function generateBlogPost(input: BlogPostInput): Promise<BlogPostOu
   return generateBlogPostFlow(input);
 }
 
+// Function to extract JSON from a string that might contain markdown fences
+function extractJson(text: string): string {
+    const jsonRegex = /```json\n([\s\S]*?)\n```/;
+    const match = text.match(jsonRegex);
+    if (match && match[1]) {
+        return match[1];
+    }
+    return text; // Return original text if no JSON block is found
+}
+
 const generateBlogPostFlow = ai.defineFlow(
   {
     name: 'generateBlogPostFlow',
@@ -89,7 +99,8 @@ ${input.author} — follow this exact persona’s tone and focus.
 
     let output: AIModelOutput;
     try {
-        output = JSON.parse(text);
+        const cleanJson = extractJson(text);
+        output = JSON.parse(cleanJson);
     } catch (e) {
         console.error("Failed to parse AI output as JSON:", text);
         throw new Error("The AI returned invalid JSON. Please try again.");
