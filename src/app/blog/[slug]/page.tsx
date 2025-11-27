@@ -9,6 +9,8 @@ import { adminFirestore } from '@/firebase/server';
 import { BlogPost } from '@/types/blog';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 async function getPost(slug: string): Promise<BlogPost | null> {
   const postDoc = await adminFirestore.collection('blogPosts').doc(slug).get();
   if (!postDoc.exists) {

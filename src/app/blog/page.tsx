@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { adminFirestore } from '@/firebase/server';
 import { BlogPost } from '@/types/blog';
 
+export const dynamic = 'force-dynamic';
+
 async function getBlogPosts(): Promise<BlogPost[]> {
   const snapshot = await adminFirestore.collection('blogPosts').orderBy('date', 'desc').get();
   if (snapshot.empty) {
