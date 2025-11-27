@@ -138,7 +138,10 @@ ${input.author} — follow this exact persona’s tone and focus.
                         imageUrl = data.url;
                         usedHint = hint;
                         console.log(`Successfully fetched image for hint: "${hint}"`);
-                        break; // Stop on the first successful fetch
+                        // Prioritize two-word hints for more specificity
+                        if (hint.includes(' ')) {
+                            break;
+                        }
                     }
                 }
             } catch (error) {
