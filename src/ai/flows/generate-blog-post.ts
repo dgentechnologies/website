@@ -12,6 +12,8 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { createApi } from 'unsplash-js';
+import { addDoc, collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
+import { firestore } from '@/firebase/client';
 
 const unsplash = createApi({
   accessKey: process.env.UNSPLASH_ACCESS_KEY!,
@@ -59,6 +61,25 @@ function extractJson(text: string): string {
     return text; // Return original text if no JSON block is found
 }
 
+// Function to get recently used image hints from Firestore
+async function getRecentHints(): Promise<string[]> {
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+    const sixtyDaysAgoTimestamp = Timestamp.fromDate(sixtyDaysAgo);
+
+    const hintsCollection = collection(firestore, 'usedImageHints');
+    const q = query(hintsCollection, where('createdAt', '>=', sixtyDaysAgoTimestamp));
+    
+    try {
+        const querySnapshot = await getDocs(q);
+        const hints = querySnapshot.docs.map(doc => doc.data().hint as string);
+        return [...new Set(hints)]; // Return unique hints
+    } catch (error) {
+        console.error("Error fetching recent hints:", error);
+        return [];
+    }
+}
+
 const generateBlogPostFlow = ai.defineFlow(
   {
     name: 'generateBlogPostFlow',
@@ -66,6 +87,10 @@ const generateBlogPostFlow = ai.defineFlow(
     outputSchema: BlogPostOutputSchema,
   },
   async (input) => {
+
+    const recentHints = await getRecentHints();
+    const recentHintsText = recentHints.length > 0 ? `\n\n**RECENTLY USED HINTS (DO NOT USE):**\n${recentHints.map(h => `- ${h}`).join('\n')}` : '';
+
     const prompt = `
 You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging, reflecting the unique voice and perspective of the specified author.
 
@@ -87,13 +112,15 @@ Your most important task is generating 'imageHints'. These are search keywords f
 - **GOOD KEYWORDS:** "city skyline", "data network", "glowing circuits", "people collaborating", "urban garden", "solar panels", "modern architecture", "connected devices".
 - **BAD KEYWORDS:** "Corporate Innovation", "Citizen Engagement", "Infrastructure Development", "Collaborative Ecosystem". These are abstract and will not find images.
 - **Focus on CONCRETE and VISUAL terms** that are directly related to the specific blog topic: "${input.topic}".
+${recentHintsText}
 
 **CRITICAL RULES:**
 1. Do NOT change or reinterpret the topic. The post must be about: "${input.topic}".
 2. Do NOT generate random or unrelated topics.
 3. Do NOT invent a new author. The author must be ${input.author}.
 4. Do NOT generate an 'image' URL. You will only generate 'imageHints'.
-5. Output ONLY a single, valid JSON object matching the required structure. Do not include any markdown formatting like \`\`\`json.
+5. Do NOT use any of the "RECENTLY USED HINTS" in your new 'imageHints' array.
+6. Output ONLY a single, valid JSON object matching the required structure. Do not include any markdown formatting like \`\`\`json.
 `;
 
     const { text } = await ai.generate({
@@ -149,6 +176,13 @@ Your most important task is generating 'imageHints'. These are search keywords f
             imageUrl = result.response.results[0].urls.regular;
             usedHint = hint;
             console.log(`Successfully fetched image from Unsplash for hint: "${hint}"`);
+            
+            // Save the used hint to Firestore
+            await addDoc(collection(firestore, 'usedImageHints'), {
+                hint: usedHint,
+                createdAt: Timestamp.now(),
+            });
+
             // Prioritize two-word hints for more specificity
             if (hint.includes(' ')) {
                 break;
@@ -186,5 +220,3 @@ Your most important task is generating 'imageHints'. These are search keywords f
     return finalOutput as BlogPostOutput;
   }
 );
-
-    
