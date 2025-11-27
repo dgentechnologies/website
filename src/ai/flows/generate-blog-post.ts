@@ -77,6 +77,7 @@ You must generate all required fields for the blog post: 'title', 'description',
 **IMAGE HINTS (CRITICAL):**
 Your most important task is generating 'imageHints'. These are search keywords for a photo API. They MUST be photographic and visual.
 - **Generate at least 10 UNIQUE keywords.**
+- **Each keyword MUST be only ONE or TWO words.** DO NOT generate long phrases.
 - **Think like a photo editor.** Instead of abstract concepts, think about what a photo would actually show.
 - **GOOD KEYWORDS:** "city skyline", "data network", "glowing circuits", "people collaborating", "urban garden", "solar panels", "modern architecture", "connected devices".
 - **BAD KEYWORDS:** "Corporate Innovation", "Citizen Engagement", "Infrastructure Development", "Collaborative Ecosystem". These are abstract and will not find images.
