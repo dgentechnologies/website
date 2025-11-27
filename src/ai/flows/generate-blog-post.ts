@@ -73,11 +73,14 @@ You must generate all required fields for the blog post: 'title', 'description',
 - The 'tags' MUST include 2-3 relevant tags.
 - The 'date' MUST be the current date in "Month Day, Year" format.
 - The 'slug' MUST be a URL-friendly version of the title.
-- The 'image' field should be IGNORED.
-- The 'imageHints' MUST be an array of at least 10 diverse, single-word or two-word keywords. These keywords must be UNIQUE and directly related to the specific blog topic: "${input.topic}". Avoid generic terms like "technology" or "abstract" unless they are essential. Focus on keywords that will find a unique and relevant image for this specific post.
 
-**Author Persona:**
-${input.author} — follow this exact persona’s tone and focus.
+**IMAGE HINTS (CRITICAL):**
+Your most important task is generating 'imageHints'. These are search keywords for a photo API. They MUST be photographic and visual.
+- **Generate at least 10 UNIQUE keywords.**
+- **Think like a photo editor.** Instead of abstract concepts, think about what a photo would actually show.
+- **GOOD KEYWORDS:** "city skyline", "data network", "glowing circuits", "people collaborating", "urban garden", "solar panels", "modern architecture", "connected devices".
+- **BAD KEYWORDS:** "Corporate Innovation", "Citizen Engagement", "Infrastructure Development", "Collaborative Ecosystem". These are abstract and will not find images.
+- **Focus on CONCRETE and VISUAL terms** that are directly related to the specific blog topic: "${input.topic}".
 
 **CRITICAL RULES:**
 1. Do NOT change or reinterpret the topic. The post must be about: "${input.topic}".
