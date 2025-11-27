@@ -12,8 +12,9 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { createApi } from 'unsplash-js';
-import { addDoc, collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
-import { firestore } from '@/firebase/client';
+import { collection, getDocs, query, where, addDoc } from 'firebase-admin/firestore';
+import { adminFirestore } from '@/firebase/server';
+import { FieldValue } from 'firebase-admin/firestore';
 
 const unsplash = createApi({
   accessKey: process.env.UNSPLASH_ACCESS_KEY!,
@@ -65,10 +66,9 @@ function extractJson(text: string): string {
 async function getRecentHints(): Promise<string[]> {
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-    const sixtyDaysAgoTimestamp = Timestamp.fromDate(sixtyDaysAgo);
 
-    const hintsCollection = collection(firestore, 'usedImageHints');
-    const q = query(hintsCollection, where('createdAt', '>=', sixtyDaysAgoTimestamp));
+    const hintsCollection = collection(adminFirestore, 'usedImageHints');
+    const q = query(hintsCollection, where('createdAt', '>=', sixtyDaysAgo));
     
     try {
         const querySnapshot = await getDocs(q);
@@ -183,9 +183,9 @@ ${recentHintsText}
             console.log(`Successfully fetched image from Unsplash for hint: "${hint}"`);
             
             // Save the used hint to Firestore
-            await addDoc(collection(firestore, 'usedImageHints'), {
+            await addDoc(collection(adminFirestore, 'usedImageHints'), {
                 hint: usedHint,
-                createdAt: Timestamp.now(),
+                createdAt: FieldValue.serverTimestamp(),
             });
 
             // Prioritize two-word hints for more specificity
