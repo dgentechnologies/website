@@ -74,7 +74,7 @@ You must generate all required fields for the blog post: 'title', 'description',
 - The 'date' MUST be the current date in "Month Day, Year" format.
 - The 'slug' MUST be a URL-friendly version of the title.
 - The 'image' field should be IGNORED.
-- The 'imageHints' MUST be an array of at least 10 diverse, single-word or two-word keywords for the image content (e.g., ["technology", "abstract", "city data", "urban network", "innovation", "future", "smart grid", "IoT", "connection", "sustainability"]).
+- The 'imageHints' MUST be an array of at least 10 diverse, single-word or two-word keywords. These keywords must be UNIQUE and directly related to the specific blog topic: "${input.topic}". Avoid generic terms like "technology" or "abstract" unless they are essential. Focus on keywords that will find a unique and relevant image for this specific post.
 
 **Author Persona:**
 ${input.author} — follow this exact persona’s tone and focus.
