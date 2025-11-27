@@ -12,9 +12,6 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { createApi } from 'unsplash-js';
-import { collection, getDocs, query, where, addDoc } from 'firebase-admin/firestore';
-import { adminFirestore } from '@/firebase/server';
-import { FieldValue } from 'firebase-admin/firestore';
 
 const unsplash = createApi({
   accessKey: process.env.UNSPLASH_ACCESS_KEY!,
@@ -62,24 +59,6 @@ function extractJson(text: string): string {
     return text; // Return original text if no JSON block is found
 }
 
-// Function to get recently used image hints from Firestore
-async function getRecentHints(): Promise<string[]> {
-    const sixtyDaysAgo = new Date();
-    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-
-    const hintsCollection = collection(adminFirestore, 'usedImageHints');
-    const q = query(hintsCollection, where('createdAt', '>=', sixtyDaysAgo));
-    
-    try {
-        const querySnapshot = await getDocs(q);
-        const hints = querySnapshot.docs.map(doc => doc.data().hint as string);
-        return [...new Set(hints)]; // Return unique hints
-    } catch (error) {
-        console.error("Error fetching recent hints:", error);
-        return [];
-    }
-}
-
 const generateBlogPostFlow = ai.defineFlow(
   {
     name: 'generateBlogPostFlow',
@@ -87,6 +66,27 @@ const generateBlogPostFlow = ai.defineFlow(
     outputSchema: BlogPostOutputSchema,
   },
   async (input) => {
+    // Isolate server-side imports
+    const { adminFirestore } = await import('@/firebase/server');
+    const { collection, getDocs, query, where, addDoc, FieldValue } = await import('firebase-admin/firestore');
+
+    // Function to get recently used image hints from Firestore
+    async function getRecentHints(): Promise<string[]> {
+        const sixtyDaysAgo = new Date();
+        sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+
+        const hintsCollection = collection(adminFirestore, 'usedImageHints');
+        const q = query(hintsCollection, where('createdAt', '>=', sixtyDaysAgo));
+        
+        try {
+            const querySnapshot = await getDocs(q);
+            const hints = querySnapshot.docs.map(doc => doc.data().hint as string);
+            return [...new Set(hints)]; // Return unique hints
+        } catch (error) {
+            console.error("Error fetching recent hints:", error);
+            return [];
+        }
+    }
 
     const recentHints = await getRecentHints();
     // Manually add 'city skyline' to ensure it's avoided
@@ -225,3 +225,5 @@ ${recentHintsText}
     return finalOutput as BlogPostOutput;
   }
 );
+
+    
