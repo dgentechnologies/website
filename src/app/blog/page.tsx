@@ -62,7 +62,7 @@ export default async function BlogPage() {
                     <div className="flex flex-wrap gap-2 mb-2">
                       {post.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
                     </div>
-                    <CardTitle className="font-headline text-xl h-20">{post.title}</CardTitle>
+                    <CardTitle className="font-headline text-xl">{post.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="flex-grow">
                     <CardDescription>{post.description}</CardDescription>
