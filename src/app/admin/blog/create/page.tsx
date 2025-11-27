@@ -91,7 +91,7 @@ export default function CreateBlogPage() {
             title: "Topics Suggested!",
             description: "Click a suggestion or write your own topic.",
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error suggesting topic:", error);
         toast({
             variant: "destructive",
@@ -215,14 +215,14 @@ export default function CreateBlogPage() {
                         />
                         
                         {suggestedTopics.length > 0 && (
-                            <div className="space-y-2">
-                                <p className="text-sm font-medium">Suggestions for {selectedAuthor}:</p>
+                            <div className="space-y-3">
+                                <p className="text-sm font-medium text-foreground/80">Suggestions for {selectedAuthor}:</p>
                                 <div className="flex flex-wrap gap-2">
                                     {suggestedTopics.map(topic => (
                                         <Badge
                                             key={topic}
                                             variant="secondary"
-                                            className="cursor-pointer hover:bg-primary/20"
+                                            className="cursor-pointer text-base p-2 px-3 hover:bg-primary hover:text-primary-foreground"
                                             onClick={() => form.setValue('topic', topic)}
                                         >
                                             {topic}
@@ -232,7 +232,7 @@ export default function CreateBlogPage() {
                             </div>
                         )}
 
-                        <Button type="submit" disabled={isGenerating || isSuggesting} className="w-full">
+                        <Button type="submit" disabled={isGenerating || isSuggesting} className="w-full" size="lg">
                             {isGenerating ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
