@@ -17,7 +17,8 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarTrigger,
-  SidebarInset
+  SidebarInset,
+  SidebarProvider
 } from "@/components/ui/sidebar";
 import { LayoutDashboard, FileText, MessageSquare, PlusCircle, LogOut, Settings } from 'lucide-react';
 import Image from 'next/image';
