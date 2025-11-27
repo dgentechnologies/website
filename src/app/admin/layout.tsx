@@ -16,7 +16,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarProvider,
   SidebarTrigger,
   SidebarInset
 } from "@/components/ui/sidebar";
@@ -33,11 +32,14 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   useEffect(() => {
+    // If auth state is resolved and there's no user,
+    // and we are not already on the login page, redirect.
     if (!loading && !user && pathname !== '/admin/login') {
       router.push('/admin/login');
     }
   }, [user, loading, router, pathname]);
 
+  // While loading, show a skeleton screen to prevent flicker.
   if (loading) {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
@@ -49,14 +51,18 @@ export default function AdminLayout({
     );
   }
 
+  // If the user is on the login page, just render the page content without the layout.
   if (pathname === '/admin/login') {
-      return <>{children}</>
+      return <>{children}</>;
   }
   
+  // If not loading and still no user, we are about to redirect.
+  // Return null to prevent rendering the admin layout for a split second.
   if (!user) {
     return null;
   }
 
+  // If we have a user, render the full admin layout.
   return (
     <SidebarProvider>
         <Sidebar>
