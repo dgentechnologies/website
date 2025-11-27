@@ -89,6 +89,11 @@ const generateBlogPostFlow = ai.defineFlow(
   async (input) => {
 
     const recentHints = await getRecentHints();
+    // Manually add 'city skyline' to ensure it's avoided
+    if (!recentHints.includes('city skyline')) {
+        recentHints.push('city skyline');
+    }
+
     const recentHintsText = recentHints.length > 0 ? `\n\n**RECENTLY USED HINTS (DO NOT USE):**\n${recentHints.map(h => `- ${h}`).join('\n')}` : '';
 
     const prompt = `
@@ -109,7 +114,7 @@ Your most important task is generating 'imageHints'. These are search keywords f
 - **Generate at least 10 UNIQUE keywords.**
 - **Each keyword MUST be only ONE or TWO words.** DO NOT generate long phrases.
 - **Think like a photo editor.** Instead of abstract concepts, think about what a photo would actually show.
-- **GOOD KEYWORDS:** "city skyline", "data network", "glowing circuits", "people collaborating", "urban garden", "solar panels", "modern architecture", "connected devices".
+- **GOOD KEYWORDS:** "data network", "glowing circuits", "people collaborating", "urban garden", "solar panels", "modern architecture", "connected devices".
 - **BAD KEYWORDS:** "Corporate Innovation", "Citizen Engagement", "Infrastructure Development", "Collaborative Ecosystem". These are abstract and will not find images.
 - **Focus on CONCRETE and VISUAL terms** that are directly related to the specific blog topic: "${input.topic}".
 ${recentHintsText}
