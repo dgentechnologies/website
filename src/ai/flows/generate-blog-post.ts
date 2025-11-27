@@ -11,6 +11,11 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { createApi } from 'unsplash-js';
+
+const unsplash = createApi({
+  accessKey: process.env.UNSPLASH_ACCESS_KEY!,
+});
 
 const BlogPostInputSchema = z.object({
   author: z.enum(['Tirthankar Dasgupta', 'Sukomal Debnath', 'Sagnik Mandal', 'Arpan Bairagi'])
@@ -127,31 +132,32 @@ Your most important task is generating 'imageHints'. These are search keywords f
       day: 'numeric',
     });
 
-    // Fetch image from Unsplash API route by iterating through hints
+    // Fetch image from Unsplash API directly
     let imageUrl = '';
     let usedHint = '';
     if (finalOutput.imageHints && Array.isArray(finalOutput.imageHints)) {
-        for (const hint of finalOutput.imageHints) {
-            try {
-                // Use a full URL for server-side fetch
-                const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:9002';
-                const response = await fetch(`${baseUrl}/api/unsplash?query=${encodeURIComponent(hint)}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.url) {
-                        imageUrl = data.url;
-                        usedHint = hint;
-                        console.log(`Successfully fetched image for hint: "${hint}"`);
-                        // Prioritize two-word hints for more specificity
-                        if (hint.includes(' ')) {
-                            break;
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error(`Failed to fetch image for hint "${hint}":`, error);
+      for (const hint of finalOutput.imageHints) {
+        try {
+          const result = await unsplash.search.getPhotos({
+            query: hint,
+            page: 1,
+            perPage: 1,
+            orientation: 'landscape',
+          });
+          
+          if (result.response && result.response.results.length > 0) {
+            imageUrl = result.response.results[0].urls.regular;
+            usedHint = hint;
+            console.log(`Successfully fetched image from Unsplash for hint: "${hint}"`);
+            // Prioritize two-word hints for more specificity
+            if (hint.includes(' ')) {
+                break;
             }
+          }
+        } catch (error) {
+          console.error(`Failed to fetch image from Unsplash for hint "${hint}":`, error);
         }
+      }
     }
 
     if (imageUrl) {
@@ -180,3 +186,5 @@ Your most important task is generating 'imageHints'. These are search keywords f
     return finalOutput as BlogPostOutput;
   }
 );
+
+    
