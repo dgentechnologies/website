@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button";
@@ -134,7 +134,10 @@ export default function CreateBlogPage() {
 
     try {
       const postRef = doc(firestore, 'blogPosts', generatedPost.slug);
-      await setDoc(postRef, generatedPost);
+      await setDoc(postRef, {
+        ...generatedPost,
+        createdAt: serverTimestamp(),
+      });
       toast({
         title: "Post Saved!",
         description: "Your new blog post is now live.",

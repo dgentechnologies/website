@@ -46,9 +46,14 @@
         "imageHint": {
           "type": "string",
           "description": "Two-word hint for the image content, e.g., 'technology abstract'."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the blog post was created, used for sorting."
         }
       },
-      "required": ["title", "description", "slug", "author", "date", "content", "image", "imageHint"]
+      "required": ["title", "description", "slug", "author", "date", "content", "image", "imageHint", "createdAt"]
     },
     "contactMessage": {
       "title": "Contact Message",

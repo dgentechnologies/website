@@ -11,7 +11,7 @@ import { BlogPost } from '@/types/blog';
 export const dynamic = 'force-dynamic';
 
 async function getBlogPosts(): Promise<BlogPost[]> {
-  const snapshot = await adminFirestore.collection('blogPosts').orderBy('date', 'desc').get();
+  const snapshot = await adminFirestore.collection('blogPosts').orderBy('createdAt', 'desc').get();
   if (snapshot.empty) {
     return [];
   }

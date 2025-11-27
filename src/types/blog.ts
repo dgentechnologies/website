@@ -1,3 +1,4 @@
+
 export interface BlogPost {
   title: string;
   description: string;
@@ -8,4 +9,5 @@ export interface BlogPost {
   content: string;
   image: string;
   imageHint: string;
+  createdAt: any;
 }
