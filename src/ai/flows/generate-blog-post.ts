@@ -59,6 +59,44 @@ function extractJson(text: string): string {
     return text; // Return original text if no JSON block is found
 }
 
+// Server-only helper function to get recently used image hints from Firestore
+async function getRecentHints(): Promise<string[]> {
+    const { adminFirestore } = await import('@/firebase/server');
+    const fsAdmin = await import('firebase-admin/firestore');
+
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+
+    const hintsCollectionRef = fsAdmin.collection(adminFirestore, 'usedImageHints');
+    const q = fsAdmin.query(hintsCollectionRef, fsAdmin.where('createdAt', '>=', sixtyDaysAgo));
+    
+    try {
+        const querySnapshot = await fsAdmin.getDocs(q);
+        const hints = querySnapshot.docs.map(doc => doc.data().hint as string);
+        return [...new Set(hints)]; // Return unique hints
+    } catch (error) {
+        console.error("Error fetching recent hints:", error);
+        return [];
+    }
+}
+
+// Server-only helper function to save a used hint
+async function saveUsedHint(hint: string) {
+    const { adminFirestore } = await import('@/firebase/server');
+    const fsAdmin = await import('firebase-admin/firestore');
+    
+    try {
+        const hintsCollectionRef = fsAdmin.collection(adminFirestore, 'usedImageHints');
+        await fsAdmin.addDoc(hintsCollectionRef, {
+            hint: hint,
+            createdAt: fsAdmin.FieldValue.serverTimestamp(),
+        });
+    } catch (error) {
+        console.error("Error saving used hint:", error);
+    }
+}
+
+
 const generateBlogPostFlow = ai.defineFlow(
   {
     name: 'generateBlogPostFlow',
@@ -66,28 +104,7 @@ const generateBlogPostFlow = ai.defineFlow(
     outputSchema: BlogPostOutputSchema,
   },
   async (input) => {
-    // Isolate server-side imports
-    const { adminFirestore } = await import('@/firebase/server');
-    const fsAdmin = await import('firebase-admin/firestore');
-
-    // Function to get recently used image hints from Firestore
-    async function getRecentHints(): Promise<string[]> {
-        const sixtyDaysAgo = new Date();
-        sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-
-        const hintsCollection = fsAdmin.collection(adminFirestore, 'usedImageHints');
-        const q = fsAdmin.query(hintsCollection, fsAdmin.where('createdAt', '>=', sixtyDaysAgo));
-        
-        try {
-            const querySnapshot = await fsAdmin.getDocs(q);
-            const hints = querySnapshot.docs.map(doc => doc.data().hint as string);
-            return [...new Set(hints)]; // Return unique hints
-        } catch (error) {
-            console.error("Error fetching recent hints:", error);
-            return [];
-        }
-    }
-
+    
     const recentHints = await getRecentHints();
     // Manually add 'city skyline' to ensure it's avoided
     if (!recentHints.includes('city skyline')) {
@@ -183,10 +200,7 @@ ${recentHintsText}
             console.log(`Successfully fetched image from Unsplash for hint: "${hint}"`);
             
             // Save the used hint to Firestore
-            await fsAdmin.addDoc(fsAdmin.collection(adminFirestore, 'usedImageHints'), {
-                hint: usedHint,
-                createdAt: fsAdmin.FieldValue.serverTimestamp(),
-            });
+            await saveUsedHint(usedHint);
 
             // Prioritize two-word hints for more specificity
             if (hint.includes(' ')) {
@@ -225,5 +239,3 @@ ${recentHintsText}
     return finalOutput as BlogPostOutput;
   }
 );
-
-    
