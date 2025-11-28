@@ -94,7 +94,29 @@ const DashboardView = () => {
   );
 };
 
-// --- Blog View Component ---
+// --- Performance View Component ---
+const PerformanceView = () => (
+  <div>
+    <h1 className="text-3xl font-headline font-bold mb-2">Performance</h1>
+    <p className="text-foreground/70 mb-6">Monitor your website's speed, uptime, and analytics here.</p>
+    <div className="bg-card p-6 rounded-lg shadow">
+      <div className="text-lg font-semibold mb-2">Coming soon: Real-time analytics, server status, and more.</div>
+      <div className="text-muted-foreground">Integrate with Google Analytics, Lighthouse, or other tools for deeper insights.</div>
+    </div>
+  </div>
+);
+
+// --- Settings View Component ---
+const SettingsView = () => (
+  <div>
+    <h1 className="text-3xl font-headline font-bold mb-2">Settings</h1>
+    <p className="text-foreground/70 mb-6">Manage your admin preferences and website configuration.</p>
+    <div className="bg-card p-6 rounded-lg shadow">
+      <div className="text-lg font-semibold mb-2">Settings panel coming soon.</div>
+      <div className="text-muted-foreground">Update profile, change password, configure site options, and more.</div>
+    </div>
+  </div>
+);
 const BlogView = () => {
   const [blogPosts, blogLoading, blogError] = useCollection(query(collection(firestore, 'blogPosts'), orderBy('createdAt', 'desc')));
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -300,7 +322,7 @@ const MessagesView = () => {
 export default function AdminRootPage() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages' | 'performance' | 'settings'>('dashboard');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -329,6 +351,10 @@ export default function AdminRootPage() {
         return <BlogView />;
       case 'messages':
         return <MessagesView />;
+      case 'performance':
+        return <PerformanceView />;
+      case 'settings':
+        return <SettingsView />;
       case 'dashboard':
       default:
         return <DashboardView />;
