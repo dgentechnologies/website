@@ -54,7 +54,7 @@ export default function AdminLayout({
 
   // If the user is on the login page, just render the page content without the layout.
   if (pathname === '/admin/login') {
-      return <>{children}</>;
+      return <div className="dark">{children}</div>;
   }
   
   // If not loading and still no user, we are about to redirect.
@@ -66,53 +66,55 @@ export default function AdminLayout({
   // If we have a user, render the full admin layout.
   return (
     <SidebarProvider>
-        <Sidebar>
-            <SidebarHeader>
-                <div className="flex items-center gap-2 p-2">
-                    <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
-                    <SidebarTrigger/>
-                </div>
-            </SidebarHeader>
-            <SidebarContent>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton asChild isActive={pathname === '/admin'}>
-                           <Link href="/admin"><LayoutDashboard /> Dashboard</Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton asChild isActive={pathname.startsWith('/admin/blog')}>
-                             <Link href="/admin/blog/manage"><FileText /> Blog</Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                     <SidebarMenuItem>
-                        <SidebarMenuButton asChild isActive={pathname === '/admin/messages'}>
-                           <Link href="/admin/messages"><MessageSquare /> Messages</Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarContent>
-            <div className="mt-auto p-2">
-                 <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton onClick={() => signOut(auth)}>
-                            <LogOut /> Sign Out
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                 </SidebarMenu>
-            </div>
-        </Sidebar>
-        <SidebarInset>
-            <header className="bg-card/50 border-b p-2 md:hidden">
-                <div className="container max-w-screen-lg flex justify-between items-center h-12">
-                     <Link href="/admin" className="flex items-center space-x-2">
+        <div className="dark">
+            <Sidebar>
+                <SidebarHeader>
+                    <div className="flex items-center gap-2 p-2">
                         <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
-                    </Link>
-                    <SidebarTrigger/>
+                        <SidebarTrigger/>
+                    </div>
+                </SidebarHeader>
+                <SidebarContent>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild isActive={pathname === '/admin'}>
+                            <Link href="/admin"><LayoutDashboard /> Dashboard</Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild isActive={pathname.startsWith('/admin/blog')}>
+                                <Link href="/admin/blog/manage"><FileText /> Blog</Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild isActive={pathname === '/admin/messages'}>
+                            <Link href="/admin/messages"><MessageSquare /> Messages</Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarContent>
+                <div className="mt-auto p-2">
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton onClick={() => signOut(auth)}>
+                                <LogOut /> Sign Out
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
                 </div>
-            </header>
-            {children}
-        </SidebarInset>
+            </Sidebar>
+            <SidebarInset>
+                <header className="bg-card/50 border-b p-2 md:hidden">
+                    <div className="container max-w-screen-lg flex justify-between items-center h-12">
+                        <Link href="/admin" className="flex items-center space-x-2">
+                            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
+                        </Link>
+                        <SidebarTrigger/>
+                    </div>
+                </header>
+                {children}
+            </SidebarInset>
+        </div>
     </SidebarProvider>
     );
 }
