@@ -9,7 +9,7 @@ import AdminDashboardLayout from './(dashboard)/layout';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { MessageSquare, Users, FileText, ArrowRight, List, MoreHorizontal, Eye, Pencil, Trash2, Activity, Clock, Zap, Server, Globe, Shield, Bell, Palette, User, Lock } from 'lucide-react';
+import { MessageSquare, Users, FileText, ArrowRight, List, MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -41,34 +41,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 import { BlogPost } from '@/types/blog';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 
-// --- Dashboard Activity Chart Data ---
-const activityData = [
-  { month: 'Jan', visitors: 1200, pageViews: 3400 },
-  { month: 'Feb', visitors: 1400, pageViews: 4200 },
-  { month: 'Mar', visitors: 1100, pageViews: 3100 },
-  { month: 'Apr', visitors: 1600, pageViews: 4800 },
-  { month: 'May', visitors: 1800, pageViews: 5200 },
-  { month: 'Jun', visitors: 2100, pageViews: 6100 },
-];
-
-const chartConfig: ChartConfig = {
-  visitors: {
-    label: 'Visitors',
-    color: 'hsl(var(--primary))',
-  },
-  pageViews: {
-    label: 'Page Views',
-    color: 'hsl(var(--muted-foreground))',
-  },
-};
-
-// --- Dashboard View Component ---
 const DashboardView = () => {
   const [messages, messagesLoading] = useCollection(collection(firestore, 'contactMessages'));
   const [posts, postsLoading] = useCollection(collection(firestore, 'blogPosts'));
@@ -84,7 +57,7 @@ const DashboardView = () => {
           <p className="text-foreground/70 mt-1">An overview of your website's activity.</p>
         </div>
       </div>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
@@ -116,344 +89,10 @@ const DashboardView = () => {
           </CardContent>
         </Card>
       </div>
-      
-      {/* Activity Graph */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Activity className="h-5 w-5 text-primary" />
-            Website Activity
-          </CardTitle>
-          <CardDescription>Monthly visitors and page views over the last 6 months</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="h-[300px] w-full">
-            <AreaChart data={activityData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="colorPageViews" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-              <XAxis dataKey="month" className="text-xs" />
-              <YAxis className="text-xs" />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Area 
-                type="monotone" 
-                dataKey="pageViews" 
-                stroke="hsl(var(--muted-foreground))" 
-                fillOpacity={1} 
-                fill="url(#colorPageViews)" 
-                name="pageViews"
-              />
-              <Area 
-                type="monotone" 
-                dataKey="visitors" 
-                stroke="hsl(var(--primary))" 
-                fillOpacity={1} 
-                fill="url(#colorVisitors)" 
-                name="visitors"
-              />
-            </AreaChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
     </div>
   );
 };
 
-// --- Performance View Component ---
-const performanceData = [
-  { name: 'Mon', responseTime: 120 },
-  { name: 'Tue', responseTime: 98 },
-  { name: 'Wed', responseTime: 145 },
-  { name: 'Thu', responseTime: 110 },
-  { name: 'Fri', responseTime: 89 },
-  { name: 'Sat', responseTime: 78 },
-  { name: 'Sun', responseTime: 95 },
-];
-
-const performanceChartConfig: ChartConfig = {
-  responseTime: {
-    label: 'Response Time (ms)',
-    color: 'hsl(var(--primary))',
-  },
-};
-
-const PerformanceView = () => (
-  <div>
-    <div className="flex items-center justify-between mb-8">
-      <div>
-        <h1 className="text-3xl font-headline font-bold">Performance</h1>
-        <p className="text-foreground/70 mt-1">Monitor your website's speed, uptime, and health metrics.</p>
-      </div>
-    </div>
-
-    {/* Performance Metrics Cards */}
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Uptime</CardTitle>
-          <Server className="h-4 w-4 text-green-500" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-green-500">99.9%</div>
-          <p className="text-xs text-muted-foreground">Last 30 days</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Avg Response</CardTitle>
-          <Clock className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">105ms</div>
-          <p className="text-xs text-muted-foreground">Server response time</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Page Load</CardTitle>
-          <Zap className="h-4 w-4 text-yellow-500" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">1.2s</div>
-          <p className="text-xs text-muted-foreground">Average load time</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">Global CDN</CardTitle>
-          <Globe className="h-4 w-4 text-primary" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-green-500">Active</div>
-          <p className="text-xs text-muted-foreground">Edge locations: 34</p>
-        </CardContent>
-      </Card>
-    </div>
-
-    {/* Response Time Chart */}
-    <Card className="mb-8">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Activity className="h-5 w-5 text-primary" />
-          Response Time Trend
-        </CardTitle>
-        <CardDescription>Average server response time over the last 7 days</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={performanceChartConfig} className="h-[250px] w-full">
-          <BarChart data={performanceData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-            <XAxis dataKey="name" className="text-xs" />
-            <YAxis className="text-xs" />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <Bar dataKey="responseTime" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} name="responseTime" />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-
-    {/* Core Web Vitals */}
-    <Card>
-      <CardHeader>
-        <CardTitle>Core Web Vitals</CardTitle>
-        <CardDescription>Key performance metrics for user experience</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-green-500" />
-              <span className="text-sm font-medium">Largest Contentful Paint (LCP)</span>
-            </div>
-            <span className="text-sm font-bold">1.8s</span>
-          </div>
-          <Progress value={72} className="h-2" />
-          <p className="text-xs text-muted-foreground">Good (should be under 2.5s)</p>
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-green-500" />
-              <span className="text-sm font-medium">First Input Delay (FID)</span>
-            </div>
-            <span className="text-sm font-bold">45ms</span>
-          </div>
-          <Progress value={85} className="h-2" />
-          <p className="text-xs text-muted-foreground">Good (should be under 100ms)</p>
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-yellow-500" />
-              <span className="text-sm font-medium">Cumulative Layout Shift (CLS)</span>
-            </div>
-            <span className="text-sm font-bold">0.12</span>
-          </div>
-          <Progress value={60} className="h-2" />
-          <p className="text-xs text-muted-foreground">Needs improvement (should be under 0.1)</p>
-        </div>
-      </CardContent>
-    </Card>
-  </div>
-);
-
-// --- Settings View Component ---
-const SettingsView = () => {
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const [twoFactor, setTwoFactor] = useState(false);
-  const { toast } = useToast();
-
-  const handleSaveSettings = () => {
-    toast({
-      title: 'Settings Saved',
-      description: 'Your preferences have been updated successfully.',
-    });
-  };
-
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-headline font-bold">Settings</h1>
-          <p className="text-foreground/70 mt-1">Manage your admin preferences and website configuration.</p>
-        </div>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Notification Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bell className="h-5 w-5 text-primary" />
-              Notifications
-            </CardTitle>
-            <CardDescription>Configure how you receive updates and alerts</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="email-notifications" className="font-medium">Email Notifications</Label>
-                <p className="text-sm text-muted-foreground">Receive updates via email</p>
-              </div>
-              <Switch 
-                id="email-notifications" 
-                checked={emailNotifications} 
-                onCheckedChange={setEmailNotifications} 
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="push-notifications" className="font-medium">Push Notifications</Label>
-                <p className="text-sm text-muted-foreground">Receive browser push notifications</p>
-              </div>
-              <Switch 
-                id="push-notifications" 
-                checked={pushNotifications} 
-                onCheckedChange={setPushNotifications} 
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Appearance Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Palette className="h-5 w-5 text-primary" />
-              Appearance
-            </CardTitle>
-            <CardDescription>Customize the look and feel of your dashboard</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="dark-mode" className="font-medium">Dark Mode</Label>
-                <p className="text-sm text-muted-foreground">Use dark theme for the dashboard</p>
-              </div>
-              <Switch 
-                id="dark-mode" 
-                checked={darkMode} 
-                onCheckedChange={setDarkMode} 
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Security Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-primary" />
-              Security
-            </CardTitle>
-            <CardDescription>Manage your account security settings</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="two-factor" className="font-medium">Two-Factor Authentication</Label>
-                <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
-              </div>
-              <Switch 
-                id="two-factor" 
-                checked={twoFactor} 
-                onCheckedChange={setTwoFactor} 
-              />
-            </div>
-            <div className="pt-2">
-              <Button variant="outline" className="w-full">
-                <Lock className="mr-2 h-4 w-4" />
-                Change Password
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Profile Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5 text-primary" />
-              Profile
-            </CardTitle>
-            <CardDescription>Manage your account information</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="h-8 w-8 text-primary" />
-              </div>
-              <div>
-                <p className="font-medium">Admin User</p>
-                <p className="text-sm text-muted-foreground">admin@dgentechnologies.com</p>
-              </div>
-            </div>
-            <Button variant="outline" className="w-full">
-              Edit Profile
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Save Button */}
-      <div className="mt-8 flex justify-end">
-        <Button onClick={handleSaveSettings} size="lg">
-          Save Settings
-        </Button>
-      </div>
-    </div>
-  );
-};
 const BlogView = () => {
   const [blogPosts, blogLoading, blogError] = useCollection(query(collection(firestore, 'blogPosts'), orderBy('createdAt', 'desc')));
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -592,7 +231,6 @@ const BlogView = () => {
   );
 };
 
-// --- Messages View Component ---
 interface ContactMessage {
     id: string;
     name: string;
@@ -655,11 +293,10 @@ const MessagesView = () => {
 };
 
 
-// --- Main Admin Page Component ---
 export default function AdminRootPage() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages' | 'performance' | 'settings'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages'>('dashboard');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -688,10 +325,6 @@ export default function AdminRootPage() {
         return <BlogView />;
       case 'messages':
         return <MessagesView />;
-      case 'performance':
-        return <PerformanceView />;
-      case 'settings':
-        return <SettingsView />;
       case 'dashboard':
       default:
         return <DashboardView />;
