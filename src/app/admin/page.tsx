@@ -7,7 +7,7 @@ export default function AdminRootPage() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace('/admin/blog/manage');
+    router.replace('/admin/dashboard');
   }, [router]);
 
   // Render nothing or a loading spinner while redirecting
