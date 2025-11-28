@@ -73,7 +73,9 @@ export default function AdminDashboardLayout({ children, activeView, setActiveVi
                         <SidebarTrigger/>
                     </div>
                 </header>
-                {children}
+                <div className="p-4 md:p-8">
+                    {children}
+                </div>
             </SidebarInset>
         </div>
     </SidebarProvider>

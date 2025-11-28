@@ -338,9 +338,7 @@ export default function AdminRootPage() {
 
   return (
     <AdminDashboardLayout activeView={activeView} setActiveView={setActiveView}>
-      <div className="flex-1 p-4 md:p-8">
-        {renderContent()}
-      </div>
+      {renderContent()}
     </AdminDashboardLayout>
   );
 }
