@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -147,7 +148,7 @@ const BlogView = () => {
             <CardContent className="flex-grow flex items-end">
                 <Button asChild className="w-full group">
                 <Link href="/admin/blog/create">
-                    Create with AI <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    Create New Post <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 </Button>
             </CardContent>
@@ -296,7 +297,7 @@ const MessagesView = () => {
 export default function AdminRootPage() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages' | 'performance' | 'settings'>('dashboard');
 
   useEffect(() => {
     if (!loading && !user) {
