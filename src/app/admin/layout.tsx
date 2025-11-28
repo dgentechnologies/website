@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -6,42 +5,26 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { auth } from '@/firebase/client';
 import { Skeleton } from '@/components/ui/skeleton';
-import { signOut } from 'firebase/auth';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarTrigger,
-  SidebarInset,
-  SidebarProvider
-} from "@/components/ui/sidebar";
-import { LayoutDashboard, FileText, MessageSquare, PlusCircle, LogOut, Settings } from 'lucide-react';
-import Image from 'next/image';
 
-export default function AdminLayout({
+export default function AdminRootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    // If auth state is resolved and there's no user,
-    // and we are not already on the login page, redirect.
     if (!loading && !user && pathname !== '/admin/login') {
       router.push('/admin/login');
     }
+    if (!loading && user && pathname === '/admin/login') {
+      router.push('/admin');
+    }
   }, [user, loading, router, pathname]);
 
-  // While loading, show a skeleton screen to prevent flicker.
-  if (loading) {
+  if (loading && pathname !== '/admin/login') {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background">
             <div className="space-y-4 w-full max-w-md">
@@ -51,70 +34,10 @@ export default function AdminLayout({
         </div>
     );
   }
-
-  // If the user is on the login page, just render the page content without the layout.
-  if (pathname === '/admin/login') {
-      return <div>{children}</div>;
-  }
   
-  // If not loading and still no user, we are about to redirect.
-  // Return null to prevent rendering the admin layout for a split second.
-  if (!user) {
+  if (!user && pathname !== '/admin/login') {
     return null;
   }
 
-  // If we have a user, render the full admin layout.
-  return (
-    <SidebarProvider>
-        <div>
-            <Sidebar>
-                <SidebarHeader>
-                    <div className="flex items-center gap-2 p-2">
-                        <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
-                        <SidebarTrigger/>
-                    </div>
-                </SidebarHeader>
-                <SidebarContent>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={pathname === '/admin'}>
-                            <Link href="/admin"><LayoutDashboard /> Dashboard</Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={pathname.startsWith('/admin/blog')}>
-                                <Link href="/admin/blog/manage"><FileText /> Blog</Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={pathname === '/admin/messages'}>
-                            <Link href="/admin/messages"><MessageSquare /> Messages</Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarContent>
-                <div className="mt-auto p-2">
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton onClick={() => signOut(auth)}>
-                                <LogOut /> Sign Out
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </div>
-            </Sidebar>
-            <SidebarInset>
-                <header className="bg-card/50 border-b p-2 md:hidden">
-                    <div className="container max-w-screen-lg flex justify-between items-center h-12">
-                        <Link href="/admin" className="flex items-center space-x-2">
-                            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
-                        </Link>
-                        <SidebarTrigger/>
-                    </div>
-                </header>
-                {children}
-            </SidebarInset>
-        </div>
-    </SidebarProvider>
-    );
+  return <div>{children}</div>;
 }

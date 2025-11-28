@@ -1,12 +1,8 @@
 'use client';
 
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
-import { auth } from '@/firebase/client';
-import { Skeleton } from '@/components/ui/skeleton';
 import { signOut } from 'firebase/auth';
-import Link from 'next/link';
+import { LayoutDashboard, FileText, MessageSquare, LogOut } from 'lucide-react';
+import Image from 'next/image';
 import {
   Sidebar,
   SidebarContent,
@@ -18,42 +14,16 @@ import {
   SidebarInset,
   SidebarProvider
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, FileText, MessageSquare, LogOut } from 'lucide-react';
-import Image from 'next/image';
+import { auth } from '@/firebase/client';
+import Link from 'next/link';
 
-export default function AdminDashboardLayout({
-  children,
-}: {
+type AdminLayoutProps = {
   children: React.ReactNode;
-}) {
-  const [user, loading, error] = useAuthState(auth);
-  const router = useRouter();
-  const pathname = usePathname();
+  activeView: 'dashboard' | 'blog' | 'messages';
+  setActiveView: (view: 'dashboard' | 'blog' | 'messages') => void;
+};
 
-  useEffect(() => {
-    if (!loading && !user && pathname !== '/admin/login') {
-      router.push('/admin/login');
-    }
-  }, [user, loading, router, pathname]);
-
-  if (loading) {
-    return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-            <div className="space-y-4 w-full max-w-md">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-96 w-full" />
-            </div>
-        </div>
-    );
-  }
-
-  if (pathname === '/admin/login') {
-      return <div>{children}</div>;
-  }
-  
-  if (!user) {
-    return null;
-  }
+export default function AdminDashboardLayout({ children, activeView, setActiveView }: AdminLayoutProps) {
 
   return (
     <SidebarProvider>
@@ -68,18 +38,18 @@ export default function AdminDashboardLayout({
                 <SidebarContent>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={pathname === '/admin'}>
-                            <Link href="/admin"><LayoutDashboard /> Dashboard</Link>
+                            <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={activeView === 'dashboard'}>
+                                <LayoutDashboard /> Dashboard
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={pathname.startsWith('/admin/blog')}>
-                                <Link href="/admin/blog"><FileText /> Blog</Link>
+                            <SidebarMenuButton onClick={() => setActiveView('blog')} isActive={activeView === 'blog'}>
+                                <FileText /> Blog
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={pathname.startsWith('/admin/messages')}>
-                            <Link href="/admin/messages"><MessageSquare /> Messages</Link>
+                            <SidebarMenuButton onClick={() => setActiveView('messages')} isActive={activeView === 'messages'}>
+                                <MessageSquare /> Messages
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
@@ -97,7 +67,7 @@ export default function AdminDashboardLayout({
             <SidebarInset>
                 <header className="bg-card/50 border-b p-2 md:hidden">
                     <div className="container max-w-screen-lg flex justify-between items-center h-12">
-                        <Link href="/admin" className="flex items-center space-x-2">
+                        <Link href="/" className="flex items-center space-x-2">
                             <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
                         </Link>
                         <SidebarTrigger/>
@@ -107,5 +77,7 @@ export default function AdminDashboardLayout({
             </SidebarInset>
         </div>
     </SidebarProvider>
-    );
+  );
 }
+
+    
