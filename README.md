@@ -74,6 +74,9 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```
     The application will be available at `http://localhost:9002`.
 
+> [!NOTE]
+> For Windows PowerShell, you can run: `npm install; npm run dev`.
+
 ## 🤖 AI-Powered Content Generation
 
 This project uses **Genkit** to connect to Google's Gemini AI models. The core AI functionalities are:
@@ -84,6 +87,8 @@ This project uses **Genkit** to connect to Google's Gemini AI models. The core A
 
 The relevant AI flows are located in `src/ai/flows/`.
 
+See `docs/api.md` for detailed flow inputs/outputs and example payloads.
+
 ## 🔥 Firebase Integration
 
 The application is tightly integrated with Firebase for its backend services:
@@ -92,12 +97,42 @@ The application is tightly integrated with Firebase for its backend services:
 - **Security Rules**: The `firestore.rules` file is configured to allow public read access for blog content while securing write access.
 - **Client-Side SDK**: The app uses the Firebase client-side SDK for all interactions, with initialization managed in `src/firebase/client.ts`.
 
+> [!WARNING]
+> Ensure your `firestore.rules` match your deployment environment. Restrict write access to authenticated admin users only.
+
 ## 🌐 Deployment
 
 This application is optimized for deployment on serverless platforms like **Firebase App Hosting** or **Vercel**.
 
 - The `apphosting.yaml` file provides basic configuration for Firebase App Hosting.
 - To deploy, simply connect your Git repository to your chosen hosting provider and ensure all environment variables from your `.env.local` file are configured in the deployment settings.
+
+## 🧭 Project Architecture
+
+The site uses a modular Next.js App Router structure with clear separation of public pages, admin routes, UI components, and AI flows.
+
+```mermaid
+flowchart LR
+    A[Public Pages src/app] -->|reads| B[Firestore]
+    A --> C[Unsplash API]
+    D[Admin Dashboard src/app/(admin)] -->|CRUD| B
+    D --> E[Genkit Flows src/ai/flows]
+    E --> F[Google Gemini]
+    subgraph UI
+        G[ShadCN UI Components]
+        H[Tailwind CSS]
+    end
+    A --> G
+    D --> G
+    G --> H
+```
+
+## 📚 Additional Documentation
+
+- `docs/architecture.md` — System architecture, sequence diagrams, and ERD
+- `docs/admin.md` — Admin dashboard usage and configuration
+- `docs/api.md` — API routes and AI flows documentation
+- `CONTRIBUTING.md` — Contribution standards and workflow
 
 ---
 
