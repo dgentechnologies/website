@@ -59,44 +59,6 @@ function extractJson(text: string): string {
     return text; // Return original text if no JSON block is found
 }
 
-// Server-only helper function to get recently used image hints from Firestore
-async function getRecentHints(): Promise<string[]> {
-    const { adminFirestore } = await import('@/firebase/server');
-    const fsAdmin = await import('firebase-admin/firestore');
-
-    const sixtyDaysAgo = new Date();
-    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-
-    const hintsCollectionRef = fsAdmin.collection(adminFirestore, 'usedImageHints');
-    const q = fsAdmin.query(hintsCollectionRef, fsAdmin.where('createdAt', '>=', sixtyDaysAgo));
-    
-    try {
-        const querySnapshot = await fsAdmin.getDocs(q);
-        const hints = querySnapshot.docs.map(doc => doc.data().hint as string);
-        return [...new Set(hints)]; // Return unique hints
-    } catch (error) {
-        console.error("Error fetching recent hints:", error);
-        return [];
-    }
-}
-
-// Server-only helper function to save a used hint
-async function saveUsedHint(hint: string) {
-    const { adminFirestore } = await import('@/firebase/server');
-    const fsAdmin = await import('firebase-admin/firestore');
-    
-    try {
-        const hintsCollectionRef = fsAdmin.collection(adminFirestore, 'usedImageHints');
-        await fsAdmin.addDoc(hintsCollectionRef, {
-            hint: hint,
-            createdAt: fsAdmin.FieldValue.serverTimestamp(),
-        });
-    } catch (error) {
-        console.error("Error saving used hint:", error);
-    }
-}
-
-
 const generateBlogPostFlow = ai.defineFlow(
   {
     name: 'generateBlogPostFlow',
@@ -105,13 +67,8 @@ const generateBlogPostFlow = ai.defineFlow(
   },
   async (input) => {
     
-    const recentHints = await getRecentHints();
-    // Manually add 'city skyline' to ensure it's avoided
-    if (!recentHints.includes('city skyline')) {
-        recentHints.push('city skyline');
-    }
-
-    const recentHintsText = recentHints.length > 0 ? `\n\n**RECENTLY USED HINTS (DO NOT USE):**\n${recentHints.map(h => `- ${h}`).join('\n')}` : '';
+    const hintsToAvoid = ['city skyline', 'technology', 'abstract', 'innovation', 'future'];
+    const exclusionText = `\n\n**KEYWORDS TO AVOID (DO NOT USE):**\n${hintsToAvoid.map(h => `- ${h}`).join('\n')}`;
 
     const prompt = `
 You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging, reflecting the unique voice and perspective of the specified author.
@@ -134,14 +91,14 @@ Your most important task is generating 'imageHints'. These are search keywords f
 - **GOOD KEYWORDS:** "data network", "glowing circuits", "people collaborating", "urban garden", "solar panels", "modern architecture", "connected devices".
 - **BAD KEYWORDS:** "Corporate Innovation", "Citizen Engagement", "Infrastructure Development", "Collaborative Ecosystem". These are abstract and will not find images.
 - **Focus on CONCRETE and VISUAL terms** that are directly related to the specific blog topic: "${input.topic}".
-${recentHintsText}
+${exclusionText}
 
 **CRITICAL RULES:**
 1. Do NOT change or reinterpret the topic. The post must be about: "${input.topic}".
 2. Do NOT generate random or unrelated topics.
 3. Do NOT invent a new author. The author must be ${input.author}.
 4. Do NOT generate an 'image' URL. You will only generate 'imageHints'.
-5. Do NOT use any of the "RECENTLY USED HINTS" in your new 'imageHints' array.
+5. Do NOT use any of the "KEYWORDS TO AVOID" in your new 'imageHints' array.
 6. Output ONLY a single, valid JSON object matching the required structure. Do not include any markdown formatting like \`\`\`json.
 `;
 
@@ -185,7 +142,16 @@ ${recentHintsText}
     let imageUrl = '';
     let usedHint = '';
     if (finalOutput.imageHints && Array.isArray(finalOutput.imageHints)) {
-      for (const hint of finalOutput.imageHints) {
+      // Prioritize two-word hints by sorting them first
+      const sortedHints = [...finalOutput.imageHints].sort((a, b) => {
+        const aIsTwoWords = a.includes(' ');
+        const bIsTwoWords = b.includes(' ');
+        if (aIsTwoWords && !bIsTwoWords) return -1;
+        if (!aIsTwoWords && bIsTwoWords) return 1;
+        return 0;
+      });
+
+      for (const hint of sortedHints) {
         try {
           const result = await unsplash.search.getPhotos({
             query: hint,
@@ -198,14 +164,7 @@ ${recentHintsText}
             imageUrl = result.response.results[0].urls.regular;
             usedHint = hint;
             console.log(`Successfully fetched image from Unsplash for hint: "${hint}"`);
-            
-            // Save the used hint to Firestore
-            await saveUsedHint(usedHint);
-
-            // Prioritize two-word hints for more specificity
-            if (hint.includes(' ')) {
-                break;
-            }
+            break; // Stop after the first success
           }
         } catch (error) {
           console.error(`Failed to fetch image from Unsplash for hint "${hint}":`, error);
@@ -239,3 +198,5 @@ ${recentHintsText}
     return finalOutput as BlogPostOutput;
   }
 );
+
+    

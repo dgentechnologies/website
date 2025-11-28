@@ -84,23 +84,6 @@
         }
       },
       "required": ["name", "email", "subject", "message", "createdAt"]
-    },
-    "usedImageHint": {
-      "title": "Used Image Hint",
-      "description": "Stores a record of an image hint that has been successfully used.",
-      "type": "object",
-      "properties": {
-        "hint": {
-          "type": "string",
-          "description": "The keyword hint used for an image search."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "The timestamp when the hint was used."
-        }
-      },
-      "required": ["hint", "createdAt"]
     }
   },
   "auth": {
@@ -118,12 +101,8 @@
         "$ref": "#/entities/contactMessage"
       },
       "description": "Stores messages submitted through the contact form."
-    },
-    "/usedImageHints/{hintId}": {
-      "schema": {
-        "$ref": "#/entities/usedImageHint"
-      },
-      "description": "Stores keywords that have been used for hero images to avoid duplication."
     }
   }
 }
+
+    
