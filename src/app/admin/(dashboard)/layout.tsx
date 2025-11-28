@@ -75,7 +75,7 @@ export default function AdminDashboardLayout({
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild isActive={pathname.startsWith('/admin/blog')}>
-                                <Link href="/admin/blog/manage"><FileText /> Blog</Link>
+                                <Link href="/admin/blog"><FileText /> Blog</Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
