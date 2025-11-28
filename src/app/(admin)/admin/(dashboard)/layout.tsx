@@ -14,6 +14,7 @@ import {
   SidebarInset,
   SidebarProvider
 } from "@/components/ui/sidebar";
+import { Button } from '@/components/ui/button';
 import { auth } from '@/firebase/client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -40,21 +41,21 @@ export default function AdminDashboardLayout({ children }: AdminLayoutProps) {
                 <SidebarContent>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <Button variant={activeView === 'dashboard' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
+                            <Button variant={pathname === '/admin' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
                                 <Link href="/admin">
                                     <LayoutDashboard /> Dashboard
                                 </Link>
                             </Button>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                             <Button variant={activeView === 'blog' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
-                                <Link href="/admin/blog">
+                             <Button variant={pathname.startsWith('/admin/blog') ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
+                                <Link href="/admin/blog/create">
                                     <FileText /> Blog
                                 </Link>
                             </Button>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                             <Button variant={activeView === 'messages' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
+                             <Button variant={pathname.startsWith('/admin/messages') ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
                                 <Link href="/admin/messages">
                                     <MessageSquare /> Messages
                                 </Link>
