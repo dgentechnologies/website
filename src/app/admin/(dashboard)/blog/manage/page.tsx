@@ -17,7 +17,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, Pencil, Trash2, PlusCircle, Eye, ArrowRight, List } from 'lucide-react';
+import { MoreHorizontal, Pencil, Trash2, Eye, PlusCircle, ArrowRight, List } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -77,8 +77,7 @@ export default function ManageBlogPage() {
     };
     
   return (
-    <>
-      <div className="flex-1 p-4 md:p-8 space-y-8">
+    <div className="flex-1 p-4 md:p-8 space-y-8">
         <div className="flex items-center justify-between">
             <div>
                 <h1 className="text-3xl font-headline font-bold">Blog Management</h1>
@@ -106,22 +105,25 @@ export default function ManageBlogPage() {
             </CardContent>
             </Card>
 
-            <Card className="flex flex-col hover:shadow-lg hover:border-primary/20 transition-all">
+            <Card className="flex flex-col bg-card/50 border-dashed">
             <CardHeader>
                 <div className='flex items-start justify-between'>
                     <div>
-                        <CardTitle className="font-headline text-xl">Manage Existing Posts</CardTitle>
-                        <CardDescription className="mt-2">View, edit, or delete your currently published blog posts. Review analytics and performance.</CardDescription>
+                        <CardTitle className="font-headline text-xl">Manage Posts</CardTitle>
+                        <CardDescription className="mt-2">You are here. View, edit, or delete your posts in the table below.</CardDescription>
                     </div>
                     <List className="h-8 w-8 text-primary" />
                 </div>
             </CardHeader>
             <CardContent className="flex-grow flex items-end">
-                 <p className="text-sm text-foreground/70">You are currently viewing the post manager below.</p>
+                 <Button disabled className="w-full" variant="outline">
+                    Currently Viewing
+                 </Button>
             </CardContent>
             </Card>
         </div>
-        
+
+
         <Card>
             <CardHeader>
                 <CardTitle>All Posts</CardTitle>
@@ -165,7 +167,7 @@ export default function ManageBlogPage() {
                       <TableCell className="font-medium">
                           {post.title}
                       </TableCell>
-                      <TableCell className="hidden md-table-cell">{post.author}</TableCell>
+                      <TableCell className="hidden md:table-cell">{post.author}</TableCell>
                       <TableCell className="hidden sm:table-cell">{post.date}</TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
@@ -204,7 +206,6 @@ export default function ManageBlogPage() {
             </Table>
           </CardContent>
         </Card>
-      </div>
 
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
@@ -223,6 +224,6 @@ export default function ManageBlogPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   );
 }
