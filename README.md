@@ -168,6 +168,9 @@ flowchart LR
 - `docs/api.md` — API routes and AI flows
 - `docs/performance.md` — Performance guidance and integrations
 - `CONTRIBUTING.md` — Contribution standards and workflow
+ - `SECURITY.md` — Security policy and vulnerability reporting
+ - `CODE_OF_CONDUCT.md` — Community standards and enforcement
+ - `PRIVACY.md` — Data handling and retention notice
 
 ---
 
