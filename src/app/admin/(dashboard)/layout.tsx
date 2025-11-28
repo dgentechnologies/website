@@ -69,8 +69,8 @@ export default function AdminDashboardLayout({
                 <SidebarContent>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={pathname === '/admin/dashboard'}>
-                            <Link href="/admin/dashboard"><LayoutDashboard /> Dashboard</Link>
+                            <SidebarMenuButton asChild isActive={pathname === '/admin'}>
+                            <Link href="/admin"><LayoutDashboard /> Dashboard</Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
@@ -98,7 +98,7 @@ export default function AdminDashboardLayout({
             <SidebarInset>
                 <header className="bg-card/50 border-b p-2 md:hidden">
                     <div className="container max-w-screen-lg flex justify-between items-center h-12">
-                        <Link href="/admin/dashboard" className="flex items-center space-x-2">
+                        <Link href="/admin" className="flex items-center space-x-2">
                             <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={20} className="h-7 w-auto" />
                         </Link>
                         <SidebarTrigger/>
