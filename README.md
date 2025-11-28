@@ -149,7 +149,7 @@ The site uses a modular Next.js App Router structure with clear separation of pu
 flowchart LR
     A[Public Pages src/app] -->|reads| B[Firestore]
     A --> C[Unsplash API]
-    D[Admin Dashboard src/app/(admin)] -->|CRUD| B
+    D[Admin Dashboard src/app/admin] -->|CRUD| B
     D --> E[Genkit Flows src/ai/flows]
     E --> F[Google Gemini]
     subgraph UI
