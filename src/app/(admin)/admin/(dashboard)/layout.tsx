@@ -16,14 +16,16 @@ import {
 } from "@/components/ui/sidebar";
 import { auth } from '@/firebase/client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type AdminLayoutProps = {
   children: React.ReactNode;
-  activeView: 'dashboard' | 'blog' | 'messages';
-  setActiveView: (view: 'dashboard' | 'blog' | 'messages') => void;
 };
 
-export default function AdminDashboardLayout({ children, activeView, setActiveView }: AdminLayoutProps) {
+export default function AdminDashboardLayout({ children }: AdminLayoutProps) {
+  const pathname = usePathname();
+  // We can derive the active view from the pathname, making the state management simpler.
+  const activeView = pathname.includes('/blog') ? 'blog' : pathname.includes('/messages') ? 'messages' : 'dashboard';
 
   return (
     <SidebarProvider>
@@ -38,19 +40,25 @@ export default function AdminDashboardLayout({ children, activeView, setActiveVi
                 <SidebarContent>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton onClick={() => setActiveView('dashboard')} isActive={activeView === 'dashboard'}>
-                                <LayoutDashboard /> Dashboard
-                            </SidebarMenuButton>
+                            <Button variant={activeView === 'dashboard' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
+                                <Link href="/admin">
+                                    <LayoutDashboard /> Dashboard
+                                </Link>
+                            </Button>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                            <SidebarMenuButton onClick={() => setActiveView('blog')} isActive={activeView === 'blog'}>
-                                <FileText /> Blog
-                            </SidebarMenuButton>
+                             <Button variant={activeView === 'blog' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
+                                <Link href="/admin/blog">
+                                    <FileText /> Blog
+                                </Link>
+                            </Button>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                            <SidebarMenuButton onClick={() => setActiveView('messages')} isActive={activeView === 'messages'}>
-                                <MessageSquare /> Messages
-                            </SidebarMenuButton>
+                             <Button variant={activeView === 'messages' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
+                                <Link href="/admin/messages">
+                                    <MessageSquare /> Messages
+                                </Link>
+                            </Button>
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarContent>

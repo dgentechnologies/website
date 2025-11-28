@@ -298,7 +298,7 @@ const MessagesView = () => {
 
 // --- Main Admin Page Component ---
 export default function AdminRootPage() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages'>('dashboard');
 
@@ -320,24 +320,23 @@ export default function AdminRootPage() {
   }
 
   if (!user) {
-    return null; // Or a login redirect component
+    return null; // The layout's useEffect will handle the redirect
   }
-
+  
   const renderContent = () => {
     switch (activeView) {
-      case 'dashboard':
-        return <DashboardView />;
       case 'blog':
         return <BlogView />;
       case 'messages':
         return <MessagesView />;
+      case 'dashboard':
       default:
         return <DashboardView />;
     }
   };
 
   return (
-    <AdminDashboardLayout activeView={activeView} setActiveView={setActiveView}>
+    <AdminDashboardLayout>
       {renderContent()}
     </AdminDashboardLayout>
   );
