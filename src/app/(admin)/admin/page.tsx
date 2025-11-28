@@ -336,7 +336,7 @@ export default function AdminRootPage() {
   };
 
   return (
-    <AdminDashboardLayout>
+    <AdminDashboardLayout activeView={activeView} setActiveView={setActiveView}>
       {renderContent()}
     </AdminDashboardLayout>
   );

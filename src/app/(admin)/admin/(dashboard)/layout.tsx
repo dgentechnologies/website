@@ -9,25 +9,23 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
-  SidebarMenuButton,
   SidebarTrigger,
   SidebarInset,
-  SidebarProvider
+  SidebarProvider,
+  SidebarMenuButton
 } from "@/components/ui/sidebar";
 import { Button } from '@/components/ui/button';
 import { auth } from '@/firebase/client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
-type AdminLayoutProps = {
+type AdminDashboardLayoutProps = {
   children: React.ReactNode;
+  activeView: 'dashboard' | 'blog' | 'messages';
+  setActiveView: (view: 'dashboard' | 'blog' | 'messages') => void;
 };
 
-export default function AdminDashboardLayout({ children }: AdminLayoutProps) {
-  const pathname = usePathname();
-  // We can derive the active view from the pathname, making the state management simpler.
-  const activeView = pathname.includes('/blog') ? 'blog' : pathname.includes('/messages') ? 'messages' : 'dashboard';
-
+export default function AdminDashboardLayout({ children, activeView, setActiveView }: AdminDashboardLayoutProps) {
+  
   return (
     <SidebarProvider>
         <div className='bg-background'>
@@ -41,24 +39,18 @@ export default function AdminDashboardLayout({ children }: AdminLayoutProps) {
                 <SidebarContent>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <Button variant={pathname === '/admin' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
-                                <Link href="/admin">
-                                    <LayoutDashboard /> Dashboard
-                                </Link>
+                            <Button variant={activeView === 'dashboard' ? 'secondary' : 'ghost'} className="w-full justify-start" onClick={() => setActiveView('dashboard')}>
+                                <LayoutDashboard /> Dashboard
                             </Button>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                             <Button variant={pathname.startsWith('/admin/blog') ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
-                                <Link href="/admin/blog/create">
-                                    <FileText /> Blog
-                                </Link>
+                             <Button variant={activeView === 'blog' ? 'secondary' : 'ghost'} className="w-full justify-start" onClick={() => setActiveView('blog')}>
+                                <FileText /> Blog
                             </Button>
                         </SidebarMenuItem>
                         <SidebarMenuItem>
-                             <Button variant={pathname.startsWith('/admin/messages') ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
-                                <Link href="/admin/messages">
-                                    <MessageSquare /> Messages
-                                </Link>
+                             <Button variant={activeView === 'messages' ? 'secondary' : 'ghost'} className="w-full justify-start" onClick={() => setActiveView('messages')}>
+                                <MessageSquare /> Messages
                             </Button>
                         </SidebarMenuItem>
                     </SidebarMenu>
