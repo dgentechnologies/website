@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';

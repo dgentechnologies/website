@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -345,5 +344,3 @@ export default function AdminRootPage() {
     </AdminDashboardLayout>
   );
 }
-
-    

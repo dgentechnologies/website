@@ -79,5 +79,3 @@ export default function AdminDashboardLayout({ children, activeView, setActiveVi
     </SidebarProvider>
   );
 }
-
-    
