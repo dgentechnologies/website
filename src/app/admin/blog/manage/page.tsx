@@ -44,10 +44,10 @@ import { auth } from '@/firebase/client';
 
 export default function ManageBlogPage() {
     const [user] = useAuthState(auth);
-    const [blogPosts, blogLoading] = useCollection(
+    const [blogPosts, blogLoading, blogError] = useCollection(
         query(collection(firestore, 'blogPosts'), orderBy('createdAt', 'desc'))
     );
-    const [messages, messagesLoading] = useCollection(
+    const [messages, messagesLoading, messagesError] = useCollection(
         collection(firestore, 'contactMessages')
     );
 
@@ -172,7 +172,7 @@ export default function ManageBlogPage() {
                       <TableCell><Skeleton className="h-8 w-8 ml-auto" /></TableCell>
                     </TableRow>
                   ))}
-                {error && (
+                {blogError && (
                   <TableRow>
                     <TableCell colSpan={4} className="text-center text-destructive">
                       Error loading posts.
@@ -186,7 +186,7 @@ export default function ManageBlogPage() {
                       <TableCell className="font-medium">
                           {post.title}
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">{post.author}</TableCell>
+                      <TableCell className="hidden md-table-cell">{post.author}</TableCell>
                       <TableCell className="hidden sm:table-cell">{post.date}</TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
