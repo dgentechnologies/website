@@ -43,7 +43,7 @@ export default function AdminLayout({
   // While loading, show a skeleton screen to prevent flicker.
   if (loading) {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-background">
             <div className="space-y-4 w-full max-w-md">
                 <Skeleton className="h-12 w-full" />
                 <Skeleton className="h-96 w-full" />
@@ -54,7 +54,7 @@ export default function AdminLayout({
 
   // If the user is on the login page, just render the page content without the layout.
   if (pathname === '/admin/login') {
-      return <div className="dark">{children}</div>;
+      return <div>{children}</div>;
   }
   
   // If not loading and still no user, we are about to redirect.
@@ -66,7 +66,7 @@ export default function AdminLayout({
   // If we have a user, render the full admin layout.
   return (
     <SidebarProvider>
-        <div className="dark">
+        <div>
             <Sidebar>
                 <SidebarHeader>
                     <div className="flex items-center gap-2 p-2">
