@@ -1,5 +1,28 @@
 
-import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle } from 'lucide-react';
+import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves } from 'lucide-react';
+
+export type ProductFeature = {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+};
+
+export type ProductSpecification = {
+  key: string;
+  value: string;
+};
+
+export type ProductQna = {
+  question: string;
+  answer: string;
+};
+
+export type SubProduct = {
+  title: string;
+  description: string;
+  features: ProductFeature[];
+  specifications: ProductSpecification[];
+};
 
 export type Product = {
   slug: string;
@@ -9,19 +32,16 @@ export type Product = {
   icon: LucideIcon;
   images: { url: string; alt: string; hint: string }[];
   longDescription: string;
-  features: {
-    icon: LucideIcon;
-    title: string;
-    description: string;
-  }[];
-  specifications: { key: string; value: string }[];
-  qna: { question: string; answer: string }[];
+  features: ProductFeature[];
+  specifications: ProductSpecification[];
+  qna: ProductQna[];
+  subProducts?: SubProduct[];
 };
 
 export const products: Product[] = [
   {
-    slug: 'smart-street-light',
-    title: 'Smart Street Light',
+    slug: 'auralis-smart-street-light',
+    title: 'Auralis Smart Street Light',
     category: 'Intelligent Urban Lighting',
     shortDescription: 'Advanced IoT-enabled street light with remote management, dimming schedules, and fault detection.',
     icon: Cpu,
@@ -30,23 +50,45 @@ export const products: Product[] = [
       { url: 'https://picsum.photos/seed/smartlight2/1200/800', alt: 'Dashboard showing control panel for smart street lights', hint: 'iot dashboard' },
       { url: 'https://picsum.photos/seed/smartlight3/1200/800', alt: 'Network of connected smart street lights on a map', hint: 'connected network' },
     ],
-    longDescription: 'Our flagship Smart Street Light is the cornerstone of modern urban infrastructure. It integrates advanced IoT technology to provide cities with centralized control, real-time monitoring, and intelligent automation. This product is designed to increase energy efficiency, reduce operational costs, and enhance public safety through reliable and adaptive lighting.',
-    features: [
-      { icon: Wifi, title: 'Remote Management', description: 'Control and monitor your entire lighting grid from a centralized web-based dashboard.' },
-      { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Create custom dimming schedules to save energy during off-peak hours while maintaining safety.' },
-      { icon: Zap, title: 'Predictive Maintenance', description: 'AI-driven fault detection alerts you to potential issues before they cause an outage, streamlining maintenance operations.' },
-    ],
-    specifications: [
-      { key: 'Connectivity', value: 'Cellular (4G/5G), Wi-Fi, or LoRaWAN' },
-      { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
-      { key: 'IP Rating', value: 'IP66' },
-      { key: 'Operating Temperature', value: '-40°C to 60°C' },
-      { key: 'Input Voltage', value: '90-305V AC' },
-    ],
+    longDescription: 'Our flagship Auralis Smart Street Light is the cornerstone of modern urban infrastructure. It integrates advanced IoT technology to provide cities with centralized control, real-time monitoring, and intelligent automation. This product is designed to increase energy efficiency, reduce operational costs, and enhance public safety through reliable and adaptive lighting. The Auralis line is available in two connectivity models to suit different urban environments.',
+    features: [], // Base features can be empty as specifics are in sub-products
+    specifications: [], // Base specs can be empty
     qna: [
       { question: 'How much energy can be saved with these lights?', answer: 'Cities can typically achieve energy savings of 40-60% through intelligent dimming schedules and efficient LED technology.' },
-      { question: 'What communication technology does it use?', answer: 'Our lights are flexible and can be equipped with Cellular (4G/5G), Wi-Fi, or LoRaWAN communication modules depending on the specific needs of the deployment area.' },
+      { question: 'What is the difference between the Auralis V1 and V2?', answer: 'The primary difference is the communication technology. The Auralis V1 (Wi-Fi) is ideal for dense urban areas with existing Wi-Fi coverage, while the Auralis V2 (LoRaWAN) is perfect for wide-area networks covering large parts of a city with low power requirements.' },
     ],
+    subProducts: [
+      {
+        title: 'Auralis V1 (Wi-Fi)',
+        description: 'Ideal for dense urban environments with existing Wi-Fi infrastructure. Offers high-bandwidth connectivity for complex control and data-rich applications.',
+        features: [
+          { icon: Wifi, title: 'Wi-Fi Connectivity', description: 'Leverages standard 2.4GHz Wi-Fi networks for easy integration and high data throughput.' },
+          { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Create custom dimming schedules to save energy during off-peak hours.' },
+          { icon: Zap, title: 'Predictive Maintenance', description: 'AI-driven fault detection alerts you to potential issues before they cause an outage.' },
+        ],
+        specifications: [
+            { key: 'Connectivity', value: 'Wi-Fi (802.11 b/g/n)' },
+            { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
+            { key: 'IP Rating', value: 'IP66' },
+            { key: 'Input Voltage', value: '90-305V AC' },
+        ]
+      },
+      {
+        title: 'Auralis V2 (LoRaWAN)',
+        description: 'Designed for city-wide, low-power IoT networks. Provides long-range communication, making it perfect for large-scale deployments.',
+        features: [
+            { icon: Waves, title: 'LoRaWAN Connectivity', description: 'Utilizes Long Range, Low Power Wide Area Network technology for city-scale coverage.' },
+            { icon: GaugeCircle, title: 'Remote Dimming Control', description: 'Adjust lighting levels across large areas from a central command center.' },
+            { icon: Zap, title: 'Automated Fault Reporting', description: 'Each unit can report its status and any faults over the LoRaWAN network.' },
+        ],
+        specifications: [
+            { key: 'Connectivity', value: 'LoRaWAN (865-867 MHz for India)' },
+            { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
+            { key: 'IP Rating', value: 'IP66' },
+            { key: 'Input Voltage', value: '90-305V AC' },
+        ]
+      }
+    ]
   },
   {
     slug: 'solar-street-light',

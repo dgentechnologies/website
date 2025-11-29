@@ -2,7 +2,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { products, Product } from '@/lib/products-data';
+import { products, Product, SubProduct } from '@/lib/products-data';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
@@ -24,13 +24,171 @@ import {
     TableBody,
     TableCell,
     TableRow,
+    TableHeader,
+    TableHead
 } from "@/components/ui/table";
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function generateStaticParams() {
   return products.map((product) => ({
     'product-slug': product.slug,
   }));
+}
+
+function ProductDetailView({ product }: { product: Product }) {
+  return (
+    <div className="grid md:grid-cols-2 gap-12 items-start">
+      {/* Image Carousel */}
+      <div className="sticky top-24">
+         <Carousel className="w-full">
+            <CarouselContent>
+                {product.images.map((image, index) => (
+                <CarouselItem key={index}>
+                    <Card className="overflow-hidden">
+                        <div className="relative aspect-video w-full">
+                            <Image
+                                src={image.url}
+                                alt={image.alt}
+                                fill
+                                className="object-cover"
+                                data-ai-hint={image.hint}
+                            />
+                        </div>
+                    </Card>
+                </CarouselItem>
+                ))}
+            </CarouselContent>
+            <CarouselPrevious className="ml-14" />
+            <CarouselNext className="mr-14" />
+        </Carousel>
+      </div>
+
+      {/* Product Details */}
+      <div className="space-y-12">
+        <div>
+          <h2 className="text-3xl font-headline font-bold mb-4">Overview</h2>
+          <p className="text-foreground/80 leading-relaxed">{product.longDescription}</p>
+        </div>
+
+        <div>
+          <h2 className="text-3xl font-headline font-bold mb-6">Key Features</h2>
+          <div className="space-y-6">
+            {product.features.map((feature, index) => (
+              <div key={index} className="flex items-start gap-4">
+                <feature.icon className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-bold text-lg">{feature.title}</h3>
+                  <p className="text-foreground/70">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+            <h2 className="text-3xl font-headline font-bold mb-4">Specifications</h2>
+            <Card>
+                <Table>
+                    <TableBody>
+                        {product.specifications.map((spec, index) => (
+                            <TableRow key={index}>
+                                <TableCell className="font-medium w-1/3">{spec.key}</TableCell>
+                                <TableCell>{spec.value}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </Card>
+        </div>
+
+        <div>
+          <h2 className="text-3xl font-headline font-bold mb-4">Frequently Asked Questions</h2>
+          <Accordion type="single" collapsible className="w-full">
+            {product.qna.map((item, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
+                    <AccordionContent className="text-base text-foreground/80">
+                        {item.answer}
+                    </AccordionContent>
+                </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+
+         <div className="pt-8 space-y-4">
+            <Button asChild size="lg" className="w-full">
+                <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
+            </Button>
+            <Button asChild variant="outline" className="w-full">
+                <Link href="/products">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to All Products
+                </Link>
+            </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SubProductView({ product }: { product: Product }) {
+  return (
+    <div className="space-y-12">
+      <div>
+        <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto">{product.longDescription}</p>
+      </div>
+      <div className="grid md:grid-cols-2 gap-8 items-stretch">
+        {product.subProducts?.map((sub, index) => (
+          <Card key={index} className="flex flex-col">
+            <CardHeader>
+              <CardTitle className="font-headline text-2xl">{sub.title}</CardTitle>
+              <CardDescription>{sub.description}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6 flex-grow">
+              <div>
+                <h4 className="font-semibold mb-4 text-foreground">Key Features:</h4>
+                <ul className="space-y-4">
+                  {sub.features.map((feature, fIndex) => (
+                    <li key={fIndex} className="flex items-start gap-3">
+                      <feature.icon className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <span className="font-medium">{feature.title}:</span>
+                        <span className="text-foreground/80 ml-1">{feature.description}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-2 text-foreground">Specifications:</h4>
+                <Table>
+                    <TableBody>
+                        {sub.specifications.map((spec, sIndex) => (
+                            <TableRow key={sIndex}>
+                                <TableHead className="w-1/3">{spec.key}</TableHead>
+                                <TableCell>{spec.value}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+       <div className="pt-8 space-y-4 max-w-md mx-auto">
+          <Button asChild size="lg" className="w-full">
+              <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
+          </Button>
+          <Button asChild variant="outline" className="w-full">
+              <Link href="/products">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to All Products
+              </Link>
+          </Button>
+      </div>
+    </div>
+  );
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ 'product-slug': string }> }) {
@@ -40,6 +198,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   if (!product) {
     notFound();
   }
+
+  const hasSubProducts = product.subProducts && product.subProducts.length > 0;
 
   return (
     <div className="flex flex-col">
@@ -60,96 +220,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
       {/* Main Content */}
       <section className="w-full py-16 md:py-24">
-        <div className="container max-w-screen-xl px-4 md:px-6 grid md:grid-cols-2 gap-12 items-start">
-          {/* Image Carousel */}
-          <div className="sticky top-24">
-             <Carousel className="w-full">
-                <CarouselContent>
-                    {product.images.map((image, index) => (
-                    <CarouselItem key={index}>
-                        <Card className="overflow-hidden">
-                            <div className="relative aspect-video w-full">
-                                <Image
-                                    src={image.url}
-                                    alt={image.alt}
-                                    fill
-                                    className="object-cover"
-                                    data-ai-hint={image.hint}
-                                />
-                            </div>
-                        </Card>
-                    </CarouselItem>
-                    ))}
-                </CarouselContent>
-                <CarouselPrevious className="ml-14" />
-                <CarouselNext className="mr-14" />
-            </Carousel>
-          </div>
-
-          {/* Product Details */}
-          <div className="space-y-12">
-            <div>
-              <h2 className="text-3xl font-headline font-bold mb-4">Overview</h2>
-              <p className="text-foreground/80 leading-relaxed">{product.longDescription}</p>
-            </div>
-
-            <div>
-              <h2 className="text-3xl font-headline font-bold mb-6">Key Features</h2>
-              <div className="space-y-6">
-                {product.features.map((feature, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <feature.icon className="h-8 w-8 text-primary flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="font-bold text-lg">{feature.title}</h3>
-                      <p className="text-foreground/70">{feature.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-                <h2 className="text-3xl font-headline font-bold mb-4">Specifications</h2>
-                <Card>
-                    <Table>
-                        <TableBody>
-                            {product.specifications.map((spec, index) => (
-                                <TableRow key={index}>
-                                    <TableCell className="font-medium w-1/3">{spec.key}</TableCell>
-                                    <TableCell>{spec.value}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Card>
-            </div>
-
-            <div>
-              <h2 className="text-3xl font-headline font-bold mb-4">Frequently Asked Questions</h2>
-              <Accordion type="single" collapsible className="w-full">
-                {product.qna.map((item, index) => (
-                    <AccordionItem key={index} value={`item-${index}`}>
-                        <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
-                        <AccordionContent className="text-base text-foreground/80">
-                            {item.answer}
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-
-             <div className="pt-8 space-y-4">
-                <Button asChild size="lg" className="w-full">
-                    <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full">
-                    <Link href="/products">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to All Products
-                    </Link>
-                </Button>
-            </div>
-          </div>
+        <div className="container max-w-screen-xl px-4 md:px-6">
+          {hasSubProducts ? <SubProductView product={product} /> : <ProductDetailView product={product} />}
         </div>
       </section>
     </div>
