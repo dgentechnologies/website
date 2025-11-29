@@ -71,7 +71,7 @@ export const products: Product[] = [
             { key: 'Connectivity', value: 'Wi-Fi (802.11 b/g/n) + GSM' },
             { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
             { key: 'IP Rating', value: 'IP66' },
-            { key: 'Input Voltage', value: '90-305V AC' },
+            { key: 'Input Voltage', value: '230V AC' },
         ]
       },
       {
@@ -87,7 +87,7 @@ export const products: Product[] = [
             { key: 'Connectivity', value: 'Wi-Fi (802.11 b/g/n) + GSM' },
             { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
             { key: 'IP Rating', value: 'IP66' },
-            { key: 'Input Voltage', value: '90-305V AC' },
+            { key: 'Input Voltage', value: '230V AC' },
         ]
       }
     ]
