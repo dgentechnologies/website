@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { products, Product, SubProduct, EcosystemDetail } from '@/lib/products-data';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
@@ -37,7 +38,7 @@ export function generateStaticParams() {
 
 function Section({ title, description, children }: { title: string, description?: string, children: React.ReactNode }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="text-center max-w-3xl mx-auto">
         <h2 className="text-3xl font-headline font-bold">{title}</h2>
         {description && <p className="mt-4 text-foreground/80 md:text-lg">{description}</p>}
@@ -157,6 +158,7 @@ function ProductDetailView({ product }: { product: Product }) {
 
 function EcosystemProductView({ product }: { product: Product }) {
   const { ecosystem, subProducts, qna } = product;
+  const architectureDiagram = PlaceHolderImages.find(img => img.id === 'auralis-diagram');
   if (!ecosystem || !subProducts) return null;
 
   return (
@@ -165,31 +167,45 @@ function EcosystemProductView({ product }: { product: Product }) {
       <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto text-center md:text-lg">{product.longDescription}</p>
 
       {/* Architecture */}
-      <Section title={ecosystem.architecture.title} description={ecosystem.architecture.description}>
-        <Card className="max-w-4xl mx-auto">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="w-1/3">Feature</TableHead>
-                        <TableHead className="font-bold text-foreground">Auralis Core (Worker)</TableHead>
-                        <TableHead className="font-bold text-foreground">Auralis Pro (Gateway)</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {ecosystem.architecture.comparison.map((spec, index) => {
-                        const [coreValue, proValue] = spec.value.split(' vs. ');
-                        return (
-                            <TableRow key={index}>
-                                <TableCell className="font-medium">{spec.key}</TableCell>
-                                <TableCell>{coreValue}</TableCell>
-                                <TableCell>{proValue}</TableCell>
+        <Section title={ecosystem.architecture.title} description={ecosystem.architecture.description}>
+            <div className="space-y-8">
+                {architectureDiagram && (
+                    <Card className="max-w-5xl mx-auto overflow-hidden">
+                        <Image
+                            src={architectureDiagram.imageUrl}
+                            alt={architectureDiagram.description}
+                            width={1200}
+                            height={675}
+                            className="w-full"
+                            data-ai-hint={architectureDiagram.imageHint}
+                        />
+                    </Card>
+                )}
+                <Card className="max-w-4xl mx-auto">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-1/3">Feature</TableHead>
+                                <TableHead className="font-bold text-foreground">Auralis Core (Worker)</TableHead>
+                                <TableHead className="font-bold text-foreground">Auralis Pro (Gateway)</TableHead>
                             </TableRow>
-                        );
-                    })}
-                </TableBody>
-            </Table>
-        </Card>
-      </Section>
+                        </TableHeader>
+                        <TableBody>
+                            {ecosystem.architecture.comparison.map((spec, index) => {
+                                const [coreValue, proValue] = spec.value.split(' vs. ');
+                                return (
+                                    <TableRow key={index}>
+                                        <TableCell className="font-medium">{spec.key}</TableCell>
+                                        <TableCell>{coreValue}</TableCell>
+                                        <TableCell>{proValue}</TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </Card>
+            </div>
+        </Section>
       
       {/* Shared Hardware */}
       <Section title={ecosystem.sharedHardware.title} description={ecosystem.sharedHardware.description}>
@@ -219,7 +235,7 @@ function EcosystemProductView({ product }: { product: Product }) {
       </Section>
 
       {/* Sub-Product Section */}
-      <Section title="Auralis Product Versions" description="Choose the Auralis version that best fits your needs. Both versions are built on the same core ecosystem.">
+      <Section title="Auralis Product Versions" description="Choose the Auralis version that best fits your needs.">
           <div className="grid md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
             {subProducts.map((sub, index) => (
               <Card key={index} className="flex flex-col bg-card/50 border-2 border-transparent hover:border-primary/50 hover:shadow-xl transition-all">
@@ -330,5 +346,3 @@ export async function generateMetadata({ params }: { params: Promise<{ 'product-
     description: product.shortDescription,
   };
 }
-
-    
