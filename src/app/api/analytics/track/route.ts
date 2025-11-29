@@ -20,6 +20,19 @@ async function verifyAuthToken(request: NextRequest): Promise<boolean> {
   }
 }
 
+// Sanitize a string for use as a Firestore field key
+// Replace problematic characters with safe alternatives
+function sanitizeFieldKey(key: string): string {
+  // Replace slashes, dots, and other problematic chars with underscores
+  // Also handle empty strings
+  if (!key || key === '/') return '_home_';
+  return key
+    .replace(/\//g, '_')  // Replace forward slashes
+    .replace(/\./g, '_')  // Replace dots (Firestore field path separator)
+    .replace(/^\s+|\s+$/g, '') // Trim whitespace
+    .replace(/\s+/g, '_'); // Replace spaces with underscores
+}
+
 // POST /api/analytics/track - Track a page view
 export async function POST(request: NextRequest) {
   try {
@@ -39,7 +52,7 @@ export async function POST(request: NextRequest) {
                  'Unknown';
     const userAgent = request.headers.get('user-agent') || 'Unknown';
 
-    // Create page view record
+    // Create page view record (store original page path)
     const pageViewData = {
       page,
       country,
@@ -52,6 +65,10 @@ export async function POST(request: NextRequest) {
 
     // Add to pageViews collection
     await adminFirestore.collection('pageViews').add(pageViewData);
+
+    // Sanitize keys for use in Firestore field paths
+    const sanitizedCountry = sanitizeFieldKey(country);
+    const sanitizedPage = sanitizeFieldKey(page);
 
     // Update daily analytics summary
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
@@ -67,8 +84,8 @@ export async function POST(request: NextRequest) {
       // Update existing document
       const updateData: Record<string, unknown> = {
         totalViews: FieldValue.increment(1),
-        [`countries.${country}`]: FieldValue.increment(1),
-        [`pages.${page}`]: FieldValue.increment(1),
+        [`countries.${sanitizedCountry}`]: FieldValue.increment(1),
+        [`pages.${sanitizedPage}`]: FieldValue.increment(1),
         updatedAt: FieldValue.serverTimestamp(),
       };
       
@@ -86,8 +103,8 @@ export async function POST(request: NextRequest) {
         totalViews: 1,
         uniqueVisitors: sessionId ? 1 : 0,
         sessions: sessionId ? [sessionId] : [],
-        countries: { [country]: 1 },
-        pages: { [page]: 1 },
+        countries: { [sanitizedCountry]: 1 },
+        pages: { [sanitizedPage]: 1 },
         updatedAt: FieldValue.serverTimestamp(),
       });
     }
@@ -100,6 +117,14 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+// Helper function to convert sanitized page key back to readable path
+function unsanitizePageKey(key: string): string {
+  if (key === '_home_') return '/';
+  // Convert underscores back to slashes for page paths
+  // Note: This is a best-effort conversion since we lose some information
+  return '/' + key.replace(/^_/, '').replace(/_$/, '').replace(/_/g, '/');
 }
 
 // GET /api/analytics/track - Get analytics summary (for admin dashboard)
@@ -128,14 +153,14 @@ export async function GET(request: NextRequest) {
     startDate.setDate(startDate.getDate() - daysToFetch);
     const startDateStr = startDate.toISOString().split('T')[0];
 
-    // Fetch daily analytics
+    // Fetch daily analytics from siteAnalytics collection
     const analyticsSnapshot = await adminFirestore
       .collection('siteAnalytics')
       .where('date', '>=', startDateStr)
       .orderBy('date', 'desc')
       .get();
 
-    // Aggregate data
+    // Aggregate data from siteAnalytics
     let totalPageViews = 0;
     const allSessions = new Set<string>();
     const countryCounts: Record<string, number> = {};
@@ -163,7 +188,7 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      // Aggregate pages
+      // Aggregate pages (with sanitized keys)
       if (data.pages) {
         Object.entries(data.pages).forEach(([page, count]) => {
           pageCounts[page] = (pageCounts[page] || 0) + (count as number);
@@ -174,19 +199,25 @@ export async function GET(request: NextRequest) {
     // Calculate unique visitors from sessions set
     const uniqueVisitors = allSessions.size;
 
-    // Get top countries
+    // Get top countries (convert sanitized keys back to readable format)
     const topCountries = Object.entries(countryCounts)
-      .map(([country, count]) => ({ country, count }))
+      .map(([country, count]) => ({ 
+        country: country === 'Unknown' ? 'Unknown' : country, 
+        count 
+      }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    // Get top pages
+    // Get top pages (convert sanitized keys back to readable paths)
     const topPages = Object.entries(pageCounts)
-      .map(([page, count]) => ({ page, count }))
+      .map(([page, count]) => ({ 
+        page: unsanitizePageKey(page), 
+        count 
+      }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    // Get recent visitors (last 10)
+    // Get recent visitors (last 10) from pageViews collection
     const recentVisitorsSnapshot = await adminFirestore
       .collection('pageViews')
       .orderBy('timestamp', 'desc')

@@ -1,61 +1,88 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 
 // Generate a simple session ID for tracking unique visitors
+// Use localStorage for persistence across browser sessions
 const getSessionId = (): string => {
   if (typeof window === 'undefined') return '';
   
-  let sessionId = sessionStorage.getItem('analytics_session_id');
-  if (!sessionId) {
+  // Check localStorage first for persistent session tracking
+  let sessionId = localStorage.getItem('analytics_session_id');
+  
+  // If no session exists or it's expired (older than 30 minutes), create a new one
+  const sessionTimestamp = localStorage.getItem('analytics_session_timestamp');
+  const thirtyMinutes = 30 * 60 * 1000;
+  const isExpired = sessionTimestamp && (Date.now() - parseInt(sessionTimestamp, 10)) > thirtyMinutes;
+  
+  if (!sessionId || isExpired) {
     // Use crypto.randomUUID if available, fallback to timestamp + random
     if (typeof crypto !== 'undefined' && crypto.randomUUID) {
       sessionId = crypto.randomUUID();
     } else {
       sessionId = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
     }
-    sessionStorage.setItem('analytics_session_id', sessionId);
+    localStorage.setItem('analytics_session_id', sessionId);
   }
+  
+  // Always update the timestamp to extend the session
+  localStorage.setItem('analytics_session_timestamp', Date.now().toString());
+  
   return sessionId;
 };
 
+// Track which pages have been tracked in this page load to avoid duplicates
+const trackedPages = new Set<string>();
+
 export function usePageTracking() {
   const pathname = usePathname();
-  const lastTrackedPath = useRef<string | null>(null);
+  const isTrackingRef = useRef(false);
+
+  const trackPageView = useCallback(async (page: string) => {
+    // Prevent duplicate tracking for the same page in this page load
+    if (trackedPages.has(page)) return;
+    
+    // Prevent concurrent tracking calls
+    if (isTrackingRef.current) return;
+    isTrackingRef.current = true;
+    
+    try {
+      const sessionId = getSessionId();
+      
+      const response = await fetch('/api/analytics/track', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          page,
+          referrer: document.referrer || '',
+          sessionId,
+        }),
+      });
+      
+      if (response.ok) {
+        // Only mark as tracked if the request succeeded
+        trackedPages.add(page);
+      }
+    } catch (error) {
+      // Silently fail - analytics should not break the user experience
+      console.debug('Failed to track page view:', error);
+    } finally {
+      isTrackingRef.current = false;
+    }
+  }, []);
 
   useEffect(() => {
-    // Avoid tracking the same page twice in quick succession
-    if (lastTrackedPath.current === pathname) return;
-    lastTrackedPath.current = pathname;
-
     // Don't track admin pages
     if (pathname.startsWith('/admin')) return;
 
-    const trackPageView = async () => {
-      try {
-        const sessionId = getSessionId();
-        
-        await fetch('/api/analytics/track', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            page: pathname,
-            referrer: document.referrer || '',
-            sessionId,
-          }),
-        });
-      } catch (error) {
-        // Silently fail - analytics should not break the user experience
-        console.debug('Failed to track page view:', error);
-      }
-    };
-
-    // Small delay to ensure page has loaded
-    const timeoutId = setTimeout(trackPageView, 100);
+    // Small delay to ensure page has loaded and avoid React StrictMode double-tracking
+    const timeoutId = setTimeout(() => {
+      trackPageView(pathname);
+    }, 150);
     
     return () => clearTimeout(timeoutId);
-  }, [pathname]);
+  }, [pathname, trackPageView]);
 }
