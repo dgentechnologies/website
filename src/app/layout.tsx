@@ -1,3 +1,4 @@
+"use client";
 
 import type { Metadata } from 'next';
 import './globals.css';
@@ -8,6 +9,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import { PageTracker } from '@/components/page-tracker';
+import { usePathname } from 'next/navigation';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -75,6 +77,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith('/admin');
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -93,9 +97,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased" suppressHydrationWarning>
         <PageTracker />
-        <Header />
+        {!isAdminRoute && <Header />}
         <main className="min-h-screen flex flex-col">{children}</main>
-        <Footer />
+        {!isAdminRoute && <Footer />}
         <Toaster />
         <Analytics />
         <SpeedInsights />
