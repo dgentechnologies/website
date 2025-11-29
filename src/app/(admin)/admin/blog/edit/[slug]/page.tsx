@@ -1,6 +1,6 @@
 'use client';
 
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { notFound, useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
@@ -38,6 +38,14 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+        title: '',
+        description: '',
+        content: '',
+        image: '',
+        imageHint: '',
+        tags: [],
+    }
   });
   
   const watchedData = useWatch({ control: form.control });
@@ -61,6 +69,7 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
       const postRef = doc(firestore, 'blogPosts', params.slug);
       await updateDoc(postRef, {
         ...values,
+        updatedAt: serverTimestamp(),
         // Ensure tags are saved correctly if they are manipulated as strings
         tags: Array.isArray(values.tags) ? values.tags : (values.tags as any).split(',').map((t: string) => t.trim()),
       });
@@ -135,7 +144,7 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
                             <FormItem><FormLabel>Image URL</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                         )} />
                         <FormField control={form.control} name="tags" render={({ field }) => (
-                             <FormItem><FormLabel>Tags</FormLabel><FormControl><Input {...field} onChange={(e) => field.onChange(e.target.value.split(',').map(tag => tag.trim()))} value={Array.isArray(field.value) ? field.value.join(', ') : ''} /></FormControl><FormMessage /></FormItem>
+                             <FormItem><FormLabel>Tags (comma-separated)</FormLabel><FormControl><Input {...field} onChange={(e) => field.onChange(e.target.value.split(',').map(tag => tag.trim()))} value={Array.isArray(field.value) ? field.value.join(', ') : ''} /></FormControl><FormMessage /></FormItem>
                         )} />
                          <FormField control={form.control} name="imageHint" render={({ field }) => (
                             <FormItem><FormLabel>Image Hint</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
@@ -153,7 +162,7 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
                         <section className="relative w-full h-[40vh] flex items-end justify-start text-left">
                             {previewData.image && (
                                 <>
-                                    <Image src={previewData.image} alt={previewData.title} fill className="object-cover" data-ai-hint={previewData.imageHint} priority />
+                                    <Image src={previewData.image} alt={previewData.title || 'Blog post image'} fill className="object-cover" data-ai-hint={previewData.imageHint} priority />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
                                 </>
                             )}
