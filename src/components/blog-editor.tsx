@@ -69,6 +69,7 @@ interface BlogEditorProps {
   onGenerateWithAI?: (title: string, author: string) => void;
   isGenerating?: boolean;
   mode?: 'create' | 'edit';
+  readOnlyAuthor?: boolean;
 }
 
 export function BlogEditor({
@@ -84,6 +85,7 @@ export function BlogEditor({
   onGenerateWithAI,
   isGenerating = false,
   mode = 'create',
+  readOnlyAuthor = false,
 }: BlogEditorProps) {
   const [title, setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
@@ -316,18 +318,22 @@ export function BlogEditor({
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground/70">Author</label>
-                    <Select value={author} onValueChange={setAuthor}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select author" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {BLOG_AUTHORS.map((a) => (
-                          <SelectItem key={a} value={a}>
-                            {a}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    {readOnlyAuthor ? (
+                      <Input value={author} disabled className="bg-muted" />
+                    ) : (
+                      <Select value={author} onValueChange={setAuthor}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select author" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {BLOG_AUTHORS.map((a) => (
+                            <SelectItem key={a} value={a}>
+                              {a}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground/70">Date</label>
