@@ -2,7 +2,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { products, Product, SubProduct } from '@/lib/products-data';
+import { products, Product, SubProduct, EcosystemDetail } from '@/lib/products-data';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
@@ -33,6 +33,30 @@ export function generateStaticParams() {
   return products.map((product) => ({
     'product-slug': product.slug,
   }));
+}
+
+function Section({ title, description, children }: { title: string, description?: string, children: React.ReactNode }) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center max-w-3xl mx-auto">
+        <h2 className="text-3xl font-headline font-bold">{title}</h2>
+        {description && <p className="mt-4 text-foreground/80 md:text-lg">{description}</p>}
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function EcosystemDetailCard({ detail }: { detail: EcosystemDetail }) {
+    return (
+        <div className="flex items-start gap-4">
+            <detail.icon className="h-10 w-10 text-primary flex-shrink-0 mt-1" />
+            <div>
+                <h4 className="font-bold text-lg">{detail.title}</h4>
+                <p className="text-foreground/70">{detail.description}</p>
+            </div>
+        </div>
+    );
 }
 
 function ProductDetailView({ product }: { product: Product }) {
@@ -131,31 +155,28 @@ function ProductDetailView({ product }: { product: Product }) {
   );
 }
 
-function SubProductView({ product }: { product: Product }) {
-  const coreProduct = product.subProducts?.[0];
-  const proProduct = product.subProducts?.[1];
+function EcosystemProductView({ product }: { product: Product }) {
+  const { ecosystem, subProducts, qna } = product;
+  if (!ecosystem || !subProducts) return null;
 
   return (
-    <div className="space-y-16">
-      {/* Ecosystem Overview */}
-      <div>
-        <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto text-center">{product.longDescription}</p>
-      </div>
+    <div className="space-y-24">
+      {/* Ecosystem Intro */}
+      <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto text-center md:text-lg">{product.longDescription}</p>
 
-      {/* Comparative Specifications */}
-      <div>
-        <h2 className="text-3xl font-headline font-bold mb-4 text-center">Comparative Specifications</h2>
+      {/* Architecture */}
+      <Section title={ecosystem.architecture.title} description={ecosystem.architecture.description}>
         <Card className="max-w-4xl mx-auto">
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-1/4">Feature</TableHead>
-                        <TableHead className="font-bold text-foreground">Auralis Core</TableHead>
-                        <TableHead className="font-bold text-foreground">Auralis Pro</TableHead>
+                        <TableHead className="w-1/3">Feature</TableHead>
+                        <TableHead className="font-bold text-foreground">Auralis Core (Worker)</TableHead>
+                        <TableHead className="font-bold text-foreground">Auralis Pro (Gateway)</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {product.specifications.map((spec, index) => {
+                    {ecosystem.architecture.comparison.map((spec, index) => {
                         const [coreValue, proValue] = spec.value.split(' vs. ');
                         return (
                             <TableRow key={index}>
@@ -168,54 +189,69 @@ function SubProductView({ product }: { product: Product }) {
                 </TableBody>
             </Table>
         </Card>
-      </div>
+      </Section>
       
-      {/* Sub-Product Cards */}
-      <div className="grid md:grid-cols-2 gap-8 items-stretch">
-        {product.subProducts?.map((sub, index) => (
-          <Card key={index} className="flex flex-col bg-card/50">
-            <CardHeader>
-              <CardTitle className="font-headline text-2xl">{sub.title}</CardTitle>
-              <CardDescription>{sub.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6 flex-grow">
-              <div>
-                <h4 className="font-semibold mb-4 text-foreground">Key Features:</h4>
-                <ul className="space-y-4">
-                  {sub.features.map((feature, fIndex) => (
-                    <li key={fIndex} className="flex items-start gap-3">
-                      <feature.icon className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
-                      <div>
-                        <span className="font-medium">{feature.title}:</span>
-                        <span className="text-foreground/80 ml-1">{feature.description}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2 text-foreground">Specifications:</h4>
-                <Table>
-                    <TableBody>
-                        {sub.specifications.map((spec, sIndex) => (
-                            <TableRow key={sIndex}>
-                                <TableHead className="w-1/3">{spec.key}</TableHead>
-                                <TableCell>{spec.value}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {/* Shared Hardware */}
+      <Section title={ecosystem.sharedHardware.title} description={ecosystem.sharedHardware.description}>
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {ecosystem.sharedHardware.details.map((detail) => (
+                <EcosystemDetailCard key={detail.title} detail={detail} />
+            ))}
+        </div>
+      </Section>
+      
+      {/* Gateway Hardware */}
+      <Section title={ecosystem.gatewayHardware.title} description={ecosystem.gatewayHardware.description}>
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {ecosystem.gatewayHardware.details.map((detail) => (
+                <EcosystemDetailCard key={detail.title} detail={detail} />
+            ))}
+        </div>
+      </Section>
+      
+      {/* Workflow */}
+      <Section title={ecosystem.workflow.title} description={ecosystem.workflow.description}>
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {ecosystem.workflow.details.map((detail) => (
+                <EcosystemDetailCard key={detail.title} detail={detail} />
+            ))}
+        </div>
+      </Section>
+
+      {/* Sub-Product Section */}
+      <Section title="Auralis Product Versions" description="Choose the Auralis version that best fits your project's needs. Both versions are built on the same core ecosystem.">
+          <div className="grid md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
+            {subProducts.map((sub, index) => (
+              <Card key={index} className="flex flex-col bg-card/50 border-2 border-transparent hover:border-primary/50 hover:shadow-xl transition-all">
+                <CardHeader>
+                  <CardTitle className="font-headline text-2xl">{sub.title}</CardTitle>
+                  <CardDescription>{sub.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6 flex-grow">
+                  <div>
+                    <h4 className="font-semibold mb-4 text-foreground">Key Features:</h4>
+                    <ul className="space-y-4">
+                      {sub.features.map((feature, fIndex) => (
+                        <li key={fIndex} className="flex items-start gap-3">
+                          <feature.icon className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
+                          <div>
+                            <span className="font-medium">{feature.title}:</span>
+                            <span className="text-foreground/80 ml-1">{feature.description}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+      </Section>
 
        {/* FAQ Section */}
-       <div>
-          <h2 className="text-3xl font-headline font-bold mb-4 text-center">Frequently Asked Questions</h2>
+       <Section title="Frequently Asked Questions">
           <Accordion type="single" collapsible className="w-full max-w-4xl mx-auto">
-            {product.qna.map((item, index) => (
+            {qna.map((item, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
                     <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
                     <AccordionContent className="text-base text-foreground/80">
@@ -224,7 +260,7 @@ function SubProductView({ product }: { product: Product }) {
                 </AccordionItem>
             ))}
           </Accordion>
-        </div>
+        </Section>
 
        <div className="pt-8 space-y-4 max-w-md mx-auto">
           <Button asChild size="lg" className="w-full">
@@ -249,7 +285,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     notFound();
   }
 
-  const hasSubProducts = product.subProducts && product.subProducts.length > 0;
+  const isEcosystemProduct = !!product.ecosystem;
 
   return (
     <div className="flex flex-col">
@@ -271,7 +307,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       {/* Main Content */}
       <section className="w-full py-16 md:py-24">
         <div className="container max-w-screen-xl px-4 md:px-6">
-          {hasSubProducts ? <SubProductView product={product} /> : <ProductDetailView product={product} />}
+          {isEcosystemProduct ? <EcosystemProductView product={product} /> : <ProductDetailView product={product} />}
         </div>
       </section>
     </div>

@@ -24,6 +24,12 @@ export type SubProduct = {
   specifications: ProductSpecification[];
 };
 
+export type EcosystemDetail = {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+};
+
 export type Product = {
   slug: string;
   title: string;
@@ -36,71 +42,115 @@ export type Product = {
   specifications: ProductSpecification[];
   qna: ProductQna[];
   subProducts?: SubProduct[];
+  ecosystem?: {
+    architecture: {
+      title: string;
+      description: string;
+      comparison: ProductSpecification[];
+    };
+    sharedHardware: {
+      title: string;
+      description: string;
+      details: EcosystemDetail[];
+    },
+    gatewayHardware: {
+      title: string;
+      description: string;
+      details: EcosystemDetail[];
+    },
+    workflow: {
+      title: string;
+      description: string;
+      details: EcosystemDetail[];
+    }
+  };
 };
 
 export const products: Product[] = [
   {
-    slug: 'auralis-smart-street-light',
-    title: 'Auralis Smart Street Light',
+    slug: 'auralis-ecosystem',
+    title: 'Auralis Ecosystem',
     category: 'Intelligent Urban Lighting',
-    shortDescription: 'Advanced IoT-enabled street light with remote management, dimming schedules, and fault detection.',
+    shortDescription: 'A scalable, industrial-grade architecture for modernizing urban street lighting using a cost-effective Hybrid-Mesh Topology.',
     icon: Cpu,
     images: [
       { url: 'https://picsum.photos/seed/smartlight1/1200/800', alt: 'A modern smart street light in a city at dusk', hint: 'smart light' },
       { url: 'https://picsum.photos/seed/smartlight2/1200/800', alt: 'Dashboard showing control panel for smart street lights', hint: 'iot dashboard' },
       { url: 'https://picsum.photos/seed/smartlight3/1200/800', alt: 'Network of connected smart street lights on a map', hint: 'connected network' },
     ],
-    longDescription: "The Auralis Ecosystem introduces a scalable, industrial-grade architecture for modernizing urban street lighting. Unlike traditional systems that require expensive cellular hardware on every pole, Auralis utilizes a cost-effective Hybrid-Mesh Topology. By deploying Auralis Core and Pro nodes in a 1:50 ratio, municipalities can achieve 100% grid visibility and up to 80% energy savings while significantly reducing hardware and cellular data costs.",
-    features: [], // Base features can be empty as specifics are in sub-products
-    specifications: [
-        // Comparative specifications now live here to be used in the new table
-        { key: 'Primary Role', value: 'Local Control & Relay vs. Data Aggregation & Backhaul' },
-        { key: 'Deployment Ratio', value: '~50 per Cluster vs. 1 per Cluster' },
-        { key: 'Connectivity', value: 'Mesh Protocol (Local) vs. Mesh (Local) + 4G LTE' },
-        { key: 'Power Consumption', value: '< 1.5W (Standby) vs. ~2.5W (Average)' },
-        { key: 'Power Supply', value: '3W Isolated AC-DC vs. 10W Reinforced PSU' },
-        { key: 'Antenna', value: 'Single External Omni vs. Dual Combo Puck (LTE + Wi-Fi)' },
-        { key: 'Controller', value: 'Industrial Dual-Core MCU vs. Industrial Dual-Core MCU' },
-    ],
+    longDescription: "The Auralis Ecosystem (v2.0) introduces a scalable, industrial-grade architecture for modernizing urban street lighting. Unlike traditional point-to-point systems that require expensive cellular hardware on every pole, Auralis utilizes a cost-effective Hybrid-Mesh Topology. This ecosystem is composed of two distinct hardware variants: Auralis Core (Worker Node) and Auralis Pro (Gateway Node). By deploying these units in a 1:50 ratio, municipalities can achieve 100% grid visibility and up to 80% energy savings while reducing hardware costs by significantly minimizing cellular data subscriptions.",
+    features: [],
+    specifications: [],
     qna: [
       { question: 'How much energy can be saved with this ecosystem?', answer: 'Cities can typically achieve energy savings of up to 80% through intelligent dimming, real-time monitoring, and optimized grid performance.' },
       { question: 'What is the primary advantage of the Hybrid-Mesh Topology?', answer: 'The key advantage is cost reduction. By using one gateway (Auralis Pro) for every 50 lights (Auralis Core), you drastically reduce the number of expensive cellular subscriptions needed, lowering both initial hardware costs and ongoing operational expenses.' },
     ],
+    ecosystem: {
+      architecture: {
+        title: "System Architecture: The Cluster Model",
+        description: "The system operates on a decentralized \"Cluster\" model. Up to 50 Core nodes form a self-healing local mesh network, while a single Pro node acts as the gateway to the cloud, ensuring maximum resilience and minimal latency.",
+        comparison: [
+            { key: 'Primary Role', value: 'Local Control & Relay vs. Data Aggregation & Backhaul' },
+            { key: 'Deployment Ratio', value: '~50 per Cluster vs. 1 per Cluster' },
+            { key: 'Connectivity', value: 'Mesh Protocol (Local) vs. Mesh (Local) + 4G LTE Cat 1 (Cloud)' },
+            { key: 'Power Consumption', value: '< 1.5W (Standby) vs. ~2.5W (Average), 10W Peak' },
+            { key: 'Power Supply', value: '3W Isolated AC-DC vs. 10W Reinforced High-Current PSU' },
+        ]
+      },
+      sharedHardware: {
+          title: "Shared Hardware Technologies",
+          description: "Both Core and Pro units share a foundational \"Base Architecture\" to ensure consistent performance, safety, and durability across the entire grid.",
+          details: [
+              { icon: Cpu, title: "Industrial Control Logic", description: "Powered by an Industrial-Grade Dual-Core IoT Controller running at 240MHz for complex local algorithms." },
+              { icon: GaugeCircle, title: "The Dimming Engine", description: "Precise, flicker-free 0-100% brightness control via a robust AC Phase-Cutting architecture with Zero-Crossing Detection." },
+              { icon: Combine, title: "The Sensing Suite", description: "A hybrid design with Microwave Doppler Radar (for motion), a light sensor (for daylight gating), and a Hall-Effect sensor for real-time fault monitoring." },
+              { icon: ShieldCheck, title: "Safety & Protection", description: "Equipped with MOV for surge protection, a slow-blow fuse, and a snubber circuit to protect against inductive kickback." }
+          ]
+      },
+      gatewayHardware: {
+          title: "Specialized Hardware: Auralis Pro (Gateway)",
+          description: "The Auralis Pro incorporates specific upgrades to handle its role as the cluster's communication anchor.",
+          details: [
+              { icon: Zap, title: "Reinforced Power Architecture", description: "A specialized 10W power module and high-current LDO regulator handle the intense energy bursts required for cellular transmission." },
+              { icon: Router, title: "Cellular Backhaul", description: "An industrial LTE Cat 1 modem provides reliable, low-latency cloud connectivity, with RF isolation techniques to ensure signal integrity." }
+          ]
+      },
+      workflow: {
+          title: "Operational Workflow",
+          description: "The ecosystem is designed for automated initialization, self-healing, and efficient data flow.",
+          details: [
+              { icon: Network, title: "Initialization & Self-Healing", description: "The Pro node establishes a cellular link and becomes the Mesh Root. Core nodes automatically find the strongest signal path, forming a self-healing tree topology." },
+              { icon: ToyBrick, title: "Data Flow & Aggregation", description: "Sensed data is encrypted and hopped across the mesh to the Pro Gateway, which buffers packets and performs a batch upload to the cloud via MQTT, optimizing data usage." }
+          ]
+      }
+    },
     subProducts: [
       {
-        title: 'Auralis Core (Worker Node)',
-        description: 'A low-cost, mass-deployment unit that controls individual lights and acts as a data relay within the local mesh network.',
+        title: 'Auralis V1',
+        description: 'The standard, cost-effective smart lighting solution for broad-scale urban deployment.',
         features: [
-          { icon: Network, title: 'Mesh Protocol Connectivity', description: 'Communicates locally with other Core nodes and the Pro gateway over a proprietary 2.4 GHz mesh network.' },
-          { icon: GaugeCircle, title: 'Intelligent Dimming Engine', description: 'Precise, flicker-free AC phase-cutting for 0-100% brightness control.' },
-          { icon: Radar, title: 'Microwave Doppler Radar', description: 'Integrated motion detection that works through the enclosure, maintaining IP67 integrity.' },
-          { icon: Zap, title: 'Real-time Fault Monitoring', description: 'A Hall-Effect sensor detects open or short circuits for instant maintenance alerts.' },
+          { icon: Wifi, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
+          { icon: Radar, title: 'Radar-based Motion Detection', description: 'Accurate presence detection for adaptive lighting.' },
+          { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
         ],
         specifications: [
-            { key: 'Primary Role', value: 'Local Control & Relay' },
-            { key: 'Connectivity', value: 'Mesh Protocol (Local)' },
-            { key: 'Power Supply', value: '3W Isolated AC-DC' },
-            { key: 'Power Consumption', value: '< 1.5W (Standby)' },
-            { key: 'Antenna', value: 'Single External Omni' },
-            { key: 'Controller', value: 'Industrial Dual-Core MCU' },
+            { key: 'Input Voltage', value: '230V AC' },
+            { key: 'Connectivity', value: 'Wi-Fi + GSM' },
+            { key: 'Motion Sensor', value: 'Doppler Radar' },
         ]
       },
       {
-        title: 'Auralis Pro (Gateway Node)',
-        description: 'A high-performance cluster head that aggregates data from up to 50 Core nodes and bridges the network to the cloud via 4G LTE.',
+        title: 'Auralis V2',
+        description: 'An advanced model featuring enhanced sensor capabilities for high-traffic or complex environments.',
         features: [
-          { icon: Router, title: '4G LTE Cat 1 Backhaul', description: 'Provides reliable, low-latency cloud connectivity for the entire cluster.' },
-          { icon: ToyBrick, title: 'Data Aggregation', description: 'Acts as the "Root" of the mesh, collecting encrypted telemetry from all worker nodes for a secure batch upload.' },
-          { icon: ShieldCheck, title: 'Reinforced Power Architecture', description: 'A specialized 10W power supply handles the high-current demands of cellular transmission without resets.' },
-          { icon: Zap, title: 'Advanced Signal Integrity', description: 'Specialized PCB design ensures cellular transmissions do not interfere with the local mesh network or sensor logic.' },
+          { icon: Wifi, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
+          { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines two sensor technologies for superior accuracy and elimination of false triggers.' },
+          { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
         ],
         specifications: [
-            { key: 'Primary Role', value: 'Data Aggregation & Backhaul' },
-            { key: 'Connectivity', value: 'Mesh (Local) + 4G LTE Cat 1 (Cloud)' },
-            { key: 'Power Supply', value: '10W Reinforced High-Current PSU' },
-            { key: 'Power Consumption', value: '~2.5W (Average), 10W Peak' },
-            { key: 'Antenna', value: 'Dual Combo Puck (LTE + Wi-Fi)'},
-            { key: 'Controller', value: 'Industrial Dual-Core MCU' },
+            { key: 'Input Voltage', value: '230V AC' },
+            { key: 'Connectivity', value: 'Wi-Fi + GSM' },
+            { key: 'Motion Sensor', value: 'Doppler Radar + PIR' },
         ]
       }
     ]
