@@ -1,7 +1,7 @@
 'use client';
 
 import { signOut } from 'firebase/auth';
-import { LayoutDashboard, FileText, MessageSquare, LogOut } from 'lucide-react';
+import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings } from 'lucide-react';
 import Image from 'next/image';
 import {
   Sidebar,
@@ -23,8 +23,6 @@ type AdminDashboardLayoutProps = {
   activeView: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings';
   setActiveView: (view: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings') => void;
 };
-
-import { BarChart2, Settings } from 'lucide-react';
 
 export default function AdminDashboardLayout({ children, activeView, setActiveView }: AdminDashboardLayoutProps) {
   return (

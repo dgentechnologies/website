@@ -19,15 +19,17 @@ export default function AdminRootLayout({
     if (!loading && !user && pathname !== '/admin/login') {
       router.push('/admin/login');
     }
+    // Allow access to create and edit pages without redirecting
     if (!loading && user && pathname === '/admin/login') {
       router.push('/admin');
     }
   }, [user, loading, router, pathname]);
 
+  // Show skeleton loader for all admin pages except login while authenticating
   if (loading && pathname !== '/admin/login') {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-            <div className="space-y-4 w-full max-w-md">
+            <div className="space-y-4 w-full max-w-md p-4">
                 <Skeleton className="h-12 w-full" />
                 <Skeleton className="h-96 w-full" />
             </div>
@@ -35,9 +37,11 @@ export default function AdminRootLayout({
     );
   }
   
+  // If not authenticated and not on the login page, return null to prevent content flash
   if (!user && pathname !== '/admin/login') {
     return null;
   }
 
+  // Render children for login, create, edit, and main admin pages
   return <div>{children}</div>;
 }
