@@ -20,6 +20,8 @@ export interface SiteAnalytics {
   updatedAt: Date | { seconds: number; nanoseconds: number };
 }
 
+export type DateRange = '7' | '30' | '365';
+
 export interface AnalyticsSummary {
   totalPageViews: number;
   uniqueVisitors: number;
@@ -27,4 +29,5 @@ export interface AnalyticsSummary {
   topPages: { page: string; count: number }[];
   dailyViews: { date: string; views: number }[];
   recentVisitors: PageView[];
+  range?: DateRange;
 }

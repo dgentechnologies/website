@@ -1,15 +1,10 @@
-"use client";
-
 import type { Metadata } from 'next';
 import './globals.css';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Inter, Space_Grotesk } from 'next/font/google';
-import { PageTracker } from '@/components/page-tracker';
-import { usePathname } from 'next/navigation';
+import { LayoutWrapper } from '@/components/layout/layout-wrapper';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -77,8 +72,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const isAdminRoute = pathname?.startsWith('/admin');
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -96,10 +89,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased" suppressHydrationWarning>
-        <PageTracker />
-        {!isAdminRoute && <Header />}
-        <main className="min-h-screen flex flex-col">{children}</main>
-        {!isAdminRoute && <Footer />}
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
         <Toaster />
         <Analytics />
         <SpeedInsights />

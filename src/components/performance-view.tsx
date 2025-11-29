@@ -23,7 +23,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { AnalyticsSummary } from '@/types/analytics';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { AnalyticsSummary, DateRange } from '@/types/analytics';
 import { auth } from '@/firebase/client';
 
 // Country code to name mapping
@@ -69,10 +76,17 @@ const getCountryFlag = (code: string): string => {
   }
 };
 
+const dateRangeLabels: Record<DateRange, string> = {
+  '7': 'Last 7 days',
+  '30': 'Last 30 days',
+  '365': 'Last 1 year',
+};
+
 export default function PerformanceView() {
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState<DateRange>('30');
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -88,7 +102,7 @@ export default function PerformanceView() {
         }
         
         const token = await user.getIdToken();
-        const response = await fetch('/api/analytics/track', {
+        const response = await fetch(`/api/analytics/track?range=${dateRange}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -107,7 +121,7 @@ export default function PerformanceView() {
     };
 
     fetchAnalytics();
-  }, []);
+  }, [dateRange]);
 
   if (loading) {
     return (
@@ -177,10 +191,22 @@ export default function PerformanceView() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-headline font-bold">Performance</h1>
-          <p className="text-foreground/70 mt-1">Website analytics and visitor insights from the last 30 days.</p>
+          <p className="text-foreground/70 mt-1">Website analytics and visitor insights.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Select value={dateRange} onValueChange={(value) => setDateRange(value as DateRange)}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Select range" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7">Last 7 days</SelectItem>
+              <SelectItem value="30">Last 30 days</SelectItem>
+              <SelectItem value="365">Last 1 year</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -193,7 +219,7 @@ export default function PerformanceView() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.totalPageViews || 0}</div>
-            <p className="text-xs text-muted-foreground">Last 30 days</p>
+            <p className="text-xs text-muted-foreground">{dateRangeLabels[dateRange]}</p>
           </CardContent>
         </Card>
         <Card>
@@ -203,7 +229,7 @@ export default function PerformanceView() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.uniqueVisitors || 0}</div>
-            <p className="text-xs text-muted-foreground">Last 30 days</p>
+            <p className="text-xs text-muted-foreground">{dateRangeLabels[dateRange]}</p>
           </CardContent>
         </Card>
         <Card>
@@ -237,7 +263,7 @@ export default function PerformanceView() {
               <TrendingUp className="h-5 w-5" />
               Daily Page Views
             </CardTitle>
-            <CardDescription>Website traffic over the last 30 days</CardDescription>
+            <CardDescription>Website traffic over the {dateRangeLabels[dateRange].toLowerCase()}</CardDescription>
           </CardHeader>
           <CardContent>
             {hasData && analytics.dailyViews.length > 0 ? (
