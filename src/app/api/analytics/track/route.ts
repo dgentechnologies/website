@@ -115,15 +115,23 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get the last 30 days of analytics
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0];
+    // Get date range from query params (default to 30 days)
+    const { searchParams } = new URL(request.url);
+    const rangeParam = searchParams.get('range') || '30';
+    
+    // Validate against allowed DateRange values: '7', '30', '365'
+    const validRanges = ['7', '30', '365'];
+    const daysToFetch = validRanges.includes(rangeParam) ? parseInt(rangeParam, 10) : 30;
+
+    // Calculate the start date based on the range
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - daysToFetch);
+    const startDateStr = startDate.toISOString().split('T')[0];
 
     // Fetch daily analytics
     const analyticsSnapshot = await adminFirestore
       .collection('siteAnalytics')
-      .where('date', '>=', thirtyDaysAgoStr)
+      .where('date', '>=', startDateStr)
       .orderBy('date', 'desc')
       .get();
 

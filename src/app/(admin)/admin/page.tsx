@@ -55,13 +55,21 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { TrendingUp } from 'lucide-react';
-import { AnalyticsSummary } from '@/types/analytics';
+import { AnalyticsSummary, DateRange, DATE_RANGE_LABELS } from '@/types/analytics';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const DashboardView = () => {
   const [messages, messagesLoading] = useCollection(collection(firestore, 'contactMessages'));
   const [posts, postsLoading] = useCollection(collection(firestore, 'blogPosts'));
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
+  const [dateRange, setDateRange] = useState<DateRange>('30');
   
   const messageCount = messages?.size ?? 0;
   const postCount = posts?.size ?? 0;
@@ -78,7 +86,7 @@ const DashboardView = () => {
         }
         
         const token = await user.getIdToken();
-        const response = await fetch('/api/analytics/track', {
+        const response = await fetch(`/api/analytics/track?range=${dateRange}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -96,14 +104,26 @@ const DashboardView = () => {
     };
 
     fetchAnalytics();
-  }, []);
+  }, [dateRange]);
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-headline font-bold">Dashboard</h1>
           <p className="text-foreground/70 mt-1">An overview of your website's activity.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Select value={dateRange} onValueChange={(value) => setDateRange(value as DateRange)}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Select range" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7">Last 7 days</SelectItem>
+              <SelectItem value="30">Last 30 days</SelectItem>
+              <SelectItem value="365">Last 1 year</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -129,7 +149,7 @@ const DashboardView = () => {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Page Views (30d)</CardTitle>
+            <CardTitle className="text-sm font-medium">Page Views</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -139,7 +159,7 @@ const DashboardView = () => {
               <div className="text-2xl font-bold">{(analytics?.totalPageViews || 0).toLocaleString()}</div>
             )}
             <p className="text-xs text-muted-foreground">
-              {analytics?.uniqueVisitors ? `${analytics.uniqueVisitors.toLocaleString()} unique visitors` : 'Total page views'}
+              {analytics?.uniqueVisitors ? `${analytics.uniqueVisitors.toLocaleString()} unique visitors (${DATE_RANGE_LABELS[dateRange].toLowerCase()})` : DATE_RANGE_LABELS[dateRange]}
             </p>
           </CardContent>
         </Card>
@@ -152,7 +172,7 @@ const DashboardView = () => {
             <TrendingUp className="h-5 w-5" />
             Page Views Trend
           </CardTitle>
-          <CardDescription>Daily page views over the last 30 days</CardDescription>
+          <CardDescription>Daily page views over the {DATE_RANGE_LABELS[dateRange].toLowerCase()}</CardDescription>
         </CardHeader>
         <CardContent>
           {analyticsLoading ? (

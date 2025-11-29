@@ -20,6 +20,16 @@ export interface SiteAnalytics {
   updatedAt: Date | { seconds: number; nanoseconds: number };
 }
 
+export type DateRange = '7' | '30' | '365';
+
+export const DATE_RANGE_VALUES: DateRange[] = ['7', '30', '365'];
+
+export const DATE_RANGE_LABELS: Record<DateRange, string> = {
+  '7': 'Last 7 days',
+  '30': 'Last 30 days',
+  '365': 'Last 1 year',
+};
+
 export interface AnalyticsSummary {
   totalPageViews: number;
   uniqueVisitors: number;
@@ -27,4 +37,5 @@ export interface AnalyticsSummary {
   topPages: { page: string; count: number }[];
   dailyViews: { date: string; views: number }[];
   recentVisitors: PageView[];
+  range?: DateRange;
 }
