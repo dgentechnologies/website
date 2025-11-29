@@ -24,6 +24,9 @@ const getSessionId = (): string => {
       sessionId = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
     }
     localStorage.setItem('analytics_session_id', sessionId);
+    
+    // Clear the tracked pages when session expires to allow re-tracking
+    trackedPages.clear();
   }
   
   // Always update the timestamp to extend the session
@@ -32,15 +35,39 @@ const getSessionId = (): string => {
   return sessionId;
 };
 
-// Track which pages have been tracked in this page load to avoid duplicates
+// Track which pages have been tracked in this browser session to avoid duplicates
+// Uses sessionStorage as a persistence check for page reload scenarios
 const trackedPages = new Set<string>();
+
+// Initialize tracked pages from sessionStorage on module load
+if (typeof window !== 'undefined') {
+  try {
+    const stored = sessionStorage.getItem('tracked_pages');
+    if (stored) {
+      JSON.parse(stored).forEach((page: string) => trackedPages.add(page));
+    }
+  } catch {
+    // Ignore parse errors
+  }
+}
+
+// Save tracked pages to sessionStorage
+const saveTrackedPages = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      sessionStorage.setItem('tracked_pages', JSON.stringify([...trackedPages]));
+    } catch {
+      // Ignore storage errors
+    }
+  }
+};
 
 export function usePageTracking() {
   const pathname = usePathname();
   const isTrackingRef = useRef(false);
 
   const trackPageView = useCallback(async (page: string) => {
-    // Prevent duplicate tracking for the same page in this page load
+    // Prevent duplicate tracking for the same page in this browser session
     if (trackedPages.has(page)) return;
     
     // Prevent concurrent tracking calls
@@ -65,6 +92,7 @@ export function usePageTracking() {
       if (response.ok) {
         // Only mark as tracked if the request succeeded
         trackedPages.add(page);
+        saveTrackedPages();
       }
     } catch (error) {
       // Silently fail - analytics should not break the user experience

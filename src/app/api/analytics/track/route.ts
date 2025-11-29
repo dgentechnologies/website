@@ -20,17 +20,41 @@ async function verifyAuthToken(request: NextRequest): Promise<boolean> {
   }
 }
 
+// Constant for the home page key in sanitized format
+const HOME_PAGE_KEY = '_home_';
+
 // Sanitize a string for use as a Firestore field key
 // Replace problematic characters with safe alternatives
+// Uses a reversible encoding: slashes become __slash__, underscores become __under__
 function sanitizeFieldKey(key: string): string {
-  // Replace slashes, dots, and other problematic chars with underscores
-  // Also handle empty strings
-  if (!key || key === '/') return '_home_';
+  // Handle home page
+  if (!key || key === '/') return HOME_PAGE_KEY;
+  
   return key
-    .replace(/\//g, '_')  // Replace forward slashes
-    .replace(/\./g, '_')  // Replace dots (Firestore field path separator)
-    .replace(/^\s+|\s+$/g, '') // Trim whitespace
-    .replace(/\s+/g, '_'); // Replace spaces with underscores
+    // First encode existing underscores to preserve them
+    .replace(/_/g, '__under__')
+    // Then encode slashes
+    .replace(/\//g, '__slash__')
+    // Encode dots (Firestore field path separator)
+    .replace(/\./g, '__dot__')
+    // Trim and encode spaces
+    .replace(/^\s+|\s+$/g, '')
+    .replace(/\s+/g, '__space__');
+}
+
+// Helper function to convert sanitized page key back to readable path
+function unsanitizePageKey(key: string): string {
+  if (key === HOME_PAGE_KEY) return '/';
+  
+  return key
+    // Restore spaces
+    .replace(/__space__/g, ' ')
+    // Restore dots
+    .replace(/__dot__/g, '.')
+    // Restore slashes
+    .replace(/__slash__/g, '/')
+    // Restore underscores
+    .replace(/__under__/g, '_');
 }
 
 // POST /api/analytics/track - Track a page view
@@ -117,14 +141,6 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-// Helper function to convert sanitized page key back to readable path
-function unsanitizePageKey(key: string): string {
-  if (key === '_home_') return '/';
-  // Convert underscores back to slashes for page paths
-  // Note: This is a best-effort conversion since we lose some information
-  return '/' + key.replace(/^_/, '').replace(/_$/, '').replace(/_/g, '/');
 }
 
 // GET /api/analytics/track - Get analytics summary (for admin dashboard)
