@@ -38,6 +38,22 @@ const advantages = [
 
 const faqs = [
     {
+        question: "What is the meaning of a Smart City?",
+        answer: "A smart city uses IoT (Internet of Things) technology to collect data. This data provides insights that are used to manage assets, resources, and services efficiently. The primary goal is to improve the quality of life for citizens by enhancing urban services like transportation, energy, and public safety."
+    },
+    {
+        question: "Which are some of India's smart cities?",
+        answer: "Under the Smart Cities Mission India, cities like Bhubaneswar, Pune, Ahmedabad, Chennai, and Indore have made significant progress in implementing smart solutions, setting a benchmark for other cities."
+    },
+    {
+        question: "What is the Smart Cities Mission launch date and ministry?",
+        answer: "The Smart Cities Mission was launched on June 25, 2015, by the Ministry of Housing and Urban Affairs (MoHUA), Government of India. Its objective is to promote sustainable and inclusive cities that provide core infrastructure and give a decent quality of life to its citizens."
+    },
+    {
+        question: "How does Auralis help build a #smartcity?",
+        answer: "Auralis is more than just a street light. It's a powerful IoT platform with AI-driven fault detection, energy monitoring, and environmental sensing capabilities. By creating a connected and intelligent lighting grid, Auralis provides city administrators with the data and control needed to improve efficiency, reduce costs, and enhance public safety, which are core goals of any smart city project."
+    },
+    {
         question: "How does Auralis's predictive maintenance work?",
         answer: "Our AI-powered platform analyzes real-time operational data from each Auralis device. By identifying patterns that precede a failure, the system can issue a maintenance alert, allowing teams to fix problems proactively before an outage occurs."
     },
