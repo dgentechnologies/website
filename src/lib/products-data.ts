@@ -1,5 +1,5 @@
 
-import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine, Router } from 'lucide-react';
+import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine, Router, ToyBrick, Network } from 'lucide-react';
 
 export type ProductFeature = {
   icon: LucideIcon;
@@ -50,44 +50,57 @@ export const products: Product[] = [
       { url: 'https://picsum.photos/seed/smartlight2/1200/800', alt: 'Dashboard showing control panel for smart street lights', hint: 'iot dashboard' },
       { url: 'https://picsum.photos/seed/smartlight3/1200/800', alt: 'Network of connected smart street lights on a map', hint: 'connected network' },
     ],
-    longDescription: 'Our flagship Auralis Smart Street Light is the cornerstone of modern urban infrastructure. It integrates advanced IoT technology to provide cities with centralized control, real-time monitoring, and intelligent automation. This product is designed to increase energy efficiency, reduce operational costs, and enhance public safety through reliable and adaptive lighting. The Auralis line is available in two connectivity models to suit different urban environments.',
+    longDescription: "The Auralis Ecosystem introduces a scalable, industrial-grade architecture for modernizing urban street lighting. Unlike traditional systems that require expensive cellular hardware on every pole, Auralis utilizes a cost-effective Hybrid-Mesh Topology. By deploying Auralis Core and Pro nodes in a 1:50 ratio, municipalities can achieve 100% grid visibility and up to 80% energy savings while significantly reducing hardware and cellular data costs.",
     features: [], // Base features can be empty as specifics are in sub-products
-    specifications: [], // Base specs can be empty
+    specifications: [
+        // Comparative specifications now live here to be used in the new table
+        { key: 'Primary Role', value: 'Local Control & Relay vs. Data Aggregation & Backhaul' },
+        { key: 'Deployment Ratio', value: '~50 per Cluster vs. 1 per Cluster' },
+        { key: 'Connectivity', value: 'Mesh Protocol (Local) vs. Mesh (Local) + 4G LTE' },
+        { key: 'Power Consumption', value: '< 1.5W (Standby) vs. ~2.5W (Average)' },
+        { key: 'Power Supply', value: '3W Isolated AC-DC vs. 10W Reinforced PSU' },
+        { key: 'Antenna', value: 'Single External Omni vs. Dual Combo Puck (LTE + Wi-Fi)' },
+        { key: 'Controller', value: 'Industrial Dual-Core MCU vs. Industrial Dual-Core MCU' },
+    ],
     qna: [
-      { question: 'How much energy can be saved with these lights?', answer: 'Cities can typically achieve energy savings of 40-60% through intelligent dimming schedules and efficient LED technology.' },
-      { question: 'What is the difference between the Auralis V1 and V2?', answer: 'The primary difference is the communication technology and sensor capabilities. The Auralis V1 (Wi-Fi) is ideal for dense urban areas, while the Auralis V2 (LoRaWAN) offers long-range communication and advanced sensor fusion for city-wide applications.' },
+      { question: 'How much energy can be saved with this ecosystem?', answer: 'Cities can typically achieve energy savings of up to 80% through intelligent dimming, real-time monitoring, and optimized grid performance.' },
+      { question: 'What is the primary advantage of the Hybrid-Mesh Topology?', answer: 'The key advantage is cost reduction. By using one gateway (Auralis Pro) for every 50 lights (Auralis Core), you drastically reduce the number of expensive cellular subscriptions needed, lowering both initial hardware costs and ongoing operational expenses.' },
     ],
     subProducts: [
       {
-        title: 'Auralis V1',
-        description: 'Ideal for dense urban environments. Offers high-bandwidth connectivity and reliable motion detection for complex control and data-rich applications.',
+        title: 'Auralis Core (Worker Node)',
+        description: 'A low-cost, mass-deployment unit that controls individual lights and acts as a data relay within the local mesh network.',
         features: [
-          { icon: Router, title: 'Hybrid Connectivity (Wi-Fi + GSM)', description: 'Leverages both Wi-Fi and GSM for redundant, always-on communication and control.' },
-          { icon: Radar, title: 'Radar-based Motion Detection', description: 'Provides highly reliable motion detection for adaptive lighting, unaffected by temperature or weather conditions.'},
-          { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Create custom, real-time dimming schedules to save energy during off-peak hours.' },
-          { icon: Zap, title: 'Predictive Maintenance', description: 'AI-driven fault detection alerts you to potential issues before they cause an outage.' },
+          { icon: Network, title: 'Mesh Protocol Connectivity', description: 'Communicates locally with other Core nodes and the Pro gateway over a proprietary 2.4 GHz mesh network.' },
+          { icon: GaugeCircle, title: 'Intelligent Dimming Engine', description: 'Precise, flicker-free AC phase-cutting for 0-100% brightness control.' },
+          { icon: Radar, title: 'Microwave Doppler Radar', description: 'Integrated motion detection that works through the enclosure, maintaining IP67 integrity.' },
+          { icon: Zap, title: 'Real-time Fault Monitoring', description: 'A Hall-Effect sensor detects open or short circuits for instant maintenance alerts.' },
         ],
         specifications: [
-            { key: 'Connectivity', value: 'Wi-Fi (802.11 b/g/n) + GSM' },
-            { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
-            { key: 'IP Rating', value: 'IP66' },
-            { key: 'Input Voltage', value: '230V AC' },
+            { key: 'Primary Role', value: 'Local Control & Relay' },
+            { key: 'Connectivity', value: 'Mesh Protocol (Local)' },
+            { key: 'Power Supply', value: '3W Isolated AC-DC' },
+            { key: 'Power Consumption', value: '< 1.5W (Standby)' },
+            { key: 'Antenna', value: 'Single External Omni' },
+            { key: 'Controller', value: 'Industrial Dual-Core MCU' },
         ]
       },
       {
-        title: 'Auralis V2',
-        description: 'The premium model for maximum accuracy. Provides long-range communication and advanced sensor fusion for critical applications.',
+        title: 'Auralis Pro (Gateway Node)',
+        description: 'A high-performance cluster head that aggregates data from up to 50 Core nodes and bridges the network to the cloud via 4G LTE.',
         features: [
-            { icon: Router, title: 'Hybrid Connectivity (Wi-Fi + GSM)', description: 'Leverages both Wi-Fi and GSM for redundant, always-on communication and control.' },
-            { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines Radar and Passive Infrared sensors for extremely accurate presence detection, eliminating false triggers.' },
-            { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Create custom, real-time dimming schedules to save energy during off-peak hours.' },
-            { icon: Zap, title: 'Predictive Maintenance', description: 'AI-driven fault detection alerts you to potential issues before they cause an outage.' },
+          { icon: Router, title: '4G LTE Cat 1 Backhaul', description: 'Provides reliable, low-latency cloud connectivity for the entire cluster.' },
+          { icon: ToyBrick, title: 'Data Aggregation', description: 'Acts as the "Root" of the mesh, collecting encrypted telemetry from all worker nodes for a secure batch upload.' },
+          { icon: ShieldCheck, title: 'Reinforced Power Architecture', description: 'A specialized 10W power supply handles the high-current demands of cellular transmission without resets.' },
+          { icon: Zap, title: 'Advanced Signal Integrity', description: 'Specialized PCB design ensures cellular transmissions do not interfere with the local mesh network or sensor logic.' },
         ],
         specifications: [
-            { key: 'Connectivity', value: 'Wi-Fi (802.11 b/g/n) + GSM' },
-            { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
-            { key: 'IP Rating', value: 'IP66' },
-            { key: 'Input Voltage', value: '230V AC' },
+            { key: 'Primary Role', value: 'Data Aggregation & Backhaul' },
+            { key: 'Connectivity', value: 'Mesh (Local) + 4G LTE Cat 1 (Cloud)' },
+            { key: 'Power Supply', value: '10W Reinforced High-Current PSU' },
+            { key: 'Power Consumption', value: '~2.5W (Average), 10W Peak' },
+            { key: 'Antenna', value: 'Dual Combo Puck (LTE + Wi-Fi)'},
+            { key: 'Controller', value: 'Industrial Dual-Core MCU' },
         ]
       }
     ]

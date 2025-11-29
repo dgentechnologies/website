@@ -132,14 +132,48 @@ function ProductDetailView({ product }: { product: Product }) {
 }
 
 function SubProductView({ product }: { product: Product }) {
+  const coreProduct = product.subProducts?.[0];
+  const proProduct = product.subProducts?.[1];
+
   return (
-    <div className="space-y-12">
+    <div className="space-y-16">
+      {/* Ecosystem Overview */}
       <div>
-        <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto">{product.longDescription}</p>
+        <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto text-center">{product.longDescription}</p>
       </div>
+
+      {/* Comparative Specifications */}
+      <div>
+        <h2 className="text-3xl font-headline font-bold mb-4 text-center">Comparative Specifications</h2>
+        <Card className="max-w-4xl mx-auto">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-1/4">Feature</TableHead>
+                        <TableHead className="font-bold text-foreground">Auralis Core</TableHead>
+                        <TableHead className="font-bold text-foreground">Auralis Pro</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {product.specifications.map((spec, index) => {
+                        const [coreValue, proValue] = spec.value.split(' vs. ');
+                        return (
+                            <TableRow key={index}>
+                                <TableCell className="font-medium">{spec.key}</TableCell>
+                                <TableCell>{coreValue}</TableCell>
+                                <TableCell>{proValue}</TableCell>
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        </Card>
+      </div>
+      
+      {/* Sub-Product Cards */}
       <div className="grid md:grid-cols-2 gap-8 items-stretch">
         {product.subProducts?.map((sub, index) => (
-          <Card key={index} className="flex flex-col">
+          <Card key={index} className="flex flex-col bg-card/50">
             <CardHeader>
               <CardTitle className="font-headline text-2xl">{sub.title}</CardTitle>
               <CardDescription>{sub.description}</CardDescription>
@@ -176,6 +210,22 @@ function SubProductView({ product }: { product: Product }) {
           </Card>
         ))}
       </div>
+
+       {/* FAQ Section */}
+       <div>
+          <h2 className="text-3xl font-headline font-bold mb-4 text-center">Frequently Asked Questions</h2>
+          <Accordion type="single" collapsible className="w-full max-w-4xl mx-auto">
+            {product.qna.map((item, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
+                    <AccordionContent className="text-base text-foreground/80">
+                        {item.answer}
+                    </AccordionContent>
+                </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+
        <div className="pt-8 space-y-4 max-w-md mx-auto">
           <Button asChild size="lg" className="w-full">
               <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
