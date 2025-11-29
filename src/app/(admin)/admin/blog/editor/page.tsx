@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useCallback, Suspense } from 'react';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { useState, useCallback, Suspense, useEffect } from 'react';
+import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -18,6 +18,20 @@ function EditorContent() {
   const searchParams = useSearchParams();
   const author = searchParams.get('author') || '';
   const topic = searchParams.get('topic') || '';
+  const router = useRouter();
+  const { toast } = useToast();
+  
+  // Redirect to create page if required params are missing
+  useEffect(() => {
+    if (!author || !topic) {
+      toast({
+        variant: 'destructive',
+        title: 'Missing Information',
+        description: 'Author and topic are required. Redirecting to create page.',
+      });
+      router.push('/admin/blog/create');
+    }
+  }, [author, topic, router, toast]);
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -25,8 +39,6 @@ function EditorContent() {
     author,
     title: topic, // Use topic as initial title
   });
-  const router = useRouter();
-  const { toast } = useToast();
 
   const generateSlug = (title: string): string => {
     return title
@@ -91,7 +103,14 @@ function EditorContent() {
 
     setIsSaving(true);
     try {
-      const slug = generatedContent.slug || generateSlug(post.title);
+      let slug = generatedContent.slug || generateSlug(post.title);
+      
+      // Check for slug collision and add timestamp if needed
+      const existingDoc = await getDoc(doc(firestore, 'blogPosts', slug));
+      if (existingDoc.exists()) {
+        slug = `${slug}-${Date.now()}`;
+      }
+      
       const postData = {
         ...post,
         slug,
