@@ -219,7 +219,7 @@ function EcosystemProductView({ product }: { product: Product }) {
       </Section>
 
       {/* Sub-Product Section */}
-      <Section title="Auralis Product Versions" description="Choose the Auralis version that best fits your project's needs. Both versions are built on the same core ecosystem.">
+      <Section title="Auralis Product Versions" description="Choose the Auralis version that best fits your needs. Both versions are built on the same core ecosystem.">
           <div className="grid md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
             {subProducts.map((sub, index) => (
               <Card key={index} className="flex flex-col bg-card/50 border-2 border-transparent hover:border-primary/50 hover:shadow-xl transition-all">
@@ -248,6 +248,19 @@ function EcosystemProductView({ product }: { product: Product }) {
           </div>
       </Section>
 
+      {/* CTA and Back Button */}
+       <div className="pt-8 space-y-4 max-w-md mx-auto">
+          <Button asChild size="lg" className="w-full">
+              <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
+          </Button>
+          <Button asChild variant="outline" className="w-full">
+              <Link href="/products">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to All Products
+              </Link>
+          </Button>
+      </div>
+
        {/* FAQ Section */}
        <Section title="Frequently Asked Questions">
           <Accordion type="single" collapsible className="w-full max-w-4xl mx-auto">
@@ -261,18 +274,6 @@ function EcosystemProductView({ product }: { product: Product }) {
             ))}
           </Accordion>
         </Section>
-
-       <div className="pt-8 space-y-4 max-w-md mx-auto">
-          <Button asChild size="lg" className="w-full">
-              <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
-          </Button>
-          <Button asChild variant="outline" className="w-full">
-              <Link href="/products">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to All Products
-              </Link>
-          </Button>
-      </div>
     </div>
   );
 }
@@ -329,3 +330,5 @@ export async function generateMetadata({ params }: { params: Promise<{ 'product-
     description: product.shortDescription,
   };
 }
+
+    
