@@ -1,5 +1,5 @@
 
-import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine } from 'lucide-react';
+import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine, Router } from 'lucide-react';
 
 export type ProductFeature = {
   icon: LucideIcon;
@@ -59,32 +59,32 @@ export const products: Product[] = [
     ],
     subProducts: [
       {
-        title: 'Auralis V1 (Wi-Fi)',
-        description: 'Ideal for dense urban environments with existing Wi-Fi infrastructure. Offers high-bandwidth connectivity for complex control and data-rich applications.',
+        title: 'Auralis V1',
+        description: 'Ideal for dense urban environments. Offers high-bandwidth connectivity and reliable motion detection for complex control and data-rich applications.',
         features: [
-          { icon: Wifi, title: 'Wi-Fi Connectivity', description: 'Leverages standard 2.4GHz Wi-Fi networks for easy integration and high data throughput.' },
-          { icon: Radar, title: 'Radar-based Motion Detection', description: 'Provides reliable motion detection for adaptive lighting, unaffected by temperature or weather.'},
-          { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Create custom dimming schedules to save energy during off-peak hours.' },
+          { icon: Router, title: 'Hybrid Connectivity (Wi-Fi + GSM)', description: 'Leverages both Wi-Fi and GSM for redundant, always-on communication and control.' },
+          { icon: Radar, title: 'Radar-based Motion Detection', description: 'Provides highly reliable motion detection for adaptive lighting, unaffected by temperature or weather conditions.'},
+          { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Create custom, real-time dimming schedules to save energy during off-peak hours.' },
           { icon: Zap, title: 'Predictive Maintenance', description: 'AI-driven fault detection alerts you to potential issues before they cause an outage.' },
         ],
         specifications: [
-            { key: 'Connectivity', value: 'Wi-Fi (802.11 b/g/n)' },
+            { key: 'Connectivity', value: 'Wi-Fi (802.11 b/g/n) + GSM' },
             { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
             { key: 'IP Rating', value: 'IP66' },
             { key: 'Input Voltage', value: '90-305V AC' },
         ]
       },
       {
-        title: 'Auralis V2 (LoRaWAN)',
-        description: 'Designed for city-wide, low-power IoT networks. Provides long-range communication and advanced sensor capabilities.',
+        title: 'Auralis V2',
+        description: 'The premium model for maximum accuracy. Provides long-range communication and advanced sensor fusion for critical applications.',
         features: [
-            { icon: Waves, title: 'LoRaWAN Connectivity', description: 'Utilizes Long Range, Low Power Wide Area Network technology for city-scale coverage.' },
-            { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines Radar and Passive Infrared (PIR) sensors for highly accurate presence detection and reduced false triggers.' },
-            { icon: GaugeCircle, title: 'Remote Dimming Control', description: 'Adjust lighting levels across large areas from a central command center.' },
-            { icon: Zap, title: 'Automated Fault Reporting', description: 'Each unit can report its status and any faults over the LoRaWAN network.' },
+            { icon: Router, title: 'Hybrid Connectivity (Wi-Fi + GSM)', description: 'Leverages both Wi-Fi and GSM for redundant, always-on communication and control.' },
+            { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines Radar and Passive Infrared sensors for extremely accurate presence detection, eliminating false triggers.' },
+            { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Create custom, real-time dimming schedules to save energy during off-peak hours.' },
+            { icon: Zap, title: 'Predictive Maintenance', description: 'AI-driven fault detection alerts you to potential issues before they cause an outage.' },
         ],
         specifications: [
-            { key: 'Connectivity', value: 'LoRaWAN (865-867 MHz for India)' },
+            { key: 'Connectivity', value: 'Wi-Fi (802.11 b/g/n) + GSM' },
             { key: 'Luminosity', value: '4,000 - 15,000 lumens' },
             { key: 'IP Rating', value: 'IP66' },
             { key: 'Input Voltage', value: '90-305V AC' },
