@@ -1,3 +1,4 @@
+'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Building2, Router, BrainCircuit, Home as HomeIcon, ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useParallax, useScrollAnimation } from '@/hooks/use-scroll-animation';
 
 const services = [
   {
@@ -34,7 +36,7 @@ const advantages = [
     {
       icon: <BrainCircuit className="h-8 w-8 text-primary" />,
       title: 'Innovative Solutions',
-      description: 'We stay at the forefront of technology to deliver future-proof solutions, helping build India\'s smart cities.'
+      description: "We stay at the forefront of technology to deliver future-proof solutions, helping build India's smart cities."
     },
     {
       icon: <Users className="h-8 w-8 text-primary" />,
@@ -51,41 +53,118 @@ const advantages = [
 const heroImage = PlaceHolderImages.find(img => img.id === 'hero-home');
 const ctaImage = PlaceHolderImages.find(img => img.id === 'about-story');
 
+function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ${
+        isVisible
+          ? 'opacity-100 translate-y-0'
+          : 'opacity-0 translate-y-10'
+      }`}
+      style={{ transitionDelay: `${index * 100}ms` }}
+    >
+      <Card className="bg-background/50 hover:bg-background border-border/50 transition-all transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 flex flex-col h-full group">
+        <CardHeader className="flex flex-col items-start gap-4">
+          <div className="transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+            {service.icon}
+          </div>
+          <CardTitle className="font-headline text-lg">{service.title}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-grow">
+          <p className="text-sm text-foreground/70">{service.description}</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function AdvantageItem({ advantage, index }: { advantage: typeof advantages[0]; index: number }) {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3 });
+
+  return (
+    <div
+      ref={ref}
+      className={`flex items-start gap-4 p-4 rounded-lg hover:bg-card transition-all duration-500 ${
+        isVisible
+          ? 'opacity-100 translate-x-0'
+          : 'opacity-0 -translate-x-10'
+      }`}
+      style={{ transitionDelay: `${index * 150}ms` }}
+    >
+      <div className="p-3 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 transform transition-transform duration-300 hover:scale-110">
+        {advantage.icon}
+      </div>
+      <div>
+        <h3 className="text-lg font-headline font-bold">{advantage.title}</h3>
+        <p className="text-sm text-foreground/70 mt-1">{advantage.description}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
+  const parallaxOffset = useParallax(0.3);
+  const [servicesRef, servicesVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+  const [advantagesImageRef, advantagesImageVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const [ctaRef, ctaVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3 });
+
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
+    <div className="flex flex-col overflow-hidden">
+      {/* Hero Section with Parallax */}
       <section className="relative w-full h-screen overflow-hidden flex items-center justify-center text-center">
-        <div className="absolute inset-0 z-0">
+        {/* Parallax Background Image */}
+        <div 
+          className="absolute inset-0 z-0 will-change-transform"
+          style={{ transform: `translateY(${parallaxOffset}px) scale(1.1)` }}
+        >
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
               alt={heroImage.description}
               fill
-              className="object-cover animate-hero-image"
+              className="object-cover"
               data-ai-hint={heroImage.imageHint}
               priority
             />
           )}
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"></div>
         </div>
-        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6">
+        
+        {/* Hero Content with Fade-in Animation */}
+        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6 animate-hero-content">
           <div className="space-y-6">
-            <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary text-sm backdrop-blur-sm">Next-Gen Technology Partners</Badge>
-            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-gradient leading-tight">
+            <Badge 
+              variant="outline" 
+              className="py-1 px-3 border-primary/50 text-primary text-sm backdrop-blur-sm animate-slide-down"
+              style={{ animationDelay: '0.2s' }}
+            >
+              Next-Gen Technology Partners
+            </Badge>
+            <h1 
+              className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-gradient leading-tight animate-slide-up"
+              style={{ animationDelay: '0.4s' }}
+            >
               Build Smart Cities with Integrated Solutions
             </h1>
-            <p className="max-w-3xl mx-auto text-white/90 md:text-lg lg:text-xl">
-              DGEN Technologies helps you build the future with intelligent, connected solutions. From pioneering smart city infrastructure with 'Auralis' to bringing innovation into the consumer smart home, we deliver the technology that powers a smarter tomorrow.
+            <p 
+              className="max-w-3xl mx-auto text-white/90 md:text-lg lg:text-xl animate-slide-up"
+              style={{ animationDelay: '0.6s' }}
+            >
+              DGEN Technologies helps you build the future with intelligent, connected solutions. From pioneering smart city infrastructure with &apos;Auralis&apos; to bringing innovation into the consumer smart home, we deliver the technology that powers a smarter tomorrow.
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row justify-center pt-2">
-              <Button asChild size="lg" className="group">
+            <div 
+              className="flex flex-col gap-4 sm:flex-row justify-center pt-2 animate-slide-up"
+              style={{ animationDelay: '0.8s' }}
+            >
+              <Button asChild size="lg" className="group hover:scale-105 transition-transform">
                 <Link href="/services">
                   Explore Our Services <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline">
+              <Button asChild size="lg" variant="outline" className="hover:scale-105 transition-transform">
                 <Link href="/contact">
                   Request a Consultation
                 </Link>
@@ -93,38 +172,44 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
+            <div className="w-1 h-3 bg-white/70 rounded-full animate-scroll-indicator"></div>
+          </div>
+        </div>
       </section>
 
       <div className="relative z-10 bg-background">
         {/* Services Overview Section */}
-        <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
+        <section className="w-full py-16 md:py-24 lg:py-32 bg-card overflow-hidden">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 animate-fade-in-up">
-              <Badge variant="default">Our Core Expertise</Badge>
-              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Smart Solutions for a Connected Future</h2>
+            <div 
+              ref={servicesRef}
+              className={`flex flex-col items-center justify-center space-y-4 text-center mb-12 transition-all duration-700 ${
+                servicesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
+              <Badge variant="default" className="animate-pulse-subtle">Our Core Expertise</Badge>
+              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
+                Smart Solutions for a Connected Future
+              </h2>
               <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
                 We provide end-to-end technology services designed to solve complex challenges. Let our team help you build tailored solutions that bring value to your smart city and smart home projects.
               </p>
             </div>
-            <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4 animate-fade-in-up">
+            <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">
               {services.map((service, index) => (
-                <Card key={service.title} className="bg-background/50 hover:bg-background border-border/50 transition-all transform hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 flex flex-col" style={{ animationDelay: `${index * 100}ms` }}>
-                  <CardHeader className="flex flex-col items-start gap-4">
-                    {service.icon}
-                    <CardTitle className="font-headline text-lg">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <p className="text-sm text-foreground/70">{service.description}</p>
-                  </CardContent>
-                </Card>
+                <ServiceCard key={service.title} service={service} index={index} />
               ))}
             </div>
           </div>
         </section>
 
         {/* Why Choose Us Section */}
-        <section className="w-full py-16 md:py-24 lg:py-32">
-           <div className="container px-4 md:px-6 animate-fade-in-up">
+        <section className="w-full py-16 md:py-24 lg:py-32 overflow-hidden">
+          <div className="container px-4 md:px-6">
             <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
               <div className="space-y-6">
                 <Badge variant="outline" className="border-primary/50 text-primary">The DGEN Advantage</Badge>
@@ -132,53 +217,57 @@ export default function Home() {
                   Your Partner to Build Digital Excellence
                 </h2>
                 <p className="text-foreground/80 md:text-lg">
-                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don’t just build products; we build partnerships for #smartcities.
+                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don&apos;t just build products; we build partnerships for #smartcities.
                 </p>
-                 <div className="space-y-6 pt-4">
-                  {advantages.map((advantage) => (
-                    <div key={advantage.title} className="flex items-start gap-4 p-4 rounded-lg hover:bg-card transition-colors">
-                      <div className="p-3 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
-                        {advantage.icon}
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-headline font-bold">{advantage.title}</h3>
-                        <p className="text-sm text-foreground/70 mt-1">{advantage.description}</p>
-                      </div>
-                    </div>
+                <div className="space-y-6 pt-4">
+                  {advantages.map((advantage, index) => (
+                    <AdvantageItem key={advantage.title} advantage={advantage} index={index} />
                   ))}
                 </div>
               </div>
-              <div className="relative aspect-video w-full">
-                  {ctaImage && (
-                      <Image
-                          src={ctaImage.imageUrl}
-                          alt={ctaImage.description}
-                          fill
-                          className="object-cover rounded-xl shadow-lg shadow-primary/10"
-                          data-ai-hint={ctaImage.imageHint}
-                      />
-                  )}
+              <div 
+                ref={advantagesImageRef}
+                className={`relative aspect-video w-full transition-all duration-1000 ${
+                  advantagesImageVisible
+                    ? 'opacity-100 translate-x-0 scale-100'
+                    : 'opacity-0 translate-x-20 scale-95'
+                }`}
+              >
+                {ctaImage && (
+                  <Image
+                    src={ctaImage.imageUrl}
+                    alt={ctaImage.description}
+                    fill
+                    className="object-cover rounded-xl shadow-lg shadow-primary/10 transition-transform duration-500 hover:scale-105"
+                    data-ai-hint={ctaImage.imageHint}
+                  />
+                )}
               </div>
             </div>
           </div>
         </section>
         
         {/* Call to Action Section */}
-        <section className="w-full py-16 md:py-24 lg:py-32 bg-card">
-          <div className="container max-w-screen-md px-4 md:px-6 text-center animate-fade-in-up">
-              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-gradient">
-                  Ready to Build the Future of Smart Cities?
-              </h2>
-              <p className="mt-4 text-foreground/80 md:text-lg">
-                  Let's discuss how DGEN Technologies can help you build your smart city and home solutions. Schedule a free, no-obligation consultation with our experts today.
-              </p>
-              <div className="mt-8">
-                  <Button asChild size="lg" className="group">
-                      <Link href="/contact">
-                          Get in Touch <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                  </Button>
-              </div>
+        <section className="w-full py-16 md:py-24 lg:py-32 bg-card overflow-hidden">
+          <div 
+            ref={ctaRef}
+            className={`container max-w-screen-md px-4 md:px-6 text-center transition-all duration-700 ${
+              ctaVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
+          >
+            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-gradient">
+              Ready to Build the Future of Smart Cities?
+            </h2>
+            <p className="mt-4 text-foreground/80 md:text-lg">
+              Let&apos;s discuss how DGEN Technologies can help you build your smart city and home solutions. Schedule a free, no-obligation consultation with our experts today.
+            </p>
+            <div className="mt-8">
+              <Button asChild size="lg" className="group hover:scale-105 transition-transform">
+                <Link href="/contact">
+                  Get in Touch <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </section>
       </div>
