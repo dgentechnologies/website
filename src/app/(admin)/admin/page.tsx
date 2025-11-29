@@ -55,17 +55,12 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { TrendingUp } from 'lucide-react';
-
-interface AnalyticsData {
-  totalPageViews: number;
-  uniqueVisitors: number;
-  dailyViews: { date: string; views: number }[];
-}
+import { AnalyticsSummary } from '@/types/analytics';
 
 const DashboardView = () => {
   const [messages, messagesLoading] = useCollection(collection(firestore, 'contactMessages'));
   const [posts, postsLoading] = useCollection(collection(firestore, 'blogPosts'));
-  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
   
   const messageCount = messages?.size ?? 0;
@@ -141,7 +136,7 @@ const DashboardView = () => {
             {analyticsLoading ? (
               <Skeleton className="h-8 w-1/4 mt-1" />
             ) : (
-              <div className="text-2xl font-bold">{analytics?.totalPageViews?.toLocaleString() || 0}</div>
+              <div className="text-2xl font-bold">{(analytics?.totalPageViews || 0).toLocaleString()}</div>
             )}
             <p className="text-xs text-muted-foreground">
               {analytics?.uniqueVisitors ? `${analytics.uniqueVisitors.toLocaleString()} unique visitors` : 'Total page views'}
