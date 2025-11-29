@@ -20,6 +20,43 @@ async function verifyAuthToken(request: NextRequest): Promise<boolean> {
   }
 }
 
+// Constant for the home page key in sanitized format
+const HOME_PAGE_KEY = '_home_';
+
+// Sanitize a string for use as a Firestore field key
+// Replace problematic characters with safe alternatives
+// Uses a reversible encoding: slashes become __slash__, underscores become __under__
+function sanitizeFieldKey(key: string): string {
+  // Handle home page
+  if (!key || key === '/') return HOME_PAGE_KEY;
+  
+  return key
+    // First encode existing underscores to preserve them
+    .replace(/_/g, '__under__')
+    // Then encode slashes
+    .replace(/\//g, '__slash__')
+    // Encode dots (Firestore field path separator)
+    .replace(/\./g, '__dot__')
+    // Trim and encode spaces
+    .replace(/^\s+|\s+$/g, '')
+    .replace(/\s+/g, '__space__');
+}
+
+// Helper function to convert sanitized page key back to readable path
+function unsanitizePageKey(key: string): string {
+  if (key === HOME_PAGE_KEY) return '/';
+  
+  return key
+    // Restore spaces
+    .replace(/__space__/g, ' ')
+    // Restore dots
+    .replace(/__dot__/g, '.')
+    // Restore slashes
+    .replace(/__slash__/g, '/')
+    // Restore underscores
+    .replace(/__under__/g, '_');
+}
+
 // POST /api/analytics/track - Track a page view
 export async function POST(request: NextRequest) {
   try {
@@ -39,7 +76,7 @@ export async function POST(request: NextRequest) {
                  'Unknown';
     const userAgent = request.headers.get('user-agent') || 'Unknown';
 
-    // Create page view record
+    // Create page view record (store original page path)
     const pageViewData = {
       page,
       country,
@@ -52,6 +89,10 @@ export async function POST(request: NextRequest) {
 
     // Add to pageViews collection
     await adminFirestore.collection('pageViews').add(pageViewData);
+
+    // Sanitize keys for use in Firestore field paths
+    const sanitizedCountry = sanitizeFieldKey(country);
+    const sanitizedPage = sanitizeFieldKey(page);
 
     // Update daily analytics summary
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
@@ -67,8 +108,8 @@ export async function POST(request: NextRequest) {
       // Update existing document
       const updateData: Record<string, unknown> = {
         totalViews: FieldValue.increment(1),
-        [`countries.${country}`]: FieldValue.increment(1),
-        [`pages.${page}`]: FieldValue.increment(1),
+        [`countries.${sanitizedCountry}`]: FieldValue.increment(1),
+        [`pages.${sanitizedPage}`]: FieldValue.increment(1),
         updatedAt: FieldValue.serverTimestamp(),
       };
       
@@ -86,8 +127,8 @@ export async function POST(request: NextRequest) {
         totalViews: 1,
         uniqueVisitors: sessionId ? 1 : 0,
         sessions: sessionId ? [sessionId] : [],
-        countries: { [country]: 1 },
-        pages: { [page]: 1 },
+        countries: { [sanitizedCountry]: 1 },
+        pages: { [sanitizedPage]: 1 },
         updatedAt: FieldValue.serverTimestamp(),
       });
     }
@@ -128,14 +169,14 @@ export async function GET(request: NextRequest) {
     startDate.setDate(startDate.getDate() - daysToFetch);
     const startDateStr = startDate.toISOString().split('T')[0];
 
-    // Fetch daily analytics
+    // Fetch daily analytics from siteAnalytics collection
     const analyticsSnapshot = await adminFirestore
       .collection('siteAnalytics')
       .where('date', '>=', startDateStr)
       .orderBy('date', 'desc')
       .get();
 
-    // Aggregate data
+    // Aggregate data from siteAnalytics
     let totalPageViews = 0;
     const allSessions = new Set<string>();
     const countryCounts: Record<string, number> = {};
@@ -163,7 +204,7 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      // Aggregate pages
+      // Aggregate pages (with sanitized keys)
       if (data.pages) {
         Object.entries(data.pages).forEach(([page, count]) => {
           pageCounts[page] = (pageCounts[page] || 0) + (count as number);
@@ -180,13 +221,16 @@ export async function GET(request: NextRequest) {
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    // Get top pages
+    // Get top pages (convert sanitized keys back to readable paths)
     const topPages = Object.entries(pageCounts)
-      .map(([page, count]) => ({ page, count }))
+      .map(([page, count]) => ({ 
+        page: unsanitizePageKey(page), 
+        count 
+      }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    // Get recent visitors (last 10)
+    // Get recent visitors (last 10) from pageViews collection
     const recentVisitorsSnapshot = await adminFirestore
       .collection('pageViews')
       .orderBy('timestamp', 'desc')
