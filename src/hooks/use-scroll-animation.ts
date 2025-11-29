@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, RefObject } from 'react';
+import { useEffect, useState, useRef, RefObject, useCallback } from 'react';
 
 interface UseScrollAnimationOptions {
   threshold?: number;
@@ -16,7 +16,7 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
   options: UseScrollAnimationOptions = {}
 ): [RefObject<T>, boolean] {
   const { threshold = 0.1, rootMargin = '0px', once = true } = options;
-  const ref = useRef<T>(null!);
+  const ref = useRef<T | null>(null) as RefObject<T>;
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -40,6 +40,7 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
     observer.observe(element);
 
     return () => {
+      // Store element in closure to ensure we unobserve the correct element
       observer.unobserve(element);
     };
   }, [threshold, rootMargin, once]);
