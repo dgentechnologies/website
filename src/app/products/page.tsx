@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { products } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-const heroImage = PlaceHolderImages.find(img => img.id === 'hero-home');
+const heroImage = PlaceHolderImages.find(img => img.id === 'about-story');
 
 export default function ProductsPage() {
   return (

@@ -15,8 +15,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Building2, Home } from 'lucide-react';
 
 
-const heroImage = PlaceHolderImages.find(img => img.id === 'hero-home');
-const smartCityImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
+const heroImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
+const smartCityImage = PlaceHolderImages.find(img => img.id === 'auralis-features');
 
 const advantages = [
     {
