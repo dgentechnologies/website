@@ -46,6 +46,24 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow update, delete: if false;
     }
+
+    /**
+     * @description Analytics tracking collections.
+     * @path /pageViews/{viewId}
+     * @path /siteAnalytics/{dateId}
+     * @allow (read) - Only authenticated admin users can read analytics.
+     * @allow (create, update) - Server-side only via Admin SDK.
+     * @principle Analytics data is sensitive and should only be readable by admins.
+     */
+    match /pageViews/{viewId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if false;
+    }
+
+    match /siteAnalytics/{dateId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if false;
+    }
   }
 }
 

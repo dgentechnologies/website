@@ -42,13 +42,61 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 import { BlogPost } from '@/types/blog';
+import PerformanceView from '@/components/performance-view';
+import SettingsView from '@/components/settings-view';
+
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
+import { TrendingUp } from 'lucide-react';
+import { AnalyticsSummary } from '@/types/analytics';
 
 const DashboardView = () => {
   const [messages, messagesLoading] = useCollection(collection(firestore, 'contactMessages'));
   const [posts, postsLoading] = useCollection(collection(firestore, 'blogPosts'));
+  const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(true);
+  
   const messageCount = messages?.size ?? 0;
   const postCount = posts?.size ?? 0;
   const isLoading = messagesLoading || postsLoading;
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        setAnalyticsLoading(true);
+        const user = auth.currentUser;
+        if (!user) {
+          setAnalyticsLoading(false);
+          return;
+        }
+        
+        const token = await user.getIdToken();
+        const response = await fetch('/api/analytics/track', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setAnalytics(data);
+        }
+      } catch (error) {
+        console.error('Error fetching analytics:', error);
+      } finally {
+        setAnalyticsLoading(false);
+      }
+    };
+
+    fetchAnalytics();
+  }, []);
 
   return (
     <div>
@@ -81,15 +129,78 @@ const DashboardView = () => {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">User Visits (30d)</CardTitle>
+            <CardTitle className="text-sm font-medium">Page Views (30d)</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,234</div>
-            <p className="text-xs text-muted-foreground">Analytics data coming soon</p>
+            {analyticsLoading ? (
+              <Skeleton className="h-8 w-1/4 mt-1" />
+            ) : (
+              <div className="text-2xl font-bold">{(analytics?.totalPageViews || 0).toLocaleString()}</div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {analytics?.uniqueVisitors ? `${analytics.uniqueVisitors.toLocaleString()} unique visitors` : 'Total page views'}
+            </p>
           </CardContent>
         </Card>
       </div>
+
+      {/* Page Views Chart */}
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5" />
+            Page Views Trend
+          </CardTitle>
+          <CardDescription>Daily page views over the last 30 days</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {analyticsLoading ? (
+            <Skeleton className="h-64 w-full" />
+          ) : analytics?.dailyViews && analytics.dailyViews.length > 0 ? (
+            <ResponsiveContainer width="100%" height={250}>
+              <AreaChart
+                data={analytics.dailyViews}
+                margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis
+                  dataKey="date"
+                  tickFormatter={(date) => {
+                    const d = new Date(date);
+                    return `${d.getMonth() + 1}/${d.getDate()}`;
+                  }}
+                  className="text-xs"
+                />
+                <YAxis className="text-xs" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'hsl(var(--card))',
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: '8px',
+                  }}
+                  labelFormatter={(date) => new Date(date).toLocaleDateString()}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="views"
+                  stroke="hsl(var(--primary))"
+                  fill="hsl(var(--primary))"
+                  fillOpacity={0.2}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="h-[250px] flex items-center justify-center text-muted-foreground">
+              <div className="text-center">
+                <TrendingUp className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                <p>No analytics data yet</p>
+                <p className="text-sm">Page views will appear here as visitors browse your site.</p>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
@@ -326,6 +437,10 @@ export default function AdminRootPage() {
         return <BlogView />;
       case 'messages':
         return <MessagesView />;
+      case 'performance':
+        return <PerformanceView />;
+      case 'settings':
+        return <SettingsView />;
       case 'dashboard':
       default:
         return <DashboardView />;
