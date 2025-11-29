@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuth } from 'firebase-admin/auth';
+import { getAuth, DecodedIdToken } from 'firebase-admin/auth';
 import { adminApp } from '@/firebase/server';
 
 export async function POST(request: NextRequest) {
@@ -17,12 +17,24 @@ export async function POST(request: NextRequest) {
     const auth = getAuth(adminApp);
 
     // Verify the token and check if the user is an admin
+    let decodedToken: DecodedIdToken;
     try {
-      await auth.verifyIdToken(token);
+      decodedToken = await auth.verifyIdToken(token);
     } catch {
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
+      );
+    }
+
+    // Get the user record to check if they have admin privileges
+    // We check if the user already exists in Firebase Auth (meaning they are an admin)
+    // since only authenticated admin users can access the admin dashboard
+    const existingUser = await auth.getUser(decodedToken.uid);
+    if (!existingUser) {
+      return NextResponse.json(
+        { error: 'Unauthorized: Admin privileges required' },
+        { status: 403 }
       );
     }
 
@@ -68,6 +80,12 @@ export async function POST(request: NextRequest) {
         message = 'Invalid email address';
       } else if (firebaseError.code === 'auth/weak-password') {
         message = 'Password is too weak';
+      } else if (firebaseError.code === 'auth/user-not-found') {
+        message = 'Unauthorized: Admin privileges required';
+        return NextResponse.json(
+          { error: message },
+          { status: 403 }
+        );
       }
     }
 
