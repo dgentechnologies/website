@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { auth } from '@/firebase/client';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function AdminRootLayout({
   children,
@@ -14,6 +15,7 @@ export default function AdminRootLayout({
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const pathname = usePathname();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!loading && !user && pathname !== '/admin/login') {
@@ -24,6 +26,20 @@ export default function AdminRootLayout({
       router.push('/admin');
     }
   }, [user, loading, router, pathname]);
+
+  // Block all admin UI on mobile devices
+  if (isMobile) {
+    return (
+      <div className="flex items-center justify-center min-h-screen w-full bg-background px-6">
+        <div className="max-w-md text-center space-y-4">
+          <h1 className="text-xl font-semibold">Device Not Supported</h1>
+          <p className="text-sm text-muted-foreground">
+            Please access the Admin Dashboard from a desktop computer.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Show skeleton loader for all admin pages except login while authenticating
   if (loading && pathname !== '/admin/login') {
