@@ -56,12 +56,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create the new user
+    // Step 1: Create the new user first
     const userRecord = await auth.createUser({
       email,
       password,
       emailVerified: true,
     });
+
+    // Step 2: Set custom claims to convert the user to an admin
+    await auth.setCustomUserClaims(userRecord.uid, { admin: true });
 
     return NextResponse.json({
       success: true,
