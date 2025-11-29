@@ -1,12 +1,18 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Building2, Router, BrainCircuit, Home, Lightbulb, ShieldCheck, Check, Network } from 'lucide-react';
+import { Building2, Router, BrainCircuit, Home, Check } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const servicesList = [
     {
@@ -35,7 +41,27 @@ const servicesList = [
     }
 ];
 
-const ctaImage = PlaceHolderImages.find(img => img.id === 'about-story');
+const faqs = [
+    {
+        question: "What is the meaning of a Smart City?",
+        answer: "A smart city uses IoT (Internet of Things) technology to collect data. This data provides insights that are used to manage assets, resources, and services efficiently. The primary goal is to improve the quality of life for citizens by enhancing urban services like transportation, energy, and public safety."
+    },
+    {
+        question: "What is the Smart Cities Mission?",
+        answer: "The Smart Cities Mission was launched on June 25, 2015, by the Ministry of Housing and Urban Affairs (MoHUA), Government of India. Its objective is to promote sustainable and inclusive cities that provide core infrastructure and give a decent quality of life to its citizens."
+    },
+    {
+        question: "Which are some of India's smart cities?",
+        answer: "Under the Smart Cities Mission India, cities like Bhubaneswar, Pune, Ahmedabad, Chennai, and Indore have made significant progress in implementing smart solutions, setting a benchmark for other cities."
+    },
+    {
+        question: "How does Auralis's predictive maintenance work?",
+        answer: "Our AI-powered platform analyzes real-time operational data from each Auralis device. By identifying patterns that precede a failure, the system can issue a maintenance alert, allowing teams to fix problems proactively before an outage occurs."
+    }
+];
+
+
+const ctaImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
 
 export default function ServicesPage() {
     return (
@@ -55,12 +81,30 @@ export default function ServicesPage() {
                 </div>
             </section>
 
-            {/* Services Grid */}
+             {/* FAQ Section */}
             <section className="w-full py-16 md:py-24">
+                <div className="container max-w-screen-lg px-4 md:px-6">
+                    <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-12">Understanding Smart Cities</h2>
+                    <Accordion type="single" collapsible className="w-full">
+                        {faqs.map((item, index) => (
+                            <AccordionItem key={index} value={`item-${index}`}>
+                                <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
+                                <AccordionContent className="text-base text-foreground/80">
+                                    {item.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </div>
+            </section>
+
+            {/* Services Grid */}
+            <section className="w-full py-16 md:py-24 bg-card">
                 <div className="container max-w-screen-xl px-4 md:px-6">
+                    <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-12">Our Service Offerings</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {servicesList.map((service) => (
-                            <Card key={service.title} className="flex flex-col bg-card/50 hover:bg-card hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
+                            <Card key={service.title} className="flex flex-col bg-background/50 hover:bg-background hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
                                 <CardHeader className="flex flex-col items-start gap-4">
                                     {service.icon}
                                     <div className="space-y-1">
@@ -84,8 +128,8 @@ export default function ServicesPage() {
                 </div>
             </section>
 
-             {/* Why Choose Us Section */}
-            <section className="w-full py-16 md:py-24 bg-card">
+             {/* Our Process Section */}
+            <section className="w-full py-16 md:py-24">
                <div className="container px-4 md:px-6">
                 <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
                   <div className="space-y-6">
@@ -98,7 +142,7 @@ export default function ServicesPage() {
                     </p>
                      <div className="space-y-4 pt-4">
                         <div className="flex items-start gap-4 p-2 rounded-lg">
-                            <div className="p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                            <div className="flex items-center justify-center p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 h-8 w-8">
                                 <span className="font-bold text-primary text-lg">1</span>
                             </div>
                             <div>
@@ -107,7 +151,7 @@ export default function ServicesPage() {
                             </div>
                         </div>
                          <div className="flex items-start gap-4 p-2 rounded-lg">
-                            <div className="p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                            <div className="flex items-center justify-center p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 h-8 w-8">
                                 <span className="font-bold text-primary text-lg">2</span>
                             </div>
                             <div>
@@ -116,7 +160,7 @@ export default function ServicesPage() {
                             </div>
                         </div>
                          <div className="flex items-start gap-4 p-2 rounded-lg">
-                            <div className="p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                             <div className="flex items-center justify-center p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 h-8 w-8">
                                 <span className="font-bold text-primary text-lg">3</span>
                             </div>
                             <div>
@@ -125,7 +169,7 @@ export default function ServicesPage() {
                             </div>
                         </div>
                          <div className="flex items-start gap-4 p-2 rounded-lg">
-                            <div className="p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                            <div className="flex items-center justify-center p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 h-8 w-8">
                                 <span className="font-bold text-primary text-lg">4</span>
                             </div>
                             <div>
