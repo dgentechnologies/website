@@ -1,5 +1,5 @@
 
-import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves } from 'lucide-react';
+import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine } from 'lucide-react';
 
 export type ProductFeature = {
   icon: LucideIcon;
@@ -55,7 +55,7 @@ export const products: Product[] = [
     specifications: [], // Base specs can be empty
     qna: [
       { question: 'How much energy can be saved with these lights?', answer: 'Cities can typically achieve energy savings of 40-60% through intelligent dimming schedules and efficient LED technology.' },
-      { question: 'What is the difference between the Auralis V1 and V2?', answer: 'The primary difference is the communication technology. The Auralis V1 (Wi-Fi) is ideal for dense urban areas with existing Wi-Fi coverage, while the Auralis V2 (LoRaWAN) is perfect for wide-area networks covering large parts of a city with low power requirements.' },
+      { question: 'What is the difference between the Auralis V1 and V2?', answer: 'The primary difference is the communication technology and sensor capabilities. The Auralis V1 (Wi-Fi) is ideal for dense urban areas, while the Auralis V2 (LoRaWAN) offers long-range communication and advanced sensor fusion for city-wide applications.' },
     ],
     subProducts: [
       {
@@ -63,6 +63,7 @@ export const products: Product[] = [
         description: 'Ideal for dense urban environments with existing Wi-Fi infrastructure. Offers high-bandwidth connectivity for complex control and data-rich applications.',
         features: [
           { icon: Wifi, title: 'Wi-Fi Connectivity', description: 'Leverages standard 2.4GHz Wi-Fi networks for easy integration and high data throughput.' },
+          { icon: Radar, title: 'Radar-based Motion Detection', description: 'Provides reliable motion detection for adaptive lighting, unaffected by temperature or weather.'},
           { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Create custom dimming schedules to save energy during off-peak hours.' },
           { icon: Zap, title: 'Predictive Maintenance', description: 'AI-driven fault detection alerts you to potential issues before they cause an outage.' },
         ],
@@ -75,9 +76,10 @@ export const products: Product[] = [
       },
       {
         title: 'Auralis V2 (LoRaWAN)',
-        description: 'Designed for city-wide, low-power IoT networks. Provides long-range communication, making it perfect for large-scale deployments.',
+        description: 'Designed for city-wide, low-power IoT networks. Provides long-range communication and advanced sensor capabilities.',
         features: [
             { icon: Waves, title: 'LoRaWAN Connectivity', description: 'Utilizes Long Range, Low Power Wide Area Network technology for city-scale coverage.' },
+            { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines Radar and Passive Infrared (PIR) sensors for highly accurate presence detection and reduced false triggers.' },
             { icon: GaugeCircle, title: 'Remote Dimming Control', description: 'Adjust lighting levels across large areas from a central command center.' },
             { icon: Zap, title: 'Automated Fault Reporting', description: 'Each unit can report its status and any faults over the LoRaWAN network.' },
         ],
