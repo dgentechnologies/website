@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BrainCircuit, Users, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BrainCircuit, Users, ShieldCheck, Zap, Wifi } from 'lucide-react';
 import Link from 'next/link';
 import {
     Accordion,
@@ -38,20 +38,12 @@ const advantages = [
 
 const faqs = [
     {
-        question: "What is the meaning of a Smart City?",
-        answer: "A smart city uses IoT (Internet of Things) technology to collect data. This data provides insights that are used to manage assets, resources, and services efficiently. The primary goal is to improve the quality of life for citizens by enhancing urban services like transportation, energy, and public safety."
-    },
-    {
-        question: "Which are some of India's smart cities?",
-        answer: "Under the Smart Cities Mission India, cities like Bhubaneswar, Pune, Ahmedabad, Chennai, and Indore have made significant progress in implementing smart solutions, setting a benchmark for other cities."
-    },
-    {
-        question: "What is the Smart Cities Mission?",
-        answer: "The Smart Cities Mission was launched on June 25, 2015, by the Ministry of Housing and Urban Affairs (MoHUA), Government of India. Its objective is to promote sustainable and inclusive cities that provide core infrastructure and give a decent quality of life to its citizens."
-    },
-    {
         question: "How does Auralis's predictive maintenance work?",
         answer: "Our AI-powered platform analyzes real-time operational data from each Auralis device. By identifying patterns that precede a failure, the system can issue a maintenance alert, allowing teams to fix problems proactively before an outage occurs."
+    },
+    {
+        question: "Is Auralis compatible with existing city infrastructure?",
+        answer: "Yes. Auralis is designed for seamless integration. Our smart street lights can replace existing fixtures with minimal retrofitting, and the platform can integrate with other city management systems via standard APIs."
     }
 ];
 
@@ -89,15 +81,25 @@ export default function ServicesPage() {
       <div className="relative z-10 bg-background">
         {/* What is a Smart City? */}
         <section className="w-full py-16 md:py-24">
-            <div className="container max-w-screen-xl px-4 md:px-6 space-y-12">
-                <div className="text-center space-y-4">
+            <div className="container max-w-screen-lg px-4 md:px-6 space-y-8">
+                <div className="space-y-4">
                     <Badge variant="outline">The Vision</Badge>
                     <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">What is the Meaning of a Smart City?</h2>
-                    <p className="max-w-3xl mx-auto text-foreground/80 md:text-lg">
-                        The smart city meaning revolves around using IoT (Internet of Things) sensors and technology to collect data. Insights from that data are used to manage assets and services efficiently, with the goal of improving quality of life. A smart city enhances everything from transportation and energy efficiency to public safety and governance.
+                    <p className="max-w-3xl text-foreground/80 md:text-lg">
+                        The smart cities meaning revolves around using IoT (Internet of Things) sensors and technology to collect data. Insights from that data are used to manage assets and services efficiently, with the goal of improving quality of life. A smart city enhances everything from transportation and energy efficiency to public safety and governance.
                     </p>
+                    <div className="flex gap-6 pt-2">
+                        <div className="flex items-center gap-2 text-foreground/80">
+                            <Zap className="h-5 w-5 text-primary" />
+                            <span>Smarter Infrastructure</span>
+                        </div>
+                         <div className="flex items-center gap-2 text-foreground/80">
+                            <Wifi className="h-5 w-5 text-primary" />
+                            <span>Connected Ecosystems</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="relative aspect-video w-full max-w-4xl mx-auto">
+                <div className="relative aspect-video w-full">
                     {smartCityImage && (
                         <Image
                             src={smartCityImage.imageUrl}
@@ -108,6 +110,17 @@ export default function ServicesPage() {
                         />
                     )}
                 </div>
+            </div>
+        </section>
+
+        {/* Smart Cities Mission */}
+        <section className="w-full py-16 md:py-24">
+            <div className="container max-w-screen-lg px-4 md:px-6 text-center space-y-4">
+                <Badge variant="default">National Initiative</Badge>
+                <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Powering the Smart Cities Mission India</h2>
+                <p className="max-w-3xl mx-auto text-foreground/80 md:text-lg">
+                   The Smart Cities Mission India is a visionary initiative by the Government to drive economic growth and improve quality of life. Adhering to the Smart Cities Mission guidelines, DGEN Technologies is proud to contribute by building the foundational infrastructure that will power the #smartcitiesindia of tomorrow.
+                </p>
             </div>
         </section>
 
@@ -211,5 +224,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-
-    
