@@ -26,13 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/products/auralis`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/products/auralis/smart-street-lighting`,
+      url: `${baseUrl}/products`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.9,
