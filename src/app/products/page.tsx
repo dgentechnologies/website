@@ -3,33 +3,10 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowRight, Wifi, Zap, Sun } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { products } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-
-const products = [
-  {
-    icon: <Wifi className="h-8 w-8 text-primary" />,
-    title: 'Auralis + Wifi',
-    description: 'High-speed connectivity for dense urban environments. Ideal for smart city applications requiring real-time data and public Wi-Fi access.',
-    image: PlaceHolderImages.find(img => img.id === 'auralis-features'),
-    link: '/contact?subject=Inquiry+about+Auralis+Wifi'
-  },
-  {
-    icon: <Zap className="h-8 w-8 text-primary" />,
-    title: 'Auralis + LoRaWAN',
-    description: 'Long-range, low-power connectivity perfect for large-scale sensor networks and city-wide monitoring without high infrastructure costs.',
-    image: PlaceHolderImages.find(img => img.id === 'auralis-hero'),
-    link: '/contact?subject=Inquiry+about+Auralis+LoRaWAN'
-  },
-  {
-    icon: <Sun className="h-8 w-8 text-primary" />,
-    title: 'Solar Street Lights',
-    description: 'Sustainable and autonomous lighting for off-grid areas or to reduce carbon footprint. Integrates seamlessly with our Auralis smart control platform.',
-    image: PlaceHolderImages.find(img => img.id === 'about-story'),
-    link: '/contact?subject=Inquiry+about+Solar+Street+Lights'
-  }
-];
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'hero-home');
 
@@ -70,31 +47,31 @@ export default function ProductsPage() {
           <div className="container max-w-screen-xl px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {products.map((product) => (
-                <Card key={product.title} className="flex flex-col overflow-hidden bg-card/50 hover:bg-card hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
-                  {product.image && (
+                <Card key={product.slug} className="flex flex-col overflow-hidden bg-card/50 hover:bg-card hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
+                  {product.images[0] && (
                     <div className="relative aspect-video w-full">
                       <Image
-                        src={product.image.imageUrl}
-                        alt={product.title}
+                        src={product.images[0].url}
+                        alt={product.images[0].alt}
                         fill
                         className="object-cover"
-                        data-ai-hint={product.image.imageHint}
+                        data-ai-hint={product.images[0].hint}
                       />
                     </div>
                   )}
                   <CardHeader className="flex flex-row items-start gap-4">
-                    {product.icon}
+                    <product.icon className="h-8 w-8 text-primary mt-1 flex-shrink-0" />
                     <div className="space-y-1">
                       <CardTitle className="font-headline text-xl">{product.title}</CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent className="flex-grow">
-                    <CardDescription>{product.description}</CardDescription>
+                    <CardDescription>{product.shortDescription}</CardDescription>
                   </CardContent>
                   <CardFooter>
                     <Button asChild variant="outline" className="w-full group">
-                      <Link href={product.link}>
-                        Request Information <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      <Link href={`/products/${product.slug}`}>
+                        View Details <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       </Link>
                     </Button>
                   </CardFooter>
