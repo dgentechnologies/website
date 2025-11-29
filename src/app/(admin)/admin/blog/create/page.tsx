@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState, useMemo } from "react";
-import { collection, query, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { useRouter } from 'next/navigation';
 
@@ -27,11 +27,10 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Sparkles, Loader2 } from "lucide-react";
+import { ArrowLeft, Sparkles, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { firestore } from '@/firebase/client';
 import { suggestBlogTopic } from '@/ai/flows/suggest-blog-topic';
-import { generateBlogPost } from '@/ai/flows/generate-blog-post';
 import { BlogPost } from "@/types/blog";
 import { useToast } from "@/hooks/use-toast";
 
@@ -53,7 +52,6 @@ export default function CreateBlogPostPage() {
   const [suggestedTopics, setSuggestedTopics] = useState<string[]>([]);
   const [suggestionHistory, setSuggestionHistory] = useState<string[]>([]);
   const [isSuggesting, setIsSuggesting] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -119,36 +117,13 @@ export default function CreateBlogPostPage() {
     setSuggestedTopics([]);
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsGenerating(true);
-    try {
-      const generatedPost = await generateBlogPost(values);
-      
-      const postWithTimestamp = {
-        ...generatedPost,
-        createdAt: serverTimestamp(),
-      };
-      
-      const postRef = doc(firestore, 'blogPosts', generatedPost.slug);
-      await setDoc(postRef, postWithTimestamp);
-      
-      toast({
-        title: "Post Generated!",
-        description: "Your new blog post has been created and saved.",
-      });
-
-      router.push(`/admin/blog/edit/${generatedPost.slug}`);
-
-    } catch (error) {
-      console.error("Error generating or saving blog post:", error);
-      toast({
-        variant: "destructive",
-        title: "Generation Failed",
-        description: "The AI failed to generate a post. Please try a different topic.",
-      });
-    } finally {
-      setIsGenerating(false);
-    }
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Navigate to the editor with author and topic as query params
+    const params = new URLSearchParams({
+      author: values.author,
+      topic: values.topic,
+    });
+    router.push(`/admin/blog/editor?${params.toString()}`);
   }
 
   return (
@@ -162,7 +137,7 @@ export default function CreateBlogPostPage() {
           </Button>
           <div>
             <h1 className="text-3xl font-headline font-bold">Create New Blog Post</h1>
-            <p className="text-foreground/70 mt-1">Start by defining the author and topic for the AI to generate.</p>
+            <p className="text-foreground/70 mt-1">Start by defining the author and topic, then continue to the editor.</p>
           </div>
         </div>
         <Card>
@@ -231,15 +206,9 @@ export default function CreateBlogPostPage() {
                           </FormItem>
                       )}
                     />
-                    <Button type="submit" disabled={isGenerating} size="lg" className="w-full">
-                      {isGenerating ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Generating Post...
-                        </>
-                      ) : (
-                        'Generate Post & Continue to Editor'
-                      )}
+                    <Button type="submit" size="lg" className="w-full">
+                      Continue to Editor
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </form>
                 </Form>
