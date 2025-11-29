@@ -1,43 +1,38 @@
 
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Building2, Router, BrainCircuit, Home, Check } from 'lucide-react';
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, BrainCircuit, Users, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Building2, Home } from 'lucide-react';
 
-const servicesList = [
+
+const heroImage = PlaceHolderImages.find(img => img.id === 'hero-home');
+const smartCityImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
+
+const advantages = [
     {
-        icon: <Building2 className="h-10 w-10 text-primary" />,
-        title: 'Smart City End-to-End Solutions',
-        description: 'We architect and deploy comprehensive solutions for urban environments, from hardware installation to data analytics, helping cities meet the Smart Cities Mission India objectives.',
-        features: ['Smart Street Lighting (Auralis)', 'Integrated Traffic Management', 'Public Safety & Surveillance', 'Environmental Monitoring Sensors']
+      icon: <BrainCircuit className="h-8 w-8 text-primary" />,
+      title: 'Innovative Solutions',
+      description: 'We stay at the forefront of technology to deliver future-proof solutions, helping build India\'s smart cities.'
     },
     {
-        icon: <Router className="h-10 w-10 text-primary" />,
-        title: 'Custom IoT & Connected Devices',
-        description: 'From sensors to gateways, we build the bespoke hardware and software for a truly connected world, ensuring interoperability and scalability.',
-        features: ['Custom IoT Hardware Design', 'Firmware & Embedded Systems', 'IoT Platform Integration', 'Device Management & Security']
+      icon: <Users className="h-8 w-8 text-primary" />,
+      title: 'Client-Centric Approach',
+      description: 'Your goals are our priority. We collaborate closely to ensure project success and build lasting partnerships.'
     },
     {
-        icon: <BrainCircuit className="h-10 w-10 text-primary" />,
-        title: 'AI & Predictive Analytics',
-        description: 'Our AI services turn raw data into actionable insights, powering predictive maintenance, optimizing resource allocation, and improving operational efficiency.',
-        features: ['Predictive Analytics for Infrastructure', 'Computer Vision for Urban Monitoring', 'AI-Driven Anomaly Detection', 'Custom AI Model Development']
-    },
-    {
-        icon: <Home className="h-10 w-10 text-primary" />,
-        title: 'Smart Home (B2C) Products',
-        description: 'Expanding our innovation to the consumer market, we are developing a range of smart home products to enhance security, convenience, and energy efficiency.',
-        features: ['Intelligent Lighting Systems', 'Home Security & Access Control', 'Energy Management Solutions', 'Seamless Voice Assistant Integration']
+      icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+      title: 'Quality & Reliability',
+      description: 'We are committed to delivering high-quality, reliable solutions with a focus on robust engineering and security.'
     }
 ];
 
@@ -47,12 +42,12 @@ const faqs = [
         answer: "A smart city uses IoT (Internet of Things) technology to collect data. This data provides insights that are used to manage assets, resources, and services efficiently. The primary goal is to improve the quality of life for citizens by enhancing urban services like transportation, energy, and public safety."
     },
     {
-        question: "What is the Smart Cities Mission?",
-        answer: "The Smart Cities Mission was launched on June 25, 2015, by the Ministry of Housing and Urban Affairs (MoHUA), Government of India. Its objective is to promote sustainable and inclusive cities that provide core infrastructure and give a decent quality of life to its citizens."
-    },
-    {
         question: "Which are some of India's smart cities?",
         answer: "Under the Smart Cities Mission India, cities like Bhubaneswar, Pune, Ahmedabad, Chennai, and Indore have made significant progress in implementing smart solutions, setting a benchmark for other cities."
+    },
+    {
+        question: "What is the Smart Cities Mission?",
+        answer: "The Smart Cities Mission was launched on June 25, 2015, by the Ministry of Housing and Urban Affairs (MoHUA), Government of India. Its objective is to promote sustainable and inclusive cities that provide core infrastructure and give a decent quality of life to its citizens."
     },
     {
         question: "How does Auralis's predictive maintenance work?",
@@ -60,139 +55,161 @@ const faqs = [
     }
 ];
 
-
-const ctaImage = PlaceHolderImages.find(img => img.id === 'auralis-hero');
-
 export default function ServicesPage() {
-    return (
-        <div className="flex flex-col">
-            {/* Hero Section */}
-            <section className="w-full py-20 md:py-32 bg-card">
-                <div className="container max-w-screen-xl px-4 md:px-6">
-                    <div className="flex flex-col items-center space-y-4 text-center">
-                        <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary">Our Expertise</Badge>
-                        <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-gradient">
-                            Engineering the Connected Future
-                        </h1>
-                        <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">
-                            We provide end-to-end services for smart city infrastructure and are bringing our technological expertise into the smart home.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-             {/* FAQ Section */}
-            <section className="w-full py-16 md:py-24">
-                <div className="container max-w-screen-lg px-4 md:px-6">
-                    <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-12">Understanding Smart Cities</h2>
-                    <Accordion type="single" collapsible className="w-full">
-                        {faqs.map((item, index) => (
-                            <AccordionItem key={index} value={`item-${index}`}>
-                                <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
-                                <AccordionContent className="text-base text-foreground/80">
-                                    {item.answer}
-                                </AccordionContent>
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
-                </div>
-            </section>
-
-            {/* Services Grid */}
-            <section className="w-full py-16 md:py-24 bg-card">
-                <div className="container max-w-screen-xl px-4 md:px-6">
-                    <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-12">Our Service Offerings</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {servicesList.map((service) => (
-                            <Card key={service.title} className="flex flex-col bg-background/50 hover:bg-background hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
-                                <CardHeader className="flex flex-col items-start gap-4">
-                                    {service.icon}
-                                    <div className="space-y-1">
-                                      <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
-                                      <CardDescription>{service.description}</CardDescription>
-                                    </div>
-                                </CardHeader>
-                                <CardContent className="flex-grow flex flex-col justify-end">
-                                    <ul className="space-y-2 text-sm text-foreground/80 mt-4">
-                                        {service.features.map((feature) => (
-                                            <li key={feature} className="flex items-center">
-                                                <Check className="h-4 w-4 mr-2 text-primary flex-shrink-0" />
-                                                <span>{feature}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-             {/* Our Process Section */}
-            <section className="w-full py-16 md:py-24">
-               <div className="container px-4 md:px-6">
-                <div className="grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
-                  <div className="space-y-6">
-                    <Badge variant="outline" className="border-primary/50 text-primary">Our Process</Badge>
-                    <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
-                        From Vision to Reality
-                    </h2>
-                    <p className="text-foreground/80 md:text-lg">
-                      We follow a proven methodology to ensure your project's success. From initial consultation to deployment and support, we are your dedicated partner in building the future of smart technology.
-                    </p>
-                     <div className="space-y-4 pt-4">
-                        <div className="flex items-start gap-4 p-2 rounded-lg">
-                            <div className="flex items-center justify-center p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 h-8 w-8">
-                                <span className="font-bold text-primary text-lg">1</span>
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-headline font-bold">Discovery & Strategy</h3>
-                                <p className="text-sm text-foreground/70 mt-1">We collaborate with you to understand your needs, define project goals, and create a strategic roadmap.</p>
-                            </div>
-                        </div>
-                         <div className="flex items-start gap-4 p-2 rounded-lg">
-                            <div className="flex items-center justify-center p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 h-8 w-8">
-                                <span className="font-bold text-primary text-lg">2</span>
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-headline font-bold">Design & Prototyping</h3>
-                                <p className="text-sm text-foreground/70 mt-1">Our team designs the system architecture, develops hardware prototypes, and creates user-centric software interfaces.</p>
-                            </div>
-                        </div>
-                         <div className="flex items-start gap-4 p-2 rounded-lg">
-                             <div className="flex items-center justify-center p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 h-8 w-8">
-                                <span className="font-bold text-primary text-lg">3</span>
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-headline font-bold">Development & Deployment</h3>
-                                <p className="text-sm text-foreground/70 mt-1">We build, test, and deploy the solution, ensuring seamless integration with your existing infrastructure.</p>
-                            </div>
-                        </div>
-                         <div className="flex items-start gap-4 p-2 rounded-lg">
-                            <div className="flex items-center justify-center p-2 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0 h-8 w-8">
-                                <span className="font-bold text-primary text-lg">4</span>
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-headline font-bold">Support & Optimization</h3>
-                                <p className="text-sm text-foreground/70 mt-1">We provide ongoing support and use data analytics to optimize performance and deliver continuous improvement.</p>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                  <div className="relative aspect-video w-full">
-                      {ctaImage && (
-                          <Image
-                              src={ctaImage.imageUrl}
-                              alt={ctaImage.description}
-                              fill
-                              className="object-cover rounded-xl shadow-lg shadow-primary/10"
-                              data-ai-hint={ctaImage.imageHint}
-                          />
-                      )}
-                  </div>
-                </div>
-              </div>
-            </section>
+  return (
+    <div className="flex flex-col">
+      {/* Hero Section */}
+      <section className="relative w-full h-[60vh] overflow-hidden flex items-center justify-center text-center">
+        <div className="absolute inset-0 z-0">
+          {heroImage && (
+            <Image
+              src={heroImage.imageUrl}
+              alt={heroImage.description}
+              fill
+              className="object-cover"
+              data-ai-hint={heroImage.imageHint}
+              priority
+            />
+          )}
+          <div className="absolute inset-0 bg-black/70"></div>
         </div>
-    );
+        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6">
+          <div className="space-y-4">
+            <Badge variant="default" className="py-1 px-3 text-lg">Our Services</Badge>
+            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl lg:text-6xl text-gradient leading-tight">
+              The Future of Urban Intelligence
+            </h1>
+            <p className="max-w-2xl mx-auto text-white/80 md:text-lg lg:text-xl">
+              Intelligent, efficient, and integrated. We provide end-to-end services designed to empower India's future cities.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="relative z-10 bg-background">
+        {/* What is a Smart City? */}
+        <section className="w-full py-16 md:py-24">
+            <div className="container max-w-screen-xl px-4 md:px-6 space-y-12">
+                <div className="text-center space-y-4">
+                    <Badge variant="outline">The Vision</Badge>
+                    <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">What is the Meaning of a Smart City?</h2>
+                    <p className="max-w-3xl mx-auto text-foreground/80 md:text-lg">
+                        The smart city meaning revolves around using IoT (Internet of Things) sensors and technology to collect data. Insights from that data are used to manage assets and services efficiently, with the goal of improving quality of life. A smart city enhances everything from transportation and energy efficiency to public safety and governance.
+                    </p>
+                </div>
+                <div className="relative aspect-video w-full max-w-4xl mx-auto">
+                    {smartCityImage && (
+                        <Image
+                            src={smartCityImage.imageUrl}
+                            alt={smartCityImage.description}
+                            fill
+                            className="object-cover rounded-xl shadow-lg"
+                            data-ai-hint={smartCityImage.imageHint}
+                        />
+                    )}
+                </div>
+            </div>
+        </section>
+
+        {/* Our Work Section */}
+        <section className="w-full py-16 md:py-24 bg-card">
+            <div className="container max-w-screen-xl px-4 md:px-6">
+                <div className="text-center space-y-4 mb-12">
+                    <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Our Areas of Expertise</h2>
+                    <p className="max-w-3xl mx-auto text-foreground/80 md:text-lg">
+                        We deliver comprehensive solutions for large-scale infrastructure and are bringing our innovation to the home.
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <Card className="bg-background/50">
+                        <CardHeader className="flex flex-row items-start gap-4">
+                            <Building2 className="h-10 w-10 text-primary" />
+                            <div className="space-y-1">
+                                <CardTitle className="font-headline text-xl">Smart City Infrastructure</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                           <p className="text-foreground/70">We provide end-to-end services for urban environments, focusing on projects like smart street lighting, traffic management, public safety, and environmental monitoring to contribute to the Smart Cities Mission India.</p>
+                        </CardContent>
+                    </Card>
+                     <Card className="bg-background/50">
+                        <CardHeader className="flex flex-row items-start gap-4">
+                            <Home className="h-10 w-10 text-primary" />
+                            <div className="space-y-1">
+                                <CardTitle className="font-headline text-xl">Smart Home Lighting</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                           <p className="text-foreground/70">We are expanding our expertise into the B2C market with a range of intelligent home lighting products. Our solutions focus on enhancing convenience, security, and energy efficiency for the modern home.</p>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </section>
+
+        {/* Why Choose DGEN Section */}
+        <section className="w-full py-16 md:py-24">
+           <div className="container px-4 md:px-6">
+            <div className="text-center space-y-4 mb-12">
+                <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">Why Choose DGEN Technologies?</h2>
+                <p className="max-w-3xl mx-auto text-foreground/80 md:text-lg">
+                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success.
+                </p>
+            </div>
+            <div className="grid lg:grid-cols-3 gap-8 items-start">
+                {advantages.map((advantage) => (
+                    <div key={advantage.title} className="flex flex-col items-center text-center gap-4 p-6 rounded-lg hover:bg-card transition-colors">
+                      <div className="p-3 rounded-full bg-primary/10 border border-primary/20 flex-shrink-0">
+                        {advantage.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-headline font-bold">{advantage.title}</h3>
+                        <p className="text-sm text-foreground/70 mt-1">{advantage.description}</p>
+                      </div>
+                    </div>
+                ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="w-full py-16 md:py-24 bg-card">
+            <div className="container max-w-screen-lg px-4 md:px-6">
+                <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-12">Common Questions</h2>
+                <Accordion type="single" collapsible className="w-full">
+                    {faqs.map((item, index) => (
+                        <AccordionItem key={index} value={`item-${index}`}>
+                            <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
+                            <AccordionContent className="text-base text-foreground/80">
+                                {item.answer}
+                            </AccordionContent>
+                        </AccordionItem>
+                    ))}
+                </Accordion>
+            </div>
+        </section>
+        
+        {/* Call to Action Section */}
+        <section className="w-full py-16 md:py-24 lg:py-32">
+          <div className="container max-w-screen-md px-4 md:px-6 text-center">
+              <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-gradient">
+                  Ready to Modernize Your Infrastructure?
+              </h2>
+              <p className="mt-4 text-foreground/80 md:text-lg">
+                  Let's discuss how our services can transform your city or project. Schedule a personalized consultation with our experts today.
+              </p>
+              <div className="mt-8">
+                  <Button asChild size="lg" className="group">
+                      <Link href="/contact">
+                          Schedule a Demo <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                  </Button>
+              </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
 }
+
+    
