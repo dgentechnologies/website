@@ -14,8 +14,9 @@ export function generateStaticParams() {
   }));
 }
 
-export default function LeaderDetailPage({ params }: { params: { 'leader-slug': string } }) {
-  const member = teamMembers.find((m) => m.slug === params['leader-slug']);
+export default async function LeaderDetailPage({ params }: { params: Promise<{ 'leader-slug': string }> }) {
+  const resolvedParams = await params;
+  const member = teamMembers.find((m) => m.slug === resolvedParams['leader-slug']);
 
   if (!member) {
     notFound();
@@ -71,8 +72,9 @@ export default function LeaderDetailPage({ params }: { params: { 'leader-slug': 
   );
 }
 
-export async function generateMetadata({ params }: { params: { 'leader-slug': string } }) {
-  const member = teamMembers.find((m) => m.slug === params['leader-slug']);
+export async function generateMetadata({ params }: { params: Promise<{ 'leader-slug': string }> }) {
+  const resolvedParams = await params;
+  const member = teamMembers.find((m) => m.slug === resolvedParams['leader-slug']);
 
   if (!member) {
     return {
