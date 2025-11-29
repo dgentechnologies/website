@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -46,6 +46,16 @@ import {
 } from 'lucide-react';
 import { BlogPost } from '@/types/blog';
 
+// Shared author list - can be imported by other components
+export const BLOG_AUTHORS = [
+  'Tirthankar Dasgupta',
+  'Sukomal Debnath',
+  'Sagnik Mandal',
+  'Arpan Bairagi',
+] as const;
+
+export type BlogAuthor = (typeof BLOG_AUTHORS)[number];
+
 interface BlogEditorProps {
   initialTitle?: string;
   initialContent?: string;
@@ -60,13 +70,6 @@ interface BlogEditorProps {
   isGenerating?: boolean;
   mode?: 'create' | 'edit';
 }
-
-const authorsList = [
-  'Tirthankar Dasgupta',
-  'Sukomal Debnath',
-  'Sagnik Mandal',
-  'Arpan Bairagi',
-];
 
 export function BlogEditor({
   initialTitle = '',
@@ -90,6 +93,9 @@ export function BlogEditor({
   const [author, setAuthor] = useState(initialAuthor);
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>(initialTags);
+  const [imageError, setImageError] = useState(false);
+  
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Update state when initial values change (e.g., after AI generation)
   useEffect(() => {
@@ -100,6 +106,7 @@ export function BlogEditor({
     setImageHint(initialImageHint);
     setAuthor(initialAuthor);
     setTags(initialTags);
+    setImageError(false); // Reset image error when image URL changes
   }, [initialTitle, initialContent, initialDescription, initialImage, initialImageHint, initialAuthor, initialTags]);
 
   const currentDate = useMemo(() => {
@@ -112,7 +119,7 @@ export function BlogEditor({
 
   const insertFormatting = useCallback(
     (before: string, after: string = '') => {
-      const textarea = document.getElementById('blog-content') as HTMLTextAreaElement;
+      const textarea = contentTextareaRef.current;
       if (!textarea) return;
 
       const start = textarea.selectionStart;
@@ -314,7 +321,7 @@ export function BlogEditor({
                         <SelectValue placeholder="Select author" />
                       </SelectTrigger>
                       <SelectContent>
-                        {authorsList.map((a) => (
+                        {BLOG_AUTHORS.map((a) => (
                           <SelectItem key={a} value={a}>
                             {a}
                           </SelectItem>
@@ -334,7 +341,10 @@ export function BlogEditor({
                     <label className="text-sm font-medium text-foreground/70">Featured Image URL</label>
                     <Input
                       value={image}
-                      onChange={(e) => setImage(e.target.value)}
+                      onChange={(e) => {
+                        setImage(e.target.value);
+                        setImageError(false); // Reset error when URL changes
+                      }}
                       placeholder="https://example.com/image.jpg"
                     />
                   </div>
@@ -409,7 +419,7 @@ export function BlogEditor({
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground/70">Content (HTML)</label>
                   <Textarea
-                    id="blog-content"
+                    ref={contentTextareaRef}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="Start writing your blog post content here... Use the toolbar above to format your text with HTML tags."
@@ -431,16 +441,14 @@ export function BlogEditor({
             <ScrollArea className="h-full">
               <div className="p-6">
                 {/* Preview Header */}
-                {image && (
+                {image && !imageError && (
                   <div className="relative w-full h-48 rounded-lg overflow-hidden mb-6 bg-muted">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={image}
                       alt={title || 'Featured image'}
                       className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
+                      onError={() => setImageError(true)}
                     />
                   </div>
                 )}

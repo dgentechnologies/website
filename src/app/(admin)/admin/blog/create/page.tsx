@@ -11,7 +11,7 @@ import { firestore } from '@/firebase/client';
 import { generateBlogPost } from '@/ai/flows/generate-blog-post';
 import { BlogPost } from '@/types/blog';
 import { useToast } from '@/hooks/use-toast';
-import { BlogEditor } from '@/components/blog-editor';
+import { BlogEditor, BlogAuthor } from '@/components/blog-editor';
 
 export default function CreateBlogPostPage() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -43,7 +43,7 @@ export default function CreateBlogPostPage() {
     try {
       const result = await generateBlogPost({ 
         topic: title, 
-        author: author as 'Tirthankar Dasgupta' | 'Sukomal Debnath' | 'Sagnik Mandal' | 'Arpan Bairagi'
+        author: author as BlogAuthor
       });
       setGeneratedContent({
         title: result.title,
