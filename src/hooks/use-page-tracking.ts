@@ -106,10 +106,10 @@ export function usePageTracking() {
     // Don't track admin pages
     if (pathname.startsWith('/admin')) return;
 
-    // Small delay to ensure page has loaded and avoid React StrictMode double-tracking
+    // Small delay to ensure page has loaded
     const timeoutId = setTimeout(() => {
       trackPageView(pathname);
-    }, 150);
+    }, 100);
     
     return () => clearTimeout(timeoutId);
   }, [pathname, trackPageView]);

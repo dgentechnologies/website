@@ -215,12 +215,9 @@ export async function GET(request: NextRequest) {
     // Calculate unique visitors from sessions set
     const uniqueVisitors = allSessions.size;
 
-    // Get top countries (convert sanitized keys back to readable format)
+    // Get top countries
     const topCountries = Object.entries(countryCounts)
-      .map(([country, count]) => ({ 
-        country: country === 'Unknown' ? 'Unknown' : country, 
-        count 
-      }))
+      .map(([country, count]) => ({ country, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
