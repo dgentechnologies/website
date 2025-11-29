@@ -24,6 +24,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { AnalyticsSummary } from '@/types/analytics';
+import { auth } from '@/firebase/client';
 
 // Country code to name mapping
 const countryNames: Record<string, string> = {
@@ -54,12 +55,18 @@ const getCountryName = (code: string): string => {
 };
 
 const getCountryFlag = (code: string): string => {
-  if (code === 'Unknown' || code.length !== 2) return '🌍';
-  const codePoints = code
-    .toUpperCase()
-    .split('')
-    .map((char) => 127397 + char.charCodeAt(0));
-  return String.fromCodePoint(...codePoints);
+  try {
+    if (!code || code === 'Unknown' || code.length !== 2) return '🌍';
+    const upperCode = code.toUpperCase();
+    // Validate that we have valid ASCII letters
+    if (!/^[A-Z]{2}$/.test(upperCode)) return '🌍';
+    const codePoints = upperCode
+      .split('')
+      .map((char) => 127397 + char.charCodeAt(0));
+    return String.fromCodePoint(...codePoints);
+  } catch {
+    return '🌍';
+  }
 };
 
 export default function PerformanceView() {
@@ -71,7 +78,21 @@ export default function PerformanceView() {
     const fetchAnalytics = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/analytics/track');
+        
+        // Get the current user's ID token for authentication
+        const user = auth.currentUser;
+        if (!user) {
+          setError('Not authenticated. Please log in.');
+          setLoading(false);
+          return;
+        }
+        
+        const token = await user.getIdToken();
+        const response = await fetch('/api/analytics/track', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch analytics');
         }

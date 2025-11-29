@@ -1,6 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminFirestore } from '@/firebase/server';
 import { FieldValue } from 'firebase-admin/firestore';
+import { getAuth } from 'firebase-admin/auth';
+import { adminApp } from '@/firebase/server';
+
+// Helper to verify Firebase auth token from request
+async function verifyAuthToken(request: NextRequest): Promise<boolean> {
+  try {
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return false;
+    }
+    const token = authHeader.substring(7);
+    const auth = getAuth(adminApp);
+    await auth.verifyIdToken(token);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 // POST /api/analytics/track - Track a page view
 export async function POST(request: NextRequest) {
@@ -42,19 +60,32 @@ export async function POST(request: NextRequest) {
     const analyticsDoc = await analyticsRef.get();
     
     if (analyticsDoc.exists) {
+      const existingData = analyticsDoc.data();
+      const existingSessions = existingData?.sessions || [];
+      const isNewSession = sessionId && !existingSessions.includes(sessionId);
+      
       // Update existing document
-      await analyticsRef.update({
+      const updateData: Record<string, unknown> = {
         totalViews: FieldValue.increment(1),
         [`countries.${country}`]: FieldValue.increment(1),
         [`pages.${page}`]: FieldValue.increment(1),
         updatedAt: FieldValue.serverTimestamp(),
-      });
+      };
+      
+      // Track unique visitors by session
+      if (isNewSession) {
+        updateData.uniqueVisitors = FieldValue.increment(1);
+        updateData.sessions = FieldValue.arrayUnion(sessionId);
+      }
+      
+      await analyticsRef.update(updateData);
     } else {
       // Create new document for today
       await analyticsRef.set({
         date: today,
         totalViews: 1,
-        uniqueVisitors: 1,
+        uniqueVisitors: sessionId ? 1 : 0,
+        sessions: sessionId ? [sessionId] : [],
         countries: { [country]: 1 },
         pages: { [page]: 1 },
         updatedAt: FieldValue.serverTimestamp(),
@@ -72,8 +103,18 @@ export async function POST(request: NextRequest) {
 }
 
 // GET /api/analytics/track - Get analytics summary (for admin dashboard)
+// Requires authentication via Firebase ID token
 export async function GET(request: NextRequest) {
   try {
+    // Verify authentication
+    const isAuthenticated = await verifyAuthToken(request);
+    if (!isAuthenticated) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please provide a valid authentication token.' },
+        { status: 401 }
+      );
+    }
+
     // Get the last 30 days of analytics
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -88,7 +129,7 @@ export async function GET(request: NextRequest) {
 
     // Aggregate data
     let totalPageViews = 0;
-    let uniqueVisitors = 0;
+    const allSessions = new Set<string>();
     const countryCounts: Record<string, number> = {};
     const pageCounts: Record<string, number> = {};
     const dailyViews: { date: string; views: number }[] = [];
@@ -96,7 +137,11 @@ export async function GET(request: NextRequest) {
     analyticsSnapshot.docs.forEach((doc) => {
       const data = doc.data();
       totalPageViews += data.totalViews || 0;
-      uniqueVisitors += data.uniqueVisitors || 0;
+      
+      // Track unique sessions across all days
+      if (data.sessions && Array.isArray(data.sessions)) {
+        data.sessions.forEach((session: string) => allSessions.add(session));
+      }
       
       dailyViews.push({
         date: data.date,
@@ -117,6 +162,9 @@ export async function GET(request: NextRequest) {
         });
       }
     });
+
+    // Calculate unique visitors from sessions set
+    const uniqueVisitors = allSessions.size;
 
     // Get top countries
     const topCountries = Object.entries(countryCounts)

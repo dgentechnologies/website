@@ -9,7 +9,12 @@ const getSessionId = (): string => {
   
   let sessionId = sessionStorage.getItem('analytics_session_id');
   if (!sessionId) {
-    sessionId = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+    // Use crypto.randomUUID if available, fallback to timestamp + random
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      sessionId = crypto.randomUUID();
+    } else {
+      sessionId = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+    }
     sessionStorage.setItem('analytics_session_id', sessionId);
   }
   return sessionId;
