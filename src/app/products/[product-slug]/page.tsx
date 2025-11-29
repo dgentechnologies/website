@@ -177,7 +177,6 @@ function EcosystemProductView({ product }: { product: Product }) {
                             width={1200}
                             height={675}
                             className="w-full"
-                            data-ai-hint={architectureDiagram.imageHint}
                         />
                     </Card>
                 )}
@@ -265,17 +264,19 @@ function EcosystemProductView({ product }: { product: Product }) {
       </Section>
 
       {/* CTA and Back Button */}
-       <div className="pt-8 space-y-4 max-w-md mx-auto">
-          <Button asChild size="lg" className="w-full">
-              <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
-          </Button>
-          <Button asChild variant="outline" className="w-full">
-              <Link href="/products">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to All Products
-              </Link>
-          </Button>
-      </div>
+       <Section title="Ready to upgrade your infrastructure?">
+            <div className="pt-2 space-y-4 max-w-md mx-auto">
+                <Button asChild size="lg" className="w-full">
+                    <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
+                </Button>
+                <Button asChild variant="outline" className="w-full">
+                    <Link href="/products">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to All Products
+                    </Link>
+                </Button>
+            </div>
+       </Section>
 
        {/* FAQ Section */}
        <Section title="Frequently Asked Questions">
