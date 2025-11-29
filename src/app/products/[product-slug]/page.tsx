@@ -33,8 +33,9 @@ export function generateStaticParams() {
   }));
 }
 
-export default function ProductDetailPage({ params }: { params: { 'product-slug': string } }) {
-  const product = products.find((p) => p.slug === params['product-slug']);
+export default async function ProductDetailPage({ params }: { params: Promise<{ 'product-slug': string }> }) {
+  const resolvedParams = await params;
+  const product = products.find((p) => p.slug === resolvedParams['product-slug']);
 
   if (!product) {
     notFound();
@@ -155,8 +156,9 @@ export default function ProductDetailPage({ params }: { params: { 'product-slug'
   );
 }
 
-export async function generateMetadata({ params }: { params: { 'product-slug': string } }) {
-  const product = products.find((p) => p.slug === params['product-slug']);
+export async function generateMetadata({ params }: { params: Promise<{ 'product-slug': string }> }) {
+  const resolvedParams = await params;
+  const product = products.find((p) => p.slug === resolvedParams['product-slug']);
 
   if (!product) {
     return {
