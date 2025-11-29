@@ -2,7 +2,7 @@
 
 import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { notFound, useRouter } from 'next/navigation';
+import { notFound, useRouter, useParams } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -30,10 +30,12 @@ const formSchema = z.object({
   tags: z.array(z.string()),
 });
 
-export default function EditBlogPostPage({ params }: { params: { slug: string } }) {
+export default function EditBlogPostPage() {
+  const params = useParams();
+  const slug = params.slug as string;
   const { toast } = useToast();
   const router = useRouter();
-  const [post, loading, error] = useDocumentData(doc(firestore, 'blogPosts', params.slug));
+  const [post, loading, error] = useDocumentData(doc(firestore, 'blogPosts', slug));
   const [isSaving, setIsSaving] = useState(false);
   
   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,7 +68,7 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSaving(true);
     try {
-      const postRef = doc(firestore, 'blogPosts', params.slug);
+      const postRef = doc(firestore, 'blogPosts', slug);
       await updateDoc(postRef, {
         ...values,
         updatedAt: serverTimestamp(),
@@ -121,7 +123,7 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
                         </div>
                         <div className="flex items-center gap-2">
                              <Button variant="outline" size="sm" asChild>
-                                <Link href={`/blog/${params.slug}`} target="_blank">
+                                <Link href={`/blog/${slug}`} target="_blank">
                                     <Eye className="mr-2 h-4 w-4" /> View Live
                                 </Link>
                             </Button>
@@ -194,3 +196,5 @@ export default function EditBlogPostPage({ params }: { params: { slug: string } 
     </div>
   );
 }
+
+    
