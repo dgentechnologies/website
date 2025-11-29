@@ -78,12 +78,14 @@ export const products: Product[] = [
       { url: 'https://picsum.photos/seed/smartlight2/1200/800', alt: 'Dashboard showing control panel for smart street lights', hint: 'iot dashboard' },
       { url: 'https://picsum.photos/seed/smartlight3/1200/800', alt: 'Network of connected smart street lights on a map', hint: 'connected network' },
     ],
-    longDescription: "The Auralis Ecosystem (v2.0) introduces a scalable, industrial-grade architecture for modernizing urban street lighting. Unlike traditional point-to-point systems that require expensive cellular hardware on every pole, Auralis utilizes a cost-effective Hybrid-Mesh Topology. This ecosystem is composed of two distinct hardware variants: Auralis Core (Worker Node) and Auralis Pro (Gateway Node). By deploying these units in a 1:50 ratio, municipalities can achieve 100% grid visibility and up to 80% energy savings while reducing hardware costs by significantly minimizing cellular data subscriptions.",
+    longDescription: "The Auralis Ecosystem introduces a scalable, industrial-grade architecture for modernizing urban street lighting. Unlike traditional point-to-point systems that require expensive cellular hardware on every pole, Auralis utilizes a cost-effective Hybrid-Mesh Topology. This ecosystem is composed of two distinct hardware variants: Auralis Core (Worker Node) and Auralis Pro (Gateway Node). By deploying these units in a 1:50 ratio, municipalities can achieve 100% grid visibility and up to 80% energy savings while reducing hardware costs by significantly minimizing cellular data subscriptions.",
     features: [],
     specifications: [],
     qna: [
       { question: 'How much energy can be saved with this ecosystem?', answer: 'Cities can typically achieve energy savings of up to 80% through intelligent dimming, real-time monitoring, and optimized grid performance.' },
       { question: 'What is the primary advantage of the Hybrid-Mesh Topology?', answer: 'The key advantage is cost reduction. By using one gateway (Auralis Pro) for every 50 lights (Auralis Core), you drastically reduce the number of expensive cellular subscriptions needed, lowering both initial hardware costs and ongoing operational expenses.' },
+      { question: "How does Auralis's predictive maintenance work?", answer: "Our AI-powered platform analyzes real-time operational data from each Auralis device. By identifying patterns that precede a failure, the system can issue a maintenance alert, allowing teams to fix problems proactively before an outage occurs." },
+      { question: "Is Auralis compatible with existing city infrastructure?", answer: "Yes. Auralis is designed for seamless integration. Our smart street lights can replace existing fixtures with minimal retrofitting, and the platform can integrate with other city management systems via standard APIs." }
     ],
     ecosystem: {
       architecture: {
@@ -129,7 +131,7 @@ export const products: Product[] = [
         title: 'Auralis V1',
         description: 'The standard, cost-effective smart lighting solution for broad-scale urban deployment.',
         features: [
-          { icon: Wifi, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
+          { icon: Router, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
           { icon: Radar, title: 'Radar-based Motion Detection', description: 'Accurate presence detection for adaptive lighting.' },
           { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
         ],
@@ -143,7 +145,7 @@ export const products: Product[] = [
         title: 'Auralis V2',
         description: 'An advanced model featuring enhanced sensor capabilities for high-traffic or complex environments.',
         features: [
-          { icon: Wifi, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
+          { icon: Router, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
           { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines two sensor technologies for superior accuracy and elimination of false triggers.' },
           { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
         ],
