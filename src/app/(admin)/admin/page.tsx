@@ -42,6 +42,8 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 import { BlogPost } from '@/types/blog';
+import PerformanceView from '@/components/performance-view';
+import SettingsView from '@/components/settings-view';
 
 const DashboardView = () => {
   const [messages, messagesLoading] = useCollection(collection(firestore, 'contactMessages'));
@@ -326,6 +328,10 @@ export default function AdminRootPage() {
         return <BlogView />;
       case 'messages':
         return <MessagesView />;
+      case 'performance':
+        return <PerformanceView />;
+      case 'settings':
+        return <SettingsView />;
       case 'dashboard':
       default:
         return <DashboardView />;
