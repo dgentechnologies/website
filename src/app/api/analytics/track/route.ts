@@ -119,15 +119,9 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const rangeParam = searchParams.get('range') || '30';
     
-    // Parse the range: 7 = last 7 days, 30 = last 30 days, 365 = last 1 year
-    let daysToFetch = parseInt(rangeParam, 10);
-    if (isNaN(daysToFetch) || daysToFetch < 1) {
-      daysToFetch = 30;
-    }
-    // Cap at 365 days
-    if (daysToFetch > 365) {
-      daysToFetch = 365;
-    }
+    // Validate against allowed DateRange values: '7', '30', '365'
+    const validRanges = ['7', '30', '365'];
+    const daysToFetch = validRanges.includes(rangeParam) ? parseInt(rangeParam, 10) : 30;
 
     // Calculate the start date based on the range
     const startDate = new Date();

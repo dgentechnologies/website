@@ -30,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { AnalyticsSummary, DateRange } from '@/types/analytics';
+import { AnalyticsSummary, DateRange, DATE_RANGE_LABELS } from '@/types/analytics';
 import { auth } from '@/firebase/client';
 
 // Country code to name mapping
@@ -74,12 +74,6 @@ const getCountryFlag = (code: string): string => {
   } catch {
     return '🌍';
   }
-};
-
-const dateRangeLabels: Record<DateRange, string> = {
-  '7': 'Last 7 days',
-  '30': 'Last 30 days',
-  '365': 'Last 1 year',
 };
 
 export default function PerformanceView() {
@@ -219,7 +213,7 @@ export default function PerformanceView() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.totalPageViews || 0}</div>
-            <p className="text-xs text-muted-foreground">{dateRangeLabels[dateRange]}</p>
+            <p className="text-xs text-muted-foreground">{DATE_RANGE_LABELS[dateRange]}</p>
           </CardContent>
         </Card>
         <Card>
@@ -229,7 +223,7 @@ export default function PerformanceView() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.uniqueVisitors || 0}</div>
-            <p className="text-xs text-muted-foreground">{dateRangeLabels[dateRange]}</p>
+            <p className="text-xs text-muted-foreground">{DATE_RANGE_LABELS[dateRange]}</p>
           </CardContent>
         </Card>
         <Card>
@@ -263,7 +257,7 @@ export default function PerformanceView() {
               <TrendingUp className="h-5 w-5" />
               Daily Page Views
             </CardTitle>
-            <CardDescription>Website traffic over the {dateRangeLabels[dateRange].toLowerCase()}</CardDescription>
+            <CardDescription>Website traffic over the {DATE_RANGE_LABELS[dateRange].toLowerCase()}</CardDescription>
           </CardHeader>
           <CardContent>
             {hasData && analytics.dailyViews.length > 0 ? (

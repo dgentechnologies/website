@@ -55,7 +55,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { TrendingUp } from 'lucide-react';
-import { AnalyticsSummary, DateRange } from '@/types/analytics';
+import { AnalyticsSummary, DateRange, DATE_RANGE_LABELS } from '@/types/analytics';
 import {
   Select,
   SelectContent,
@@ -63,12 +63,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-const dateRangeLabels: Record<DateRange, string> = {
-  '7': 'Last 7 days',
-  '30': 'Last 30 days',
-  '365': 'Last 1 year',
-};
 
 const DashboardView = () => {
   const [messages, messagesLoading] = useCollection(collection(firestore, 'contactMessages'));
@@ -165,7 +159,7 @@ const DashboardView = () => {
               <div className="text-2xl font-bold">{(analytics?.totalPageViews || 0).toLocaleString()}</div>
             )}
             <p className="text-xs text-muted-foreground">
-              {analytics?.uniqueVisitors ? `${analytics.uniqueVisitors.toLocaleString()} unique visitors (${dateRangeLabels[dateRange].toLowerCase()})` : dateRangeLabels[dateRange]}
+              {analytics?.uniqueVisitors ? `${analytics.uniqueVisitors.toLocaleString()} unique visitors (${DATE_RANGE_LABELS[dateRange].toLowerCase()})` : DATE_RANGE_LABELS[dateRange]}
             </p>
           </CardContent>
         </Card>
@@ -178,7 +172,7 @@ const DashboardView = () => {
             <TrendingUp className="h-5 w-5" />
             Page Views Trend
           </CardTitle>
-          <CardDescription>Daily page views over the {dateRangeLabels[dateRange].toLowerCase()}</CardDescription>
+          <CardDescription>Daily page views over the {DATE_RANGE_LABELS[dateRange].toLowerCase()}</CardDescription>
         </CardHeader>
         <CardContent>
           {analyticsLoading ? (
