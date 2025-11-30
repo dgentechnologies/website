@@ -158,7 +158,7 @@ function ProductDetailView({ product }: { product: Product }) {
 
 function EcosystemProductView({ product }: { product: Product }) {
   const { ecosystem, subProducts, qna } = product;
-  const architectureDiagram = PlaceHolderImages.find(img => img.id === 'auralis-diagram');
+  const architectureDiagram = PlaceHolderImages.find(img => img.id === 'auralis-product-shot');
   if (!ecosystem || !subProducts) return null;
 
   return (
@@ -263,7 +263,7 @@ function EcosystemProductView({ product }: { product: Product }) {
           </div>
       </Section>
 
-      {/* CTA and Back Button */}
+       {/* CTA and Back Button */}
        <Section title="Ready to upgrade your infrastructure?">
             <div className="pt-2 space-y-4 max-w-md mx-auto">
                 <Button asChild size="lg" className="w-full">

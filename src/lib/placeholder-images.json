@@ -49,10 +49,10 @@
       "imageHint": "street light"
     },
     {
-      "id": "auralis-diagram",
-      "description": "A block diagram showing the Auralis Ecosystem architecture with Core Nodes, Pro Gateway, and cloud infrastructure.",
-      "imageUrl": "/images/auralis-architecture-diagram.png",
-      "imageHint": "architecture diagram"
+      "id": "auralis-product-shot",
+      "description": "A render of the Auralis smart street light control unit mounted on a pole in an urban environment.",
+      "imageUrl": "/images/auralis-product-shot.png",
+      "imageHint": "auralis device"
     },
     {
       "id": "blog-placeholder",
