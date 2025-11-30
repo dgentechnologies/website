@@ -165,7 +165,7 @@ function EcosystemProductView({ product }: { product: Product }) {
     <div className="space-y-24">
       {/* Ecosystem Intro */}
       <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto text-center md:text-lg">{product.longDescription}</p>
-
+      
       {/* Architecture */}
       <Section title={ecosystem.architecture.title} description={ecosystem.architecture.description}>
         <div className="space-y-8">
@@ -184,7 +184,7 @@ function EcosystemProductView({ product }: { product: Product }) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-1/3">Feature</TableHead>
+                  <TableHead className="w-1/3 font-bold text-foreground">Feature</TableHead>
                   <TableHead className="font-bold text-foreground">Auralis Core (Worker)</TableHead>
                   <TableHead className="font-bold text-foreground">Auralis Pro (Gateway)</TableHead>
                 </TableRow>
