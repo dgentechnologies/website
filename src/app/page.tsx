@@ -35,18 +35,18 @@ const services = [
 const advantages = [
     {
       icon: <BrainCircuit className="h-8 w-8 text-primary" />,
-      title: 'Innovative Solutions',
-      description: "We stay at the forefront of technology to deliver future-proof solutions, helping build India's smart cities."
+      title: 'Innovative Technology',
+      description: "We deliver future-proof solutions by staying at the forefront of IoT and AI, helping you build India's next generation of smart cities."
     },
     {
       icon: <Users className="h-8 w-8 text-primary" />,
-      title: 'Client-Centric Approach',
-      description: 'Your goals are our priority. We collaborate closely to ensure project success and build lasting partnerships in the #smartcitiesindia ecosystem.'
+      title: 'Client-Centric Partnership',
+      description: 'Your goals drive our process. We collaborate closely to ensure project success and build lasting relationships that power the #smartcitiesindia ecosystem.'
     },
     {
       icon: <ShieldCheck className="h-8 w-8 text-primary" />,
-      title: 'Quality & Reliability',
-      description: 'We are committed to delivering high-quality, reliable solutions with a focus on robust engineering and security for all #smartcities projects.'
+      title: 'Unmatched Quality & Reliability',
+      description: 'We are committed to delivering high-quality, reliable systems with a focus on robust engineering and end-to-end security for all #smartcities projects.'
     }
 ];
 
@@ -191,12 +191,12 @@ export default function Home() {
                 servicesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
             >
-              <Badge variant="default" className="animate-pulse-subtle">Our Core Expertise</Badge>
+              <Badge variant="default" className="animate-pulse-subtle">Our Core Capabilities</Badge>
               <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
-                Smart Solutions for a Connected Future
+                Engineering the Connected Future
               </h2>
               <p className="max-w-3xl text-foreground/80 md:text-xl/relaxed">
-                We provide end-to-end technology services designed to solve complex challenges. Let our team help you build tailored solutions that bring value to your smart city and smart home projects.
+                We provide end-to-end technology services designed to solve complex urban and residential challenges. Our expertise transforms your smart city and smart home visions into reality.
               </p>
             </div>
             <div className="mx-auto grid max-w-5xl items-stretch gap-6 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">
@@ -214,10 +214,10 @@ export default function Home() {
               <div className="space-y-6">
                 <Badge variant="outline" className="border-primary/50 text-primary">The DGEN Advantage</Badge>
                 <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl">
-                  Your Partner to Build Digital Excellence
+                  Your Strategic Partner in Digital Transformation
                 </h2>
                 <p className="text-foreground/80 md:text-lg">
-                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to your success. We don&apos;t just build products; we build partnerships for #smartcities.
+                  Choosing DGEN means partnering with a team committed to excellence. We deliver unparalleled quality and innovation, ensuring your #smartcities projects are built for long-term success.
                 </p>
                 <div className="space-y-6 pt-4">
                   {advantages.map((advantage, index) => (
@@ -256,10 +256,10 @@ export default function Home() {
             }`}
           >
             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-gradient">
-              Ready to Build the Future of Smart Cities?
+              Ready to Build a Smarter Tomorrow?
             </h2>
             <p className="mt-4 text-foreground/80 md:text-lg">
-              Let&apos;s discuss how DGEN Technologies can help you build your smart city and home solutions. Schedule a free, no-obligation consultation with our experts today.
+              Let&apos;s discuss how DGEN Technologies can elevate your smart city and residential projects. Schedule a free, no-obligation consultation with our engineering experts today to explore the possibilities.
             </p>
             <div className="mt-8">
               <Button asChild size="lg" className="group hover:scale-105 transition-transform">
