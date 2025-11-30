@@ -74,7 +74,7 @@ export const products: Product[] = [
     shortDescription: 'A scalable, industrial-grade architecture for modernizing urban street lighting using a cost-effective Hybrid-Mesh Topology.',
     icon: Cpu,
     images: [
-      { url: 'https://picsum.photos/seed/smartlight1/1200/800', alt: 'A modern smart street light in a city at dusk', hint: 'smart light' },
+      { url: '/images/auralis-product-shot.png', alt: 'A render of the Auralis smart street light control unit mounted on a pole in an urban environment.', hint: 'auralis device' },
       { url: 'https://picsum.photos/seed/smartlight2/1200/800', alt: 'Dashboard showing control panel for smart street lights', hint: 'iot dashboard' },
       { url: 'https://picsum.photos/seed/smartlight3/1200/800', alt: 'Network of connected smart street lights on a map', hint: 'connected network' },
     ],
@@ -131,9 +131,9 @@ export const products: Product[] = [
         title: 'Auralis V1',
         description: 'The standard, cost-effective smart lighting solution for broad-scale urban deployment.',
         features: [
-          { icon: Router, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
-          { icon: Radar, title: 'Radar-based Motion Detection', description: 'Accurate presence detection for adaptive lighting.' },
-          { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
+            { icon: Router, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
+            { icon: Radar, title: 'Radar-based Motion Detection', description: 'Accurate presence detection for adaptive lighting.' },
+            { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
         ],
         specifications: [
             { key: 'Input Voltage', value: '230V AC' },
@@ -145,13 +145,13 @@ export const products: Product[] = [
         title: 'Auralis V2',
         description: 'An advanced model featuring enhanced sensor capabilities for high-traffic or complex environments.',
         features: [
-          { icon: Router, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
-          { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines two sensor technologies for superior accuracy and elimination of false triggers.' },
-          { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
+            { icon: Router, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
+            { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines two sensor technologies for superior accuracy and elimination of false triggers.' },
+            { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
         ],
         specifications: [
             { key: 'Input Voltage', value: '230V AC' },
-            { key: 'Connectivity', value: 'Wi-Fi + GSM' },
+            { key: 'Connectivity', 'value': 'Wi-Fi + GSM' },
             { key: 'Motion Sensor', value: 'Doppler Radar + PIR' },
         ]
       }
