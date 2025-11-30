@@ -158,7 +158,7 @@ function ProductDetailView({ product }: { product: Product }) {
 
 function EcosystemProductView({ product }: { product: Product }) {
   const { ecosystem, subProducts, qna } = product;
-  const architectureDiagram = PlaceHolderImages.find(img => img.id === 'auralis-product-shot');
+  const architectureDiagram = PlaceHolderImages.find(img => img.id === 'auralis-architecture-diagram');
   if (!ecosystem || !subProducts) return null;
 
   return (
@@ -167,44 +167,44 @@ function EcosystemProductView({ product }: { product: Product }) {
       <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto text-center md:text-lg">{product.longDescription}</p>
 
       {/* Architecture */}
-        <Section title={ecosystem.architecture.title} description={ecosystem.architecture.description}>
-            <div className="space-y-8">
-                {architectureDiagram && (
-                    <Card className="max-w-5xl mx-auto overflow-hidden">
-                        <Image
-                            src={architectureDiagram.imageUrl}
-                            alt={architectureDiagram.description}
-                            width={1200}
-                            height={675}
-                            className="w-full"
-                        />
-                    </Card>
-                )}
-                <Card className="max-w-4xl mx-auto">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-1/3">Feature</TableHead>
-                                <TableHead className="font-bold text-foreground">Auralis Core (Worker)</TableHead>
-                                <TableHead className="font-bold text-foreground">Auralis Pro (Gateway)</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {ecosystem.architecture.comparison.map((spec, index) => {
-                                const [coreValue, proValue] = spec.value.split(' vs. ');
-                                return (
-                                    <TableRow key={index}>
-                                        <TableCell className="font-medium">{spec.key}</TableCell>
-                                        <TableCell>{coreValue}</TableCell>
-                                        <TableCell>{proValue}</TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </Card>
-            </div>
-        </Section>
+      <Section title={ecosystem.architecture.title} description={ecosystem.architecture.description}>
+        <div className="space-y-8">
+          {architectureDiagram && (
+            <Card className="max-w-5xl mx-auto overflow-hidden">
+              <Image
+                src={architectureDiagram.imageUrl}
+                alt={architectureDiagram.description}
+                width={1200}
+                height={675}
+                className="w-full"
+              />
+            </Card>
+          )}
+          <Card className="max-w-4xl mx-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-1/3">Feature</TableHead>
+                  <TableHead className="font-bold text-foreground">Auralis Core (Worker)</TableHead>
+                  <TableHead className="font-bold text-foreground">Auralis Pro (Gateway)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {ecosystem.architecture.comparison.map((spec, index) => {
+                    const [coreValue, proValue] = spec.value.split(' vs. ');
+                    return (
+                        <TableRow key={index}>
+                            <TableCell className="font-medium">{spec.key}</TableCell>
+                            <TableCell>{coreValue}</TableCell>
+                            <TableCell>{proValue}</TableCell>
+                        </TableRow>
+                    );
+                })}
+              </TableBody>
+            </Table>
+          </Card>
+        </div>
+      </Section>
       
       {/* Shared Hardware */}
       <Section title={ecosystem.sharedHardware.title} description={ecosystem.sharedHardware.description}>
@@ -262,21 +262,21 @@ function EcosystemProductView({ product }: { product: Product }) {
             ))}
           </div>
       </Section>
-
-       {/* CTA and Back Button */}
-       <Section title="Ready to upgrade your infrastructure?">
-            <div className="pt-2 space-y-4 max-w-md mx-auto">
-                <Button asChild size="lg" className="w-full">
-                    <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full">
-                    <Link href="/products">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to All Products
-                    </Link>
-                </Button>
-            </div>
-       </Section>
+      
+      {/* Call to Action Section */}
+      <Section title="Ready to upgrade your infrastructure?">
+          <div className="pt-2 space-y-4 max-w-md mx-auto">
+              <Button asChild size="lg" className="w-full">
+                  <Link href={`/contact?subject=Inquiry+about+${product.title}`}>Request a Quote</Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full">
+                  <Link href="/products">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to All Products
+                  </Link>
+              </Button>
+          </div>
+      </Section>
 
        {/* FAQ Section */}
        <Section title="Frequently Asked Questions">
