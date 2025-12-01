@@ -183,4 +183,247 @@
   .animate-pulse-subtle {
     animation: pulse-subtle 2s ease-in-out infinite;
   }
+
+  /* Pro-level parallax and interactive effects */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(25, 179, 92, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(25, 179, 92, 0.4);
+    }
+  }
+
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes rotate-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  .animate-slide-in-left {
+    opacity: 0;
+    animation: slide-in-left 0.8s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    opacity: 0;
+    animation: slide-in-right 0.8s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    opacity: 0;
+    animation: scale-in 0.6s ease-out forwards;
+  }
+
+  .animate-rotate-slow {
+    animation: rotate-slow 20s linear infinite;
+  }
+
+  /* Interactive card effects */
+  .interactive-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+  }
+
+  .interactive-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Gradient border animation */
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(var(--background), var(--background)) padding-box,
+                linear-gradient(135deg, #19b35c, #295b53, #fcff9a, #19b35c) border-box;
+    border: 2px solid transparent;
+    background-size: 100% 100%, 300% 300%;
+    animation: gradient-shift 4s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 100% 100%, 0% 50%;
+    }
+    50% {
+      background-position: 100% 100%, 100% 50%;
+    }
+  }
+
+  /* Shimmer effect for loading/emphasis */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+
+  /* 3D perspective for cards */
+  .perspective-container {
+    perspective: 1000px;
+  }
+
+  .tilt-card {
+    transition: transform 0.3s ease-out;
+    transform-style: preserve-3d;
+  }
+
+  /* Mobile-friendly touch targets - ensure minimum 44px tap targets */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Improved text readability on mobile */
+  .mobile-text {
+    @apply text-base leading-relaxed;
+  }
+
+  @screen md {
+    .mobile-text {
+      @apply text-lg;
+    }
+  }
+}
+
+/* Reduced motion preferences - disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-fade-in-up,
+  .animate-hero-image,
+  .animate-slide-up,
+  .animate-slide-down,
+  .animate-hero-content,
+  .animate-scroll-indicator,
+  .animate-pulse-subtle,
+  .animate-bounce {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 767px) {
+  /* Optimize scrolling on mobile */
+  html {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Ensure proper touch handling */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+  
+  /* Improve tap target sizes */
+  button,
+  a {
+    min-height: 44px;
+  }
+  
+  /* Optimize hero sections for mobile */
+  .h-screen {
+    height: 100vh; /* Fallback for older browsers */
+    height: 100svh; /* Use small viewport height for better mobile experience */
+  }
+  
+  /* Reduce animation intensity on mobile for better performance */
+  .animate-slide-up,
+  .animate-slide-down {
+    animation-duration: 0.5s;
+  }
+  
+  .animate-hero-content {
+    animation-duration: 0.5s;
+  }
 }
