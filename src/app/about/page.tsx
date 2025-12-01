@@ -116,7 +116,7 @@ export default function AboutPage() {
           >
             <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter">Our Journey in Smart City Innovation</h2>
             <p className="text-foreground/70 text-sm sm:text-base">
-              Founded in 2025, DGEN Technologies began with a mission to pioneer smart city solutions in India. Our flagship B2B product, &quot;Auralis,&quot; a smart street light with an advanced fault detection system, set the standard for urban innovation. From our headquarters in Bengaluru, we have been dedicated to solving complex urban challenges through IoT technology.
+              Founded in 2025, DGEN Technologies began with a mission to pioneer smart city solutions in India. Our flagship B2B product, &quot;Auralis,&quot; a smart street light with an advanced fault detection system, set the standard for urban innovation. From our headquarters in Kolkata, we have been dedicated to solving complex urban challenges through IoT technology.
             </p>
             <p className="text-foreground/70 text-sm sm:text-base">
               As we continue to transform cityscapes across India, we are also expanding our vision to the B2C market. Our goal is to bring the same level of intelligence and connectivity to every home, making daily life smarter and more efficient. We are committed to leading India&apos;s technological revolution, one smart device at a time.
