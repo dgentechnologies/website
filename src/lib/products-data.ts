@@ -70,31 +70,31 @@ export const products: Product[] = [
   {
     slug: 'auralis-ecosystem',
     title: 'Auralis Ecosystem',
-    category: 'Intelligent Urban Lighting',
-    shortDescription: 'A scalable, industrial-grade architecture for modernizing urban street lighting using a cost-effective Hybrid-Mesh Topology.',
+    category: 'Smart City Solutions',
+    shortDescription: 'A scalable, industrial-grade smart city lighting system using Hybrid Wireless Mesh Network technology (ESP-MESH + 4G LTE) for cost-effective urban infrastructure modernization.',
     icon: Cpu,
     images: [
-      { url: '/images/auralis-product-shot.png', alt: 'A render of the Auralis smart street light control unit mounted on a pole in an urban environment.', hint: 'auralis device' },
-      { url: 'https://picsum.photos/seed/smartlight2/1200/800', alt: 'Dashboard showing control panel for smart street lights', hint: 'iot dashboard' },
-      { url: 'https://picsum.photos/seed/smartlight3/1200/800', alt: 'Network of connected smart street lights on a map', hint: 'connected network' },
+      { url: '/images/auralis-product-shot.png', alt: 'Auralis Pro Gateway Node smart street light controller mounted on urban pole - Dgen Technologies Made in India IoT device', hint: 'auralis device' },
+      { url: 'https://picsum.photos/seed/smartlight2/1200/800', alt: 'Auralis Ecosystem cloud dashboard showing real-time smart street light monitoring and control panel', hint: 'iot dashboard' },
+      { url: 'https://picsum.photos/seed/smartlight3/1200/800', alt: 'Auralis Hybrid Wireless Mesh Network topology map showing ESP-MESH clusters connected via 4G LTE gateway to cloud', hint: 'connected network' },
     ],
-    longDescription: "The Auralis Ecosystem introduces a scalable, industrial-grade architecture for modernizing urban street lighting. Unlike traditional point-to-point systems that require expensive cellular hardware on every pole, Auralis utilizes a cost-effective Hybrid-Mesh Topology. This ecosystem is composed of two distinct hardware variants: Auralis Core (Worker Node) and Auralis Pro (Gateway Node). By deploying these units in a 1:50 ratio, municipalities can achieve 100% grid visibility and up to 80% energy savings while reducing hardware costs by significantly minimizing cellular data subscriptions.",
+    longDescription: "The Auralis Ecosystem introduces a scalable, industrial-grade architecture for modernizing urban street lighting. Unlike traditional point-to-point systems that require expensive cellular hardware on every pole, Auralis utilizes a cost-effective Hybrid Wireless Mesh Network with ESP-MESH (Wi-Fi) for local clusters and 4G LTE for cloud connectivity. This ecosystem is composed of two distinct hardware variants: Auralis Core (Worker Node) and Auralis Pro (Gateway Node). By deploying these units in a 1:50 ratio (one Cluster Head per approximately 50 lights), municipalities can achieve 100% grid visibility and up to 80% energy savings while reducing SIM card costs by 98% compared to point-to-point systems. Proudly Made in India and designed for the Smart Cities Mission.",
     features: [],
     specifications: [],
     qna: [
-      { question: 'How much energy can be saved with this ecosystem?', answer: 'Cities can typically achieve energy savings of up to 80% through intelligent dimming, real-time monitoring, and optimized grid performance.' },
-      { question: 'What is the primary advantage of the Hybrid-Mesh Topology?', answer: 'The key advantage is cost reduction. By using one gateway (Auralis Pro) for every 50 lights (Auralis Core), you drastically reduce the number of expensive cellular subscriptions needed, lowering both initial hardware costs and ongoing operational expenses.' },
-      { question: "How does Auralis's predictive maintenance work?", answer: "Our AI-powered platform analyzes real-time operational data from each Auralis device. By identifying patterns that precede a failure, the system can issue a maintenance alert, allowing teams to fix problems proactively before an outage occurs." },
-      { question: "Is Auralis compatible with existing city infrastructure?", answer: "Yes. Auralis is designed for seamless integration. Our smart street lights can replace existing fixtures with minimal retrofitting, and the platform can integrate with other city management systems via standard APIs." }
+      { question: 'How does the Auralis Ecosystem save money?', answer: '**The Auralis Ecosystem reduces operational costs by 98% on cellular subscriptions.** Our Hybrid-Mesh Topology uses ESP-MESH (Wi-Fi) for local cluster communication, requiring only one 4G LTE SIM card per 50 lights instead of one per light. Combined with intelligent dimming and predictive maintenance, cities typically achieve 80% energy savings.' },
+      { question: 'What is the primary advantage of the Hybrid-Mesh Topology?', answer: '**The key advantage is massive cost reduction through our Cluster Head architecture.** By using one gateway (Auralis Pro) for every 50 lights (Auralis Core), you drastically reduce the number of expensive cellular subscriptions needed, lowering both initial hardware costs and ongoing operational expenses by up to 98%.' },
+      { question: "How does the Auralis Ecosystem's predictive maintenance work?", answer: "**Our AI-powered platform proactively detects failures before they occur.** It analyzes real-time operational data from each Auralis device via MQTT/JSON packets. By identifying patterns that precede a failure, the system issues a maintenance alert, allowing teams to fix problems proactively before an outage occurs." },
+      { question: "Is the Auralis Ecosystem compatible with existing city infrastructure?", answer: "**Yes, Auralis is designed for seamless retrofit integration.** Our smart street lights can replace existing fixtures with minimal modifications. The platform integrates with other city management systems via standard APIs, and the ESP-MESH network self-heals automatically if nodes are added or removed." }
     ],
     ecosystem: {
       architecture: {
         title: "System Architecture: The Cluster Model",
-        description: "The system operates on a decentralized \"Cluster\" model. Up to 50 Core nodes form a self-healing local mesh network, while a single Pro node acts as the gateway to the cloud, ensuring maximum resilience and minimal latency.",
+        description: "The system operates on a decentralized \"Cluster\" model using Hybrid Wireless Mesh Network technology. Up to 50 Core nodes form a self-healing ESP-MESH (Wi-Fi) local network, while a single Pro node acts as the 4G LTE gateway to the cloud, ensuring maximum resilience and minimal latency with MQTT/JSON packet communication.",
         comparison: [
             { key: 'Primary Role', value: 'Local Control & Relay vs. Data Aggregation & Backhaul' },
-            { key: 'Deployment Ratio', value: '~50 per Cluster vs. 1 per Cluster' },
-            { key: 'Connectivity', value: 'Mesh Protocol (Local) vs. Mesh (Local) + 4G LTE Cat 1 (Cloud)' },
+            { key: 'Deployment Ratio', value: '~50 per Cluster vs. 1 per Cluster (Cluster Head)' },
+            { key: 'Connectivity', value: 'ESP-MESH (Wi-Fi Local) vs. ESP-MESH (Local) + 4G LTE Cat 1 (Cloud)' },
             { key: 'Power Consumption', value: '< 1.5W (Standby) vs. ~2.5W (Average), 10W Peak' },
             { key: 'Power Supply', value: '3W Isolated AC-DC vs. 10W Reinforced High-Current PSU' },
         ]
@@ -119,39 +119,39 @@ export const products: Product[] = [
       },
       workflow: {
           title: "Operational Workflow",
-          description: "The ecosystem is designed for automated initialization, self-healing, and efficient data flow.",
+          description: "The ecosystem is designed for automated initialization, self-healing, and efficient data flow using MQTT/JSON packet communication.",
           details: [
-              { icon: Network, title: "Initialization & Self-Healing", description: "The Pro node establishes a cellular link and becomes the Mesh Root. Core nodes automatically find the strongest signal path, forming a self-healing tree topology." },
-              { icon: ToyBrick, title: "Data Flow & Aggregation", description: "Sensed data is encrypted and hopped across the mesh to the Pro Gateway, which buffers packets and performs a batch upload to the cloud via MQTT, optimizing data usage." }
+              { icon: Network, title: "Initialization & Self-Healing", description: "The Auralis Pro (Gateway) establishes a 4G LTE cellular link and becomes the ESP-MESH Root. Core nodes automatically find the strongest signal path, forming a self-healing tree topology." },
+              { icon: ToyBrick, title: "Data Flow & Aggregation", description: "Sensed data is encrypted as JSON packets and hopped across the ESP-MESH to the Pro Gateway, which buffers packets and performs a batch upload to the cloud via MQTT protocol, optimizing data usage." }
           ]
       }
     },
     subProducts: [
       {
-        title: 'Auralis V1',
-        description: 'The standard, cost-effective smart lighting solution for broad-scale urban deployment.',
+        title: 'Auralis Core (Worker Node)',
+        description: 'The standard, cost-effective smart lighting node for broad-scale urban deployment. Connects via ESP-MESH to the cluster gateway.',
         features: [
-            { icon: Router, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
+            { icon: Router, title: 'ESP-MESH Connectivity', description: 'Integrated Wi-Fi mesh for reliable local cluster communication.' },
             { icon: Radar, title: 'Radar-based Motion Detection', description: 'Accurate presence detection for adaptive lighting.' },
             { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
         ],
         specifications: [
             { key: 'Input Voltage', value: '230V AC' },
-            { key: 'Connectivity', value: 'Wi-Fi + GSM' },
+            { key: 'Connectivity', value: 'ESP-MESH (Wi-Fi)' },
             { key: 'Motion Sensor', value: 'Doppler Radar' },
         ]
       },
       {
-        title: 'Auralis V2',
-        description: 'An advanced model featuring enhanced sensor capabilities for high-traffic or complex environments.',
+        title: 'Auralis Pro (Gateway Node)',
+        description: 'The Cluster Head gateway with 4G LTE cloud connectivity. One Pro serves approximately 50 Core nodes, managing data aggregation and cloud uplink.',
         features: [
-            { icon: Router, title: 'Hybrid Connectivity', description: 'Integrated Wi-Fi and GSM for reliable data backhaul.' },
+            { icon: Router, title: 'Hybrid Connectivity', description: 'ESP-MESH (Wi-Fi) for local mesh + 4G LTE Cat 1 for cloud backhaul via MQTT.' },
             { icon: Combine, title: 'Sensor Fusion (Radar + PIR)', description: 'Combines two sensor technologies for superior accuracy and elimination of false triggers.' },
             { icon: GaugeCircle, title: 'Intelligent Dimming', description: 'Programmable dimming schedules to save energy.' },
         ],
         specifications: [
             { key: 'Input Voltage', value: '230V AC' },
-            { key: 'Connectivity', 'value': 'Wi-Fi + GSM' },
+            { key: 'Connectivity', value: 'ESP-MESH (Wi-Fi) + 4G LTE Cat 1' },
             { key: 'Motion Sensor', value: 'Doppler Radar + PIR' },
         ]
       }
@@ -161,18 +161,18 @@ export const products: Product[] = [
     slug: 'solar-street-light',
     title: 'Solar Street Light',
     category: 'Sustainable Lighting',
-    shortDescription: 'Autonomous, off-grid lighting solutions powered by the sun, integrated with smart control technology.',
+    shortDescription: 'Autonomous, off-grid lighting solutions powered by the sun, integrated with Auralis Smart City solutions.',
     icon: Sun,
     images: [
-      { url: 'https://picsum.photos/seed/solar1/1200/800', alt: 'Row of solar street lights along a rural road at dusk', hint: 'rural road' },
-      { url: 'https://picsum.photos/seed/solar2/1200/800', alt: 'Close-up of a solar panel on top of a street light', hint: 'solar panel' },
-      { url: 'https://picsum.photos/seed/solar3/1200/800', alt: 'A solar street light illuminating a community park at night', hint: 'community park' },
+      { url: 'https://picsum.photos/seed/solar1/1200/800', alt: 'Dgen Technologies Solar Street Light installation along rural road - off-grid sustainable lighting India', hint: 'rural road' },
+      { url: 'https://picsum.photos/seed/solar2/1200/800', alt: 'High-efficiency monocrystalline solar panel on Dgen Technologies solar street light', hint: 'solar panel' },
+      { url: 'https://picsum.photos/seed/solar3/1200/800', alt: 'Solar street light illuminating community park at night - Made in India sustainable lighting', hint: 'community park' },
     ],
-    longDescription: 'Our Solar Street Lights offer a sustainable and cost-effective solution for illuminating areas without access to the traditional power grid. Each unit is fully autonomous, with an integrated solar panel, high-capacity battery, and an efficient LED lamp. When combined with our Auralis control platform (via LoRaWAN), they become a powerful, remotely managed smart lighting grid.',
+    longDescription: 'Our Solar Street Lights offer a sustainable and cost-effective solution for illuminating areas without access to the traditional power grid. Each unit is fully autonomous, with an integrated solar panel, high-capacity battery, and an efficient LED lamp. When combined with our Auralis Ecosystem platform (via our Hybrid Wireless Mesh Network), they become a powerful, remotely managed smart lighting grid with ESP-MESH connectivity for local clusters and 4G LTE gateway for cloud uplink. Proudly Made in India.',
     features: [
-      { icon: Sun, title: 'Off-Grid Operation', description: 'Completely independent of the power grid, making it perfect for rural areas, highways, and remote locations.' },
+      { icon: Sun, title: 'Off-Grid Operation', description: 'Completely independent of the power grid, making it perfect for rural areas, highways, and remote locations across India.' },
       { icon: GaugeCircle, title: 'Intelligent Power Management', description: 'Smart controllers optimize charging and discharging cycles to ensure reliability even on cloudy days.' },
-      { icon: Cpu, title: 'Remote Monitoring', description: 'When paired with our smart platform, you can monitor battery status, performance, and control lighting schedules remotely.' },
+      { icon: Cpu, title: 'Remote Monitoring', description: 'When paired with the Auralis Ecosystem, you can monitor battery status, performance, and control lighting schedules remotely.' },
     ],
     specifications: [
       { key: 'Solar Panel', value: 'Monocrystalline, >22% efficiency' },
@@ -182,22 +182,22 @@ export const products: Product[] = [
       { key: 'Motion Sensor', value: 'Optional PIR motion sensor for adaptive dimming' },
     ],
     qna: [
-      { question: 'How long does the battery last?', answer: 'Our high-performance LiFePO4 batteries are designed for a lifespan of over 8 years. A single full charge can power the light for 3 to 5 continuous nights, ensuring reliability.' },
-      { question: 'What kind of maintenance is required?', answer: 'Maintenance is minimal. We recommend periodic cleaning of the solar panel to ensure maximum efficiency. The smart system will report any other issues automatically if connected.' },
+      { question: 'How long does the battery last?', answer: '**Our LiFePO4 batteries provide 8+ years of reliable operation.** A single full charge can power the light for 3 to 5 continuous nights, ensuring reliability even during extended cloudy periods.' },
+      { question: 'What kind of maintenance is required?', answer: '**Maintenance is minimal - just periodic solar panel cleaning.** We recommend cleaning the solar panel to ensure maximum efficiency. The smart system will report any other issues automatically if connected to the Auralis Ecosystem.' },
     ],
   },
   {
     slug: 'led-street-light',
     title: 'LED Street Light',
     category: 'High-Efficiency Lighting',
-    shortDescription: 'Durable and energy-efficient LED street lights designed for longevity and superior illumination.',
+    shortDescription: 'Durable and energy-efficient LED street lights designed for longevity and superior illumination, upgradeable to smart capabilities.',
     icon: Lightbulb,
     images: [
-      { url: 'https://picsum.photos/seed/ledlight1/1200/800', alt: 'A bright, efficient LED street light head', hint: 'led light' },
-      { url: 'https://picsum.photos/seed/ledlight2/1200/800', alt: 'A well-lit street at night using LED lights', hint: 'lit street' },
-      { url: 'https://picsum.photos/seed/ledlight3/1200/800', alt: 'Comparison between old lighting and new LED lighting', hint: 'light comparison' },
+      { url: 'https://picsum.photos/seed/ledlight1/1200/800', alt: 'Dgen Technologies high-efficiency LED street light head - 150 lumens per watt Made in India', hint: 'led light' },
+      { url: 'https://picsum.photos/seed/ledlight2/1200/800', alt: 'Urban street illuminated by Dgen Technologies LED street lights at night - energy efficient lighting', hint: 'lit street' },
+      { url: 'https://picsum.photos/seed/ledlight3/1200/800', alt: 'Before and after comparison of traditional vs LED street lighting showing improved visibility', hint: 'light comparison' },
     ],
-    longDescription: 'Our LED Street Lights are the perfect upgrade for cities looking to replace outdated and inefficient lighting systems. Engineered for durability, high performance, and maximum energy savings, these lights provide superior visibility and have a long operational lifespan. They serve as a foundational step towards a smarter city, with options to upgrade to full smart-light capabilities in the future.',
+    longDescription: 'Our LED Street Lights are the perfect upgrade for cities looking to replace outdated and inefficient lighting systems. Engineered for durability, high performance, and maximum energy savings, these lights provide superior visibility and have a long operational lifespan. They serve as a foundational step towards a smarter city, with options to upgrade to full Auralis Ecosystem smart-light capabilities in the future. Made in India.',
     features: [
       { icon: GaugeCircle, title: 'High Energy-Efficiency', description: 'Reduces electricity consumption by up to 70% compared to traditional sodium or metal-halide lamps.' },
       { icon: Zap, title: 'Long Lifespan', description: 'Designed to last over 50,000 hours, significantly reducing replacement and maintenance costs.' },
@@ -211,8 +211,8 @@ export const products: Product[] = [
       { key: 'Surge Protection', value: '10kV' },
     ],
     qna: [
-      { question: 'Can these lights be upgraded to "smart" lights later?', answer: 'Yes. Our LED Street Lights are designed with future-proofing in mind. They can be easily retrofitted with our IoT communication modules to become fully smart-managed lights whenever you are ready.' },
-      { question: 'What is the warranty period?', answer: 'Our standard warranty for LED Street Lights is 5 years, covering manufacturing defects and performance degradation beyond normal parameters.' },
+      { question: 'Can these lights be upgraded to smart lights later?', answer: '**Yes, our LED Street Lights are designed to be future-proof.** They can be easily retrofitted with our Auralis Ecosystem IoT modules to become fully smart-managed lights with ESP-MESH connectivity whenever you are ready.' },
+      { question: 'What is the warranty period?', answer: '**Our standard warranty is 5 years comprehensive coverage.** This covers manufacturing defects and performance degradation beyond normal parameters, backed by our Made in India quality assurance.' },
     ],
   },
 ];

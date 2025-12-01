@@ -21,20 +21,20 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: 'DGEN Technologies | Smart City & IoT Solutions',
-    template: '%s | DGEN Technologies',
+    default: 'Dgen Technologies | Smart City Solutions & IoT | Auralis Ecosystem',
+    template: '%s | Dgen Technologies',
   },
-  description: 'DGEN Technologies pioneers B2B smart city solutions in India with our flagship product "Auralis," a smart street light with advanced fault detection. We build integrated IoT systems and are expanding into the B2C smart home market.',
-  keywords: ['smart city', 'IoT', 'Auralis', 'smart street light', 'India', 'technology solutions', 'B2B technology', 'urban innovation', 'smart home', 'smart cities mission', 'smart cities india', 'affordable smart lighting'],
-  authors: [{ name: 'DGEN Technologies' }],
+  description: 'Dgen Technologies is a pioneering smart city solutions company based in Kolkata, India. Our flagship product, the Auralis Ecosystem, uses Hybrid Wireless Mesh Network technology (ESP-MESH + 4G LTE) for intelligent street lighting with 80% energy savings. Made in India.',
+  keywords: ['smart city', 'IoT', 'Auralis Ecosystem', 'Auralis Smart City Solutions', 'smart street light', 'India', 'Kolkata', 'ESP-MESH', 'Hybrid Wireless Mesh Network', 'Made in India', 'Smart Cities Mission', 'affordable smart lighting', 'predictive maintenance'],
+  authors: [{ name: 'Dgen Technologies Private Limited' }],
   openGraph: {
-    title: 'DGEN Technologies | Smart City & IoT Solutions',
-    description: 'Pioneering smart city solutions in India with our flagship product "Auralis" and expanding into smart home technology.',
+    title: 'Dgen Technologies | Smart City Solutions & Auralis Ecosystem',
+    description: 'Pioneering smart city solutions in India with our flagship Auralis Ecosystem using Hybrid Wireless Mesh Network technology for intelligent street lighting.',
     url: 'https://dgentechnologies.com',
-    siteName: 'DGEN Technologies',
+    siteName: 'Dgen Technologies',
     images: [
       {
-        url: 'https://dgentechnologies.com/og-image.png', // It's good practice to have an OG image
+        url: 'https://dgentechnologies.com/og-image.png',
         width: 1200,
         height: 630,
       },
@@ -44,11 +44,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DGEN Technologies | Smart City & IoT Solutions',
-    description: 'Pioneering smart city solutions in India with our flagship product "Auralis" and expanding into smart home technology.',
-    // site: '@dgen_tech', // Add your twitter handle
-    // creator: '@dgen_tech',
-    images: ['https://dgentechnologies.com/twitter-image.png'], // It's good practice to have a twitter image
+    title: 'Dgen Technologies | Smart City Solutions & Auralis Ecosystem',
+    description: 'Pioneering smart city solutions in India with our flagship Auralis Ecosystem using Hybrid Wireless Mesh Network technology.',
+    images: ['https://dgentechnologies.com/twitter-image.png'],
   },
   robots: {
     index: true,
@@ -75,9 +73,15 @@ export default function RootLayout({
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "DGEN Technologies",
-    "alternateName": ["Dgen Tech", "Dgen Technologies Pvt Ltd"],
-    "url": "https://www.dgentechnologies.com/"
+    "name": "Dgen Technologies",
+    "alternateName": ["Dgen Technologies Private Limited", "DGEN Technologies", "Dgen Tech"],
+    "url": "https://www.dgentechnologies.com/",
+    "description": "Pioneering smart city solutions in India with the Auralis Ecosystem using Hybrid Wireless Mesh Network technology",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.dgentechnologies.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   };
 
   return (
