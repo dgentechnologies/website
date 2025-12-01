@@ -97,7 +97,7 @@ export default function ProductsPage() {
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
-              alt="DGEN Technologies smart city products - Auralis smart street lighting and IoT hardware solutions"
+              alt="Dgen Technologies Smart City Products - Auralis Ecosystem smart street lighting with Hybrid Wireless Mesh Network technology"
               fill
               className="object-cover"
               priority
@@ -125,13 +125,13 @@ export default function ProductsPage() {
               className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter md:text-5xl lg:text-6xl text-gradient leading-tight animate-slide-up px-2" 
               style={{ animationDelay: '0.2s' }}
             >
-              Hardware for a Smarter World
+              Smart City Solutions Made in India
             </h1>
             <p 
               className="max-w-2xl mx-auto text-white/80 text-sm sm:text-base md:text-lg lg:text-xl animate-slide-up px-4" 
               style={{ animationDelay: '0.4s' }}
             >
-              Robust, reliable, and intelligent IoT hardware engineered for the demands of modern smart city infrastructure and connected homes.
+              Explore our Auralis Ecosystem and IoT hardware solutions—robust, reliable technology engineered for modern urban infrastructure using Hybrid Wireless Mesh Networks.
             </p>
           </div>
         </div>
@@ -168,10 +168,10 @@ export default function ProductsPage() {
               }`}
             >
               <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter md:text-4xl animate-fade-in-up">
-                Smart City & IoT Product Range
+                Auralis Smart City Product Range
               </h2>
               <p className="mt-3 md:mt-4 text-foreground/70 max-w-2xl mx-auto text-sm sm:text-base px-2">
-                Explore our range of intelligent hardware solutions designed for urban infrastructure and smart connectivity.
+                Explore our three product lines: the flagship Auralis Ecosystem, Solar Street Lights, and LED Street Lights—all designed for India&apos;s Smart Cities Mission.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">

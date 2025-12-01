@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
@@ -31,6 +32,106 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParallax, useScrollAnimation, useFloatingAnimation } from '@/hooks/use-scroll-animation';
 import { notFound } from 'next/navigation';
+
+// Generate Product Schema for SEO
+function generateProductSchema(product: Product) {
+  if (product.slug === 'auralis-ecosystem') {
+    return {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Auralis Ecosystem - Smart City Lighting System",
+      "alternateName": ["Auralis Smart City Solutions", "Auralis Smart Street Light"],
+      "description": "A scalable, industrial-grade smart city lighting system using Hybrid Wireless Mesh Network technology (ESP-MESH + 4G LTE) for cost-effective urban infrastructure modernization. Achieves 80% energy savings and 98% reduction in cellular costs through Cluster Head architecture.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Auralis"
+      },
+      "manufacturer": {
+        "@type": "Organization",
+        "name": "Dgen Technologies Private Limited",
+        "url": "https://www.dgentechnologies.com"
+      },
+      "category": "Smart City Solutions",
+      "image": "https://www.dgentechnologies.com/images/auralis-product-shot.png",
+      "url": "https://www.dgentechnologies.com/products/auralis-ecosystem",
+      "additionalProperty": [
+        {
+          "@type": "PropertyValue",
+          "name": "Network Topology",
+          "value": "Hybrid Wireless Mesh Network (ESP-MESH + 4G LTE)"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Protocol",
+          "value": "MQTT / JSON packets"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Energy Savings",
+          "value": "Up to 80%"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Cluster Ratio",
+          "value": "1 Gateway (Auralis Pro) per 50 Worker Nodes (Auralis Core)"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Hardware Components",
+          "value": "Auralis Pro (Gateway Node), Auralis Core (Worker Node)"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Features",
+          "value": "Fault Detection, Predictive Maintenance, Intelligent Dimming"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Manufacturing",
+          "value": "Made in India"
+        }
+      ],
+      "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "priceCurrency": "INR",
+        "seller": {
+          "@type": "Organization",
+          "name": "Dgen Technologies Private Limited"
+        }
+      }
+    };
+  }
+  
+  // Generic product schema for other products
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.title,
+    "description": product.shortDescription,
+    "brand": {
+      "@type": "Brand",
+      "name": "Dgen Technologies"
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "Dgen Technologies Private Limited",
+      "url": "https://www.dgentechnologies.com"
+    },
+    "category": product.category,
+    "image": product.images[0]?.url,
+    "url": `https://www.dgentechnologies.com/products/${product.slug}`,
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "INR",
+      "seller": {
+        "@type": "Organization",
+        "name": "Dgen Technologies Private Limited"
+      }
+    }
+  };
+}
 
 function Section({ title, description, children, className = '' }: { title: string, description?: string, children: React.ReactNode, className?: string }) {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
@@ -356,7 +457,7 @@ function EcosystemProductView({ product }: { product: Product }) {
       </Section>
 
       {/* Sub-Product Section */}
-      <Section title="Auralis Product Versions" description="Choose the Auralis version that best fits your needs.">
+      <Section title="Auralis Hardware Variants" description="The Auralis Ecosystem comprises two hardware variants deployed in a Cluster Head architecture.">
           <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto">
             {subProducts.map((sub, index) => (
               <SubProductCard key={index} sub={sub} index={index} />
@@ -410,9 +511,17 @@ export function ProductDetailClient({ productSlug }: { productSlug: string }) {
   }
 
   const isEcosystemProduct = !!product.ecosystem;
+  const productSchema = generateProductSchema(product);
 
   return (
     <div className="flex flex-col overflow-hidden">
+      {/* Product Schema for SEO */}
+      <Script
+        id="product-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      
       {/* Hero Section with Enhanced Parallax */}
       <section className="w-full py-16 sm:py-20 md:py-32 bg-card relative overflow-hidden">
         {/* Decorative background elements */}

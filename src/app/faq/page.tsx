@@ -1,3 +1,4 @@
+'use client';
 
 import { Badge } from '@/components/ui/badge';
 import {
@@ -6,53 +7,77 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import type { Metadata } from 'next';
+import Script from 'next/script';
 
+// NLP-friendly FAQ structure with bold direct answers + technical justification
 const faqs = [
     {
         question: "How do you spell your company name? Is it D-Gen, Degin, or Deegen?",
-        answer: "You've come to the right place! Our official name is DGEN Technologies. While we are sometimes referred to by common misspellings like D-Gen Technologies, Degin Tech, or even Deegen, we are India's pioneering smart city and IoT solutions provider. We are committed to powering India's future, one smart device at a time."
+        answer: "**Our official name is Dgen Technologies Private Limited.** While we are sometimes referred to by common misspellings like D-Gen Technologies, Degin Tech, or even Deegen, we are India's pioneering smart city and IoT solutions provider based in Kolkata. We are committed to powering India's future through our Auralis Ecosystem smart city solutions."
     },
     {
         question: "What is the meaning of a Smart City?",
-        answer: "A smart city uses IoT (Internet of Things) technology to collect data. This data provides insights that are used to manage assets, resources, and services efficiently. The primary goal is to improve the quality of life for citizens by enhancing urban services like transportation, energy, and public safety."
+        answer: "**A smart city uses IoT (Internet of Things) technology to collect and analyze urban data in real-time.** This data provides actionable insights used to manage assets, resources, and services efficiently. The primary goal is to improve quality of life for citizens by enhancing urban services like street lighting, transportation, energy management, and public safety."
     },
     {
         question: "Which are some of India's smart cities?",
-        answer: "Under the Smart Cities Mission India, cities like Bhubaneswar, Pune, Ahmedabad, Chennai, and Indore have made significant progress in implementing smart solutions, setting a benchmark for other cities."
+        answer: "**Under the Smart Cities Mission India, over 100 cities are being developed as smart cities.** Notable examples include Bhubaneswar, Pune, Ahmedabad, Chennai, Indore, and Kolkata. These cities have made significant progress in implementing smart solutions like intelligent street lighting, setting benchmarks for urban infrastructure modernization."
     },
     {
         question: "What is the Smart Cities Mission launch date and ministry?",
-        answer: "The Smart Cities Mission was launched on June 25, 2015, by the Ministry of Housing and Urban Affairs (MoHUA), Government of India. Its objective is to promote sustainable and inclusive cities that provide core infrastructure and give a decent quality of life to its citizens."
+        answer: "**The Smart Cities Mission was launched on June 25, 2015, by the Ministry of Housing and Urban Affairs (MoHUA).** Its objective is to promote sustainable and inclusive cities that provide core infrastructure including smart street lighting, water management, and digital connectivity to improve citizens' quality of life."
     },
     {
-        question: "How does Auralis help build a #smartcity?",
-        answer: "Auralis is more than just a street light. It's a powerful IoT platform with AI-driven fault detection, energy monitoring, and environmental sensing capabilities. By creating a connected and intelligent lighting grid, Auralis provides city administrators with the data and control needed to improve efficiency, reduce costs, and enhance public safety, which are core goals of any smart city project."
+        question: "How does the Auralis Ecosystem save money?",
+        answer: "**The Auralis Ecosystem reduces operational costs by 98% on cellular subscriptions.** Our Hybrid Wireless Mesh Network uses ESP-MESH (Wi-Fi) for local cluster communication, requiring only one 4G LTE SIM card per approximately 50 lights instead of one per light like traditional point-to-point systems. Combined with intelligent dimming and predictive maintenance, cities typically achieve 80% energy savings."
     },
     {
-        question: "What is Auralis?",
-        answer: "Auralis is DGEN Technologies' brand for our suite of smart city solutions. It starts with our flagship smart street lighting system and is designed to be a scalable platform for a wide range of smart city applications."
+        question: "What is the Auralis Ecosystem?",
+        answer: "**Auralis is Dgen Technologies' umbrella brand for scalable Smart City Solutions.** Our flagship product is the Auralis Ecosystem smart street lighting platform, which uses Hybrid Wireless Mesh Network technology (ESP-MESH + 4G LTE). It comprises Auralis Pro (Gateway Node) and Auralis Core (Worker Node) hardware, deployed in a 1:50 ratio. The Auralis brand will expand to include Smart Traffic Lights and other IoT sensors."
     },
     {
-        question: "How does Auralis's predictive maintenance work?",
-        answer: "Our AI-powered platform analyzes real-time operational data from each Auralis device. By identifying patterns that precede a failure, the system can issue a maintenance alert, allowing teams to fix problems proactively before an outage occurs."
+        question: "How does the Auralis Ecosystem's predictive maintenance work?",
+        answer: "**Our AI-powered platform proactively detects failures before they occur.** It continuously analyzes real-time operational data from each Auralis device via MQTT/JSON packet communication. By identifying patterns that precede equipment failure, the system issues maintenance alerts allowing teams to fix problems proactively, reducing downtime and maintenance costs."
     },
     {
-        question: "Is Auralis compatible with existing city infrastructure?",
-        answer: "Yes. Auralis is designed for seamless integration. Our smart street lights can replace existing fixtures with minimal retrofitting, and the platform can integrate with other city management systems via standard APIs."
+        question: "Is the Auralis Ecosystem compatible with existing city infrastructure?",
+        answer: "**Yes, the Auralis Ecosystem is designed for seamless retrofit integration.** Our smart street light controllers can be installed on existing fixtures with minimal modifications. The ESP-MESH network self-heals automatically when nodes are added or removed, and the platform integrates with other city management systems via standard APIs."
+    },
+    {
+        question: "What network technology does Auralis use?",
+        answer: "**Auralis uses a Hybrid Wireless Mesh Network with ESP-MESH (Wi-Fi) for local clusters and 4G LTE for cloud connectivity.** This is NOT LoRaWAN. Our Cluster Head architecture deploys one Auralis Pro (Gateway) per approximately 50 Auralis Core (Worker) nodes, communicating via MQTT protocol with JSON packets. This dramatically reduces infrastructure costs while ensuring reliable, low-latency data transmission."
+    },
+    {
+        question: "Where is Dgen Technologies located and where are products manufactured?",
+        answer: "**Dgen Technologies is headquartered in Kolkata, India, and all products are proudly Made in India.** We design and manufacture our Auralis Ecosystem hardware locally, supporting the Smart Cities Mission and contributing to India's self-reliance in IoT technology. Our products are engineered for Indian climate and power conditions."
     }
 ];
 
-export const metadata: Metadata = {
-  title: 'FAQ | DGEN Technologies',
-  description: 'Frequently Asked Questions about DGEN Technologies. Find answers about smart cities, our products, and common misspellings like D-Gen, Degin Tech, and Deegen.',
-  keywords: ['DGEN Technologies FAQ', 'D-Gen Tech', 'Degin Technology', 'Deegen', 'smart city questions', 'Auralis FAQ'],
+// FAQ Schema for SEO
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer.replace(/\*\*/g, '')
+        }
+    }))
 };
 
 
 export default function FaqPage() {
     return (
         <div className="flex flex-col">
+            {/* FAQ Schema for SEO */}
+            <Script
+              id="faq-schema"
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+            />
+            
             {/* Hero Section */}
             <section className="w-full py-20 md:py-32 bg-card">
                 <div className="container max-w-screen-xl px-4 md:px-6">
@@ -62,7 +87,7 @@ export default function FaqPage() {
                             Frequently Asked Questions
                         </h1>
                         <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">
-                            Find answers to common questions about our company, products, and the smart city landscape.
+                            Find answers to common questions about Dgen Technologies, the Auralis Ecosystem, and our smart city solutions.
                         </p>
                     </div>
                 </div>
@@ -76,7 +101,9 @@ export default function FaqPage() {
                             <AccordionItem key={index} value={`item-${index}`}>
                                 <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
                                 <AccordionContent className="text-base text-foreground/80">
-                                    {item.answer}
+                                    <div dangerouslySetInnerHTML={{ 
+                                        __html: item.answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                                    }} />
                                 </AccordionContent>
                             </AccordionItem>
                         ))}
