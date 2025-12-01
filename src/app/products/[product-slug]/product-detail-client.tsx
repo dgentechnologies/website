@@ -457,7 +457,7 @@ function EcosystemProductView({ product }: { product: Product }) {
       </Section>
 
       {/* Sub-Product Section */}
-      <Section title="Auralis Product Versions" description="Choose the Auralis version that best fits your needs.">
+      <Section title="Auralis Hardware Variants" description="The Auralis Ecosystem comprises two hardware variants deployed in a Cluster Head architecture.">
           <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto">
             {subProducts.map((sub, index) => (
               <SubProductCard key={index} sub={sub} index={index} />

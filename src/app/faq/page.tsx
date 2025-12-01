@@ -1,3 +1,4 @@
+'use client';
 
 import { Badge } from '@/components/ui/badge';
 import {
@@ -6,7 +7,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import type { Metadata } from 'next';
+import Script from 'next/script';
 
 // NLP-friendly FAQ structure with bold direct answers + technical justification
 const faqs = [
@@ -66,18 +67,13 @@ const faqSchema = {
     }))
 };
 
-export const metadata: Metadata = {
-  title: 'FAQ | Dgen Technologies',
-  description: 'Frequently Asked Questions about Dgen Technologies and the Auralis Ecosystem. Learn about our Hybrid Wireless Mesh Network technology, ESP-MESH + 4G LTE connectivity, and Made in India smart city solutions.',
-  keywords: ['Dgen Technologies FAQ', 'Auralis Ecosystem FAQ', 'smart city questions', 'ESP-MESH technology', 'Hybrid Wireless Mesh Network', 'Made in India IoT'],
-};
-
 
 export default function FaqPage() {
     return (
         <div className="flex flex-col">
             {/* FAQ Schema for SEO */}
-            <script
+            <Script
+              id="faq-schema"
               type="application/ld+json"
               dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
             />
