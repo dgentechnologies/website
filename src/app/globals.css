@@ -188,6 +188,8 @@
   .touch-target {
     min-height: 44px;
     min-width: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 
   /* Improved text readability on mobile */
@@ -252,6 +254,7 @@
   
   /* Optimize hero sections for mobile */
   .h-screen {
+    height: 100vh; /* Fallback for older browsers */
     height: 100svh; /* Use small viewport height for better mobile experience */
   }
   

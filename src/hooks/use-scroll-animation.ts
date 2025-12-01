@@ -102,7 +102,7 @@ export function useParallax(speed: number = 0.5): number {
       return;
     }
 
-    // Check if mobile device - reduce parallax effect for better performance
+    // Check if mobile device once at initialization - reduce parallax effect for better performance
     const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
     const adjustedSpeed = isMobile ? speed * 0.3 : speed;
 
