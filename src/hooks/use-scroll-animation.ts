@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef, RefObject, useCallback } from 'react';
 
+const MOBILE_BREAKPOINT = 768;
+
 interface UseScrollAnimationOptions {
   threshold?: number;
   rootMargin?: string;
@@ -22,6 +24,13 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
+
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setIsVisible(true);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -55,6 +64,12 @@ export function useScrollProgress(): number {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      return;
+    }
+
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -75,13 +90,24 @@ export function useScrollProgress(): number {
 
 /**
  * A hook that provides parallax scroll offset for an element.
+ * Automatically reduces or disables parallax on mobile devices for better performance.
  */
 export function useParallax(speed: number = 0.5): number {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
+    // Check if user prefers reduced motion - disable parallax
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    // Check if mobile device - reduce parallax effect for better performance
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    const adjustedSpeed = isMobile ? speed * 0.3 : speed;
+
     const handleScroll = () => {
-      setOffset(window.scrollY * speed);
+      setOffset(window.scrollY * adjustedSpeed);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

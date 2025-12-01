@@ -24,14 +24,14 @@ export default async function BlogPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="w-full py-20 md:py-32 bg-card">
+      <section className="w-full py-16 sm:py-20 md:py-32 bg-card">
         <div className="container max-w-screen-xl px-4 md:px-6">
-          <div className="flex flex-col items-center space-y-4 text-center">
+          <div className="flex flex-col items-center space-y-3 sm:space-y-4 text-center">
             <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary">Insights</Badge>
-            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-gradient">
+            <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter md:text-5xl lg:text-6xl text-gradient px-2">
               DGEN Technologies Blog
             </h1>
-            <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">
+            <p className="mx-auto max-w-[700px] text-foreground/80 text-sm sm:text-base md:text-xl px-4">
               Exploring the future of smart cities, IoT, and sustainable technology.
             </p>
           </div>
@@ -39,12 +39,12 @@ export default async function BlogPage() {
       </section>
 
       {/* Blog Posts Section */}
-      <section className="w-full py-16 md:py-24">
+      <section className="w-full py-12 md:py-16 lg:py-24">
         <div className="container max-w-screen-xl px-4 md:px-6">
           {blogPosts.length === 0 ? (
-            <p className="text-center text-foreground/70">No blog posts found. Check back soon!</p>
+            <p className="text-center text-foreground/70 text-sm sm:text-base">No blog posts found. Check back soon!</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {blogPosts.map((post) => (
                 <Card key={post.slug} className="flex flex-col overflow-hidden bg-card/50 hover:bg-card hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-2">
                   {post.image && (
@@ -58,23 +58,23 @@ export default async function BlogPage() {
                       />
                     </div>
                   )}
-                  <CardHeader>
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {post.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                  <CardHeader className="p-3 sm:p-4 lg:p-6">
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-2">
+                      {post.tags.map(tag => <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>)}
                     </div>
-                    <CardTitle className="font-headline text-xl">{post.title}</CardTitle>
+                    <CardTitle className="font-headline text-base sm:text-lg lg:text-xl">{post.title}</CardTitle>
                   </CardHeader>
-                  <CardContent className="flex-grow">
-                    <CardDescription>{post.description}</CardDescription>
+                  <CardContent className="flex-grow p-3 sm:p-4 lg:p-6 pt-0">
+                    <CardDescription className="text-xs sm:text-sm">{post.description}</CardDescription>
                   </CardContent>
-                  <CardFooter className="flex-col items-start gap-4">
-                    <div className="flex items-center text-sm text-foreground/70 space-x-4">
-                        <div className="flex items-center gap-2">
-                            <UserCircle className="h-4 w-4" />
+                  <CardFooter className="flex-col items-start gap-3 sm:gap-4 p-3 sm:p-4 lg:p-6 pt-0">
+                    <div className="flex flex-wrap items-center text-xs sm:text-sm text-foreground/70 gap-3 sm:gap-4">
+                        <div className="flex items-center gap-1 sm:gap-2">
+                            <UserCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                             <span>{post.author}</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4" />
+                        <div className="flex items-center gap-1 sm:gap-2">
+                            <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
                             <span>{post.date}</span>
                         </div>
                     </div>

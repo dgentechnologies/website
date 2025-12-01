@@ -183,4 +183,85 @@
   .animate-pulse-subtle {
     animation: pulse-subtle 2s ease-in-out infinite;
   }
+
+  /* Mobile-friendly touch targets - ensure minimum 44px tap targets */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Improved text readability on mobile */
+  .mobile-text {
+    @apply text-base leading-relaxed;
+  }
+
+  @screen md {
+    .mobile-text {
+      @apply text-lg;
+    }
+  }
+}
+
+/* Reduced motion preferences - disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-fade-in-up,
+  .animate-hero-image,
+  .animate-slide-up,
+  .animate-slide-down,
+  .animate-hero-content,
+  .animate-scroll-indicator,
+  .animate-pulse-subtle,
+  .animate-bounce {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 767px) {
+  /* Optimize scrolling on mobile */
+  html {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Ensure proper touch handling */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+  
+  /* Improve tap target sizes */
+  button,
+  a {
+    min-height: 44px;
+  }
+  
+  /* Optimize hero sections for mobile */
+  .h-screen {
+    height: 100svh; /* Use small viewport height for better mobile experience */
+  }
+  
+  /* Reduce animation intensity on mobile for better performance */
+  .animate-slide-up,
+  .animate-slide-down {
+    animation-duration: 0.5s;
+  }
+  
+  .animate-hero-content {
+    animation-duration: 0.5s;
+  }
 }
