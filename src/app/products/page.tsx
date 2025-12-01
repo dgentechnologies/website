@@ -9,13 +9,11 @@ import Link from 'next/link';
 import { products } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useParallax, useScrollAnimation, useFloatingAnimation, useHorizontalParallax } from '@/hooks/use-scroll-animation';
-import { useRef } from 'react';
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'about-story');
 
 function ProductCard({ product, index }: { product: typeof products[0]; index: number }) {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
-  const cardRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
@@ -28,7 +26,6 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       <Card 
-        ref={cardRef}
         className="flex flex-col overflow-hidden bg-card/50 hover:bg-card interactive-card h-full group border-2 border-transparent hover:border-primary/30"
       >
         {product.images[0] && (

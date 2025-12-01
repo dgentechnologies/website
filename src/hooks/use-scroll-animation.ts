@@ -43,8 +43,8 @@ export function useMousePosition(elementRef: RefObject<HTMLElement | null>) {
 }
 
 /**
- * A hook that provides a floating animation effect based on scroll position.
- * Creates a subtle up-down floating motion.
+ * A hook that provides a floating animation effect based on time.
+ * Creates a subtle up-down floating motion using sine wave.
  */
 export function useFloatingAnimation(speed: number = 1): number {
   const [offset, setOffset] = useState(0);
@@ -55,11 +55,25 @@ export function useFloatingAnimation(speed: number = 1): number {
 
     let animationFrame: number;
     let startTime = performance.now();
+    let isVisible = true;
+
+    // Create an intersection observer to pause animations when off-screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0 }
+    );
+
+    // Observe document body as a proxy for visibility
+    observer.observe(document.body);
 
     const animate = (currentTime: number) => {
-      const elapsed = (currentTime - startTime) / 1000;
-      const floatOffset = Math.sin(elapsed * speed) * 10;
-      setOffset(floatOffset);
+      if (isVisible) {
+        const elapsed = (currentTime - startTime) / 1000;
+        const floatOffset = Math.sin(elapsed * speed) * 10;
+        setOffset(floatOffset);
+      }
       animationFrame = requestAnimationFrame(animate);
     };
 
@@ -67,6 +81,7 @@ export function useFloatingAnimation(speed: number = 1): number {
 
     return () => {
       cancelAnimationFrame(animationFrame);
+      observer.disconnect();
     };
   }, [speed]);
 
