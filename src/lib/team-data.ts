@@ -29,7 +29,7 @@ export const teamMembers = [
   { 
     name: 'Arpan Bairagi', 
     role: 'COO', 
-    image: '/images/arpan-bairagi.jpg',
+    image: '/images/arpan-bairagi.png',
     slug: 'arpan-bairagi',
     bio: 'Arpan oversees the day-to-day operations at DGEN Technologies, ensuring excellence in product delivery and client satisfaction. His expertise in supply chain management and operational efficiency has been crucial in scaling our B2B solutions. Arpan is committed to maintaining the highest standards of quality as we expand our manufacturing capabilities for the B2C market.',
     linkedin: 'https://www.linkedin.com/in/arpan-bairagi-2a8b02274/',
