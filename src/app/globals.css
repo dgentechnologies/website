@@ -394,6 +394,7 @@
   html {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    font-size: 16px; /* Prevent zoom on input focus in iOS */
   }
   
   /* Ensure proper touch handling */
@@ -425,5 +426,50 @@
   
   .animate-hero-content {
     animation-duration: 0.5s;
+  }
+  
+  /* Better container padding on mobile */
+  .container {
+    @apply px-4;
+  }
+  
+  /* Optimize card layouts for mobile */
+  .interactive-card:hover {
+    transform: none; /* Disable hover transforms on mobile */
+  }
+  
+  /* Mobile-friendly text sizing */
+  h1 {
+    @apply text-2xl leading-tight;
+  }
+  
+  h2 {
+    @apply text-xl leading-tight;
+  }
+  
+  /* Improve form inputs on mobile */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevent zoom on focus in iOS */
+  }
+}
+
+/* Small mobile devices (< 375px) */
+@media (max-width: 374px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .container {
+    @apply px-3;
+  }
+  
+  h1 {
+    @apply text-xl;
+  }
+  
+  h2 {
+    @apply text-lg;
   }
 }

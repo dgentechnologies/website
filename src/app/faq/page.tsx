@@ -79,14 +79,14 @@ export default function FaqPage() {
             />
             
             {/* Hero Section */}
-            <section className="w-full py-20 md:py-32 bg-card">
+            <section className="w-full py-16 sm:py-20 md:py-32 bg-card">
                 <div className="container max-w-screen-xl px-4 md:px-6">
-                    <div className="flex flex-col items-center space-y-4 text-center">
+                    <div className="flex flex-col items-center space-y-3 sm:space-y-4 text-center">
                         <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary">Help Center</Badge>
-                        <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-gradient">
+                        <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter md:text-5xl lg:text-6xl text-gradient px-2">
                             Frequently Asked Questions
                         </h1>
-                        <p className="mx-auto max-w-[700px] text-foreground/80 md:text-xl">
+                        <p className="mx-auto max-w-[700px] text-foreground/80 text-sm sm:text-base md:text-xl px-4">
                             Find answers to common questions about Dgen Technologies, the Auralis Ecosystem, and our smart city solutions.
                         </p>
                     </div>
@@ -94,13 +94,13 @@ export default function FaqPage() {
             </section>
 
             {/* FAQ Section */}
-            <section className="w-full py-16 md:py-24">
+            <section className="w-full py-12 md:py-16 lg:py-24">
                 <div className="container max-w-screen-lg px-4 md:px-6">
                     <Accordion type="single" collapsible className="w-full">
                         {faqs.map((item, index) => (
                             <AccordionItem key={index} value={`item-${index}`}>
-                                <AccordionTrigger className="text-lg font-headline text-left">{item.question}</AccordionTrigger>
-                                <AccordionContent className="text-base text-foreground/80">
+                                <AccordionTrigger className="text-base sm:text-lg font-headline text-left py-4">{item.question}</AccordionTrigger>
+                                <AccordionContent className="text-sm sm:text-base text-foreground/80 pb-4">
                                     <div dangerouslySetInnerHTML={{ 
                                         __html: item.answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
                                     }} />
