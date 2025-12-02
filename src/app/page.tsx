@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Building2, Router, BrainCircuit, Home as HomeIcon, ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { useParallax, useScrollAnimation } from '@/hooks/use-scroll-animation';
+import { useParallax, useScrollAnimation, useFloatingAnimation } from '@/hooks/use-scroll-animation';
 
 // LocalBusiness Schema for Dgen Technologies - Kolkata HQ
 const localBusinessSchema = {
@@ -21,12 +21,14 @@ const localBusinessSchema = {
   "url": "https://www.dgentechnologies.com",
   "logo": "https://www.dgentechnologies.com/images/logo.png",
   "image": "https://www.dgentechnologies.com/images/auralis-product-shot.png",
-  "telephone": "+91-XXXXXXXXXX",
-  "email": "info@dgentechnologies.com",
+  "telephone": "+91-9064606348",
+  "email": "contact@dgentechnologies.com",
   "address": {
     "@type": "PostalAddress",
+    "streetAddress": "1A, First floor, Star Residency, Ghosh para road, Salua Bazar, Rajarhat, PS - Airport",
     "addressLocality": "Kolkata",
     "addressRegion": "West Bengal",
+    "postalCode": "700136",
     "addressCountry": "IN"
   },
   "geo": {
