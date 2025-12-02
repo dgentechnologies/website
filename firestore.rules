@@ -34,17 +34,17 @@ service cloud.firestore {
     }
 
     /**
-     * @description Allows any user to submit a message, but only a specific admin can read them.
+     * @description Allows any user to submit a message, but only authenticated admins can read and delete them.
      * @path /contactMessages/{messageId}
      * @allow (create) - Any user can send a contact message.
-     * @allow (read) - Only the admin user can read messages.
-     * @allow (update, delete) - No client-side user can access submitted messages.
-     * @principle Secures user messages by restricting read access to a designated admin.
+     * @allow (read, delete) - Only authenticated admin users can read and delete messages.
+     * @allow (update) - No client-side user can update submitted messages.
+     * @principle Secures user messages by restricting read/delete access to authenticated admins.
      */
     match /contactMessages/{messageId} {
       allow create: if true;
-      allow read: if request.auth != null;
-      allow update, delete: if false;
+      allow read, delete: if request.auth != null;
+      allow update: if false;
     }
 
     /**

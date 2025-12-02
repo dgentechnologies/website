@@ -10,7 +10,7 @@ import AdminDashboardLayout from './(dashboard)/layout';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { MessageSquare, Users, FileText, ArrowRight, List, MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-react';
+import { MessageSquare, Users, FileText, ArrowRight, List, MoreHorizontal, Eye, Pencil, Trash2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -374,6 +374,44 @@ interface ContactMessage {
 const MessagesView = () => {
   const [messages, loading, error] = useCollection(query(collection(firestore, 'contactMessages'), orderBy('createdAt', 'desc')));
   const isLoading = loading;
+  const { toast } = useToast();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copied!",
+        description: "Email address copied to clipboard.",
+      });
+    }).catch(() => {
+      toast({
+        title: "Failed to copy",
+        description: "Could not copy email to clipboard.",
+        variant: "destructive",
+      });
+    });
+  };
+
+  const handleDeleteMessage = async () => {
+    if (!messageToDelete) return;
+
+    try {
+      await deleteDoc(doc(firestore, 'contactMessages', messageToDelete));
+      toast({
+        title: "Message deleted",
+        description: "The message has been successfully deleted.",
+      });
+      setDeleteDialogOpen(false);
+      setMessageToDelete(null);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete message. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div>
@@ -393,6 +431,7 @@ const MessagesView = () => {
                 <TableHead className="w-[200px]">From</TableHead>
                 <TableHead>Subject & Message</TableHead>
                 <TableHead className="text-right w-[150px]">Received</TableHead>
+                <TableHead className="w-[70px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -401,18 +440,45 @@ const MessagesView = () => {
                   <TableCell><Skeleton className="h-5 w-32 mb-2" /><Skeleton className="h-4 w-40" /></TableCell>
                   <TableCell><Skeleton className="h-5 w-48 mb-2" /><Skeleton className="h-4 w-full" /></TableCell>
                   <TableCell className="text-right"><Skeleton className="h-5 w-24 ml-auto" /></TableCell>
+                  <TableCell><Skeleton className="h-8 w-8" /></TableCell>
                 </TableRow>
               ))}
-              {error && <TableRow><TableCell colSpan={3} className="text-center text-destructive py-10">Error loading messages: {error.message}</TableCell></TableRow>}
-              {!isLoading && messages?.docs.length === 0 && <TableRow><TableCell colSpan={3} className="text-center text-foreground/70 py-10">Your inbox is empty.</TableCell></TableRow>}
+              {error && <TableRow><TableCell colSpan={4} className="text-center text-destructive py-10">Error loading messages: {error.message}</TableCell></TableRow>}
+              {!isLoading && messages?.docs.length === 0 && <TableRow><TableCell colSpan={4} className="text-center text-foreground/70 py-10">Your inbox is empty.</TableCell></TableRow>}
               {!isLoading && messages?.docs.map((doc) => {
                 const message = { id: doc.id, ...doc.data() } as ContactMessage;
                 const sentDate = message.createdAt ? formatDistanceToNow(new Date(message.createdAt.seconds * 1000), { addSuffix: true }) : 'N/A';
                 return (
                   <TableRow key={message.id}>
-                    <TableCell className="align-top"><div className="font-medium">{message.name}</div><div className="text-sm text-foreground/70">{message.email}</div></TableCell>
+                    <TableCell className="align-top">
+                      <div className="font-medium">{message.name}</div>
+                      <div className="text-sm text-foreground/70 flex items-center gap-2">
+                        <span>{message.email}</span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6"
+                          onClick={() => copyToClipboard(message.email)}
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </TableCell>
                     <TableCell className="align-top"><p className="font-medium">{message.subject}</p><p className="text-sm text-foreground/80 mt-1 max-w-lg truncate">{message.message}</p></TableCell>
                     <TableCell className="align-top text-right text-sm text-foreground/80">{sentDate}</TableCell>
+                    <TableCell className="align-top">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        onClick={() => {
+                          setMessageToDelete(message.id);
+                          setDeleteDialogOpen(true);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -420,6 +486,23 @@ const MessagesView = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete this message. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setMessageToDelete(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteMessage} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
