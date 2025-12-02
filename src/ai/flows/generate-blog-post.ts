@@ -71,7 +71,7 @@ const generateBlogPostFlow = ai.defineFlow(
     const exclusionText = `\n\n**KEYWORDS TO AVOID (DO NOT USE):**\n${hintsToAvoid.map(h => `- ${h}`).join('\n')}`;
 
     const prompt = `
-You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging, reflecting the unique voice and perspective of the specified author.
+You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging and Search Engine Optimized (SEO), Answer Engine Optimized (AEO), Generative Engine Optimized (GEO), reflecting the unique voice and perspective of the specified author and autor's position in the company.
 
 The blog post MUST be about the following topic: **${input.topic}**.
 You must generate all required fields for the blog post: 'title', 'description', 'slug', 'author', 'date', 'tags', 'content', and 'imageHints'.
