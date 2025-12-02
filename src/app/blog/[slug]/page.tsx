@@ -43,6 +43,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: post.title,
     description: post.description,
+    alternates: {
+      canonical: `https://dgentechnologies.com/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.description,
@@ -63,6 +66,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: post.description,
       images: [post.image],
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
@@ -75,8 +82,28 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": blogPost.title,
+    "description": blogPost.description,
+    "author": {
+      "@type": "Person",
+      "name": blogPost.author
+    },
+    "datePublished": blogPost.date,
+    "image": blogPost.image,
+    "mainEntityOfPage": `https://dgentechnologies.com/blog/${blogPost.slug}`,
+    "keywords": blogPost.tags.join(', ')
+  };
+
   return (
     <div className="flex flex-col">
+      <Script
+        id="article-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <section className="relative w-full h-[50vh] flex items-end justify-start text-left">
         {blogPost.image && (
             <div className="absolute inset-0 z-0">

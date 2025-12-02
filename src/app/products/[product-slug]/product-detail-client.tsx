@@ -90,16 +90,7 @@ function generateProductSchema(product: Product) {
           "name": "Manufacturing",
           "value": "Made in India"
         }
-      ],
-      "offers": {
-        "@type": "Offer",
-        "availability": "https://schema.org/InStock",
-        "priceCurrency": "INR",
-        "seller": {
-          "@type": "Organization",
-          "name": "Dgen Technologies Private Limited"
-        }
-      }
+      ]
     };
   }
   
@@ -120,16 +111,7 @@ function generateProductSchema(product: Product) {
     },
     "category": product.category,
     "image": product.images[0]?.url,
-    "url": `https://www.dgentechnologies.com/products/${product.slug}`,
-    "offers": {
-      "@type": "Offer",
-      "availability": "https://schema.org/InStock",
-      "priceCurrency": "INR",
-      "seller": {
-        "@type": "Organization",
-        "name": "Dgen Technologies Private Limited"
-      }
-    }
+    "url": `https://www.dgentechnologies.com/products/${product.slug}`
   };
 }
 
