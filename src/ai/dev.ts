@@ -2,3 +2,4 @@
 // Flows will be imported for their side effects in this file.
 import './flows/generate-blog-post';
 import './flows/suggest-blog-topic';
+import './flows/generate-email-draft';
