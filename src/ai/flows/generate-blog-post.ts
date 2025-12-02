@@ -98,10 +98,11 @@ The 'content' MUST be a full blog post in HTML format, at least 500 words, writt
 
 The HTML content MUST be well-organized and easy to read. Structure the article with:
 1.  An introduction that hooks the reader.
-2.  Several sections with clear subheadings (e.g., '<h3>' or '<h4>').
-3.  Use of bulleted or numbered lists ('<ul>' or '<ol>') to break down complex information.
-4.  Use of bold tags ('<strong>') to emphasize key terms and important points.
-5.  A concluding paragraph that summarizes the main points.
+2.  Proper use of paragraph tags ('<p>') to separate distinct paragraphs and ensure readability.
+3.  Several sections with clear subheadings (e.g., '<h3>' or '<h4>').
+4.  Use of bulleted or numbered lists ('<ul>' or '<ol>') to break down complex information.
+5.  Use of bold tags ('<strong>') to emphasize key terms and important points.
+6.  A concluding paragraph that summarizes the main points.
 
 **IMAGE HINTS (CRITICAL):**
 Your most important task is generating 'imageHints'. These are search keywords for a photo API. They MUST be photographic and visual.
