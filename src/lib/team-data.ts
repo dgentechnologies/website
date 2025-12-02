@@ -6,7 +6,7 @@ export const teamMembers = [
     slug: 'tirthankar-dasgupta',
     bio: 'Tirthankar is a visionary leader with a background in Electronics and Communication Engineering (ECE). As the founder of DGEN Technologies, he drives the company\'s technical strategy and innovation. His passion for smart city solutions led to the creation of "Auralis," our flagship product. He has been instrumental in shaping the future of urban technology in India, and his expertise in IoT and AI is the cornerstone of our company\'s success.',
     linkedin: 'https://www.linkedin.com/in/tirthankardasguptaprofile',
-    twitter: '#',
+    twitter: 'https://x.com/MrTG1B',
   },
   { 
     name: 'Sukomal Debnath', 
