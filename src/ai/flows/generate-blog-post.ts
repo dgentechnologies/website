@@ -17,6 +17,13 @@ const unsplash = createApi({
   accessKey: process.env.UNSPLASH_ACCESS_KEY!,
 });
 
+const authorRoles = {
+    'Tirthankar Dasgupta': 'CEO & CTO',
+    'Sukomal Debnath': 'CFO',
+    'Sagnik Mandal': 'CMO',
+    'Arpan Bairagi': 'COO',
+};
+
 const BlogPostInputSchema = z.object({
   author: z.enum(['Tirthankar Dasgupta', 'Sukomal Debnath', 'Sagnik Mandal', 'Arpan Bairagi'])
     .describe('The author of the blog post. The writing style will be adapted to this author\'s persona.'),
@@ -70,15 +77,19 @@ const generateBlogPostFlow = ai.defineFlow(
     const hintsToAvoid = ['city skyline', 'technology', 'abstract', 'innovation', 'future'];
     const exclusionText = `\n\n**KEYWORDS TO AVOID (DO NOT USE):**\n${hintsToAvoid.map(h => `- ${h}`).join('\n')}`;
 
+    const authorPosition = authorRoles[input.author] || 'a key team member';
+
     const prompt = `
-You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging and Search Engine Optimized (SEO), Answer Engine Optimized (AEO), Generative Engine Optimized (GEO), reflecting the unique voice and perspective of the specified author and autor's position in the company.
+You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is both informative and engaging and Search Engine Optimized (SEO), Answer Engine Optimized (AEO), Generative Engine Optimized (GEO), reflecting the unique voice and perspective of the specified author.
 
 The blog post MUST be about the following topic: **${input.topic}**.
+The author is **${input.author}**, the **${authorPosition}** of the company.
+
 You must generate all required fields for the blog post: 'title', 'description', 'slug', 'author', 'date', 'tags', 'content', and 'imageHints'.
 
 - The 'title' MUST directly relate to the topic above.
 - The 'description' MUST be a short, SEO-friendly meta description.
-- The 'content' MUST be a full blog post in HTML format, at least 500 words, written entirely in the style of ${input.author}. Do NOT use any markdown characters like '*' or '#'. Use HTML tags like '<h3>' or '<p>'.
+- The 'content' MUST be a full blog post in HTML format, at least 500 words, written entirely in the style and voice of ${input.author} as the company's ${authorPosition}. Do NOT use any markdown characters like '*' or '#'. Use HTML tags like '<h3>' or '<p>'.
 - The 'tags' MUST include 2-3 relevant tags.
 - The 'date' MUST be the current date in "Month Day, Year" format.
 - The 'slug' MUST be a URL-friendly version of the title.
@@ -198,5 +209,3 @@ ${exclusionText}
     return finalOutput as BlogPostOutput;
   }
 );
-
-    
