@@ -25,7 +25,7 @@ const localBusinessSchema = {
   "email": "contact@dgentechnologies.com",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "1A, First floor, Star Residency, Ghosh para road, Salua Bazar, Rajarhat, PS - Airport",
+    "streetAddress": "1A, First Floor, Star Residency, Mondalpara,Ghosh Para Road, Salua Bazar, Rajarhat, PS - Airport",
     "addressLocality": "Kolkata",
     "addressRegion": "West Bengal",
     "postalCode": "700136",
@@ -33,8 +33,8 @@ const localBusinessSchema = {
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": "22.5726",
-    "longitude": "88.3639"
+    "latitude": "22.632070",
+    "longitude": "88.451032"
   },
   "areaServed": {
     "@type": "Country",

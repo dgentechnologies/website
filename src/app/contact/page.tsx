@@ -37,7 +37,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-sm sm:text-base">Our Office</h3>
-                                    <p className="text-foreground/70 text-sm sm:text-base">1A, First floor, Star Residency, Ghosh para road, Salua Bazar, Rajarhat, PS - Airport, Kolkata, West Bengal, PIN-700136</p>
+                                    <p className="text-foreground/70 text-sm sm:text-base">1A, First Floor, Star Residency, Mondalpara,Ghosh Para Road, Salua Bazar, Rajarhat, PS - Airport, Kolkata, West Bengal.PIN-700136</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3 sm:gap-4">
