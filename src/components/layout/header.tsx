@@ -59,24 +59,15 @@ export function Header() {
                   <span className="sr-only">Toggle Menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[280px] sm:w-[320px] pr-0">
+              <SheetContent side="left" className="w-[280px] sm:w-[320px] p-0">
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 <SheetDescription className="sr-only">Main navigation links for DGEN Technologies website</SheetDescription>
-                <div className="flex items-center justify-between pr-4">
+                <div className="flex items-center justify-between p-4 border-b">
                   <Link href="/" className="flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
                     <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={30} className="h-8 w-auto"/>
                   </Link>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="h-10 w-10 p-0" 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    aria-label="Close navigation menu"
-                  >
-                    <X className="h-6 w-6"/>
-                  </Button>
                 </div>
-                <nav className="my-6 h-[calc(100vh-8rem)] pb-10 pl-2" aria-label="Mobile navigation">
+                <nav className="my-6 h-[calc(100vh-8rem)] pb-10 px-2" aria-label="Mobile navigation">
                   <div className="flex flex-col space-y-1">
                     {navLinks.map((link) => (
                       <Link
