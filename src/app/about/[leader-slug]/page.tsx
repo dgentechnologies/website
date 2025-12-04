@@ -85,5 +85,8 @@ export async function generateMetadata({ params }: { params: Promise<{ 'leader-s
   return {
     title: `${member.name} - ${member.role} | DGEN Technologies`,
     description: `Learn more about ${member.name}, the ${member.role} at DGEN Technologies.`,
+    alternates: {
+      canonical: `https://dgentechnologies.com/about/${member.slug}`,
+    },
   };
 }

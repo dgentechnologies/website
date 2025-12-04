@@ -15,9 +15,6 @@ export const metadata: Metadata = {
     title: 'About DGEN Technologies - Smart City Solutions India',
     description: 'Learn about DGEN Technologies, pioneering smart city solutions in India with innovative IoT products.',
   },
-  alternates: {
-    canonical: 'https://dgentechnologies.com/about',
-  },
 };
 
 export default function AboutLayout({
