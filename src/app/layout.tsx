@@ -1,3 +1,4 @@
+
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
@@ -35,12 +36,12 @@ export const metadata: Metadata = {
     default: 'Dgen Technologies | Smart City Solutions & IoT | Auralis Ecosystem',
     template: '%s | Dgen Technologies',
   },
-  description: 'Dgen Technologies is a pioneering smart city solutions company based in Kolkata, India. Our flagship product, the Auralis Ecosystem, uses Hybrid Wireless Mesh Network technology (ESP-MESH + 4G LTE) for intelligent street lighting with 80% energy savings. Made in India.',
+  description: 'Dgen Technologies pioneers smart city solutions in India. Our Auralis Ecosystem offers intelligent street lighting with 80% energy savings. Made in India.',
   keywords: ['smart city', 'IoT', 'Auralis Ecosystem', 'Auralis Smart City Solutions', 'smart street light', 'India', 'Kolkata', 'ESP-MESH', 'Hybrid Wireless Mesh Network', 'Made in India', 'Smart Cities Mission', 'affordable smart lighting', 'predictive maintenance'],
   authors: [{ name: 'Dgen Technologies Private Limited' }],
   openGraph: {
     title: 'Dgen Technologies | Smart City Solutions & Auralis Ecosystem',
-    description: 'Pioneering smart city solutions in India with our flagship Auralis Ecosystem using Hybrid Wireless Mesh Network technology for intelligent street lighting.',
+    description: 'Pioneering smart city solutions in India with our Auralis Ecosystem for intelligent street lighting, delivering up to 80% energy savings.',
     url: 'https://dgentechnologies.com',
     siteName: 'Dgen Technologies',
     images: [
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Dgen Technologies | Smart City Solutions & Auralis Ecosystem',
-    description: 'Pioneering smart city solutions in India with our flagship Auralis Ecosystem using Hybrid Wireless Mesh Network technology.',
+    description: 'Pioneering smart city solutions in India with our Auralis Ecosystem for intelligent street lighting, delivering up to 80% energy savings.',
     images: ['https://dgentechnologies.com/twitter-image.png'],
   },
   robots: {
