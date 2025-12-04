@@ -68,10 +68,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic routes for blog posts
   const postsSnapshot = await adminFirestore.collection('blogPosts').get();
   const blogRoutes = postsSnapshot.docs.map(doc => {
-    const post = doc.data() as BlogPost;
+    const post = doc.data() as BlogPost & { updatedAt?: { toDate: () => Date } };
+    
+    // Check for a valid updatedAt timestamp, otherwise use current date.
+    const lastModified = post.updatedAt && typeof post.updatedAt.toDate === 'function'
+      ? post.updatedAt.toDate()
+      : new Date();
+
     return {
       url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(), // Use current date as Firestore timestamp might not be available
+      lastModified: lastModified,
       changeFrequency: 'monthly' as 'monthly',
       priority: 0.7,
     };
