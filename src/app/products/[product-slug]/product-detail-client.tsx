@@ -32,6 +32,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParallax, useScrollAnimation, useFloatingAnimation } from '@/hooks/use-scroll-animation';
 import { notFound } from 'next/navigation';
+import { Cpu, Combine, GaugeCircle, Network, Router, ToyBrick } from 'lucide-react';
 
 // Generate Product Schema for SEO
 function generateProductSchema(product: Product) {
@@ -52,8 +53,8 @@ function generateProductSchema(product: Product) {
         "url": "https://www.dgentechnologies.com"
       },
       "category": "Smart City Solutions",
-      "image": "https://www.dgentechnologies.com/images/auralis-product-shot.png",
-      "url": "https://www.dgentechnologies.com/products/auralis-ecosystem",
+      "image": `https://www.dgentechnologies.com${product.images[0]?.url}`,
+      "url": `https://www.dgentechnologies.com/products/${product.slug}`,
       "additionalProperty": [
         {
           "@type": "PropertyValue",
@@ -110,7 +111,7 @@ function generateProductSchema(product: Product) {
       "url": "https://www.dgentechnologies.com"
     },
     "category": product.category,
-    "image": product.images[0]?.url,
+    "image": product.images[0]?.url.startsWith('http') ? product.images[0]?.url : `https://www.dgentechnologies.com${product.images[0]?.url}`,
     "url": `https://www.dgentechnologies.com/products/${product.slug}`
   };
 }
