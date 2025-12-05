@@ -128,7 +128,7 @@ function generateProductSchema(product: Product) {
       "url": "https://www.dgentechnologies.com"
     },
     "category": product.category,
-    "image": product.images[0]?.url.startsWith('http') ? product.images[0]?.url : `https://www.dgentechnologies.com${product.images[0]?.url}`,
+    "image": product.images[0]?.url?.startsWith('http') ? product.images[0]?.url : `https://www.dgentechnologies.com${product.images[0]?.url || ''}`,
     "url": `https://www.dgentechnologies.com/products/${product.slug}`,
     "offers": {
       "@type": "AggregateOffer",
