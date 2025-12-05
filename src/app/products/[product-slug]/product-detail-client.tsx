@@ -529,84 +529,162 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const heroImage = product.images[0];
   // Use a shortened version of the description for the hero section
   const heroDescription = product.shortDescription.split('.').slice(0, 2).join('.') + '.';
+  const [secondSectionRef, isSecondSectionVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   
   return (
-    <section className="w-full py-12 sm:py-16 md:py-24 lg:py-32 bg-card relative overflow-hidden min-h-[70vh] flex items-center">
-      {/* Decorative background elements */}
-      <div 
-        className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/5 rounded-full blur-3xl"
-        style={{ transform: `translateY(${parallaxOffset}px)` }}
-      />
-      <div 
-        className="absolute bottom-0 right-1/4 w-48 h-48 sm:w-80 sm:h-80 bg-accent/5 rounded-full blur-3xl"
-        style={{ transform: `translateY(${-parallaxOffset}px)` }}
-      />
-      
-      {/* Floating icons */}
-      <div 
-        className="absolute top-1/4 right-10 text-primary/10 hidden lg:block"
-        style={{ transform: `translateY(${floatOffset}px)` }}
-      >
-        <Shield className="w-16 h-16" />
-      </div>
-      <div 
-        className="absolute bottom-1/4 left-10 text-primary/10 hidden lg:block"
-        style={{ transform: `translateY(${-floatOffset}px)` }}
-      >
-        <Zap className="w-12 h-12" />
-      </div>
+    <>
+      {/* Hero Section - Full Screen */}
+      <section className="w-full min-h-screen bg-card relative overflow-hidden flex items-center justify-center">
+        {/* Decorative background elements */}
+        <div 
+          className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/5 rounded-full blur-3xl"
+          style={{ transform: `translateY(${parallaxOffset}px)` }}
+        />
+        <div 
+          className="absolute bottom-0 right-1/4 w-48 h-48 sm:w-80 sm:h-80 bg-accent/5 rounded-full blur-3xl"
+          style={{ transform: `translateY(${-parallaxOffset}px)` }}
+        />
+        
+        {/* Floating icons */}
+        <div 
+          className="absolute top-1/4 right-10 text-primary/10 hidden lg:block"
+          style={{ transform: `translateY(${floatOffset}px)` }}
+        >
+          <Shield className="w-16 h-16" />
+        </div>
+        <div 
+          className="absolute bottom-1/4 left-10 text-primary/10 hidden lg:block"
+          style={{ transform: `translateY(${-floatOffset}px)` }}
+        >
+          <Zap className="w-12 h-12" />
+        </div>
 
-      <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Product Image - Left Side */}
-          <div className="order-2 lg:order-1 animate-slide-in-left">
-            <div className="relative group">
-              <Card className="overflow-hidden gradient-border shadow-2xl">
-                <div className="relative aspect-[4/3] w-full">
-                  <Image
-                    src={heroImage.url}
-                    alt={heroImage.alt}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    data-ai-hint={heroImage.hint}
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-              </Card>
-              {/* Decorative glow effect */}
-              <div className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle" />
+        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
+          {/* 60:40 ratio grid - Image 60%, Text 40% */}
+          <div className="grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-10 items-center">
+            {/* Product Image - Left Side (60%) */}
+            <div className="order-2 lg:order-1 animate-slide-in-left">
+              <div className="relative group">
+                <Card className="overflow-hidden gradient-border shadow-2xl">
+                  <div className="relative aspect-[4/3] w-full">
+                    <Image
+                      src={heroImage.url}
+                      alt={heroImage.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      data-ai-hint={heroImage.hint}
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Card>
+                {/* Decorative glow effect */}
+                <div className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle" />
+              </div>
             </div>
-          </div>
 
-          {/* Product Info - Right Side */}
-          <div className="order-1 lg:order-2 flex flex-col space-y-4 sm:space-y-6 animate-slide-in-right">
-            <Badge variant="outline" className="w-fit py-1 px-3 border-primary/50 text-primary animate-glow-pulse" style={{ animationDelay: '0.2s' }}>
-              {product.category}
-            </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-bold tracking-tighter text-gradient" style={{ animationDelay: '0.3s' }}>
-              {product.title}
-            </h1>
-            <p className="text-foreground/80 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed" style={{ animationDelay: '0.4s' }}>
-              {heroDescription}
-            </p>
-            <div className="flex flex-wrap gap-3 pt-2" style={{ animationDelay: '0.5s' }}>
-              <Button asChild size="lg" className="group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
-                <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
-                  Get Started <Sparkles className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="group">
-                <Link href="#features">
-                  Explore Features
-                  <Zap className="ml-2 h-4 w-4 group-hover:text-primary transition-colors" />
-                </Link>
-              </Button>
+            {/* Product Info - Right Side (40%) */}
+            <div className="order-1 lg:order-2 flex flex-col space-y-3 sm:space-y-4 animate-slide-in-right">
+              <Badge variant="outline" className="w-fit py-1 px-3 border-primary/50 text-primary animate-glow-pulse" style={{ animationDelay: '0.2s' }}>
+                {product.category}
+              </Badge>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-headline font-bold tracking-tighter text-gradient" style={{ animationDelay: '0.3s' }}>
+                {product.title}
+              </h1>
+              <p className="text-foreground/80 text-sm sm:text-base md:text-base max-w-md leading-relaxed" style={{ animationDelay: '0.4s' }}>
+                {heroDescription}
+              </p>
+              <div className="flex flex-wrap gap-3 pt-2" style={{ animationDelay: '0.5s' }}>
+                <Button asChild size="lg" className="group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
+                  <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
+                    Get Started <Sparkles className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="group">
+                  <Link href="#features">
+                    Explore Features
+                    <Zap className="ml-2 h-4 w-4 group-hover:text-primary transition-colors" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+        
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 rounded-full border-2 border-primary/30 flex items-start justify-center p-2">
+            <div className="w-1 h-2 bg-primary/50 rounded-full animate-scroll-indicator" />
+          </div>
+        </div>
+      </section>
+
+      {/* Second Section - Scroll Animation with smaller image on left and description on right */}
+      <section 
+        ref={secondSectionRef}
+        className="w-full py-16 sm:py-20 md:py-24 bg-background relative overflow-hidden"
+      >
+        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
+          <div className={`grid lg:grid-cols-[2fr_3fr] gap-8 lg:gap-12 items-center transition-all duration-1000 ${
+            isSecondSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
+            {/* Smaller Product Image - Left Side */}
+            <div className={`transition-all duration-1000 delay-100 ${
+              isSecondSectionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+            }`}>
+              <div className="relative group">
+                <Card className="overflow-hidden gradient-border shadow-xl">
+                  <div className="relative aspect-square w-full max-w-sm mx-auto lg:max-w-none">
+                    <Image
+                      src={heroImage.url}
+                      alt={heroImage.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      data-ai-hint={heroImage.hint}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Card>
+                {/* Decorative glow effect */}
+                <div className="absolute -inset-3 bg-primary/5 rounded-2xl blur-xl -z-10" />
+              </div>
+            </div>
+
+            {/* Description - Right Side */}
+            <div className={`flex flex-col space-y-4 sm:space-y-6 transition-all duration-1000 delay-200 ${
+              isSecondSectionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
+            }`}>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold tracking-tight">
+                Revolutionizing Urban Infrastructure
+              </h2>
+              <p className="text-foreground/80 text-sm sm:text-base leading-relaxed">
+                {product.longDescription}
+              </p>
+              <div className="flex flex-wrap gap-4 pt-2">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Zap className="h-5 w-5 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">80% Energy Savings</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Shield className="h-5 w-5 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">98% Cost Reduction</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Network className="h-5 w-5 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">Hybrid Mesh Network</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
