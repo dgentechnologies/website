@@ -526,19 +526,52 @@ interface HeroSectionProps {
   floatOffset: number;
 }
 
-function useScrollShrink(): number {
-  const [shrinkProgress, setShrinkProgress] = useState(0);
+interface ScrollTransformState {
+  progress: number;
+  scale: number;
+  translateY: number;
+  translateX: number;
+  opacity: number;
+}
+
+function useScrollTransform(): ScrollTransformState {
+  const [state, setState] = useState<ScrollTransformState>({
+    progress: 0,
+    scale: 1,
+    translateY: 0,
+    translateX: 0,
+    opacity: 1
+  });
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion) {
+      setState({ progress: 0, scale: 1, translateY: 0, translateX: 0, opacity: 1 });
+      return;
+    }
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
+      
       // Calculate progress from 0 to 1 based on scroll within first viewport
-      const progress = Math.min(scrollY / (viewportHeight * 0.8), 1);
-      setShrinkProgress(progress);
+      const progress = Math.min(Math.max(scrollY / (viewportHeight * 0.7), 0), 1);
+      
+      // Easing function for smoother animation
+      const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
+      const easedProgress = easeOutCubic(progress);
+      
+      // Scale from 1 to 0.6 as user scrolls
+      const scale = 1 - (easedProgress * 0.4);
+      
+      // Move image down and slightly left as it shrinks
+      const translateY = easedProgress * 120; // Move down by up to 120px
+      const translateX = easedProgress * -50; // Move left by up to 50px
+      
+      // Slight fade as image transitions
+      const opacity = 1 - (easedProgress * 0.3);
+      
+      setState({ progress, scale, translateY, translateX, opacity });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -549,7 +582,7 @@ function useScrollShrink(): number {
     };
   }, []);
 
-  return shrinkProgress;
+  return state;
 }
 
 function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
@@ -557,11 +590,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   // Use a shortened version of the description for the hero section
   const heroDescription = product.shortDescription.split('.').slice(0, 2).join('.') + '.';
   const [secondSectionRef, isSecondSectionVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
-  const shrinkProgress = useScrollShrink();
-  
-  // Calculate dynamic styles based on scroll progress
-  const heroImageScale = 1 - (shrinkProgress * 0.3); // Shrinks from 1 to 0.7
-  const heroImageOpacity = 1 - (shrinkProgress * 0.5); // Fades slightly
+  const scrollTransform = useScrollTransform();
   
   return (
     <>
@@ -594,13 +623,13 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
           {/* Desktop Layout: 60:40 ratio grid - Image 60%, Text 40% */}
           <div className="hidden lg:grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-10 items-center">
-            {/* Product Image - Left Side (60%) with scroll shrink animation */}
+            {/* Product Image - Left Side (60%) with scroll-based dynamic animation */}
             <div 
-              className="animate-slide-in-left"
+              className="animate-slide-in-left will-change-transform"
               style={{ 
-                transform: `scale(${heroImageScale})`,
-                opacity: heroImageOpacity,
-                transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
+                transform: `scale(${scrollTransform.scale}) translateY(${scrollTransform.translateY}px) translateX(${scrollTransform.translateX}px)`,
+                opacity: scrollTransform.opacity,
+                transition: 'transform 0.05s linear, opacity 0.05s linear'
               }}
             >
               <div className="relative group">
@@ -617,8 +646,11 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
                 </Card>
-                {/* Decorative glow effect */}
-                <div className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle" />
+                {/* Decorative glow effect that also shrinks */}
+                <div 
+                  className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle"
+                  style={{ opacity: scrollTransform.opacity }}
+                />
               </div>
             </div>
 
@@ -653,11 +685,11 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           <div className="lg:hidden flex flex-col gap-6">
             {/* Product Image with Badge Overlay */}
             <div 
-              className="relative animate-slide-in-left"
+              className="relative animate-slide-in-left will-change-transform"
               style={{ 
-                transform: `scale(${heroImageScale})`,
-                opacity: heroImageOpacity,
-                transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
+                transform: `scale(${scrollTransform.scale}) translateY(${scrollTransform.translateY * 0.5}px)`,
+                opacity: scrollTransform.opacity,
+                transition: 'transform 0.05s linear, opacity 0.05s linear'
               }}
             >
               <Card className="overflow-hidden gradient-border shadow-2xl">
@@ -678,7 +710,10 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
                 </div>
               </Card>
               {/* Decorative glow effect */}
-              <div className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle" />
+              <div 
+                className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle"
+                style={{ opacity: scrollTransform.opacity }}
+              />
             </div>
 
             {/* Product Info - Below Image */}
