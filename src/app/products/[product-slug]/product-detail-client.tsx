@@ -528,29 +528,19 @@ interface HeroSectionProps {
 
 interface ScrollTransformState {
   progress: number;
-  scale: number;
-  translateY: number;
-  translateX: number;
-  opacity: number;
-  width: number;
-  left: number;
+  isComplete: boolean;
 }
 
 function useScrollTransform(): ScrollTransformState {
   const [state, setState] = useState<ScrollTransformState>({
     progress: 0,
-    scale: 1,
-    translateY: 0,
-    translateX: 0,
-    opacity: 1,
-    width: 60,
-    left: 0
+    isComplete: false
   });
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
-      setState({ progress: 0, scale: 1, translateY: 0, translateX: 0, opacity: 1, width: 60, left: 0 });
+      setState({ progress: 0, isComplete: false });
       return;
     }
 
@@ -559,31 +549,11 @@ function useScrollTransform(): ScrollTransformState {
       const viewportHeight = window.innerHeight;
       
       // Calculate progress from 0 to 1 based on scroll within first viewport
-      const progress = Math.min(Math.max(scrollY / (viewportHeight * 0.8), 0), 1);
+      // Complete the animation when scrolled 70% of viewport
+      const progress = Math.min(Math.max(scrollY / (viewportHeight * 0.7), 0), 1);
+      const isComplete = progress >= 1;
       
-      // Easing function for smoother animation
-      const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
-      const easedProgress = easeOutCubic(progress);
-      
-      // Scale from 1 to 0.55 as user scrolls (image shrinks significantly)
-      const scale = 1 - (easedProgress * 0.45);
-      
-      // Move image down as it shrinks to transition to second section position
-      const translateY = easedProgress * (viewportHeight * 0.5);
-      
-      // Move image left to align with second section layout
-      const translateX = easedProgress * -100;
-      
-      // Keep opacity full
-      const opacity = 1;
-      
-      // Width percentage decreases as we scroll
-      const width = 60 - (easedProgress * 25);
-      
-      // Left position adjusts
-      const left = easedProgress * 5;
-      
-      setState({ progress, scale, translateY, translateX, opacity, width, left });
+      setState({ progress, isComplete });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -601,57 +571,21 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const heroImage = product.images[0];
   // Use a shortened version of the description for the hero section
   const heroDescription = product.shortDescription.split('.').slice(0, 2).join('.') + '.';
-  const scrollTransform = useScrollTransform();
+  const { progress, isComplete } = useScrollTransform();
+  const [secondSectionRef, isSecondSectionVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   
-  // Calculate if we've scrolled past hero (for showing second section content)
-  const showSecondContent = scrollTransform.progress > 0.5;
+  // Easing function for smoother animation
+  const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
+  const easedProgress = easeOutCubic(progress);
+  
+  // Image transform values - from hero (large) to second section (smaller, positioned)
+  // Scale from 1.0 to 0.75 (not too small)
+  const imageScale = 1 - (easedProgress * 0.25);
+  // Move down as we scroll
+  const translateY = easedProgress * 200;
   
   return (
     <div className="relative">
-      {/* Single Persistent Product Image - Fixed position that transforms with scroll */}
-      <div 
-        className="fixed top-0 left-0 z-20 pointer-events-none hidden lg:block"
-        style={{
-          width: '100%',
-          height: '100vh',
-          paddingTop: '80px', // Account for header
-        }}
-      >
-        <div className="container max-w-screen-xl mx-auto px-4 md:px-6 h-full flex items-center">
-          <div 
-            className="will-change-transform"
-            style={{ 
-              width: `${scrollTransform.width}%`,
-              transform: `scale(${scrollTransform.scale}) translateY(${scrollTransform.translateY}px) translateX(${scrollTransform.translateX}px)`,
-              transformOrigin: 'top left',
-              transition: 'transform 0.1s ease-out, width 0.1s ease-out',
-              marginLeft: `${scrollTransform.left}%`,
-            }}
-          >
-            <div className="relative group pointer-events-auto">
-              <Card className="overflow-hidden gradient-border shadow-2xl">
-                <div className="relative aspect-[4/3] w-full">
-                  <Image
-                    src={heroImage.url}
-                    alt={heroImage.alt}
-                    fill
-                    className="object-cover"
-                    data-ai-hint={heroImage.hint}
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-              </Card>
-              {/* Decorative glow effect */}
-              <div 
-                className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle"
-                style={{ opacity: 1 - scrollTransform.progress * 0.5 }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Hero Section - Full Screen */}
       <section className="w-full min-h-screen bg-card relative overflow-hidden flex items-center justify-center">
         {/* Decorative background elements */}
@@ -679,18 +613,47 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         </div>
 
         <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
-          {/* Desktop Layout: 60:40 ratio grid - Image space 60%, Text 40% */}
+          {/* Desktop Layout: 60:40 ratio grid - Image 60%, Text 40% */}
           <div className="hidden lg:grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-10 items-center">
-            {/* Placeholder for image space - actual image is fixed positioned */}
-            <div className="aspect-[4/3] w-full" />
+            {/* Product Image - Left Side (60%) with scroll animation */}
+            <div 
+              className="animate-slide-in-left will-change-transform"
+              style={{ 
+                transform: `scale(${imageScale}) translateY(${translateY}px)`,
+                transformOrigin: 'center center',
+                transition: 'transform 0.15s ease-out',
+                opacity: isComplete ? 0 : 1, // Hide when animation completes (image appears in section 2)
+              }}
+            >
+              <div className="relative group">
+                <Card className="overflow-hidden gradient-border shadow-2xl">
+                  <div className="relative aspect-[4/3] w-full">
+                    <Image
+                      src={heroImage.url}
+                      alt={heroImage.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      data-ai-hint={heroImage.hint}
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Card>
+                {/* Decorative glow effect */}
+                <div 
+                  className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle"
+                  style={{ opacity: 1 - progress * 0.5 }}
+                />
+              </div>
+            </div>
 
             {/* Product Info - Right Side (40%) */}
             <div 
               className="flex flex-col space-y-3 sm:space-y-4 animate-slide-in-right"
               style={{
-                opacity: 1 - scrollTransform.progress * 0.8,
-                transform: `translateY(${scrollTransform.progress * -50}px)`,
-                transition: 'opacity 0.1s ease-out, transform 0.1s ease-out'
+                opacity: 1 - progress * 0.8,
+                transform: `translateY(${progress * -30}px)`,
+                transition: 'opacity 0.15s ease-out, transform 0.15s ease-out'
               }}
             >
               <Badge variant="outline" className="w-fit py-1 px-3 border-primary/50 text-primary animate-glow-pulse" style={{ animationDelay: '0.2s' }}>
@@ -721,14 +684,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           {/* Mobile Layout: Image at top with badge overlay, content below */}
           <div className="lg:hidden flex flex-col gap-6">
             {/* Product Image with Badge Overlay */}
-            <div 
-              className="relative animate-slide-in-left will-change-transform"
-              style={{ 
-                transform: `scale(${1 - scrollTransform.progress * 0.3})`,
-                opacity: 1 - scrollTransform.progress * 0.5,
-                transition: 'transform 0.05s linear, opacity 0.05s linear'
-              }}
-            >
+            <div className="relative animate-slide-in-left">
               <Card className="overflow-hidden gradient-border shadow-2xl">
                 <div className="relative aspect-[4/3] w-full">
                   <Image
@@ -779,7 +735,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         <div 
           className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
           style={{
-            opacity: 1 - scrollTransform.progress * 2,
+            opacity: 1 - progress * 2,
             transition: 'opacity 0.1s ease-out'
           }}
         >
@@ -789,22 +745,41 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         </div>
       </section>
 
-      {/* Second Section - Description appears as image transitions */}
-      <section className="w-full py-16 sm:py-20 md:py-24 bg-background relative overflow-hidden min-h-[60vh]">
+      {/* Second Section - Static image with description */}
+      <section 
+        ref={secondSectionRef}
+        className="w-full py-16 sm:py-20 md:py-24 bg-background relative overflow-hidden"
+      >
         <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
-          <div className="grid lg:grid-cols-[2fr_3fr] gap-8 lg:gap-12 items-center">
-            {/* Placeholder for the transitioning image on desktop */}
-            <div className="hidden lg:block aspect-square w-full max-w-sm" />
+          <div className={`grid lg:grid-cols-[2fr_3fr] gap-8 lg:gap-12 items-center transition-all duration-700 ${
+            isSecondSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
+            {/* Static Product Image - Left Side with proper ratio */}
+            <div className={`transition-all duration-700 delay-100 ${
+              isSecondSectionVisible ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 -translate-x-10 scale-95'
+            }`}>
+              <div className="relative group">
+                <Card className="overflow-hidden gradient-border shadow-xl">
+                  <div className="relative aspect-[4/3] w-full">
+                    <Image
+                      src={heroImage.url}
+                      alt={heroImage.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      data-ai-hint={heroImage.hint}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                </Card>
+                {/* Decorative glow effect */}
+                <div className="absolute -inset-3 bg-primary/5 rounded-2xl blur-xl -z-10" />
+              </div>
+            </div>
 
-            {/* Description - Right Side - Fades in as we scroll */}
-            <div 
-              className="flex flex-col space-y-4 sm:space-y-6"
-              style={{
-                opacity: scrollTransform.progress,
-                transform: `translateX(${(1 - scrollTransform.progress) * 50}px)`,
-                transition: 'opacity 0.2s ease-out, transform 0.2s ease-out'
-              }}
-            >
+            {/* Description - Right Side */}
+            <div className={`flex flex-col space-y-4 sm:space-y-6 transition-all duration-700 delay-200 ${
+              isSecondSectionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
+            }`}>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold tracking-tight">
                 Revolutionizing Urban Infrastructure
               </h2>
@@ -830,30 +805,6 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
                   </div>
                   <span className="text-sm font-medium">Hybrid Mesh Network</span>
                 </div>
-              </div>
-            </div>
-
-            {/* Mobile: Show image in second section */}
-            <div 
-              className="lg:hidden"
-              style={{
-                opacity: scrollTransform.progress,
-                transform: `scale(${0.8 + scrollTransform.progress * 0.2})`,
-                transition: 'opacity 0.2s ease-out, transform 0.2s ease-out'
-              }}
-            >
-              <div className="relative group">
-                <Card className="overflow-hidden gradient-border shadow-xl">
-                  <div className="relative aspect-square w-full max-w-xs mx-auto">
-                    <Image
-                      src={heroImage.url}
-                      alt={heroImage.alt}
-                      fill
-                      className="object-cover"
-                      data-ai-hint={heroImage.hint}
-                    />
-                  </div>
-                </Card>
               </div>
             </div>
           </div>
