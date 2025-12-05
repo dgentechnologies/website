@@ -62,7 +62,9 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
                   {product.title}
                 </h3>
                 <p className="text-white/80 text-sm line-clamp-2 leading-relaxed">
-                  {product.shortDescription.split('.')[0]}.
+                  {product.shortDescription.includes('.') 
+                    ? `${product.shortDescription.split('.')[0]}.`
+                    : product.shortDescription}
                 </p>
               </div>
             </div>
@@ -78,9 +80,6 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
               </div>
             </div>
           </div>
-          
-          {/* Hover highlight border effect */}
-          <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-primary/40 transition-colors duration-300 pointer-events-none" />
         </div>
       </Link>
     </div>
