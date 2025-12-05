@@ -96,21 +96,20 @@ export default function ProductsPage() {
     <div className="flex flex-col overflow-hidden">
       {/* Full Screen Hero Section */}
       <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
-        {/* Parallax Background Layer */}
+        {/* Parallax Video Background Layer */}
         <div 
           className="absolute inset-0 z-0 will-change-transform"
           style={{ transform: `translateY(${parallaxOffset}px) scale(1.1)` }}
         >
-          {heroImage && (
-            <Image
-              src={heroImage.imageUrl}
-              alt="DGEN Technologies Smart City Products"
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
-            />
-          )}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="object-cover w-full h-full"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+            src="/videos/product-page-hero.mp4"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
         </div>
 
