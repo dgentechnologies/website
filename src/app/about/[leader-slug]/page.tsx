@@ -1,4 +1,3 @@
-
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -94,6 +93,7 @@ export default async function LeaderDetailPage({ params }: { params: Promise<{ '
         </div>
       </section>
     </div>
+    </>
   );
 }
 
