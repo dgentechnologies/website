@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -525,11 +526,42 @@ interface HeroSectionProps {
   floatOffset: number;
 }
 
+function useScrollShrink(): number {
+  const [shrinkProgress, setShrinkProgress] = useState(0);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      // Calculate progress from 0 to 1 based on scroll within first viewport
+      const progress = Math.min(scrollY / (viewportHeight * 0.8), 1);
+      setShrinkProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return shrinkProgress;
+}
+
 function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
   const heroImage = product.images[0];
   // Use a shortened version of the description for the hero section
   const heroDescription = product.shortDescription.split('.').slice(0, 2).join('.') + '.';
   const [secondSectionRef, isSecondSectionVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const shrinkProgress = useScrollShrink();
+  
+  // Calculate dynamic styles based on scroll progress
+  const heroImageScale = 1 - (shrinkProgress * 0.3); // Shrinks from 1 to 0.7
+  const heroImageOpacity = 1 - (shrinkProgress * 0.5); // Fades slightly
   
   return (
     <>
@@ -560,13 +592,20 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         </div>
 
         <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
-          {/* 60:40 ratio grid - Image 60%, Text 40% */}
-          <div className="grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-10 items-center">
-            {/* Product Image - Left Side (60%) */}
-            <div className="order-2 lg:order-1 animate-slide-in-left">
+          {/* Desktop Layout: 60:40 ratio grid - Image 60%, Text 40% */}
+          <div className="hidden lg:grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-10 items-center">
+            {/* Product Image - Left Side (60%) with scroll shrink animation */}
+            <div 
+              className="animate-slide-in-left"
+              style={{ 
+                transform: `scale(${heroImageScale})`,
+                opacity: heroImageOpacity,
+                transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
+              }}
+            >
               <div className="relative group">
                 <Card className="overflow-hidden gradient-border shadow-2xl">
-                  <div className="relative aspect-[4/3] w-full">
+                  <div className="relative aspect-[4/3] w-full max-h-[60vh]">
                     <Image
                       src={heroImage.url}
                       alt={heroImage.alt}
@@ -584,7 +623,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
             </div>
 
             {/* Product Info - Right Side (40%) */}
-            <div className="order-1 lg:order-2 flex flex-col space-y-3 sm:space-y-4 animate-slide-in-right">
+            <div className="flex flex-col space-y-3 sm:space-y-4 animate-slide-in-right">
               <Badge variant="outline" className="w-fit py-1 px-3 border-primary/50 text-primary animate-glow-pulse" style={{ animationDelay: '0.2s' }}>
                 {product.category}
               </Badge>
@@ -592,6 +631,62 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
                 {product.title}
               </h1>
               <p className="text-foreground/80 text-sm sm:text-base md:text-base max-w-md leading-relaxed" style={{ animationDelay: '0.4s' }}>
+                {heroDescription}
+              </p>
+              <div className="flex flex-wrap gap-3 pt-2" style={{ animationDelay: '0.5s' }}>
+                <Button asChild size="lg" className="group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
+                  <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
+                    Get Started <Sparkles className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="group">
+                  <Link href="#features">
+                    Explore Features
+                    <Zap className="ml-2 h-4 w-4 group-hover:text-primary transition-colors" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Layout: Image at top with badge overlay, content below */}
+          <div className="lg:hidden flex flex-col gap-6">
+            {/* Product Image with Badge Overlay */}
+            <div 
+              className="relative animate-slide-in-left"
+              style={{ 
+                transform: `scale(${heroImageScale})`,
+                opacity: heroImageOpacity,
+                transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
+              }}
+            >
+              <Card className="overflow-hidden gradient-border shadow-2xl">
+                <div className="relative aspect-[4/3] w-full">
+                  <Image
+                    src={heroImage.url}
+                    alt={heroImage.alt}
+                    fill
+                    className="object-cover"
+                    data-ai-hint={heroImage.hint}
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  {/* Badge Overlay on top-left of image */}
+                  <Badge variant="outline" className="absolute top-4 left-4 py-1 px-3 border-white/50 text-white bg-black/30 backdrop-blur-sm animate-glow-pulse">
+                    {product.category}
+                  </Badge>
+                </div>
+              </Card>
+              {/* Decorative glow effect */}
+              <div className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle" />
+            </div>
+
+            {/* Product Info - Below Image */}
+            <div className="flex flex-col space-y-3 animate-slide-in-right">
+              <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter text-gradient" style={{ animationDelay: '0.3s' }}>
+                {product.title}
+              </h1>
+              <p className="text-foreground/80 text-sm sm:text-base leading-relaxed" style={{ animationDelay: '0.4s' }}>
                 {heroDescription}
               </p>
               <div className="flex flex-wrap gap-3 pt-2" style={{ animationDelay: '0.5s' }}>
@@ -628,13 +723,13 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           <div className={`grid lg:grid-cols-[2fr_3fr] gap-8 lg:gap-12 items-center transition-all duration-1000 ${
             isSecondSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            {/* Smaller Product Image - Left Side */}
+            {/* Smaller Product Image - Left Side (appears to be the shrunk hero image) */}
             <div className={`transition-all duration-1000 delay-100 ${
-              isSecondSectionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+              isSecondSectionVisible ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 -translate-x-10 scale-110'
             }`}>
               <div className="relative group">
                 <Card className="overflow-hidden gradient-border shadow-xl">
-                  <div className="relative aspect-square w-full max-w-sm mx-auto lg:max-w-none">
+                  <div className="relative aspect-square w-full max-w-xs mx-auto lg:max-w-sm">
                     <Image
                       src={heroImage.url}
                       alt={heroImage.alt}
