@@ -94,8 +94,8 @@ export default function ProductsPage() {
 
   return (
     <div className="flex flex-col overflow-hidden">
-      {/* Compact Hero Section */}
-      <section className="relative w-full h-[40vh] sm:h-[45vh] min-h-[300px] max-h-[400px] overflow-hidden flex items-center justify-center text-center">
+      {/* Full Screen Hero Section */}
+      <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
         {/* Parallax Background Layer */}
         <div 
           className="absolute inset-0 z-0 will-change-transform"
@@ -116,32 +116,42 @@ export default function ProductsPage() {
 
         {/* Floating decorative elements */}
         <div 
-          className="absolute top-1/4 left-10 w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-primary/20 blur-2xl animate-float hidden sm:block"
+          className="absolute top-1/4 left-10 w-20 h-20 sm:w-32 sm:h-32 rounded-full bg-primary/20 blur-3xl animate-float hidden sm:block"
           style={{ transform: `translateY(${floatOffset}px)` }}
         />
         <div 
-          className="absolute bottom-1/4 right-10 w-20 h-20 sm:w-32 sm:h-32 rounded-full bg-accent/15 blur-2xl animate-float hidden sm:block"
+          className="absolute bottom-1/4 right-10 w-24 h-24 sm:w-40 sm:h-40 rounded-full bg-accent/15 blur-3xl animate-float hidden sm:block"
           style={{ transform: `translateY(${-floatOffset}px)`, animationDelay: '1s' }}
         />
 
-        {/* Hero Content - Simplified */}
+        {/* Hero Content */}
         <div className="relative z-10 container max-w-screen-xl px-4 md:px-6">
-          <div className="space-y-3">
-            <Badge variant="default" className="py-1.5 px-4 text-sm font-semibold animate-slide-down">
+          <div className="space-y-4 sm:space-y-6">
+            <Badge variant="default" className="py-1.5 px-4 text-sm sm:text-base font-semibold animate-slide-down">
               Our Products
             </Badge>
             <h1 
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-bold tracking-tight text-white leading-tight animate-slide-up" 
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight text-white leading-tight animate-slide-up" 
               style={{ animationDelay: '0.2s' }}
             >
               Smart City Solutions
             </h1>
             <p 
-              className="max-w-xl mx-auto text-white/90 text-base sm:text-lg animate-slide-up" 
+              className="max-w-2xl mx-auto text-white/90 text-lg sm:text-xl md:text-2xl animate-slide-up" 
               style={{ animationDelay: '0.3s' }}
             >
               Made in India IoT Solutions
             </p>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-white/70 text-sm font-medium">Scroll to explore</span>
+            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
+              <div className="w-1.5 h-3 bg-white/70 rounded-full animate-scroll-indicator"></div>
+            </div>
           </div>
         </div>
       </section>
