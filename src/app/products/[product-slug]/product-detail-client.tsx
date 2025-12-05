@@ -55,66 +55,7 @@ function generateProductSchema(product: Product) {
       "category": "Smart City Solutions",
       "image": `https://www.dgentechnologies.com${product.images[0]?.url}`,
       "url": `https://www.dgentechnologies.com/products/${product.slug}`,
-      "additionalProperty": [
-        {
-          "@type": "PropertyValue",
-          "name": "Network Topology",
-          "value": "Hybrid Wireless Mesh Network (ESP-MESH + 4G LTE)"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "Protocol",
-          "value": "MQTT / JSON packets"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "Energy Savings",
-          "value": "Up to 80%"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "Cluster Ratio",
-          "value": "1 Gateway (Auralis Pro) per 50 Worker Nodes (Auralis Core)"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "Hardware Components",
-          "value": "Auralis Pro (Gateway Node), Auralis Core (Worker Node)"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "Features",
-          "value": "Fault Detection, Predictive Maintenance, Intelligent Dimming"
-        },
-        {
-          "@type": "PropertyValue",
-          "name": "Manufacturing",
-          "value": "Made in India"
-        }
-      ]
-    };
-  }
-  
-  // Generic product schema for other products
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.title,
-    "description": product.shortDescription,
-    "brand": {
-      "@type": "Brand",
-      "name": "Dgen Technologies"
-    },
-    "manufacturer": {
-      "@type": "Organization",
-      "name": "Dgen Technologies Private Limited",
-      "url": "https://www.dgentechnologies.com"
-    },
-    "category": product.category,
-    "image": product.images[0]?.url.startsWith('http') ? product.images[0]?.url : `https://www.dgentechnologies.com${product.images[0]?.url}`,
-    "url": `https://www.dgentechnologies.com/products/${product.slug}`
-  };
-}
+      "offers": {\n        "@type": "AggregateOffer",\n        "priceCurrency": "INR",\n        "availability": "https://schema.org/InStock",\n        "url": "https://www.dgentechnologies.com/contact",\n        "offerCount": "1",\n        "offers": [{\n          "@type": "Offer",\n          "itemOffered": {\n            "@type": "Product",\n            "name": "Auralis Ecosystem"\n          },\n          "availability": "https://schema.org/InStock",\n          "priceCurrency": "INR",\n          "url": "https://www.dgentechnologies.com/contact"\n        }]\n      },\n      "additionalProperty": [\n        {\n          "@type": "PropertyValue",\n          "name": "Network Topology",\n          "value": "Hybrid Wireless Mesh Network (ESP-MESH + 4G LTE)"\n        },\n        {\n          "@type": "PropertyValue",\n          "name": "Protocol",\n          "value": "MQTT / JSON packets"\n        },\n        {\n          "@type": "PropertyValue",\n          "name": "Energy Savings",\n          "value": "Up to 80%"\n        },\n        {\n          "@type": "PropertyValue",\n          "name": "Cluster Ratio",\n          "value": "1 Gateway (Auralis Pro) per 50 Worker Nodes (Auralis Core)"\n        },\n        {\n          "@type": "PropertyValue",\n          "name": "Hardware Components",\n          "value": "Auralis Pro (Gateway Node), Auralis Core (Worker Node)"\n        },\n        {\n          "@type": "PropertyValue",\n          "name": "Features",\n          "value": "Fault Detection, Predictive Maintenance, Intelligent Dimming"\n        },\n        {\n          "@type": "PropertyValue",\n          "name": "Manufacturing",\n          "value": "Made in India"\n        }\n      ]\n    };\n  }\n  \n  // Generic product schema for other products (Solar Street Light, LED Street Light)\n  return {\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"Product\",\n    \"name\": product.title,\n    \"description\": product.shortDescription,\n    \"brand\": {\n      \"@type\": \"Brand\",\n      \"name\": \"Dgen Technologies\"\n    },\n    \"manufacturer\": {\n      \"@type\": \"Organization\",\n      \"name\": \"Dgen Technologies Private Limited\",\n      \"url\": \"https://www.dgentechnologies.com\"\n    },\n    \"category\": product.category,\n    \"image\": product.images[0]?.url.startsWith('http') ? product.images[0]?.url : `https://www.dgentechnologies.com${product.images[0]?.url}`,\n    \"url\": `https://www.dgentechnologies.com/products/${product.slug}`,\n    \"offers\": {\n      \"@type\": \"AggregateOffer\",\n      \"priceCurrency\": \"INR\",\n      \"availability\": \"https://schema.org/InStock\",\n      \"url\": \"https://www.dgentechnologies.com/contact\",\n      \"offerCount\": \"1\",\n      \"offers\": [{\n        \"@type\": \"Offer\",\n        \"itemOffered\": {\n          \"@type\": \"Product\",\n          \"name\": product.title\n        },\n        \"availability\": \"https://schema.org/InStock\",\n        \"priceCurrency\": \"INR\",\n        \"url\": \"https://www.dgentechnologies.com/contact\"\n      }]\n    }\n  };\n}
 
 function Section({ title, description, children, className = '' }: { title: string, description?: string, children: React.ReactNode, className?: string }) {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });

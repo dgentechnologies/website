@@ -36,8 +36,17 @@ export default function ContactPage() {
                                     <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-sm sm:text-base">Our Office</h3>
-                                    <p className="text-foreground/70 text-sm sm:text-base">1A, First Floor, Star Residency, Mondalpara,Ghosh Para Road, Salua Bazar, Rajarhat, PS - Airport, Kolkata, West Bengal.PIN-700136</p>
+                                    <h3 className="font-bold text-sm sm:text-base">Corporate Office</h3>
+                                    <p className="text-foreground/70 text-sm sm:text-base">1A, First Floor, Star Residency, Mondalpara, Ghosh Para Road, Salua Bazar, Rajarhat, PS - Airport, Kolkata, West Bengal. PIN-700136</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3 sm:gap-4">
+                                <div className="p-2 sm:p-3 rounded-full bg-primary/10 flex-shrink-0">
+                                    <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-sm sm:text-base">Registered Office</h3>
+                                    <p className="text-foreground/70 text-sm sm:text-base">407, Subhas Nagar, Bye Lane, Rabindra Nagar, Kolkata, West Bengal. PIN-700065</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3 sm:gap-4">

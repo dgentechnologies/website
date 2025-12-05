@@ -25,10 +25,10 @@ const localBusinessSchema = {
   "email": "contact@dgentechnologies.com",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "1A, First Floor, Star Residency, Mondalpara,Ghosh Para Road, Salua Bazar, Rajarhat, PS - Airport",
+    "streetAddress": "407, SUBHAS NAGAR, BYE LANE, Rabindra Nagar",
     "addressLocality": "Kolkata",
     "addressRegion": "West Bengal",
-    "postalCode": "700136",
+    "postalCode": "700065",
     "addressCountry": "IN"
   },
   "geo": {
