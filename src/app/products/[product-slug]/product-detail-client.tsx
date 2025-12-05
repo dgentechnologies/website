@@ -519,6 +519,131 @@ function EcosystemProductView({ product }: { product: Product }) {
   );
 }
 
+function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: { product: Product, parallaxOffset: number, floatOffset: number }) {
+  const heroImage = product.images[0];
+  
+  return (
+    <section className="w-full py-12 sm:py-16 md:py-24 lg:py-32 bg-card relative overflow-hidden min-h-[70vh] flex items-center">
+      {/* Decorative background elements */}
+      <div 
+        className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/5 rounded-full blur-3xl"
+        style={{ transform: `translateY(${parallaxOffset}px)` }}
+      />
+      <div 
+        className="absolute bottom-0 right-1/4 w-48 h-48 sm:w-80 sm:h-80 bg-accent/5 rounded-full blur-3xl"
+        style={{ transform: `translateY(${-parallaxOffset}px)` }}
+      />
+      
+      {/* Floating icons */}
+      <div 
+        className="absolute top-1/4 right-10 text-primary/10 hidden lg:block"
+        style={{ transform: `translateY(${floatOffset}px)` }}
+      >
+        <Shield className="w-16 h-16" />
+      </div>
+      <div 
+        className="absolute bottom-1/4 left-10 text-primary/10 hidden lg:block"
+        style={{ transform: `translateY(${-floatOffset}px)` }}
+      >
+        <Zap className="w-12 h-12" />
+      </div>
+
+      <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Product Image - Left Side */}
+          <div className="order-2 lg:order-1 animate-slide-in-left">
+            <div className="relative group">
+              <Card className="overflow-hidden gradient-border shadow-2xl">
+                <div className="relative aspect-[4/3] w-full">
+                  <Image
+                    src={heroImage.url}
+                    alt={heroImage.alt}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    data-ai-hint={heroImage.hint}
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
+              </Card>
+              {/* Decorative glow effect */}
+              <div className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle" />
+            </div>
+          </div>
+
+          {/* Product Info - Right Side */}
+          <div className="order-1 lg:order-2 flex flex-col space-y-4 sm:space-y-6 animate-slide-in-right">
+            <Badge variant="outline" className="w-fit py-1 px-3 border-primary/50 text-primary animate-glow-pulse" style={{ animationDelay: '0.2s' }}>
+              {product.category}
+            </Badge>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-bold tracking-tighter text-gradient" style={{ animationDelay: '0.3s' }}>
+              {product.title}
+            </h1>
+            <p className="text-foreground/80 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed" style={{ animationDelay: '0.4s' }}>
+              Smart city lighting system with Hybrid Wireless Mesh Network. Achieves 80% energy savings.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2" style={{ animationDelay: '0.5s' }}>
+              <Button asChild size="lg" className="group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
+                <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
+                  Get Started <Sparkles className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="group">
+                <Link href="#features">
+                  Explore Features
+                  <Zap className="ml-2 h-4 w-4 group-hover:text-primary transition-colors" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DefaultHeroSection({ product, parallaxOffset, floatOffset }: { product: Product, parallaxOffset: number, floatOffset: number }) {
+  return (
+    <section className="w-full py-16 sm:py-20 md:py-32 bg-card relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div 
+        className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/5 rounded-full blur-3xl"
+        style={{ transform: `translateY(${parallaxOffset}px)` }}
+      />
+      <div 
+        className="absolute bottom-0 right-1/4 w-48 h-48 sm:w-80 sm:h-80 bg-accent/5 rounded-full blur-3xl"
+        style={{ transform: `translateY(${-parallaxOffset}px)` }}
+      />
+      
+      {/* Floating icons */}
+      <div 
+        className="absolute top-1/4 right-10 text-primary/10 hidden lg:block"
+        style={{ transform: `translateY(${floatOffset}px)` }}
+      >
+        <Shield className="w-16 h-16" />
+      </div>
+      <div 
+        className="absolute bottom-1/4 left-10 text-primary/10 hidden lg:block"
+        style={{ transform: `translateY(${-floatOffset}px)` }}
+      >
+        <Zap className="w-12 h-12" />
+      </div>
+
+      <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
+        <div className="flex flex-col items-center space-y-3 sm:space-y-4 text-center">
+          <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary animate-slide-down animate-glow-pulse">{product.category}</Badge>
+          <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter md:text-5xl lg:text-6xl text-gradient animate-slide-up px-2" style={{ animationDelay: '0.2s' }}>
+            {product.title}
+          </h1>
+          <p className="mx-auto max-w-[700px] text-foreground/80 text-sm sm:text-base md:text-xl animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
+            {product.shortDescription}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ProductDetailClient({ productSlug }: { productSlug: string }) {
   const parallaxOffset = useParallax(0.2);
   const floatOffset = useFloatingAnimation(0.7);
@@ -541,47 +666,15 @@ export function ProductDetailClient({ productSlug }: { productSlug: string }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
       
-      {/* Hero Section with Enhanced Parallax */}
-      <section className="w-full py-16 sm:py-20 md:py-32 bg-card relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div 
-          className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/5 rounded-full blur-3xl"
-          style={{ transform: `translateY(${parallaxOffset}px)` }}
-        />
-        <div 
-          className="absolute bottom-0 right-1/4 w-48 h-48 sm:w-80 sm:h-80 bg-accent/5 rounded-full blur-3xl"
-          style={{ transform: `translateY(${-parallaxOffset}px)` }}
-        />
-        
-        {/* Floating icons */}
-        <div 
-          className="absolute top-1/4 right-10 text-primary/10 hidden lg:block"
-          style={{ transform: `translateY(${floatOffset}px)` }}
-        >
-          <Shield className="w-16 h-16" />
-        </div>
-        <div 
-          className="absolute bottom-1/4 left-10 text-primary/10 hidden lg:block"
-          style={{ transform: `translateY(${-floatOffset}px)` }}
-        >
-          <Zap className="w-12 h-12" />
-        </div>
-
-        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
-          <div className="flex flex-col items-center space-y-3 sm:space-y-4 text-center">
-            <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary animate-slide-down animate-glow-pulse">{product.category}</Badge>
-            <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter md:text-5xl lg:text-6xl text-gradient animate-slide-up px-2" style={{ animationDelay: '0.2s' }}>
-              {product.title}
-            </h1>
-            <p className="mx-auto max-w-[700px] text-foreground/80 text-sm sm:text-base md:text-xl animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
-              {product.shortDescription}
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section - Different for Ecosystem vs Regular Products */}
+      {isEcosystemProduct ? (
+        <EcosystemHeroSection product={product} parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
+      ) : (
+        <DefaultHeroSection product={product} parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
+      )}
 
       {/* Main Content */}
-      <section className="w-full py-12 sm:py-16 md:py-24 relative">
+      <section id="features" className="w-full py-12 sm:py-16 md:py-24 relative">
         <div className="container max-w-screen-xl px-4 md:px-6">
           {isEcosystemProduct ? <EcosystemProductView product={product} /> : <ProductDetailView product={product} />}
         </div>
