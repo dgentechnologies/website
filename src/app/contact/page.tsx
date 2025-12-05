@@ -1,4 +1,3 @@
-
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Mail, MapPin, Phone } from 'lucide-react';

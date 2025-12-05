@@ -1,6 +1,6 @@
-
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import Script from 'next/script';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, UserCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
