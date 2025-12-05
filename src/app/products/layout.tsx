@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Products - Auralis Ecosystem & Smart City Solutions | Dgen Technologies',
-  description: 'Explore Dgen Technologies smart city products: Auralis Ecosystem (Hybrid Wireless Mesh Network with ESP-MESH + 4G LTE), Solar Street Lights, and LED Street Lights. Made in India IoT hardware for modern urban infrastructure.',
+  description: 'Discover Auralis Ecosystem - Made in India smart street lighting with 80% energy savings. Hybrid Wireless Mesh Network, cost-effective IoT solutions.',
   keywords: ['Auralis Ecosystem', 'smart city products', 'ESP-MESH', 'Hybrid Wireless Mesh Network', 'solar street lights', 'LED street lights', 'IoT hardware India', 'smart street lights', 'Made in India', 'Smart Cities Mission'],
   openGraph: {
     title: 'Smart City Products & Auralis Ecosystem | Dgen Technologies',
@@ -18,6 +18,16 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://dgentechnologies.com/products',
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function ProductsLayout({
@@ -25,5 +35,26 @@ export default function ProductsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "DGEN Technologies",
+    "url": "https://dgentechnologies.com",
+    "logo": "https://dgentechnologies.com/logo.png",
+    "description": "DGEN Technologies provides smart city solutions and IoT products including Auralis Ecosystem for intelligent street lighting.",
+    "sameAs": [
+      "https://www.linkedin.com/company/dgen-technologies/",
+      "https://x.com/DGEN_Tech"
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      {children}
+    </>
+  );
 }

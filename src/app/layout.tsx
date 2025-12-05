@@ -82,16 +82,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const structuredData = {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "DGEN Technologies",
+    "alternateName": ["Dgen Technologies Private Limited", "DGEN Technologies", "Dgen Tech"],
+    "url": "https://dgentechnologies.com",
+    "logo": "https://dgentechnologies.com/logo.png",
+    "description": "Pioneering smart city solutions in India with the Auralis Ecosystem using Hybrid Wireless Mesh Network technology",
+    "sameAs": [
+      "https://www.linkedin.com/company/dgen-technologies/",
+      "https://x.com/DGEN_Tech"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Sales",
+      "email": "contact@dgentechnologies.com"
+    }
+  };
+
+  const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Dgen Technologies",
-    "alternateName": ["Dgen Technologies Private Limited", "DGEN Technologies", "Dgen Tech"],
-    "url": "https://www.dgentechnologies.com/",
+    "url": "https://dgentechnologies.com/",
     "description": "Pioneering smart city solutions in India with the Auralis Ecosystem using Hybrid Wireless Mesh Network technology",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.dgentechnologies.com/search?q={search_term_string}",
+      "target": "https://dgentechnologies.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -101,7 +119,11 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body className="font-body antialiased" suppressHydrationWarning>

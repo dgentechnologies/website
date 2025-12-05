@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About Us - DGEN Technologies | Smart City Solutions India',
-  description: 'Learn about DGEN Technologies, a leading smart city and IoT solutions company in India. Meet our leadership team and discover our mission to power India\'s urban future with innovative products like Auralis.',
+  description: 'Discover DGEN Technologies, India\'s leading smart city innovators. Meet our leadership team and learn about Auralis, our flagship IoT ecosystem.',
   keywords: ['DGEN Technologies', 'smart city India', 'IoT company India', 'Auralis', 'smart street light', 'urban technology', 'Kolkata tech company', 'smart city solutions'],
   openGraph: {
     title: 'About DGEN Technologies - Smart City & IoT Innovators',
@@ -22,5 +22,37 @@ export default function AboutLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "DGEN Technologies",
+    "alternateName": ["Dgen Technologies Private Limited", "DGEN Tech"],
+    "url": "https://dgentechnologies.com",
+    "logo": "https://dgentechnologies.com/logo.png",
+    "description": "DGEN Technologies pioneers smart city solutions in India with the flagship Auralis IoT ecosystem for intelligent street lighting and smart homes.",
+    "foundingDate": "2025",
+    "foundingLocation": {
+      "@type": "Place",
+      "name": "Kolkata, India"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/dgen-technologies/",
+      "https://x.com/DGEN_Tech"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Sales",
+      "email": "contact@dgentechnologies.com"
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      {children}
+    </>
+  );
 }
