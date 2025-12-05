@@ -519,8 +519,16 @@ function EcosystemProductView({ product }: { product: Product }) {
   );
 }
 
-function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: { product: Product, parallaxOffset: number, floatOffset: number }) {
+interface HeroSectionProps {
+  product: Product;
+  parallaxOffset: number;
+  floatOffset: number;
+}
+
+function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
   const heroImage = product.images[0];
+  // Use a shortened version of the description for the hero section
+  const heroDescription = product.shortDescription.split('.').slice(0, 2).join('.') + '.';
   
   return (
     <section className="w-full py-12 sm:py-16 md:py-24 lg:py-32 bg-card relative overflow-hidden min-h-[70vh] flex items-center">
@@ -580,7 +588,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: { produc
               {product.title}
             </h1>
             <p className="text-foreground/80 text-base sm:text-lg md:text-xl max-w-xl leading-relaxed" style={{ animationDelay: '0.4s' }}>
-              Smart city lighting system with Hybrid Wireless Mesh Network. Achieves 80% energy savings.
+              {heroDescription}
             </p>
             <div className="flex flex-wrap gap-3 pt-2" style={{ animationDelay: '0.5s' }}>
               <Button asChild size="lg" className="group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
@@ -602,7 +610,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: { produc
   );
 }
 
-function DefaultHeroSection({ product, parallaxOffset, floatOffset }: { product: Product, parallaxOffset: number, floatOffset: number }) {
+function DefaultHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
   return (
     <section className="w-full py-16 sm:py-20 md:py-32 bg-card relative overflow-hidden">
       {/* Decorative background elements */}
