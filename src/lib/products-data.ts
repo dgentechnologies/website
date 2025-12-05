@@ -192,9 +192,9 @@ export const products: Product[] = [
     shortDescription: 'Durable and energy-efficient LED street lights designed for longevity and superior illumination, upgradeable to smart capabilities.',
     icon: Lightbulb,
     images: [
-      { url: 'https://picsum.photos/seed/ledlight1/1200/800', alt: 'Dgen Technologies high-efficiency LED street light head - 150 lumens per watt Made in India', hint: 'led light' },
-      { url: 'https://picsum.photos/seed/ledlight2/1200/800', alt: 'Urban street illuminated by Dgen Technologies LED street lights at night - energy efficient lighting', hint: 'lit street' },
-      { url: 'https://picsum.photos/seed/ledlight3/1200/800', alt: 'Before and after comparison of traditional vs LED street lighting showing improved visibility', hint: 'light comparison' },
+      { url: '/images/led-product-shot.png', alt: 'Dgen Technologies high-efficiency LED street light head - 150 lumens per watt Made in India', hint: 'led light' },
+      { url: '/images/led-product-shot.png', alt: 'Urban street illuminated by Dgen Technologies LED street lights at night - energy efficient lighting', hint: 'lit street' },
+      { url: '/images/led-product-shot.png', alt: 'Before and after comparison of traditional vs LED street lighting showing improved visibility', hint: 'light comparison' },
     ],
     longDescription: 'Our LED Street Lights are the perfect upgrade for cities looking to replace outdated and inefficient lighting systems. Engineered for durability, high performance, and maximum energy savings, these lights provide superior visibility and have a long operational lifespan. They serve as a foundational step towards a smarter city, with options to upgrade to full Auralis Ecosystem smart-light capabilities in the future. Made in India.',
     features: [
