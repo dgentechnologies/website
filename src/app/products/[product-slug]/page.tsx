@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ 'product-
     openGraph: {
       title: `${product.title} | DGEN Technologies`,
       description: product.shortDescription,
-      type: 'product',
+      type: 'website',
       url: productUrl,
       images: [
         {
