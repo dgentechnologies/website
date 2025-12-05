@@ -163,9 +163,9 @@ export const products: Product[] = [
     shortDescription: 'Autonomous, off-grid lighting solutions powered by the sun, integrated with Auralis Smart City solutions.',
     icon: Sun,
     images: [
-      { url: 'https://picsum.photos/seed/solar1/1200/800', alt: 'Dgen Technologies Solar Street Light installation along rural road - off-grid sustainable lighting India', hint: 'rural road' },
-      { url: 'https://picsum.photos/seed/solar2/1200/800', alt: 'High-efficiency monocrystalline solar panel on Dgen Technologies solar street light', hint: 'solar panel' },
-      { url: 'https://picsum.photos/seed/solar3/1200/800', alt: 'Solar street light illuminating community park at night - Made in India sustainable lighting', hint: 'community park' },
+      { url: '/images/solar-product-shot.png', alt: 'Dgen Technologies Solar Street Light installation along rural road - off-grid sustainable lighting India', hint: 'rural road' },
+      { url: '/images/solar-panel.png', alt: 'High-efficiency monocrystalline solar panel on Dgen Technologies solar street light', hint: 'solar panel' },
+      { url: '/images/solar-community-park.png', alt: 'Solar street light illuminating community park at night - Made in India sustainable lighting', hint: 'community park' },
     ],
     longDescription: 'Our Solar Street Lights offer a sustainable and cost-effective solution for illuminating areas without access to the traditional power grid. Each unit is fully autonomous, with an integrated solar panel, high-capacity battery, and an efficient LED lamp. When combined with our Auralis Ecosystem platform (via our Hybrid Wireless Mesh Network), they become a powerful, remotely managed smart lighting grid with ESP-MESH connectivity for local clusters and 4G LTE gateway for cloud uplink. Proudly Made in India.',
     features: [
