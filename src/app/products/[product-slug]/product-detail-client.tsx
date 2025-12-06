@@ -6,12 +6,6 @@ import Link from 'next/link';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
-
-// Dynamically import Spline to avoid SSR issues and lazy load
-const Spline = dynamic(() => import('@splinetool/react-spline'), {
-  ssr: false,
-  loading: () => null
-});
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -1407,7 +1401,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   
   return (
     <>
-      {/* Spline 3D Background - Fixed position, hidden on mobile */}
+      {/* Spline 3D Background - Fixed position, hidden on mobile, using iframe embed */}
       {!isMobile && !splineError && (
         <div 
           className="fixed inset-0 w-full h-screen pointer-events-none hidden md:block"
@@ -1417,15 +1411,19 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
             transition: 'opacity 1s ease-in-out'
           }}
         >
-          <Spline
-            scene="https://prod.spline.design/kYNR21QjvqQUcBTD/scene.splinecode"
+          <iframe
+            src="https://my.spline.design/auralisscrolltriggerscene-kYNR21QjvqQUcBTD/"
+            frameBorder="0"
+            width="100%"
+            height="100%"
+            style={{
+              pointerEvents: 'auto',
+              border: 'none'
+            }}
             onLoad={() => setSplineLoaded(true)}
             onError={() => setSplineError(true)}
-            style={{ 
-              width: '100%', 
-              height: '100%',
-              pointerEvents: 'auto' // Allow scroll events to pass through to Spline
-            }}
+            title="Auralis 3D Animation"
+            allow="autoplay"
           />
         </div>
       )}
