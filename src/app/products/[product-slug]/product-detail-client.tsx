@@ -701,19 +701,20 @@ function MeshNetworkSection() {
 function HardwareSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
   const [activeMode, setActiveMode] = useState<'core' | 'pro'>('core');
+  const [hoveredComponent, setHoveredComponent] = useState<string | null>(null);
 
   const coreSpecs = [
-    { icon: Cpu, title: 'Processor', desc: 'Dual-Core Mesh Logic Unit' },
-    { icon: Radar, title: 'Sensing', desc: 'Microwave Doppler Radar (Motion Detection)' },
-    { icon: Zap, title: 'Power', desc: 'Isolated High-Efficiency AC/DC Module' },
-    { icon: GaugeCircle, title: 'Control', desc: 'Industrial Phase-Cut Dimming Engine' }
+    { id: 'processor', icon: Cpu, title: 'Processor', desc: 'Dual-Core Mesh Logic Unit' },
+    { id: 'sensing', icon: Radar, title: 'Sensing', desc: 'Microwave Doppler Radar (Motion Detection)' },
+    { id: 'power', icon: Zap, title: 'Power', desc: 'Isolated High-Efficiency AC/DC Module' },
+    { id: 'control', icon: GaugeCircle, title: 'Control', desc: 'Industrial Phase-Cut Dimming Engine' }
   ];
 
   const proSpecs = [
-    { icon: Signal, title: 'Connectivity', desc: '4G LTE Cat 1 Cellular Module' },
-    { icon: Cpu, title: 'Architecture', desc: 'High-Throughput Aggregation Processor' },
-    { icon: Zap, title: 'Power', desc: 'Enhanced 10W Power Subsystem (Burst Support)' },
-    { icon: Wifi, title: 'Antenna', desc: 'Dual-Band External Array (Mesh + LTE)' }
+    { id: 'connectivity', icon: Signal, title: 'Connectivity', desc: '4G LTE Cat 1 Cellular Module' },
+    { id: 'architecture', icon: Cpu, title: 'Architecture', desc: 'High-Throughput Aggregation Processor' },
+    { id: 'power', icon: Zap, title: 'Power', desc: 'Enhanced 10W Power Subsystem (Burst Support)' },
+    { id: 'antenna', icon: Wifi, title: 'Antenna', desc: 'Dual-Band External Array (Mesh + LTE)' }
   ];
 
   const specs = activeMode === 'core' ? coreSpecs : proSpecs;
@@ -783,20 +784,76 @@ function HardwareSection() {
               {activeMode === 'core' && (
                 <g className="transition-all duration-500">
                   {/* Main processor chip */}
-                  <rect x="35" y="35" width="20" height="15" fill="#2a2a2a" rx="2"/>
-                  <rect x="33" y="38" width="2" height="3" fill="#666"/>
-                  <rect x="33" y="44" width="2" height="3" fill="#666"/>
-                  <rect x="55" y="38" width="2" height="3" fill="#666"/>
-                  <rect x="55" y="44" width="2" height="3" fill="#666"/>
+                  <g 
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredComponent('processor')}
+                    onMouseLeave={() => setHoveredComponent(null)}
+                  >
+                    <rect 
+                      x="35" y="35" width="20" height="15" 
+                      fill={hoveredComponent === 'processor' ? 'hsl(var(--primary))' : '#2a2a2a'} 
+                      rx="2"
+                      className="transition-colors duration-300"
+                    />
+                    <rect x="33" y="38" width="2" height="3" fill="#666"/>
+                    <rect x="33" y="44" width="2" height="3" fill="#666"/>
+                    <rect x="55" y="38" width="2" height="3" fill="#666"/>
+                    <rect x="55" y="44" width="2" height="3" fill="#666"/>
+                    {hoveredComponent === 'processor' && (
+                      <rect x="33" y="33" width="24" height="19" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="3" className="animate-pulse-subtle"/>
+                    )}
+                  </g>
                   
                   {/* Radar sensor */}
-                  <rect x="20" y="55" width="15" height="12" fill="#333" rx="1"/>
+                  <g 
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredComponent('sensing')}
+                    onMouseLeave={() => setHoveredComponent(null)}
+                  >
+                    <rect 
+                      x="20" y="55" width="15" height="12" 
+                      fill={hoveredComponent === 'sensing' ? 'hsl(var(--primary))' : '#333'} 
+                      rx="1"
+                      className="transition-colors duration-300"
+                    />
+                    {hoveredComponent === 'sensing' && (
+                      <rect x="18" y="53" width="19" height="16" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="2" className="animate-pulse-subtle"/>
+                    )}
+                  </g>
                   
                   {/* Power module */}
-                  <rect x="65" y="55" width="18" height="14" fill="#2a2a2a" rx="2"/>
+                  <g 
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredComponent('power')}
+                    onMouseLeave={() => setHoveredComponent(null)}
+                  >
+                    <rect 
+                      x="65" y="55" width="18" height="14" 
+                      fill={hoveredComponent === 'power' ? 'hsl(var(--primary))' : '#2a2a2a'} 
+                      rx="2"
+                      className="transition-colors duration-300"
+                    />
+                    {hoveredComponent === 'power' && (
+                      <rect x="63" y="53" width="22" height="18" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="3" className="animate-pulse-subtle"/>
+                    )}
+                  </g>
                   
                   {/* Dimmer circuit */}
-                  <rect x="25" y="25" width="12" height="10" fill="#333" rx="1"/>
+                  <g 
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredComponent('control')}
+                    onMouseLeave={() => setHoveredComponent(null)}
+                  >
+                    <rect 
+                      x="25" y="25" width="12" height="10" 
+                      fill={hoveredComponent === 'control' ? 'hsl(var(--primary))' : '#333'} 
+                      rx="1"
+                      className="transition-colors duration-300"
+                    />
+                    {hoveredComponent === 'control' && (
+                      <rect x="23" y="23" width="16" height="14" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="2" className="animate-pulse-subtle"/>
+                    )}
+                  </g>
                   
                   {/* Single antenna connector (for local Mesh) */}
                   <circle cx="75" cy="25" r="4" fill="#444" stroke="#666" strokeWidth="1"/>
@@ -807,30 +864,98 @@ function HardwareSection() {
               {/* Abstract Components - Pro: denser layout with dual antennas and SIM */}
               {activeMode === 'pro' && (
                 <g className="transition-all duration-500">
-                  {/* Main processor chip - larger */}
-                  <rect x="32" y="33" width="24" height="18" fill="#2a2a2a" rx="2"/>
-                  <rect x="29" y="36" width="3" height="3" fill="#666"/>
-                  <rect x="29" y="42" width="3" height="3" fill="#666"/>
-                  <rect x="56" y="36" width="3" height="3" fill="#666"/>
-                  <rect x="56" y="42" width="3" height="3" fill="#666"/>
+                  {/* Main processor chip - larger (Architecture) */}
+                  <g 
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredComponent('architecture')}
+                    onMouseLeave={() => setHoveredComponent(null)}
+                  >
+                    <rect 
+                      x="32" y="33" width="24" height="18" 
+                      fill={hoveredComponent === 'architecture' ? 'hsl(var(--primary))' : '#2a2a2a'} 
+                      rx="2"
+                      className="transition-colors duration-300"
+                    />
+                    <rect x="29" y="36" width="3" height="3" fill="#666"/>
+                    <rect x="29" y="42" width="3" height="3" fill="#666"/>
+                    <rect x="56" y="36" width="3" height="3" fill="#666"/>
+                    <rect x="56" y="42" width="3" height="3" fill="#666"/>
+                    {hoveredComponent === 'architecture' && (
+                      <rect x="28" y="31" width="32" height="22" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="3" className="animate-pulse-subtle"/>
+                    )}
+                  </g>
                   
-                  {/* LTE Modem chip */}
-                  <rect x="18" y="55" width="18" height="14" fill="#333" rx="1"/>
+                  {/* LTE Modem chip (Connectivity) */}
+                  <g 
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredComponent('connectivity')}
+                    onMouseLeave={() => setHoveredComponent(null)}
+                  >
+                    <rect 
+                      x="18" y="55" width="18" height="14" 
+                      fill={hoveredComponent === 'connectivity' ? 'hsl(var(--primary))' : '#333'} 
+                      rx="1"
+                      className="transition-colors duration-300"
+                    />
+                    {/* SIM slot visualization - part of connectivity */}
+                    <rect 
+                      x="18" y="25" width="14" height="10" 
+                      fill={hoveredComponent === 'connectivity' ? 'hsl(var(--primary))' : '#444'} 
+                      rx="1" stroke="#666" strokeWidth="0.5"
+                      className="transition-colors duration-300"
+                    />
+                    <rect x="20" y="27" width="10" height="6" fill="#333" rx="0.5"/>
+                    {hoveredComponent === 'connectivity' && (
+                      <>
+                        <rect x="16" y="53" width="22" height="18" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="2" className="animate-pulse-subtle"/>
+                        <rect x="16" y="23" width="18" height="14" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="2" className="animate-pulse-subtle"/>
+                      </>
+                    )}
+                  </g>
                   
                   {/* Enhanced power module */}
-                  <rect x="62" y="55" width="22" height="16" fill="#2a2a2a" rx="2"/>
-                  <rect x="64" y="57" width="4" height="4" fill="#444"/>
-                  <rect x="70" y="57" width="4" height="4" fill="#444"/>
-                  
-                  {/* SIM slot visualization */}
-                  <rect x="18" y="25" width="14" height="10" fill="#444" rx="1" stroke="#666" strokeWidth="0.5"/>
-                  <rect x="20" y="27" width="10" height="6" fill="#333" rx="0.5"/>
+                  <g 
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredComponent('power')}
+                    onMouseLeave={() => setHoveredComponent(null)}
+                  >
+                    <rect 
+                      x="62" y="55" width="22" height="16" 
+                      fill={hoveredComponent === 'power' ? 'hsl(var(--primary))' : '#2a2a2a'} 
+                      rx="2"
+                      className="transition-colors duration-300"
+                    />
+                    <rect x="64" y="57" width="4" height="4" fill="#444"/>
+                    <rect x="70" y="57" width="4" height="4" fill="#444"/>
+                    {hoveredComponent === 'power' && (
+                      <rect x="60" y="53" width="26" height="20" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="3" className="animate-pulse-subtle"/>
+                    )}
+                  </g>
                   
                   {/* Dual antenna connectors (Mesh + LTE) */}
-                  <circle cx="70" cy="23" r="4" fill="#444" stroke="#666" strokeWidth="1"/>
-                  <circle cx="70" cy="23" r="2" fill="#888"/>
-                  <circle cx="82" cy="23" r="4" fill="#444" stroke="#666" strokeWidth="1"/>
-                  <circle cx="82" cy="23" r="2" fill="#888"/>
+                  <g 
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHoveredComponent('antenna')}
+                    onMouseLeave={() => setHoveredComponent(null)}
+                  >
+                    <circle 
+                      cx="70" cy="23" r="4" 
+                      fill={hoveredComponent === 'antenna' ? 'hsl(var(--primary))' : '#444'} 
+                      stroke="#666" strokeWidth="1"
+                      className="transition-colors duration-300"
+                    />
+                    <circle cx="70" cy="23" r="2" fill="#888"/>
+                    <circle 
+                      cx="82" cy="23" r="4" 
+                      fill={hoveredComponent === 'antenna' ? 'hsl(var(--primary))' : '#444'} 
+                      stroke="#666" strokeWidth="1"
+                      className="transition-colors duration-300"
+                    />
+                    <circle cx="82" cy="23" r="2" fill="#888"/>
+                    {hoveredComponent === 'antenna' && (
+                      <rect x="64" y="17" width="24" height="12" fill="none" stroke="hsl(var(--primary))" strokeWidth="1" rx="2" className="animate-pulse-subtle"/>
+                    )}
+                  </g>
                   
                   {/* Additional components for density */}
                   <rect x="40" y="58" width="8" height="6" fill="#333" rx="1"/>
@@ -874,15 +999,23 @@ function HardwareSection() {
               {specs.map((spec, i) => (
                 <div 
                   key={spec.title}
-                  className="p-5 rounded-xl bg-card/50 border border-primary/10 hover:border-primary/30 transition-all duration-300"
+                  className={`p-5 rounded-xl border transition-all duration-300 cursor-pointer ${
+                    hoveredComponent === spec.id 
+                      ? 'bg-primary/10 border-primary/50 scale-[1.02]' 
+                      : 'bg-card/50 border-primary/10 hover:border-primary/30'
+                  }`}
                   style={{ 
                     transitionDelay: `${i * 100}ms`,
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'translateX(0)' : 'translateX(20px)'
                   }}
+                  onMouseEnter={() => setHoveredComponent(spec.id)}
+                  onMouseLeave={() => setHoveredComponent(null)}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-lg bg-primary/10">
+                    <div className={`p-2.5 rounded-lg transition-colors duration-300 ${
+                      hoveredComponent === spec.id ? 'bg-primary/20' : 'bg-primary/10'
+                    }`}>
                       <spec.icon className="w-5 h-5 text-primary"/>
                     </div>
                     <div>
