@@ -30,9 +30,9 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
         aria-label={`View ${product.title} - ${product.category}`}
       >
         <div className="relative h-full rounded-2xl overflow-hidden bg-gradient-to-br from-card via-card to-card/80 border-2 border-primary/10 hover:border-primary/50 shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 group cursor-pointer">
-          {/* Large Hero Image */}
+          {/* Large Hero Image - Bigger for attention-grabbing */}
           {product.images[0] && (
-            <div className="relative aspect-[4/3] w-full overflow-hidden">
+            <div className="relative aspect-[3/2] sm:aspect-[4/3] lg:aspect-[3/2] w-full overflow-hidden">
               <Image
                 src={product.images[0].url}
                 alt={`${product.title} - DGEN Technologies`}
@@ -57,11 +57,11 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
               </div>
 
               {/* Title overlay on image bottom */}
-              <div className="absolute bottom-0 left-0 right-0 p-5">
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-headline font-bold text-white mb-2 group-hover:text-primary-foreground transition-colors drop-shadow-lg">
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-7">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-headline font-bold text-white mb-3 group-hover:text-primary-foreground transition-colors drop-shadow-lg">
                   {product.title}
                 </h3>
-                <p className="text-white/80 text-sm line-clamp-2 leading-relaxed">
+                <p className="text-white/80 text-sm sm:text-base line-clamp-2 leading-relaxed">
                   {product.shortDescription.includes('.') 
                     ? `${product.shortDescription.split('.')[0]}.`
                     : product.shortDescription}
@@ -71,7 +71,7 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
           )}
           
           {/* CTA Section */}
-          <div className="p-5 bg-gradient-to-b from-card/50 to-card">
+          <div className="p-6 bg-gradient-to-b from-card/50 to-card">
             <div className="flex items-center justify-between">
               <span className="text-sm text-foreground/70 font-medium">Explore Product</span>
               <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-3 transition-all duration-300">
@@ -178,8 +178,8 @@ export default function ProductsPage() {
               </p>
             </div>
             
-            {/* Products Grid - Larger Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {/* Products Grid - Larger Cards for Impact */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 max-w-5xl mx-auto">
               {products.map((product, index) => (
                 <ProductCard key={product.slug} product={product} index={index} />
               ))}
