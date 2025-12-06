@@ -31,7 +31,7 @@ export const teamMembers = [
     role: 'COO', 
     image: '/images/arpan-bairagi-v2.png',
     slug: 'arpan-bairagi',
-    bio: 'Arpan oversees the day-to-day operations at DGEN Technologies, ensuring excellence in product delivery and client satisfaction. His expertise in supply chain management and operational efficiency has been crucial in scaling our B2B solutions. Arpan is committed to maintaining the highest standards of quality as we expand our manufacturing capabilities for the B2C market.',
+    bio: "Arpan Bairagi is the Founder and Chief Operating Officer of DGEN Technologies, backed by a strong foundation in Electronics and Communication Engineering. He drives innovation, operational efficiency, and strategic growth within the company. Arpan oversees core operations, product development, and team leadership, ensuring seamless execution and high-quality outcomes across all projects. As a key decision-maker, he helps shape the company's vision and guides its development with a focus on impactful, technology-driven solutions. Committed to continuous improvement, Arpan blends technical expertise with strong managerial insight to steer DGEN Technologies toward sustained progress and long-term success.",
     linkedin: 'https://www.linkedin.com/in/arpan-bairagi-2a8b02274/',
     twitter: '#',
   },
