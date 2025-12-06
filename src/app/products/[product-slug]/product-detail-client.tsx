@@ -697,29 +697,60 @@ function MeshNetworkSection() {
   );
 }
 
-// Hardware Section: Exploded PCB View
+// Hardware Section: Auralis Core vs Pro Comparison
 function HardwareSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
-  const [hoveredComponent, setHoveredComponent] = useState<string | null>(null);
+  const [activeMode, setActiveMode] = useState<'core' | 'pro'>('core');
 
-  const components = [
-    { id: 'esp32', name: 'ESP32-S3', desc: 'Dual-core 240MHz processor', x: 25, y: 30 },
-    { id: 'simcom', name: 'Simcom A7672E', desc: '4G LTE Cat 1 modem', x: 65, y: 25 },
-    { id: 'radar', name: 'Doppler Radar', desc: 'Microwave motion sensor', x: 20, y: 60 },
-    { id: 'psu', name: 'AC-DC PSU', desc: 'Isolated power supply', x: 70, y: 65 },
-    { id: 'triac', name: 'TRIAC Dimmer', desc: 'Phase-cutting brightness control', x: 45, y: 75 }
+  const coreSpecs = [
+    { icon: Cpu, title: 'Processor', desc: 'Dual-Core Mesh Logic Unit' },
+    { icon: Radar, title: 'Sensing', desc: 'Microwave Doppler Radar (Motion Detection)' },
+    { icon: Zap, title: 'Power', desc: 'Isolated High-Efficiency AC/DC Module' },
+    { icon: GaugeCircle, title: 'Control', desc: 'Industrial Phase-Cut Dimming Engine' }
   ];
+
+  const proSpecs = [
+    { icon: Signal, title: 'Connectivity', desc: '4G LTE Cat 1 Cellular Module' },
+    { icon: Cpu, title: 'Architecture', desc: 'High-Throughput Aggregation Processor' },
+    { icon: Zap, title: 'Power', desc: 'Enhanced 10W Power Subsystem (Burst Support)' },
+    { icon: Wifi, title: 'Antenna', desc: 'Dual-Band External Array (Mesh + LTE)' }
+  ];
+
+  const specs = activeMode === 'core' ? coreSpecs : proSpecs;
 
   return (
     <section ref={ref} className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-card py-20 relative overflow-hidden">
       <div className="container max-w-screen-xl px-4 md:px-6">
-        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight mb-6">
             <span className="text-gradient">Inside the Brain</span>
           </h2>
-          <p className="text-xl sm:text-2xl text-foreground/70 max-w-2xl mx-auto">
-            Industrial-grade components. Engineered for reliability.
-          </p>
+          
+          {/* Toggle Switch */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex bg-card border border-primary/20 rounded-full p-1.5 shadow-lg">
+              <button
+                onClick={() => setActiveMode('core')}
+                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  activeMode === 'core'
+                    ? 'bg-primary text-white shadow-md'
+                    : 'text-foreground/70 hover:text-foreground'
+                }`}
+              >
+                Auralis Core
+              </button>
+              <button
+                onClick={() => setActiveMode('pro')}
+                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  activeMode === 'pro'
+                    ? 'bg-primary text-white shadow-md'
+                    : 'text-foreground/70 hover:text-foreground'
+                }`}
+              >
+                Auralis Pro
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className={`grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
@@ -727,95 +758,148 @@ function HardwareSection() {
           <div className="relative aspect-square max-w-lg mx-auto w-full">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 rounded-3xl"/>
             
-            {/* PCB Board SVG */}
-            <svg viewBox="0 0 100 100" className="w-full h-full p-8" aria-label="Auralis PCB exploded view">
+            {/* PCB Board SVG - Abstract Design */}
+            <svg viewBox="0 0 100 100" className="w-full h-full p-8 transition-all duration-500" aria-label={`Auralis ${activeMode === 'core' ? 'Core' : 'Pro'} PCB visualization`}>
               {/* PCB Base */}
               <rect x="10" y="15" width="80" height="70" fill="#1a472a" rx="3" opacity="0.9"/>
               
-              {/* Circuit traces */}
+              {/* Circuit traces - more dense for Pro */}
               <g stroke="#3a7d4a" strokeWidth="0.5" fill="none" opacity="0.6">
                 <path d="M25 30 L40 30 L40 50 L60 50"/>
                 <path d="M65 25 L65 45 L45 45"/>
                 <path d="M20 60 L35 60 L35 75 L55 75"/>
                 <path d="M70 65 L50 65 L50 55"/>
+                {activeMode === 'pro' && (
+                  <>
+                    <path d="M30 35 L50 35 L50 25"/>
+                    <path d="M75 40 L75 60 L60 60"/>
+                    <path d="M35 70 L65 70"/>
+                    <path d="M40 45 L55 45 L55 65"/>
+                  </>
+                )}
               </g>
 
-              {/* Components */}
-              {components.map((comp) => (
-                <g 
-                  key={comp.id}
-                  onMouseEnter={() => setHoveredComponent(comp.id)}
-                  onMouseLeave={() => setHoveredComponent(null)}
-                  className="cursor-pointer transition-all duration-300"
-                  style={{ 
-                    transform: hoveredComponent === comp.id ? `translate(${comp.x - 0.5}%, ${comp.y - 0.5}%) scale(1.1)` : `translate(${comp.x}%, ${comp.y}%)`,
-                    transformOrigin: 'center'
-                  }}
-                >
-                  {/* Component body */}
-                  <rect 
-                    x="-7" y="-4" width="14" height="8" 
-                    fill={hoveredComponent === comp.id ? 'hsl(var(--primary))' : '#2a2a2a'}
-                    rx="1"
-                    className="transition-colors duration-300"
-                  />
-                  {/* Component pins */}
-                  <rect x="-8" y="-2" width="1.5" height="1" fill="#888"/>
-                  <rect x="-8" y="1" width="1.5" height="1" fill="#888"/>
-                  <rect x="6.5" y="-2" width="1.5" height="1" fill="#888"/>
-                  <rect x="6.5" y="1" width="1.5" height="1" fill="#888"/>
+              {/* Abstract Components - Core: simpler layout */}
+              {activeMode === 'core' && (
+                <g className="transition-all duration-500">
+                  {/* Main processor chip */}
+                  <rect x="35" y="35" width="20" height="15" fill="#2a2a2a" rx="2"/>
+                  <rect x="33" y="38" width="2" height="3" fill="#666"/>
+                  <rect x="33" y="44" width="2" height="3" fill="#666"/>
+                  <rect x="55" y="38" width="2" height="3" fill="#666"/>
+                  <rect x="55" y="44" width="2" height="3" fill="#666"/>
                   
-                  {/* Highlight ring when hovered */}
-                  {hoveredComponent === comp.id && (
-                    <circle r="12" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" opacity="0.5" className="animate-pulse-subtle"/>
-                  )}
+                  {/* Radar sensor */}
+                  <rect x="20" y="55" width="15" height="12" fill="#333" rx="1"/>
+                  
+                  {/* Power module */}
+                  <rect x="65" y="55" width="18" height="14" fill="#2a2a2a" rx="2"/>
+                  
+                  {/* Dimmer circuit */}
+                  <rect x="25" y="25" width="12" height="10" fill="#333" rx="1"/>
+                  
+                  {/* Single antenna connector (for local Mesh) */}
+                  <circle cx="75" cy="25" r="4" fill="#444" stroke="#666" strokeWidth="1"/>
+                  <circle cx="75" cy="25" r="2" fill="#888"/>
                 </g>
-              ))}
+              )}
+
+              {/* Abstract Components - Pro: denser layout with dual antennas and SIM */}
+              {activeMode === 'pro' && (
+                <g className="transition-all duration-500">
+                  {/* Main processor chip - larger */}
+                  <rect x="32" y="33" width="24" height="18" fill="#2a2a2a" rx="2"/>
+                  <rect x="29" y="36" width="3" height="3" fill="#666"/>
+                  <rect x="29" y="42" width="3" height="3" fill="#666"/>
+                  <rect x="56" y="36" width="3" height="3" fill="#666"/>
+                  <rect x="56" y="42" width="3" height="3" fill="#666"/>
+                  
+                  {/* LTE Modem chip */}
+                  <rect x="18" y="55" width="18" height="14" fill="#333" rx="1"/>
+                  
+                  {/* Enhanced power module */}
+                  <rect x="62" y="55" width="22" height="16" fill="#2a2a2a" rx="2"/>
+                  <rect x="64" y="57" width="4" height="4" fill="#444"/>
+                  <rect x="70" y="57" width="4" height="4" fill="#444"/>
+                  
+                  {/* SIM slot visualization */}
+                  <rect x="18" y="25" width="14" height="10" fill="#444" rx="1" stroke="#666" strokeWidth="0.5"/>
+                  <rect x="20" y="27" width="10" height="6" fill="#333" rx="0.5"/>
+                  
+                  {/* Dual antenna connectors (Mesh + LTE) */}
+                  <circle cx="70" cy="23" r="4" fill="#444" stroke="#666" strokeWidth="1"/>
+                  <circle cx="70" cy="23" r="2" fill="#888"/>
+                  <circle cx="82" cy="23" r="4" fill="#444" stroke="#666" strokeWidth="1"/>
+                  <circle cx="82" cy="23" r="2" fill="#888"/>
+                  
+                  {/* Additional components for density */}
+                  <rect x="40" y="58" width="8" height="6" fill="#333" rx="1"/>
+                  <rect x="50" y="58" width="8" height="6" fill="#333" rx="1"/>
+                </g>
+              )}
+
+              {/* Decorative glow effect */}
+              <defs>
+                <filter id="pcbGlow">
+                  <feGaussianBlur stdDeviation="2" result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
             </svg>
 
-            {/* Floating labels for hovered component */}
-            {hoveredComponent && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-card border border-primary/20 rounded-xl px-6 py-4 shadow-xl animate-slide-up">
-                <div className="flex items-center gap-3">
-                  <CircuitBoard className="w-6 h-6 text-primary"/>
-                  <div>
-                    <div className="font-bold text-lg">{components.find(c => c.id === hoveredComponent)?.name}</div>
-                    <div className="text-foreground/60 text-sm">{components.find(c => c.id === hoveredComponent)?.desc}</div>
-                  </div>
-                </div>
-              </div>
-            )}
+            {/* Decorative glow */}
+            <div className="absolute -inset-4 bg-primary/5 rounded-3xl blur-2xl -z-10"/>
           </div>
 
-          {/* Component List */}
-          <div className="space-y-4">
-            {components.map((comp, i) => (
-              <div 
-                key={comp.id}
-                className={`p-5 rounded-xl border transition-all duration-300 cursor-pointer ${
-                  hoveredComponent === comp.id 
-                    ? 'bg-primary/10 border-primary/50 scale-[1.02]' 
-                    : 'bg-card/50 border-primary/10 hover:border-primary/30'
-                }`}
-                onMouseEnter={() => setHoveredComponent(comp.id)}
-                onMouseLeave={() => setHoveredComponent(null)}
-                style={{ transitionDelay: `${i * 50}ms` }}
-              >
-                <div className="flex items-center gap-4">
-                  <div className={`p-2 rounded-lg transition-colors duration-300 ${
-                    hoveredComponent === comp.id ? 'bg-primary/20' : 'bg-foreground/5'
-                  }`}>
-                    <CircuitBoard className={`w-5 h-5 transition-colors duration-300 ${
-                      hoveredComponent === comp.id ? 'text-primary' : 'text-foreground/50'
-                    }`}/>
-                  </div>
-                  <div>
-                    <div className="font-bold">{comp.name}</div>
-                    <div className="text-foreground/60 text-sm">{comp.desc}</div>
+          {/* Specs Content */}
+          <div className="space-y-6">
+            {/* Header for selected mode */}
+            <div className={`transition-all duration-500 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+              <h3 className="text-2xl sm:text-3xl font-headline font-bold mb-2">
+                {activeMode === 'core' ? 'The Worker Node' : 'The Cluster Gateway'}
+              </h3>
+              <p className="text-lg text-foreground/70">
+                {activeMode === 'core' 
+                  ? 'The sensory network. Sensing, dimming, and relaying data on every pole.'
+                  : 'The bridge to the cloud. Aggregating data for entire street clusters.'
+                }
+              </p>
+            </div>
+
+            {/* Specs List */}
+            <div className="space-y-4">
+              {specs.map((spec, i) => (
+                <div 
+                  key={spec.title}
+                  className="p-5 rounded-xl bg-card/50 border border-primary/10 hover:border-primary/30 transition-all duration-300"
+                  style={{ 
+                    transitionDelay: `${i * 100}ms`,
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? 'translateX(0)' : 'translateX(20px)'
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="p-2.5 rounded-lg bg-primary/10">
+                      <spec.icon className="w-5 h-5 text-primary"/>
+                    </div>
+                    <div>
+                      <div className="font-bold text-foreground">{spec.title}</div>
+                      <div className="text-foreground/60 text-sm">{spec.desc}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Hybrid Mesh Note */}
+            <div className="mt-8 p-4 rounded-xl bg-primary/5 border border-primary/20">
+              <p className="text-sm text-foreground/70">
+                <span className="font-semibold text-primary">Hybrid Wireless Mesh:</span> Core nodes communicate with Pro gateways via ESP-MESH. Pro aggregates data and connects to the cloud via 4G LTE.
+              </p>
+            </div>
           </div>
         </div>
       </div>
