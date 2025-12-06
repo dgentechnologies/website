@@ -93,9 +93,9 @@ export default function ProductsPage() {
   const [ctaRef, ctaVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-col overflow-hidden items-center justify-center">
       {/* Full Screen Hero Section */}
-      <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
+      <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex flex-col items-center justify-center text-center">
         {/* Parallax Video Background Layer */}
         <div 
           className="absolute inset-0 z-0 will-change-transform"
@@ -124,19 +124,19 @@ export default function ProductsPage() {
         />
 
         {/* Hero Content */}
-        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6">
-          <div className="space-y-4 sm:space-y-6">
-            <Badge variant="default" className="py-1.5 px-4 text-sm sm:text-base font-semibold animate-slide-down">
+        <div className="relative z-10 w-full flex flex-col items-center justify-center px-4 md:px-6">
+          <div className="space-y-4 sm:space-y-6 flex flex-col items-center justify-center">
+            <Badge variant="default" className="py-1.5 px-4 text-sm sm:text-base font-semibold animate-slide-down mx-auto">
               Our Products
             </Badge>
             <h1 
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight text-white leading-tight animate-slide-up" 
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight text-white leading-tight animate-slide-up text-center mx-auto" 
               style={{ animationDelay: '0.2s' }}
             >
               Smart City Solutions
             </h1>
             <p 
-              className="max-w-2xl mx-auto text-white/90 text-lg sm:text-xl md:text-2xl animate-slide-up" 
+              className="max-w-2xl mx-auto text-white/90 text-lg sm:text-xl md:text-2xl animate-slide-up text-center" 
               style={{ animationDelay: '0.3s' }}
             >
               Made in India IoT Solutions
@@ -156,7 +156,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Products Grid - Main Focus */}
-      <div className="relative z-10 bg-background">
+      <div className="relative z-10 bg-background flex flex-col items-center justify-center">
         {/* Subtle decorative background */}
         <div className="absolute top-20 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
         <div className="absolute bottom-20 right-0 w-72 h-72 bg-accent/5 rounded-full blur-3xl translate-x-1/2 pointer-events-none" />
