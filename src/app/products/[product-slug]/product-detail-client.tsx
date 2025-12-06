@@ -1411,6 +1411,7 @@ function Scene3D({ onLoad, onError }: { onLoad?: () => void; onError?: () => voi
 }
 
 // New Apple-style Hero Section for Auralis Ecosystem with Framer Motion
+// Left-aligned 3D / Right-aligned Text split layout
 function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
@@ -1439,78 +1440,77 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         />
       )}
       
-      {/* Section 1: Hero (0% - 100% Viewport) - Apple-style layout */}
-      <section className="relative w-full min-h-screen flex flex-col overflow-hidden">
+      {/* Section 1: Hero (0% - 100% Viewport) - 2-column grid layout */}
+      <section className="relative w-full min-h-screen overflow-hidden">
         {/* Fallback gradient background for mobile */}
         <div className={`absolute inset-0 bg-gradient-to-b from-background via-card to-background ${showFallback ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`} />
         <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent ${showFallback ? 'opacity-50' : 'opacity-0'} transition-opacity duration-1000`} />
         
-        {/* Top Text Container - positioned in top 20% */}
-        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10 pointer-events-none pt-24 md:pt-32">
-          <div className="flex flex-col items-center text-center">
-            {/* Main Title - Elegant, smaller typography with thin font weight */}
+        {/* 2-Column Grid: Mobile: flex-col-reverse (text on top), Desktop: grid */}
+        <div className="relative h-screen flex flex-col-reverse lg:grid lg:grid-cols-2 items-center">
+          {/* Left Column (3D Space) - Empty spacer for Spline background */}
+          <div className="hidden lg:block" aria-hidden="true" />
+          
+          {/* Right Column (Content) - Text and buttons */}
+          <div className="z-10 flex flex-col justify-center items-start pl-6 pr-6 sm:pl-10 sm:pr-10 lg:pl-10 lg:pr-20 py-12 lg:py-0">
+            {/* Main Title - Left-aligned, bold typography */}
             <motion.h1 
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-light tracking-tight mb-4"
+              className="text-5xl lg:text-7xl font-headline font-bold leading-tight text-white text-left"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: "easeOut" }}
             >
               <span className="text-gradient">The Brain</span>
-              <span className="text-foreground/90"> of the Smart City</span>
+              <span className="block text-foreground/90">of the Smart City</span>
             </motion.h1>
 
-            {/* Subtitle - Small, centered below headline */}
+            {/* Subtitle - Left-aligned below headline */}
             <motion.p 
-              className="text-base sm:text-lg md:text-xl text-foreground/50 font-light tracking-wide"
+              className="text-xl text-gray-400 mt-6 max-w-lg text-left"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
             >
-              Intelligent. Autonomous. Mesh-Connected.
+              Intelligent. Autonomous. Mesh-Connected. Transform legacy infrastructure into smart, responsive networks.
             </motion.p>
+
+            {/* CTA Buttons - Left-aligned, aligned with text */}
+            <motion.div 
+              className="flex gap-4 mt-8 pointer-events-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+            >
+              <Button asChild size="lg" className="text-base px-6 py-5 group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
+                <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
+                  Get Started <Sparkles className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="text-base px-6 py-5 group">
+                <Link href="#retrofit">
+                  Learn More
+                  <Zap className="ml-2 h-5 w-5 group-hover:text-primary transition-colors" />
+                </Link>
+              </Button>
+            </motion.div>
+
+            {/* Scroll indicator - Below buttons */}
+            <motion.div 
+              className="flex items-center gap-2 mt-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1 }}
+            >
+              <div className="w-5 h-8 rounded-full border border-foreground/20 flex items-start justify-center p-1.5">
+                <motion.div 
+                  className="w-1 h-2 bg-foreground/40 rounded-full"
+                  animate={{ y: [0, 6, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </div>
+              <span className="text-foreground/40 text-xs font-medium tracking-wide">Scroll to explore</span>
+            </motion.div>
           </div>
-        </div>
-
-        {/* Spacer for 3D model to float in center */}
-        <div className="flex-grow" />
-
-        {/* Bottom CTA Buttons - positioned in bottom 15% */}
-        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10 pb-24 md:pb-32">
-          <motion.div 
-            className="flex flex-wrap justify-center gap-4 pointer-events-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-          >
-            <Button asChild size="lg" className="text-base px-6 py-5 group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
-              <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
-                Get Started <Sparkles className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="text-base px-6 py-5 group">
-              <Link href="#retrofit">
-                Learn More
-                <Zap className="ml-2 h-5 w-5 group-hover:text-primary transition-colors" />
-              </Link>
-            </Button>
-          </motion.div>
-
-          {/* Scroll indicator - centered below buttons */}
-          <motion.div 
-            className="flex flex-col items-center gap-2 mt-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            <span className="text-foreground/40 text-xs font-medium tracking-wide">Scroll to explore</span>
-            <div className="w-5 h-8 rounded-full border border-foreground/20 flex items-start justify-center p-1.5">
-              <motion.div 
-                className="w-1 h-2 bg-foreground/40 rounded-full"
-                animate={{ y: [0, 6, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              />
-            </div>
-          </motion.div>
         </div>
       </section>
 
