@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -8,7 +8,7 @@ import { products, Product, EcosystemDetail } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Sparkles, Zap, Shield, Settings } from 'lucide-react';
+import { ArrowLeft, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Smartphone, Check, CircuitBoard, Radio, Signal } from 'lucide-react';
 import {
     Carousel,
     CarouselContent,
@@ -378,144 +378,728 @@ function ProductDetailView({ product }: { product: Product }) {
   );
 }
 
-function EcosystemProductView({ product }: { product: Product }) {
-  const { ecosystem, subProducts, qna } = product;
-  const architectureDiagram = PlaceHolderImages.find(img => img.id === 'auralis-architecture-diagram');
-  const parallaxOffset = useParallax(0.15);
-  const floatOffset = useFloatingAnimation(0.6);
+// ============================================
+// AURALIS ECOSYSTEM - APPLE-STYLE REDESIGN
+// ============================================
+
+// Retrofit Section: Plug & Play animation
+function RetrofitSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const [animationStep, setAnimationStep] = useState(0);
   
-  if (!ecosystem || !subProducts) return null;
+  useEffect(() => {
+    if (isVisible) {
+      const interval = setInterval(() => {
+        setAnimationStep((prev) => (prev + 1) % 4);
+      }, 1500);
+      return () => clearInterval(interval);
+    }
+  }, [isVisible]);
 
   return (
-    <div className="space-y-16 sm:space-y-20 lg:space-y-24 relative">
-      {/* Decorative floating elements */}
-      <div 
-        className="absolute top-20 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 hidden lg:block"
-        style={{ transform: `translateY(${parallaxOffset}px) translateX(-50%)` }}
-      />
-      <div 
-        className="absolute top-1/2 right-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl translate-x-1/2 hidden lg:block"
-        style={{ transform: `translateY(${-parallaxOffset}px) translateX(50%)` }}
-      />
-
-      {/* Ecosystem Intro */}
-      <div className="relative">
-        <p className="text-foreground/80 leading-relaxed max-w-4xl mx-auto text-center text-sm sm:text-base md:text-lg animate-fade-in-up">{product.longDescription}</p>
-      </div>
+    <section ref={ref} className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-card py-20 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-1/4 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-10 w-40 h-40 bg-accent/5 rounded-full blur-3xl" />
       
-      {/* Architecture */}
-      <Section title={ecosystem.architecture.title} description={ecosystem.architecture.description}>
-        <div className="space-y-6 sm:space-y-8">
-          {architectureDiagram && (
-            <Card 
-              className="max-w-5xl mx-auto overflow-hidden gradient-border"
-              style={{ transform: `translateY(${floatOffset * 0.2}px)` }}
-            >
-              <div className="relative group">
-                <Image
-                  src={architectureDiagram.imageUrl}
-                  alt={architectureDiagram.description}
-                  width={1200}
-                  height={675}
-                  className="w-full transition-transform duration-700 group-hover:scale-[1.02]"
+      <div className="container max-w-screen-xl px-4 md:px-6">
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight mb-6">
+            <span className="text-gradient">Plug & Play</span>
+          </h2>
+          <p className="text-xl sm:text-2xl text-foreground/70 max-w-2xl mx-auto">
+            Retrofit any street pole in minutes. No rewiring. No hassle.
+          </p>
+        </div>
+
+        {/* Animation Container */}
+        <div className={`relative max-w-4xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <div className="relative aspect-[16/10] bg-gradient-to-br from-card to-background rounded-3xl border border-primary/10 overflow-hidden shadow-2xl">
+            {/* Street Pole SVG Animation */}
+            <svg viewBox="0 0 400 250" className="w-full h-full" aria-label="Retrofit installation animation">
+              {/* Sky gradient */}
+              <defs>
+                <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.1" />
+                  <stop offset="100%" stopColor="hsl(var(--background))" stopOpacity="0" />
+                </linearGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              <rect fill="url(#skyGradient)" width="400" height="250"/>
+              
+              {/* Street Pole */}
+              <rect x="195" y="80" width="10" height="170" fill="hsl(var(--foreground))" opacity="0.3" rx="2"/>
+              
+              {/* Existing Light Fixture */}
+              <ellipse cx="200" cy="85" rx="25" ry="8" fill="hsl(var(--foreground))" opacity="0.4"/>
+              <rect x="188" y="75" width="24" height="15" fill="hsl(var(--foreground))" opacity="0.3" rx="3"/>
+              
+              {/* Auralis Device - animated attachment */}
+              <g 
+                className="transition-all duration-1000"
+                style={{ 
+                  transform: animationStep >= 1 ? 'translateY(0)' : 'translateY(-60px)',
+                  opacity: animationStep >= 1 ? 1 : 0.3
+                }}
+              >
+                <rect 
+                  x="175" y="95" width="50" height="25" 
+                  fill="hsl(var(--primary))" 
+                  rx="4"
+                  className={animationStep >= 2 ? 'animate-pulse-subtle' : ''}
+                  filter={animationStep >= 2 ? 'url(#glow)' : ''}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <circle cx="185" cy="107" r="3" fill="white" opacity="0.8"/>
+                <circle cx="200" cy="107" r="3" fill="white" opacity="0.8"/>
+                <circle cx="215" cy="107" r="3" fill="white" opacity="0.8"/>
+                <text x="200" y="115" fontSize="6" fill="white" textAnchor="middle" fontWeight="bold">AURALIS</text>
+              </g>
+              
+              {/* Connection indicator */}
+              {animationStep >= 3 && (
+                <g className="animate-pulse-subtle">
+                  <circle cx="200" cy="60" r="8" fill="hsl(var(--primary))" opacity="0.3"/>
+                  <circle cx="200" cy="60" r="5" fill="hsl(var(--primary))" opacity="0.5"/>
+                  <circle cx="200" cy="60" r="2" fill="hsl(var(--primary))"/>
+                  {/* Signal waves */}
+                  <path d="M180 50 Q200 35 220 50" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" opacity="0.6"/>
+                  <path d="M170 40 Q200 20 230 40" stroke="hsl(var(--primary))" strokeWidth="1.5" fill="none" opacity="0.4"/>
+                </g>
+              )}
+
+              {/* Ground */}
+              <rect x="0" y="245" width="400" height="5" fill="hsl(var(--foreground))" opacity="0.1"/>
+            </svg>
+            
+            {/* Step Indicators */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-4">
+              {['Position', 'Attach', 'Power On', 'Connected'].map((step, i) => (
+                <div 
+                  key={step}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+                    animationStep >= i 
+                      ? 'bg-primary text-white' 
+                      : 'bg-foreground/10 text-foreground/50'
+                  }`}
+                >
+                  {animationStep > i && <Check className="w-3 h-3" />}
+                  {step}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Features below animation */}
+        <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {[
+            { icon: Zap, title: '5 Minutes', desc: 'Installation time per unit' },
+            { icon: Settings, title: 'Zero Rewiring', desc: 'Works with existing infrastructure' },
+            { icon: Shield, title: 'IP66 Rated', desc: 'Weather-resistant design' }
+          ].map((item, i) => (
+            <div key={item.title} className="text-center p-6 rounded-2xl bg-card/50 border border-primary/10 hover:border-primary/30 transition-all">
+              <div className="inline-flex p-3 rounded-xl bg-primary/10 mb-4">
+                <item.icon className="w-6 h-6 text-primary" />
               </div>
-            </Card>
-          )}
-          <Card className="max-w-4xl mx-auto overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-1/3 font-bold text-foreground text-sm sm:text-base">Feature</TableHead>
-                  <TableHead className="font-bold text-foreground text-sm sm:text-base">Auralis Core (Worker)</TableHead>
-                  <TableHead className="font-bold text-foreground text-sm sm:text-base">Auralis Pro (Gateway)</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {ecosystem.architecture.comparison.map((spec, index) => {
-                    const [coreValue, proValue] = spec.value.split(' vs. ');
-                    return (
-                        <TableRow key={index} className="hover:bg-primary/5 transition-colors">
-                            <TableCell className="font-medium text-sm sm:text-base">{spec.key}</TableCell>
-                            <TableCell className="text-sm sm:text-base">{coreValue}</TableCell>
-                            <TableCell className="text-sm sm:text-base">{proValue}</TableCell>
-                        </TableRow>
-                    );
+              <h3 className="text-xl font-bold mb-1">{item.title}</h3>
+              <p className="text-foreground/60 text-sm">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Mesh Network Section: Hybrid Mesh Visualization
+function MeshNetworkSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+  const [activeNode, setActiveNode] = useState<number | null>(null);
+
+  return (
+    <section ref={ref} className="min-h-screen flex items-center justify-center bg-gradient-to-b from-card to-background py-20 relative overflow-hidden">
+      <div className="container max-w-screen-xl px-4 md:px-6">
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight mb-6">
+            <span className="text-gradient">Hybrid Mesh Network</span>
+          </h2>
+          <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto">
+            50 nodes. 1 SIM card. Infinite possibilities.
+          </p>
+        </div>
+
+        {/* Network Visualization */}
+        <div className={`relative max-w-5xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <div className="relative aspect-[16/9] bg-gradient-to-br from-card to-background rounded-3xl border border-primary/10 overflow-hidden shadow-2xl p-8">
+            {/* SVG Network Visualization */}
+            <svg viewBox="0 0 500 280" className="w-full h-full" aria-label="Hybrid mesh network topology visualization">
+              <defs>
+                <linearGradient id="meshGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2"/>
+                  <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.1"/>
+                </linearGradient>
+                <filter id="nodeGlow">
+                  <feGaussianBlur stdDeviation="2" result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              {/* Background */}
+              <rect fill="url(#meshGradient)" width="500" height="280" rx="20"/>
+
+              {/* Cloud Icon */}
+              <g transform="translate(420, 30)">
+                <ellipse cx="25" cy="25" rx="30" ry="20" fill="hsl(var(--primary))" opacity="0.2"/>
+                <text x="25" y="30" fontSize="10" fill="hsl(var(--primary))" textAnchor="middle" fontWeight="bold">CLOUD</text>
+              </g>
+
+              {/* LTE Connection from Gateway to Cloud */}
+              <path 
+                d="M250 80 Q350 50 420 50" 
+                stroke="hsl(var(--primary))" 
+                strokeWidth="2" 
+                fill="none" 
+                strokeDasharray="5,5"
+                className={isVisible ? 'animate-pulse-subtle' : ''}
+              />
+              <text x="330" y="45" fontSize="8" fill="hsl(var(--primary))" fontWeight="bold">4G LTE</text>
+
+              {/* Gateway (Auralis Pro) - Center */}
+              <g 
+                transform="translate(230, 90)"
+                onMouseEnter={() => setActiveNode(0)}
+                onMouseLeave={() => setActiveNode(null)}
+                className="cursor-pointer"
+              >
+                <rect 
+                  x="0" y="0" width="40" height="40" 
+                  fill="hsl(var(--primary))" 
+                  rx="8"
+                  filter={activeNode === 0 ? 'url(#nodeGlow)' : ''}
+                  className="transition-all duration-300"
+                />
+                <text x="20" y="25" fontSize="8" fill="white" textAnchor="middle" fontWeight="bold">PRO</text>
+                {/* Signal indicator */}
+                <g transform="translate(20, -10)">
+                  <circle r="4" fill="hsl(var(--primary))" className="animate-pulse-subtle"/>
+                </g>
+              </g>
+
+              {/* Worker Nodes (Auralis Core) - Mesh Formation */}
+              {[
+                { x: 80, y: 60 }, { x: 120, y: 120 }, { x: 80, y: 180 },
+                { x: 160, y: 60 }, { x: 180, y: 150 }, { x: 140, y: 210 },
+                { x: 320, y: 60 }, { x: 360, y: 120 }, { x: 320, y: 180 },
+                { x: 280, y: 150 }, { x: 300, y: 210 }, { x: 380, y: 60 },
+              ].map((pos, i) => (
+                <g key={i}>
+                  {/* Connection lines to gateway */}
+                  <line 
+                    x1={pos.x + 15} y1={pos.y + 15} 
+                    x2="250" y2="110"
+                    stroke="hsl(var(--primary))" 
+                    strokeWidth="1" 
+                    opacity="0.3"
+                    strokeDasharray={activeNode === i + 1 ? '0' : '3,3'}
+                    className="transition-all duration-300"
+                  />
+                  {/* Node */}
+                  <g 
+                    transform={`translate(${pos.x}, ${pos.y})`}
+                    onMouseEnter={() => setActiveNode(i + 1)}
+                    onMouseLeave={() => setActiveNode(null)}
+                    className="cursor-pointer"
+                  >
+                    <rect 
+                      x="0" y="0" width="30" height="30" 
+                      fill={activeNode === i + 1 ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'} 
+                      opacity={activeNode === i + 1 ? 1 : 0.3}
+                      rx="6"
+                      className="transition-all duration-300"
+                    />
+                    <text x="15" y="20" fontSize="6" fill="white" textAnchor="middle">CORE</text>
+                  </g>
+                </g>
+              ))}
+
+              {/* Wi-Fi Symbol near Gateway */}
+              <g transform="translate(255, 145)">
+                <path d="M-15 8 Q0 -5 15 8" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" opacity="0.8"/>
+                <path d="M-10 5 Q0 -2 10 5" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" opacity="0.6"/>
+                <path d="M-5 2 Q0 0 5 2" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" opacity="0.4"/>
+                <text x="0" y="22" fontSize="8" fill="hsl(var(--primary))" textAnchor="middle">ESP-MESH</text>
+              </g>
+            </svg>
+
+            {/* Legend */}
+            <div className="absolute bottom-4 left-4 flex gap-6 text-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded bg-primary"/>
+                <span className="text-foreground/70">Auralis Pro (Gateway)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded bg-foreground/30"/>
+                <span className="text-foreground/70">Auralis Core (Worker)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Topology Explanation */}
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-4xl mx-auto transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="p-8 rounded-2xl bg-card border border-primary/10">
+            <div className="flex items-center gap-3 mb-4">
+              <Wifi className="w-8 h-8 text-primary" />
+              <h3 className="text-2xl font-bold">Local Mesh</h3>
+            </div>
+            <p className="text-foreground/70">
+              Workers communicate via ESP-MESH Wi-Fi. Self-healing topology automatically reroutes if any node fails.
+            </p>
+          </div>
+          <div className="p-8 rounded-2xl bg-card border border-primary/10">
+            <div className="flex items-center gap-3 mb-4">
+              <Signal className="w-8 h-8 text-primary" />
+              <h3 className="text-2xl font-bold">Cloud Backhaul</h3>
+            </div>
+            <p className="text-foreground/70">
+              One Gateway connects to the cloud via 4G LTE. MQTT protocol ensures reliable data delivery.
+            </p>
+          </div>
+        </div>
+
+        {/* Key Stats */}
+        <div className={`flex flex-wrap justify-center gap-8 mt-12 transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {[
+            { value: '50:1', label: 'Node to Gateway Ratio' },
+            { value: '98%', label: 'SIM Cost Reduction' },
+            { value: '<100ms', label: 'Network Latency' }
+          ].map((stat) => (
+            <div key={stat.label} className="text-center">
+              <div className="text-4xl sm:text-5xl font-bold text-gradient">{stat.value}</div>
+              <div className="text-foreground/60 text-sm mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Hardware Section: Exploded PCB View
+function HardwareSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+  const [hoveredComponent, setHoveredComponent] = useState<string | null>(null);
+
+  const components = [
+    { id: 'esp32', name: 'ESP32-S3', desc: 'Dual-core 240MHz processor', x: 25, y: 30 },
+    { id: 'simcom', name: 'Simcom A7672E', desc: '4G LTE Cat 1 modem', x: 65, y: 25 },
+    { id: 'radar', name: 'Doppler Radar', desc: 'Microwave motion sensor', x: 20, y: 60 },
+    { id: 'psu', name: 'AC-DC PSU', desc: 'Isolated power supply', x: 70, y: 65 },
+    { id: 'triac', name: 'TRIAC Dimmer', desc: 'Phase-cutting brightness control', x: 45, y: 75 }
+  ];
+
+  return (
+    <section ref={ref} className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-card py-20 relative overflow-hidden">
+      <div className="container max-w-screen-xl px-4 md:px-6">
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight mb-6">
+            <span className="text-gradient">Inside the Brain</span>
+          </h2>
+          <p className="text-xl sm:text-2xl text-foreground/70 max-w-2xl mx-auto">
+            Industrial-grade components. Engineered for reliability.
+          </p>
+        </div>
+
+        <div className={`grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          {/* PCB Visualization */}
+          <div className="relative aspect-square max-w-lg mx-auto w-full">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 rounded-3xl"/>
+            
+            {/* PCB Board SVG */}
+            <svg viewBox="0 0 100 100" className="w-full h-full p-8" aria-label="Auralis PCB exploded view">
+              {/* PCB Base */}
+              <rect x="10" y="15" width="80" height="70" fill="#1a472a" rx="3" opacity="0.9"/>
+              
+              {/* Circuit traces */}
+              <g stroke="#3a7d4a" strokeWidth="0.5" fill="none" opacity="0.6">
+                <path d="M25 30 L40 30 L40 50 L60 50"/>
+                <path d="M65 25 L65 45 L45 45"/>
+                <path d="M20 60 L35 60 L35 75 L55 75"/>
+                <path d="M70 65 L50 65 L50 55"/>
+              </g>
+
+              {/* Components */}
+              {components.map((comp) => (
+                <g 
+                  key={comp.id}
+                  onMouseEnter={() => setHoveredComponent(comp.id)}
+                  onMouseLeave={() => setHoveredComponent(null)}
+                  className="cursor-pointer transition-all duration-300"
+                  style={{ 
+                    transform: hoveredComponent === comp.id ? `translate(${comp.x - 0.5}%, ${comp.y - 0.5}%) scale(1.1)` : `translate(${comp.x}%, ${comp.y}%)`,
+                    transformOrigin: 'center'
+                  }}
+                >
+                  {/* Component body */}
+                  <rect 
+                    x="-7" y="-4" width="14" height="8" 
+                    fill={hoveredComponent === comp.id ? 'hsl(var(--primary))' : '#2a2a2a'}
+                    rx="1"
+                    className="transition-colors duration-300"
+                  />
+                  {/* Component pins */}
+                  <rect x="-8" y="-2" width="1.5" height="1" fill="#888"/>
+                  <rect x="-8" y="1" width="1.5" height="1" fill="#888"/>
+                  <rect x="6.5" y="-2" width="1.5" height="1" fill="#888"/>
+                  <rect x="6.5" y="1" width="1.5" height="1" fill="#888"/>
+                  
+                  {/* Highlight ring when hovered */}
+                  {hoveredComponent === comp.id && (
+                    <circle r="12" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" opacity="0.5" className="animate-pulse-subtle"/>
+                  )}
+                </g>
+              ))}
+            </svg>
+
+            {/* Floating labels for hovered component */}
+            {hoveredComponent && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-card border border-primary/20 rounded-xl px-6 py-4 shadow-xl animate-slide-up">
+                <div className="flex items-center gap-3">
+                  <CircuitBoard className="w-6 h-6 text-primary"/>
+                  <div>
+                    <div className="font-bold text-lg">{components.find(c => c.id === hoveredComponent)?.name}</div>
+                    <div className="text-foreground/60 text-sm">{components.find(c => c.id === hoveredComponent)?.desc}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Component List */}
+          <div className="space-y-4">
+            {components.map((comp, i) => (
+              <div 
+                key={comp.id}
+                className={`p-5 rounded-xl border transition-all duration-300 cursor-pointer ${
+                  hoveredComponent === comp.id 
+                    ? 'bg-primary/10 border-primary/50 scale-[1.02]' 
+                    : 'bg-card/50 border-primary/10 hover:border-primary/30'
+                }`}
+                onMouseEnter={() => setHoveredComponent(comp.id)}
+                onMouseLeave={() => setHoveredComponent(null)}
+                style={{ transitionDelay: `${i * 50}ms` }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className={`p-2 rounded-lg transition-colors duration-300 ${
+                    hoveredComponent === comp.id ? 'bg-primary/20' : 'bg-foreground/5'
+                  }`}>
+                    <CircuitBoard className={`w-5 h-5 transition-colors duration-300 ${
+                      hoveredComponent === comp.id ? 'text-primary' : 'text-foreground/50'
+                    }`}/>
+                  </div>
+                  <div>
+                    <div className="font-bold">{comp.name}</div>
+                    <div className="text-foreground/60 text-sm">{comp.desc}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Fault Detection Section: Alert Simulation
+function FaultDetectionSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const [simulationStep, setSimulationStep] = useState(0);
+
+  useEffect(() => {
+    if (isVisible) {
+      const interval = setInterval(() => {
+        setSimulationStep((prev) => (prev + 1) % 5);
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [isVisible]);
+
+  return (
+    <section ref={ref} className="min-h-screen flex items-center justify-center bg-gradient-to-b from-card to-background py-20 relative overflow-hidden">
+      <div className="container max-w-screen-xl px-4 md:px-6">
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight mb-6">
+            <span className="text-gradient">Instant Fault Detection</span>
+          </h2>
+          <p className="text-xl sm:text-2xl text-foreground/70 max-w-2xl mx-auto">
+            Know before citizens complain. Fix before darkness spreads.
+          </p>
+        </div>
+
+        <div className={`grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          {/* Street Light Grid Visualization */}
+          <div className="relative">
+            <div className="aspect-[4/3] bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl overflow-hidden relative">
+              {/* Night sky effect */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black"/>
+              
+              {/* Street lights grid */}
+              <div className="absolute inset-8 grid grid-cols-4 grid-rows-3 gap-4">
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const isFailing = simulationStep >= 1 && i === 5;
+                  const isFixed = simulationStep >= 4 && i === 5;
+                  
+                  return (
+                    <div key={i} className="relative flex items-center justify-center">
+                      {/* Light pole */}
+                      <div className="w-1 h-full bg-slate-600 absolute bottom-0"/>
+                      {/* Light */}
+                      <div 
+                        className={`w-8 h-8 rounded-full transition-all duration-500 ${
+                          isFailing && !isFixed
+                            ? 'bg-red-500/30 shadow-[0_0_20px_rgba(239,68,68,0.3)]' 
+                            : 'bg-yellow-200/80 shadow-[0_0_30px_rgba(253,224,71,0.6)]'
+                        }`}
+                      />
+                      {/* Failure indicator */}
+                      {isFailing && !isFixed && (
+                        <div className="absolute -top-2 -right-2">
+                          <AlertTriangle className="w-5 h-5 text-red-500 animate-pulse" />
+                        </div>
+                      )}
+                    </div>
+                  );
                 })}
-              </TableBody>
-            </Table>
-          </Card>
-        </div>
-      </Section>
-      
-      {/* Shared Hardware */}
-      <Section title={ecosystem.sharedHardware.title} description={ecosystem.sharedHardware.description}>
-        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
-            {ecosystem.sharedHardware.details.map((detail, index) => (
-                <EcosystemDetailCard key={detail.title} detail={detail} index={index} />
-            ))}
-        </div>
-      </Section>
-      
-      {/* Gateway Hardware */}
-      <Section title={ecosystem.gatewayHardware.title} description={ecosystem.gatewayHardware.description}>
-        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
-            {ecosystem.gatewayHardware.details.map((detail, index) => (
-                <EcosystemDetailCard key={detail.title} detail={detail} index={index} />
-            ))}
-        </div>
-      </Section>
-      
-      {/* Workflow */}
-      <Section title={ecosystem.workflow.title} description={ecosystem.workflow.description}>
-        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
-            {ecosystem.workflow.details.map((detail, index) => (
-                <EcosystemDetailCard key={detail.title} detail={detail} index={index} />
-            ))}
-        </div>
-      </Section>
+              </div>
 
-      {/* Sub-Product Section */}
-      <Section title="Auralis Hardware Variants" description="The Auralis Ecosystem comprises two hardware variants deployed in a Cluster Head architecture.">
-          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto">
-            {subProducts.map((sub, index) => (
-              <SubProductCard key={index} sub={sub} index={index} />
-            ))}
+              {/* Status badge */}
+              <div className={`absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+                simulationStep >= 1 && simulationStep < 4 
+                  ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
+                  : 'bg-green-500/20 text-green-400 border border-green-500/30'
+              }`}>
+                {simulationStep >= 1 && simulationStep < 4 ? '1 Fault Detected' : 'All Systems Normal'}
+              </div>
+            </div>
           </div>
-      </Section>
-      
-      {/* Call to Action Section */}
-      <Section title="Ready to upgrade your infrastructure?" className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 rounded-3xl -z-10" />
-          <div className="pt-2 space-y-3 sm:space-y-4 max-w-md mx-auto">
-              <Button asChild size="lg" className="w-full group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
-                  <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
-                    Request a Quote <Sparkles className="ml-2 h-4 w-4 animate-pulse-subtle" />
-                  </Link>
-              </Button>
-              <Button asChild variant="outline" className="w-full group">
-                  <Link href="/products">
-                    <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                    Back to All Products
-                  </Link>
-              </Button>
-          </div>
-      </Section>
 
-       {/* FAQ Section */}
-       <Section title="Frequently Asked Questions">
-          <Accordion type="single" collapsible className="w-full max-w-4xl mx-auto">
+          {/* Phone Alert Mockup */}
+          <div className="relative max-w-xs mx-auto">
+            {/* Phone frame */}
+            <div className="relative bg-slate-900 rounded-[3rem] p-3 shadow-2xl">
+              <div className="bg-slate-800 rounded-[2.5rem] overflow-hidden">
+                {/* Phone notch */}
+                <div className="h-8 bg-slate-900 flex items-center justify-center">
+                  <div className="w-20 h-5 bg-slate-800 rounded-full"/>
+                </div>
+                
+                {/* Phone screen */}
+                <div className="p-4 min-h-[400px] bg-gradient-to-b from-slate-800 to-slate-900">
+                  {/* App header */}
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-white"/>
+                    </div>
+                    <div>
+                      <div className="text-white font-bold">Auralis Dashboard</div>
+                      <div className="text-slate-400 text-xs">Smart City Monitoring</div>
+                    </div>
+                  </div>
+
+                  {/* Alert notification */}
+                  <div 
+                    className={`transition-all duration-500 ${
+                      simulationStep >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    }`}
+                  >
+                    <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-4 mb-4">
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5"/>
+                        <div>
+                          <div className="text-white font-medium text-sm">Fault Alert</div>
+                          <div className="text-slate-400 text-xs mt-1">
+                            Light #247 - Sector 5<br/>
+                            LED Driver Failure Detected
+                          </div>
+                          <div className="text-slate-500 text-xs mt-2">Just now</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Maintenance dispatched */}
+                  <div 
+                    className={`transition-all duration-500 ${
+                      simulationStep >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    }`}
+                  >
+                    <div className="bg-primary/20 border border-primary/30 rounded-xl p-4 mb-4">
+                      <div className="flex items-start gap-3">
+                        <Settings className="w-5 h-5 text-primary flex-shrink-0 mt-0.5"/>
+                        <div>
+                          <div className="text-white font-medium text-sm">Maintenance Dispatched</div>
+                          <div className="text-slate-400 text-xs mt-1">
+                            Technician assigned<br/>
+                            ETA: 25 minutes
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Issue resolved */}
+                  <div 
+                    className={`transition-all duration-500 ${
+                      simulationStep >= 4 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    }`}
+                  >
+                    <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4">
+                      <div className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5"/>
+                        <div>
+                          <div className="text-white font-medium text-sm">Issue Resolved</div>
+                          <div className="text-slate-400 text-xs mt-1">
+                            Light #247 back online<br/>
+                            Total downtime: 28 minutes
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Decorative glow */}
+            <div className="absolute -inset-4 bg-primary/10 rounded-[4rem] blur-2xl -z-10"/>
+          </div>
+        </div>
+
+        {/* Timeline steps */}
+        <div className={`flex flex-wrap justify-center gap-4 mt-16 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {[
+            { step: 0, label: 'Normal Operation' },
+            { step: 1, label: 'Failure Occurs' },
+            { step: 2, label: 'Alert Sent' },
+            { step: 3, label: 'Maintenance Dispatched' },
+            { step: 4, label: 'Issue Resolved' }
+          ].map((item) => (
+            <div 
+              key={item.step}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                simulationStep >= item.step 
+                  ? 'bg-primary text-white' 
+                  : 'bg-foreground/10 text-foreground/50'
+              }`}
+            >
+              {simulationStep > item.step && <Check className="w-4 h-4" />}
+              {item.label}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// CTA Section
+function CTASection({ product }: { product: Product }) {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+
+  return (
+    <section ref={ref} className="py-20 bg-gradient-to-br from-primary/10 via-background to-accent/10 relative overflow-hidden">
+      <div className="container max-w-screen-lg px-4 md:px-6 text-center">
+        <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold tracking-tight mb-6">
+            Ready to illuminate your city?
+          </h2>
+          <p className="text-xl text-foreground/70 max-w-xl mx-auto mb-8">
+            Join hundreds of municipalities transforming their infrastructure with Auralis.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button asChild size="lg" className="group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25 text-lg px-8">
+              <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
+                Get Started <Sparkles className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="group text-lg px-8">
+              <Link href="/products">
+                <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+                All Products
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// FAQ Section for Ecosystem
+function EcosystemFAQSection({ qna }: { qna: Product['qna'] }) {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+
+  return (
+    <section ref={ref} className="py-20 bg-background">
+      <div className="container max-w-screen-lg px-4 md:px-6">
+        <div className={`text-center mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="text-3xl sm:text-4xl font-headline font-bold tracking-tight mb-4">
+            Frequently Asked Questions
+          </h2>
+        </div>
+        <div className={`transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <Accordion type="single" collapsible className="w-full">
             {qna.map((item, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                    <AccordionTrigger className="text-base sm:text-lg font-headline text-left hover:text-primary transition-colors">{item.question}</AccordionTrigger>
-                    <AccordionContent className="text-sm sm:text-base text-foreground/80">
-                        {item.answer}
-                    </AccordionContent>
-                </AccordionItem>
+              <AccordionItem key={index} value={`item-${index}`}>
+                <AccordionTrigger className="text-lg font-headline text-left hover:text-primary transition-colors">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-foreground/80">
+                  {item.answer}
+                </AccordionContent>
+              </AccordionItem>
             ))}
           </Accordion>
-        </Section>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Main Ecosystem Product View - Apple Style
+function EcosystemProductView({ product }: { product: Product }) {
+  const { qna } = product;
+
+  return (
+    <div className="space-y-0">
+      {/* Retrofit Section */}
+      <RetrofitSection />
+      
+      {/* Mesh Network Section */}
+      <MeshNetworkSection />
+      
+      {/* Hardware Section */}
+      <HardwareSection />
+      
+      {/* Fault Detection Section */}
+      <FaultDetectionSection />
+      
+      {/* CTA Section */}
+      <CTASection product={product} />
+      
+      {/* FAQ Section */}
+      <EcosystemFAQSection qna={qna} />
     </div>
   );
 }
@@ -567,250 +1151,167 @@ function useScrollTransform(): ScrollTransformState {
   return state;
 }
 
+// New Apple-style Hero Section for Auralis Ecosystem
 function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
   const heroImage = product.images[0];
-  // Use a shortened version of the description for the hero section
-  const heroDescription = product.shortDescription.split('.').slice(0, 2).join('.') + '.';
-  const { progress, isComplete } = useScrollTransform();
-  const [secondSectionRef, isSecondSectionVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const { progress } = useScrollTransform();
   
   // Easing function for smoother animation
   const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
   const easedProgress = easeOutCubic(progress);
   
-  // Image transform values - from hero (large) to second section (smaller, positioned)
-  // Scale from 1.0 to 0.75 (not too small)
-  const imageScale = 1 - (easedProgress * 0.25);
-  // Move down as we scroll
-  const translateY = easedProgress * 200;
-  
   return (
-    <div className="relative">
-      {/* Hero Section - Full Screen */}
-      <section className="w-full min-h-screen bg-card relative overflow-hidden flex items-center justify-center">
-        {/* Decorative background elements */}
-        <div 
-          className="absolute top-0 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-primary/5 rounded-full blur-3xl"
-          style={{ transform: `translateY(${parallaxOffset}px)` }}
-        />
-        <div 
-          className="absolute bottom-0 right-1/4 w-48 h-48 sm:w-80 sm:h-80 bg-accent/5 rounded-full blur-3xl"
-          style={{ transform: `translateY(${-parallaxOffset}px)` }}
-        />
-        
-        {/* Floating icons */}
-        <div 
-          className="absolute top-1/4 right-10 text-primary/10 hidden lg:block"
-          style={{ transform: `translateY(${floatOffset}px)` }}
-        >
-          <Shield className="w-16 h-16" />
-        </div>
-        <div 
-          className="absolute bottom-1/4 left-10 text-primary/10 hidden lg:block"
-          style={{ transform: `translateY(${-floatOffset}px)` }}
-        >
-          <Zap className="w-12 h-12" />
-        </div>
+    <section className="relative w-full min-h-screen bg-gradient-to-b from-background via-card to-background overflow-hidden flex items-center justify-center">
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-50" />
+      
+      {/* Parallax decorative elements */}
+      <div 
+        className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"
+        style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
+      />
+      <div 
+        className="absolute bottom-20 right-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl"
+        style={{ transform: `translateY(${-parallaxOffset * 0.5}px)` }}
+      />
+      <div 
+        className="absolute top-1/3 right-1/4 w-48 h-48 bg-primary/3 rounded-full blur-2xl hidden lg:block"
+        style={{ transform: `translateY(${floatOffset}px)` }}
+      />
 
-        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
-          {/* Desktop Layout: 60:40 ratio grid - Image 60%, Text 40% */}
-          <div className="hidden lg:grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-10 items-center">
-            {/* Product Image - Left Side (60%) with scroll animation */}
-            <div 
-              className="animate-slide-in-left will-change-transform"
-              style={{ 
-                transform: `scale(${imageScale}) translateY(${translateY}px)`,
-                transformOrigin: 'center center',
-                transition: 'transform 0.15s ease-out',
-                opacity: isComplete ? 0 : 1, // Hide when animation completes (image appears in section 2)
-              }}
-            >
-              <div className="relative group">
-                <Card className="overflow-hidden gradient-border shadow-2xl">
-                  <div className="relative aspect-[4/3] w-full">
-                    <Image
-                      src={heroImage.url}
-                      alt={heroImage.alt}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      data-ai-hint={heroImage.hint}
-                      priority
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-                </Card>
-                {/* Decorative glow effect */}
-                <div 
-                  className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle"
-                  style={{ opacity: 1 - progress * 0.5 }}
-                />
-              </div>
-            </div>
-
-            {/* Product Info - Right Side (40%) */}
-            <div 
-              className="flex flex-col space-y-3 sm:space-y-4 animate-slide-in-right"
-              style={{
-                opacity: 1 - progress * 0.8,
-                transform: `translateY(${progress * -30}px)`,
-                transition: 'opacity 0.15s ease-out, transform 0.15s ease-out'
-              }}
-            >
-              <Badge variant="outline" className="w-fit py-1 px-3 border-primary/50 text-primary animate-glow-pulse" style={{ animationDelay: '0.2s' }}>
-                {product.category}
-              </Badge>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-headline font-bold tracking-tighter text-gradient" style={{ animationDelay: '0.3s' }}>
-                {product.title}
-              </h1>
-              <p className="text-foreground/80 text-sm sm:text-base md:text-base max-w-md leading-relaxed" style={{ animationDelay: '0.4s' }}>
-                {heroDescription}
-              </p>
-              <div className="flex flex-wrap gap-3 pt-2" style={{ animationDelay: '0.5s' }}>
-                <Button asChild size="lg" className="group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
-                  <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
-                    Get Started <Sparkles className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="group">
-                  <Link href="#features">
-                    Explore Features
-                    <Zap className="ml-2 h-4 w-4 group-hover:text-primary transition-colors" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
+      <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
+        <div className="flex flex-col items-center text-center">
+          {/* Badge */}
+          <div 
+            className="mb-8 animate-slide-down"
+            style={{ 
+              opacity: 1 - easedProgress * 2,
+              transform: `translateY(${easedProgress * -20}px)`
+            }}
+          >
+            <Badge variant="outline" className="py-2 px-5 text-sm font-medium border-primary/30 text-primary bg-primary/5 backdrop-blur-sm">
+              Smart City Solutions
+            </Badge>
           </div>
 
-          {/* Mobile Layout: Image at top with badge overlay, content below */}
-          <div className="lg:hidden flex flex-col gap-6">
-            {/* Product Image with Badge Overlay */}
-            <div className="relative animate-slide-in-left">
-              <Card className="overflow-hidden gradient-border shadow-2xl">
-                <div className="relative aspect-[4/3] w-full">
+          {/* Main Title - Large Typography */}
+          <h1 
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-headline font-bold tracking-tighter mb-6 animate-slide-up"
+            style={{ 
+              opacity: 1 - easedProgress * 1.5,
+              transform: `translateY(${easedProgress * -40}px) scale(${1 - easedProgress * 0.1})`
+            }}
+          >
+            <span className="text-gradient">Auralis</span>
+          </h1>
+
+          {/* Subtitle */}
+          <h2 
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-headline font-medium tracking-tight text-foreground/90 mb-8 animate-slide-up"
+            style={{ 
+              animationDelay: '0.1s',
+              opacity: 1 - easedProgress * 1.5,
+              transform: `translateY(${easedProgress * -30}px)`
+            }}
+          >
+            The Brain of the Smart City
+          </h2>
+
+          {/* Short description */}
+          <p 
+            className="text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-2xl mx-auto mb-12 animate-slide-up"
+            style={{ 
+              animationDelay: '0.2s',
+              opacity: 1 - easedProgress * 2,
+              transform: `translateY(${easedProgress * -20}px)`
+            }}
+          >
+            Industrial-grade intelligence for modern urban infrastructure.
+          </p>
+
+          {/* Hero Product Image with 3D effect */}
+          <div 
+            className="relative w-full max-w-3xl mx-auto animate-scale-in"
+            style={{ 
+              animationDelay: '0.3s',
+              transform: `perspective(1000px) rotateX(${easedProgress * 15}deg) translateY(${easedProgress * 50}px) scale(${1 - easedProgress * 0.2})`,
+              opacity: 1 - easedProgress * 0.8
+            }}
+          >
+            <div className="relative group">
+              {/* 3D shadow effect */}
+              <div className="absolute -inset-4 bg-gradient-to-b from-primary/20 to-transparent rounded-3xl blur-2xl transform translate-y-4 group-hover:translate-y-6 transition-transform duration-500" />
+              
+              {/* Main image card */}
+              <Card className="overflow-hidden border-2 border-primary/10 shadow-2xl group-hover:border-primary/30 transition-all duration-500">
+                <div className="relative aspect-[16/10] w-full">
                   <Image
                     src={heroImage.url}
                     alt={heroImage.alt}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                     data-ai-hint={heroImage.hint}
                     priority
                   />
+                  {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  {/* Badge Overlay on top-left of image */}
-                  <Badge variant="outline" className="absolute top-4 left-4 py-1 px-3 border-white/50 text-white bg-black/30 backdrop-blur-sm animate-glow-pulse">
-                    {product.category}
-                  </Badge>
+                  
+                  {/* Floating stats on image */}
+                  <div className="absolute bottom-6 left-6 right-6 flex flex-wrap justify-center gap-4">
+                    {[
+                      { value: '80%', label: 'Energy Savings' },
+                      { value: '98%', label: 'Cost Reduction' },
+                      { value: '50:1', label: 'Node Ratio' }
+                    ].map((stat) => (
+                      <div 
+                        key={stat.label}
+                        className="bg-black/40 backdrop-blur-md rounded-xl px-4 py-2 border border-white/10"
+                      >
+                        <div className="text-white text-xl sm:text-2xl font-bold">{stat.value}</div>
+                        <div className="text-white/70 text-xs sm:text-sm">{stat.label}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </Card>
-              {/* Decorative glow effect */}
-              <div className="absolute -inset-4 bg-primary/10 rounded-3xl blur-2xl -z-10 animate-pulse-subtle" />
-            </div>
-
-            {/* Product Info - Below Image */}
-            <div className="flex flex-col space-y-3 animate-slide-in-right">
-              <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter text-gradient" style={{ animationDelay: '0.3s' }}>
-                {product.title}
-              </h1>
-              <p className="text-foreground/80 text-sm sm:text-base leading-relaxed" style={{ animationDelay: '0.4s' }}>
-                {heroDescription}
-              </p>
-              <div className="flex flex-wrap gap-3 pt-2" style={{ animationDelay: '0.5s' }}>
-                <Button asChild size="lg" className="group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
-                  <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
-                    Get Started <Sparkles className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="group">
-                  <Link href="#features">
-                    Explore Features
-                    <Zap className="ml-2 h-4 w-4 group-hover:text-primary transition-colors" />
-                  </Link>
-                </Button>
-              </div>
             </div>
           </div>
-        </div>
-        
-        {/* Scroll indicator */}
-        <div 
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
-          style={{
-            opacity: 1 - progress * 2,
-            transition: 'opacity 0.1s ease-out'
-          }}
-        >
-          <div className="w-6 h-10 rounded-full border-2 border-primary/30 flex items-start justify-center p-2">
-            <div className="w-1 h-2 bg-primary/50 rounded-full animate-scroll-indicator" />
+
+          {/* CTA Buttons */}
+          <div 
+            className="flex flex-wrap justify-center gap-4 mt-12 animate-slide-up"
+            style={{ 
+              animationDelay: '0.4s',
+              opacity: 1 - easedProgress * 3,
+              transform: `translateY(${easedProgress * -10}px)`
+            }}
+          >
+            <Button asChild size="lg" className="text-lg px-8 py-6 group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
+              <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
+                Get Started <Sparkles className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 group">
+              <Link href="#features">
+                Learn More
+                <Zap className="ml-2 h-5 w-5 group-hover:text-primary transition-colors" />
+              </Link>
+            </Button>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Second Section - Static image with description */}
-      <section 
-        ref={secondSectionRef}
-        className="w-full py-16 sm:py-20 md:py-24 bg-background relative overflow-hidden"
+      {/* Scroll indicator */}
+      <div 
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce"
+        style={{ opacity: 1 - progress * 3 }}
       >
-        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
-          <div className={`grid lg:grid-cols-[2fr_3fr] gap-8 lg:gap-12 items-center transition-all duration-700 ${
-            isSecondSectionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-            {/* Static Product Image - Left Side with proper ratio */}
-            <div className={`transition-all duration-700 delay-100 ${
-              isSecondSectionVisible ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 -translate-x-10 scale-95'
-            }`}>
-              <div className="relative group">
-                <Card className="overflow-hidden gradient-border shadow-xl">
-                  <div className="relative aspect-[4/3] w-full">
-                    <Image
-                      src={heroImage.url}
-                      alt={heroImage.alt}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      data-ai-hint={heroImage.hint}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-                </Card>
-                {/* Decorative glow effect */}
-                <div className="absolute -inset-3 bg-primary/5 rounded-2xl blur-xl -z-10" />
-              </div>
-            </div>
-
-            {/* Description - Right Side */}
-            <div className={`flex flex-col space-y-4 sm:space-y-6 transition-all duration-700 delay-200 ${
-              isSecondSectionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
-            }`}>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold tracking-tight">
-                Revolutionizing Urban Infrastructure
-              </h2>
-              <p className="text-foreground/80 text-sm sm:text-base leading-relaxed">
-                {product.longDescription}
-              </p>
-              <div className="flex flex-wrap gap-4 pt-2">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Zap className="h-5 w-5 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium">80% Energy Savings</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Shield className="h-5 w-5 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium">98% Cost Reduction</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Network className="h-5 w-5 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium">Hybrid Mesh Network</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <span className="text-foreground/50 text-sm font-medium">Scroll to explore</span>
+        <div className="w-6 h-10 rounded-full border-2 border-foreground/30 flex items-start justify-center p-2">
+          <div className="w-1.5 h-3 bg-foreground/50 rounded-full animate-scroll-indicator" />
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
 
@@ -885,12 +1386,18 @@ export function ProductDetailClient({ productSlug }: { productSlug: string }) {
         <DefaultHeroSection product={product} parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
       )}
 
-      {/* Main Content */}
-      <section id="features" className="w-full py-12 sm:py-16 md:py-24 relative">
-        <div className="container max-w-screen-xl px-4 md:px-6">
-          {isEcosystemProduct ? <EcosystemProductView product={product} /> : <ProductDetailView product={product} />}
+      {/* Main Content - Ecosystem has full-width sections, others have contained layout */}
+      {isEcosystemProduct ? (
+        <div id="features">
+          <EcosystemProductView product={product} />
         </div>
-      </section>
+      ) : (
+        <section id="features" className="w-full py-12 sm:py-16 md:py-24 relative">
+          <div className="container max-w-screen-xl px-4 md:px-6">
+            <ProductDetailView product={product} />
+          </div>
+        </section>
+      )}
     </div>
   );
 }
