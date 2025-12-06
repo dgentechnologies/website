@@ -5,7 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
+import { motion, AnimatePresence } from 'framer-motion';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
+
+// Dynamically import Spline component (v2.2.6 for Next.js compatibility)
+const Spline = dynamic(() => import('@splinetool/react-spline'), {
+  ssr: false,
+  loading: () => null
+});
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -1374,10 +1381,28 @@ function useScrollTransform(): ScrollTransformState {
   return state;
 }
 
-// New Apple-style Hero Section for Auralis Ecosystem
+// Scene3D Component for Spline 3D Background
+function Scene3D({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
+  return (
+    <div 
+      className="fixed top-0 left-0 w-full h-screen hidden md:block"
+      style={{ zIndex: -1 }}
+    >
+      <Spline
+        scene="https://prod.spline.design/kYNR21QjvqQUcBTD/scene.splinecode"
+        onLoad={onLoad}
+        onError={onError}
+        style={{ 
+          width: '100%', 
+          height: '100%'
+        }}
+      />
+    </div>
+  );
+}
+
+// New Apple-style Hero Section for Auralis Ecosystem with Framer Motion
 function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
-  const heroImage = product.images[0];
-  const { progress } = useScrollTransform();
   const [isMobile, setIsMobile] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
@@ -1392,193 +1417,148 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
-  // Easing function for smoother animation
-  const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
-  const easedProgress = easeOutCubic(progress);
-  
   // Show fallback gradient if on mobile, spline not loaded, or error occurred
   const showFallback = isMobile || !splineLoaded || splineError;
   
   return (
     <>
-      {/* Spline 3D Background - Fixed position, hidden on mobile, using iframe embed */}
+      {/* Spline 3D Background - Fixed position, hidden on mobile */}
       {!isMobile && !splineError && (
-        <div 
-          className="fixed inset-0 w-full h-screen pointer-events-none hidden md:block"
-          style={{ 
-            zIndex: -1,
-            opacity: splineLoaded ? 1 : 0,
-            transition: 'opacity 1s ease-in-out'
-          }}
-        >
-          <iframe
-            src="https://my.spline.design/auralisscrolltriggerscene-kYNR21QjvqQUcBTD/"
-            frameBorder="0"
-            width="100%"
-            height="100%"
-            style={{
-              pointerEvents: 'auto',
-              border: 'none'
-            }}
-            onLoad={() => setSplineLoaded(true)}
-            onError={() => setSplineError(true)}
-            title="Auralis 3D Animation"
-            allow="autoplay"
-          />
-        </div>
+        <Scene3D 
+          onLoad={() => setSplineLoaded(true)} 
+          onError={() => setSplineError(true)} 
+        />
       )}
       
-      <section className="relative w-full min-h-screen bg-gradient-to-b from-background via-card to-background overflow-hidden flex items-center justify-center">
-        {/* Animated background gradient - Show on mobile, as fallback, or on error */}
+      {/* Section 1: Hero (0% - 100% Viewport) */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Fallback gradient background for mobile */}
+        <div className={`absolute inset-0 bg-gradient-to-b from-background via-card to-background ${showFallback ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`} />
         <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent ${showFallback ? 'opacity-50' : 'opacity-0'} transition-opacity duration-1000`} />
-      
-      {/* Parallax decorative elements */}
-      <div 
-        className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"
-        style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
-      />
-      <div 
-        className="absolute bottom-20 right-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl"
-        style={{ transform: `translateY(${-parallaxOffset * 0.5}px)` }}
-      />
-      <div 
-        className="absolute top-1/3 right-1/4 w-48 h-48 bg-primary/3 rounded-full blur-2xl hidden lg:block"
-        style={{ transform: `translateY(${floatOffset}px)` }}
-      />
+        
+        {/* Hero Content Overlay - pointer-events: none so scroll passes through */}
+        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10 pointer-events-none">
+          <div className="flex flex-col items-center text-center">
+            {/* Main Title - Large Typography with Framer Motion */}
+            <motion.h1 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-headline font-bold tracking-tighter mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+            >
+              <span className="text-gradient">Auralis</span>
+              <span className="block text-foreground/90">The Brain of the Smart City</span>
+            </motion.h1>
 
-      <div className="container max-w-screen-xl px-4 md:px-6 relative z-10">
-        <div className="flex flex-col items-center text-center">
-          {/* Badge */}
-          <div 
-            className="mb-8 animate-slide-down"
-            style={{ 
-              opacity: 1 - easedProgress * 2,
-              transform: `translateY(${easedProgress * -20}px)`
-            }}
-          >
-            <Badge variant="outline" className="py-2 px-5 text-sm font-medium border-primary/30 text-primary bg-primary/5 backdrop-blur-sm">
-              Smart City Solutions
-            </Badge>
+            {/* Subtitle with Framer Motion */}
+            <motion.p 
+              className="text-xl sm:text-2xl md:text-3xl text-foreground/60 max-w-2xl mx-auto mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+            >
+              Retrofit. Connect. Control.
+            </motion.p>
+
+            {/* CTA Buttons - Keep clickable */}
+            <motion.div 
+              className="flex flex-wrap justify-center gap-4 pointer-events-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+            >
+              <Button asChild size="lg" className="text-lg px-8 py-6 group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
+                <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
+                  Get Started <Sparkles className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 group">
+                <Link href="#retrofit">
+                  Learn More
+                  <Zap className="ml-2 h-5 w-5 group-hover:text-primary transition-colors" />
+                </Link>
+              </Button>
+            </motion.div>
           </div>
+        </div>
 
-          {/* Main Title - Large Typography */}
-          <h1 
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-headline font-bold tracking-tighter mb-6 animate-slide-up"
-            style={{ 
-              opacity: 1 - easedProgress * 1.5,
-              transform: `translateY(${easedProgress * -40}px) scale(${1 - easedProgress * 0.1})`
-            }}
-          >
-            <span className="text-gradient">Auralis</span>
-          </h1>
+        {/* Scroll indicator */}
+        <motion.div 
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
+        >
+          <span className="text-foreground/50 text-sm font-medium">Scroll to explore</span>
+          <div className="w-6 h-10 rounded-full border-2 border-foreground/30 flex items-start justify-center p-2">
+            <motion.div 
+              className="w-1.5 h-3 bg-foreground/50 rounded-full"
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+        </motion.div>
+      </section>
 
-          {/* Subtitle */}
-          <h2 
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-headline font-medium tracking-tight text-foreground/90 mb-8 animate-slide-up"
-            style={{ 
-              animationDelay: '0.1s',
-              opacity: 1 - easedProgress * 1.5,
-              transform: `translateY(${easedProgress * -30}px)`
-            }}
+      {/* Section 2: The Retrofit Solution (100% - 200% Viewport) */}
+      <section id="retrofit" className="relative w-full min-h-screen flex items-center justify-start overflow-hidden">
+        {/* Background stays transparent to show Spline 3D behind */}
+        
+        {/* Content - Glassmorphism card on the left */}
+        <div className="container max-w-screen-xl px-4 md:px-6 relative z-10 pointer-events-none">
+          <motion.div 
+            className="max-w-xl ml-0 md:ml-8 lg:ml-16"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.3 }}
           >
-            The Brain of the Smart City
-          </h2>
-
-          {/* Short description */}
-          <p 
-            className="text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-2xl mx-auto mb-12 animate-slide-up"
-            style={{ 
-              animationDelay: '0.2s',
-              opacity: 1 - easedProgress * 2,
-              transform: `translateY(${easedProgress * -20}px)`
-            }}
-          >
-            Industrial-grade intelligence for modern urban infrastructure.
-          </p>
-
-          {/* Hero Product Image with 3D effect */}
-          <div 
-            className="relative w-full max-w-3xl mx-auto animate-scale-in"
-            style={{ 
-              animationDelay: '0.3s',
-              transform: `perspective(1000px) rotateX(${easedProgress * 15}deg) translateY(${easedProgress * 50}px) scale(${1 - easedProgress * 0.2})`,
-              opacity: 1 - easedProgress * 0.8
-            }}
-          >
-            <div className="relative group">
-              {/* 3D shadow effect */}
-              <div className="absolute -inset-4 bg-gradient-to-b from-primary/20 to-transparent rounded-3xl blur-2xl transform translate-y-4 group-hover:translate-y-6 transition-transform duration-500" />
+            {/* Glassmorphism Card */}
+            <div className="bg-white/10 dark:bg-black/20 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl pointer-events-auto">
+              <motion.h2 
+                className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <span className="text-gradient">Revitalize</span>
+                <span className="block text-foreground/90">Existing Infrastructure.</span>
+              </motion.h2>
               
-              {/* Main image card */}
-              <Card className="overflow-hidden border-2 border-primary/10 shadow-2xl group-hover:border-primary/30 transition-all duration-500">
-                <div className="relative aspect-[16/10] w-full">
-                  <Image
-                    src={heroImage.url}
-                    alt={heroImage.alt}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    data-ai-hint={heroImage.hint}
-                    priority
-                  />
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  
-                  {/* Floating stats on image */}
-                  <div className="absolute bottom-6 left-6 right-6 flex flex-wrap justify-center gap-4">
-                    {[
-                      { value: '80%', label: 'Energy Savings' },
-                      { value: '98%', label: 'Cost Reduction' },
-                      { value: '50:1', label: 'Node Ratio' }
-                    ].map((stat) => (
-                      <div 
-                        key={stat.label}
-                        className="bg-black/40 backdrop-blur-md rounded-xl px-4 py-2 border border-white/10"
-                      >
-                        <div className="text-white text-xl sm:text-2xl font-bold">{stat.value}</div>
-                        <div className="text-white/70 text-xs sm:text-sm">{stat.label}</div>
-                      </div>
-                    ))}
+              <motion.p 
+                className="text-lg sm:text-xl text-foreground/70 leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                Don't replace your poles. Upgrade them. Auralis attaches to any NEMA or wired setup in minutes, transforming legacy lights into intelligent assets.
+              </motion.p>
+
+              {/* Quick stats */}
+              <motion.div 
+                className="flex flex-wrap gap-6 mt-8"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                {[
+                  { value: '5 min', label: 'Install Time' },
+                  { value: 'Zero', label: 'Rewiring' },
+                  { value: 'IP66', label: 'Weather Rated' }
+                ].map((stat) => (
+                  <div key={stat.label} className="text-center">
+                    <div className="text-2xl sm:text-3xl font-bold text-primary">{stat.value}</div>
+                    <div className="text-sm text-foreground/60">{stat.label}</div>
                   </div>
-                </div>
-              </Card>
+                ))}
+              </motion.div>
             </div>
-          </div>
-
-          {/* CTA Buttons */}
-          <div 
-            className="flex flex-wrap justify-center gap-4 mt-12 animate-slide-up"
-            style={{ 
-              animationDelay: '0.4s',
-              opacity: 1 - easedProgress * 3,
-              transform: `translateY(${easedProgress * -10}px)`
-            }}
-          >
-            <Button asChild size="lg" className="text-lg px-8 py-6 group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
-              <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
-                Get Started <Sparkles className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 group">
-              <Link href="#features">
-                Learn More
-                <Zap className="ml-2 h-5 w-5 group-hover:text-primary transition-colors" />
-              </Link>
-            </Button>
-          </div>
+          </motion.div>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce"
-        style={{ opacity: 1 - progress * 3 }}
-      >
-        <span className="text-foreground/50 text-sm font-medium">Scroll to explore</span>
-        <div className="w-6 h-10 rounded-full border-2 border-foreground/30 flex items-start justify-center p-2">
-          <div className="w-1.5 h-3 bg-foreground/50 rounded-full animate-scroll-indicator" />
-        </div>
-      </div>
-    </section>
+      </section>
     </>
   );
 }
