@@ -2,7 +2,7 @@ export const teamMembers = [
   { 
     name: 'Tirthankar Dasgupta', 
     role: 'CEO & CTO', 
-    image: '/images/tirthankar-dasgupta.jpg',
+    image: '/images/tirthankar-dasgupta-V2.jpg',
     slug: 'tirthankar-dasgupta',
     bio: 'Tirthankar is a visionary leader with a background in Electronics and Communication Engineering (ECE). As the founder of DGEN Technologies, he drives the company\'s technical strategy and innovation. His passion for smart city solutions led to the creation of "Auralis," our flagship product. He has been instrumental in shaping the future of urban technology in India, and his expertise in IoT and AI is the cornerstone of our company\'s success.',
     linkedin: 'https://www.linkedin.com/in/tirthankardasguptaprofile',
@@ -29,7 +29,7 @@ export const teamMembers = [
   { 
     name: 'Arpan Bairagi', 
     role: 'COO', 
-    image: '/images/arpan-bairagi.png',
+    image: '/images/arpan-bairagi-V2.png',
     slug: 'arpan-bairagi',
     bio: 'Arpan oversees the day-to-day operations at DGEN Technologies, ensuring excellence in product delivery and client satisfaction. His expertise in supply chain management and operational efficiency has been crucial in scaling our B2B solutions. Arpan is committed to maintaining the highest standards of quality as we expand our manufacturing capabilities for the B2C market.',
     linkedin: 'https://www.linkedin.com/in/arpan-bairagi-2a8b02274/',
