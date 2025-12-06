@@ -1,10 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
+import dynamic from 'next/dynamic';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
+
+// Dynamically import Spline to avoid SSR issues and lazy load
+const Spline = dynamic(() => import('@splinetool/react-spline'), {
+  ssr: false,
+  loading: () => null
+});
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -1377,15 +1384,55 @@ function useScrollTransform(): ScrollTransformState {
 function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
   const heroImage = product.images[0];
   const { progress } = useScrollTransform();
+  const [isMobile, setIsMobile] = useState(false);
+  const [splineLoaded, setSplineLoaded] = useState(false);
+  const [splineError, setSplineError] = useState(false);
+  
+  // Detect mobile devices for performance optimization
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // Easing function for smoother animation
   const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
   const easedProgress = easeOutCubic(progress);
   
+  // Show fallback gradient if on mobile, spline not loaded, or error occurred
+  const showFallback = isMobile || !splineLoaded || splineError;
+  
   return (
-    <section className="relative w-full min-h-screen bg-gradient-to-b from-background via-card to-background overflow-hidden flex items-center justify-center">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-50" />
+    <>
+      {/* Spline 3D Background - Fixed position, hidden on mobile */}
+      {!isMobile && !splineError && (
+        <div 
+          className="fixed inset-0 w-full h-screen pointer-events-none hidden md:block"
+          style={{ 
+            zIndex: -1,
+            opacity: splineLoaded ? 1 : 0,
+            transition: 'opacity 1s ease-in-out'
+          }}
+        >
+          <Spline
+            scene="https://prod.spline.design/kYNR21QjvqQUcBTD/scene.splinecode"
+            onLoad={() => setSplineLoaded(true)}
+            onError={() => setSplineError(true)}
+            style={{ 
+              width: '100%', 
+              height: '100%',
+              pointerEvents: 'auto' // Allow scroll events to pass through to Spline
+            }}
+          />
+        </div>
+      )}
+      
+      <section className="relative w-full min-h-screen bg-gradient-to-b from-background via-card to-background overflow-hidden flex items-center justify-center">
+        {/* Animated background gradient - Show on mobile, as fallback, or on error */}
+        <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent ${showFallback ? 'opacity-50' : 'opacity-0'} transition-opacity duration-1000`} />
       
       {/* Parallax decorative elements */}
       <div 
@@ -1534,6 +1581,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         </div>
       </div>
     </section>
+    </>
   );
 }
 
