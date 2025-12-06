@@ -8,11 +8,19 @@ import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
 
-// Dynamically import Spline component (v2.2.6 for Next.js compatibility)
-const Spline = dynamic(() => import('@splinetool/react-spline'), {
-  ssr: false,
-  loading: () => null
-});
+// Dynamically import the custom SplineViewer component with SSR disabled
+// This avoids the ReactCurrentDispatcher/ReactCurrentOwner errors
+const SplineViewer = dynamic(
+  () => import('@/components/spline-viewer'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="animate-pulse text-foreground/30">Loading 3D Scene...</div>
+      </div>
+    )
+  }
+);
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -1382,13 +1390,14 @@ function useScrollTransform(): ScrollTransformState {
 }
 
 // Scene3D Component for Spline 3D Background
+// Uses custom SplineViewer component with @splinetool/runtime to avoid React version conflicts
 function Scene3D({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden md:block"
       style={{ zIndex: -1 }}
     >
-      <Spline
+      <SplineViewer
         scene="https://prod.spline.design/kYNR21QjvqQUcBTD/scene.splinecode"
         onLoad={onLoad}
         onError={onError}
