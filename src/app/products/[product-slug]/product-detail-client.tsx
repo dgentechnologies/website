@@ -8,7 +8,7 @@ import { products, Product, EcosystemDetail } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Smartphone, Check, CircuitBoard, Radio, Signal } from 'lucide-react';
+import { ArrowLeft, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar } from 'lucide-react';
 import {
     Carousel,
     CarouselContent,
@@ -33,7 +33,6 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParallax, useScrollAnimation, useFloatingAnimation } from '@/hooks/use-scroll-animation';
 import { notFound } from 'next/navigation';
-import { Cpu, Combine, GaugeCircle, Network, Router, ToyBrick } from 'lucide-react';
 
 // Generate Product Schema for SEO
 function generateProductSchema(product: Product) {
@@ -388,12 +387,15 @@ function RetrofitSection() {
   const [animationStep, setAnimationStep] = useState(0);
   
   useEffect(() => {
+    let interval: NodeJS.Timeout | undefined;
     if (isVisible) {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setAnimationStep((prev) => (prev + 1) % 4);
       }, 1500);
-      return () => clearInterval(interval);
     }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isVisible]);
 
   return (
@@ -827,12 +829,15 @@ function FaultDetectionSection() {
   const [simulationStep, setSimulationStep] = useState(0);
 
   useEffect(() => {
+    let interval: NodeJS.Timeout | undefined;
     if (isVisible) {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setSimulationStep((prev) => (prev + 1) % 5);
       }, 2000);
-      return () => clearInterval(interval);
     }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isVisible]);
 
   return (
