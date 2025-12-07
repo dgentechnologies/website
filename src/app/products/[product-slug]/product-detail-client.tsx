@@ -1527,8 +1527,8 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
             transition={{ duration: 0.8, ease: "easeOut" }}
             viewport={{ once: true, amount: 0.3 }}
           >
-            {/* Glassmorphism Card - Premium frosted glass look */}
-            <div className="p-10 rounded-3xl border border-white/20 bg-white/5 backdrop-blur-2xl shadow-[0_0_40px_-10px_rgba(255,255,255,0.1)] pointer-events-auto">
+            {/* Glassmorphism Card - Frosted Ice Light Mode styling */}
+            <div className="p-10 rounded-3xl border border-white bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] pointer-events-auto">
               <motion.h2 
                 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight mb-6"
                 initial={{ opacity: 0, y: 20 }}
@@ -1537,11 +1537,11 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
                 viewport={{ once: true }}
               >
                 <span className="text-gradient">Revitalize</span>
-                <span className="block text-foreground/90">Existing Infrastructure.</span>
+                <span className="block text-gray-900">Existing Infrastructure.</span>
               </motion.h2>
               
               <motion.p 
-                className="text-lg sm:text-xl text-foreground/70 leading-relaxed"
+                className="text-lg sm:text-xl text-gray-600 leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -1565,7 +1565,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
                     <div className="text-2xl sm:text-3xl font-bold text-primary">{stat.value}</div>
-                    <div className="text-sm text-foreground/60">{stat.label}</div>
+                    <div className="text-sm text-gray-500">{stat.label}</div>
                   </div>
                 ))}
               </motion.div>
