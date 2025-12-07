@@ -1527,8 +1527,8 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
             transition={{ duration: 0.8, ease: "easeOut" }}
             viewport={{ once: true, amount: 0.3 }}
           >
-            {/* Glassmorphism Card */}
-            <div className="bg-white/10 dark:bg-black/20 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl pointer-events-auto">
+            {/* Glassmorphism Card - Premium frosted glass look */}
+            <div className="p-10 rounded-3xl border border-white/20 bg-white/5 backdrop-blur-2xl shadow-[0_0_40px_-10px_rgba(255,255,255,0.1)] pointer-events-auto">
               <motion.h2 
                 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight mb-6"
                 initial={{ opacity: 0, y: 20 }}
