@@ -539,6 +539,7 @@ function RetrofitSection() {
 // Animated Mesh Network Visualization Component
 function MeshNetworkAnimation() {
   const [animationStep, setAnimationStep] = useState(0);
+  const filterId = `glow-${Math.random().toString(36).substr(2, 9)}`;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -578,7 +579,7 @@ function MeshNetworkAnimation() {
   return (
     <svg viewBox="0 0 400 320" className="w-full h-full">
       <defs>
-        <filter id="glow">
+        <filter id={filterId}>
           <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
           <feMerge>
             <feMergeNode in="coloredBlur"/>
@@ -621,7 +622,7 @@ function MeshNetworkAnimation() {
         cy={centerGateway.y}
         r="10"
         fill="#19b35c"
-        filter="url(#glow)"
+        filter={`url(#${filterId})`}
       />
 
       {/* Step 2: Packets traveling from outer nodes to center */}
@@ -739,7 +740,7 @@ function MeshNetworkSection() {
             </h2>
 
             {/* Sub-headline */}
-            <h3 className="text-2xl sm:text-3xl font-headline font-semibold" style={{ color: '#19b35c' }}>
+            <h3 className="text-2xl sm:text-3xl font-headline font-semibold text-primary">
               The Hybrid Wireless Mesh Network.
             </h3>
 
@@ -751,19 +752,19 @@ function MeshNetworkSection() {
             {/* Stats Grid */}
             <div className="grid grid-cols-3 gap-6 pt-6">
               <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold" style={{ color: '#19b35c' }}>
+                <div className="text-3xl sm:text-4xl font-bold text-primary">
                   50:1
                 </div>
                 <div className="text-sm text-gray-600 mt-2">Node Ratio</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold" style={{ color: '#19b35c' }}>
+                <div className="text-3xl sm:text-4xl font-bold text-primary">
                   98%
                 </div>
                 <div className="text-sm text-gray-600 mt-2">Cost Reduction</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold" style={{ color: '#19b35c' }}>
+                <div className="text-3xl sm:text-4xl font-bold text-primary">
                   &lt;100ms
                 </div>
                 <div className="text-sm text-gray-600 mt-2">Latency</div>
