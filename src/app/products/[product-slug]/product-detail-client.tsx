@@ -536,177 +536,254 @@ function RetrofitSection() {
   );
 }
 
-// Mesh Network Section: Hybrid Mesh Visualization
-function MeshNetworkSection() {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
-  const [activeNode, setActiveNode] = useState<number | null>(null);
+// Animated Mesh Network Visualization Component
+function MeshNetworkAnimation() {
+  const [animationStep, setAnimationStep] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setAnimationStep((prev) => (prev + 1) % 4);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Grid of 20 core nodes positioned in a grid pattern
+  const coreNodes = [
+    { x: 60, y: 60 }, { x: 120, y: 60 }, { x: 180, y: 60 }, { x: 240, y: 60 }, { x: 300, y: 60 },
+    { x: 60, y: 120 }, { x: 120, y: 120 }, { x: 180, y: 120 }, { x: 240, y: 120 }, { x: 300, y: 120 },
+    { x: 60, y: 180 }, { x: 120, y: 180 }, { x: 240, y: 180 }, { x: 300, y: 180 },
+    { x: 60, y: 240 }, { x: 120, y: 240 }, { x: 180, y: 240 }, { x: 240, y: 240 }, { x: 300, y: 240 },
+    { x: 360, y: 150 }
+  ];
+
+  const centerGateway = { x: 180, y: 180 };
+
+  // Generate mesh connections (connecting nodes to nearby neighbors)
+  const meshConnections = coreNodes.map((node, i) => {
+    const connections: Array<{ from: typeof node; to: typeof node }> = [];
+    coreNodes.forEach((otherNode, j) => {
+      if (i < j) {
+        const distance = Math.sqrt(
+          Math.pow(node.x - otherNode.x, 2) + Math.pow(node.y - otherNode.y, 2)
+        );
+        // Connect to nearby nodes (within 80 units)
+        if (distance < 80 && distance > 0) {
+          connections.push({ from: node, to: otherNode });
+        }
+      }
+    });
+    return connections;
+  }).flat();
 
   return (
-    <section ref={ref} className="min-h-screen flex items-center justify-center bg-gradient-to-b from-card to-background py-20 relative overflow-hidden">
+    <svg viewBox="0 0 400 320" className="w-full h-full">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+
+      {/* Step 1: Draw mesh connections (grey lines forming web) */}
+      {animationStep >= 1 && meshConnections.map((conn, i) => (
+        <motion.line
+          key={`mesh-${i}`}
+          x1={conn.from.x}
+          y1={conn.from.y}
+          x2={conn.to.x}
+          y2={conn.to.y}
+          stroke="#6b7280"
+          strokeWidth="1"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 0.3 }}
+          transition={{ duration: 1, delay: i * 0.02 }}
+        />
+      ))}
+
+      {/* Core Nodes (Grey Dots) */}
+      {coreNodes.map((node, i) => (
+        <circle
+          key={`node-${i}`}
+          cx={node.x}
+          cy={node.y}
+          r="4"
+          fill="#6b7280"
+          opacity="0.6"
+        />
+      ))}
+
+      {/* Center Gateway (Larger Green Dot) */}
+      <circle
+        cx={centerGateway.x}
+        cy={centerGateway.y}
+        r="10"
+        fill="#19b35c"
+        filter="url(#glow)"
+      />
+
+      {/* Step 2: Packets traveling from outer nodes to center */}
+      {animationStep >= 2 && [0, 4, 10, 14, 18].map((nodeIndex) => {
+        const node = coreNodes[nodeIndex];
+        const dx = centerGateway.x - node.x;
+        const dy = centerGateway.y - node.y;
+        
+        return (
+          <motion.g
+            key={`packet-${nodeIndex}`}
+            initial={{ x: 0, y: 0, opacity: 0 }}
+            animate={{ 
+              x: [0, dx],
+              y: [0, dy],
+              opacity: [0, 1, 1, 0]
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: Infinity,
+              delay: nodeIndex * 0.2,
+              ease: "easeInOut"
+            }}
+          >
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r="3"
+              fill="#19b35c"
+            />
+          </motion.g>
+        );
+      })}
+
+      {/* Step 3: Cloud icon and connection */}
+      {animationStep >= 3 && (
+        <>
+          {/* Dashed line from gateway to cloud */}
+          <motion.line
+            x1={centerGateway.x}
+            y1={centerGateway.y}
+            x2={centerGateway.x}
+            y2="40"
+            stroke="#19b35c"
+            strokeWidth="2"
+            strokeDasharray="5,5"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.8 }}
+            transition={{ duration: 0.8 }}
+          />
+          
+          {/* Cloud icon */}
+          <g transform={`translate(${centerGateway.x - 25}, 10)`}>
+            <motion.path
+              d="M10 25 Q10 15 20 15 Q20 10 25 10 Q30 10 30 15 Q40 15 40 25 Q40 30 35 30 L15 30 Q10 30 10 25"
+              fill="#19b35c"
+              opacity="0.3"
+              stroke="#19b35c"
+              strokeWidth="1"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 0.3 }}
+              transition={{ duration: 0.5 }}
+            />
+            <text x="25" y="23" fontSize="8" fill="#19b35c" textAnchor="middle" fontWeight="bold">
+              CLOUD
+            </text>
+          </g>
+
+          {/* Data packet to cloud */}
+          <motion.g
+            initial={{ y: 0, opacity: 0 }}
+            animate={{ 
+              y: [0, -(centerGateway.y - 40)],
+              opacity: [0, 1, 1, 0]
+            }}
+            transition={{ 
+              duration: 1.2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <circle
+              cx={centerGateway.x}
+              cy={centerGateway.y}
+              r="2.5"
+              fill="#19b35c"
+            />
+          </motion.g>
+        </>
+      )}
+    </svg>
+  );
+}
+
+// Mesh Network Section: Hybrid Mesh Architecture with Split Layout
+function MeshNetworkSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+
+  return (
+    <section ref={ref} className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden" style={{ backgroundColor: '#F3F4F6' }}>
       <div className="container max-w-screen-xl px-4 md:px-6">
-        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight mb-6">
-            <span className="text-gradient">Hybrid Mesh Network</span>
-          </h2>
-          <p className="text-xl sm:text-2xl text-foreground/70 max-w-3xl mx-auto">
-            50 nodes. 1 SIM card. Infinite possibilities.
-          </p>
-        </div>
+        {/* Split Layout: Text Left, Animation Right */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Side: Content */}
+          <motion.div
+            className="space-y-6"
+            initial={{ opacity: 0, x: -50 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Headline */}
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight text-gray-900">
+              50 Nodes. 1 SIM Card.{' '}
+              <span className="block mt-2">Zero Dead Zones.</span>
+            </h2>
 
-        {/* Network Visualization */}
-        <div className={`relative max-w-5xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-          <div className="relative aspect-[16/9] bg-gradient-to-br from-card to-background rounded-3xl border border-primary/10 overflow-hidden shadow-2xl p-8">
-            {/* SVG Network Visualization */}
-            <svg viewBox="0 0 500 280" className="w-full h-full" aria-label="Hybrid mesh network topology visualization">
-              <defs>
-                <linearGradient id="meshGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2"/>
-                  <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.1"/>
-                </linearGradient>
-                <filter id="nodeGlow">
-                  <feGaussianBlur stdDeviation="2" result="blur"/>
-                  <feMerge>
-                    <feMergeNode in="blur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-              </defs>
-              
-              {/* Background */}
-              <rect fill="url(#meshGradient)" width="500" height="280" rx="20"/>
+            {/* Sub-headline */}
+            <h3 className="text-2xl sm:text-3xl font-headline font-semibold" style={{ color: '#19b35c' }}>
+              The Hybrid Wireless Mesh Network.
+            </h3>
 
-              {/* Cloud Icon */}
-              <g transform="translate(420, 30)">
-                <ellipse cx="25" cy="25" rx="30" ry="20" fill="hsl(var(--primary))" opacity="0.2"/>
-                <text x="25" y="30" fontSize="10" fill="hsl(var(--primary))" textAnchor="middle" fontWeight="bold">CLOUD</text>
-              </g>
+            {/* Body Copy */}
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Auralis drastically reduces cellular costs. A single Auralis Pro Gateway acts as the cluster head for up to 50 Auralis Core streetlights. If one node fails, the mesh instantly self-heals, rerouting data to keep the network live.
+            </p>
 
-              {/* LTE Connection from Gateway to Cloud */}
-              <path 
-                d="M250 80 Q350 50 420 50" 
-                stroke="hsl(var(--primary))" 
-                strokeWidth="2" 
-                fill="none" 
-                strokeDasharray="5,5"
-                className={isVisible ? 'animate-pulse-subtle' : ''}
-              />
-              <text x="330" y="45" fontSize="8" fill="hsl(var(--primary))" fontWeight="bold">4G LTE</text>
-
-              {/* Gateway (Auralis Pro) - Center */}
-              <g 
-                transform="translate(230, 90)"
-                onMouseEnter={() => setActiveNode(0)}
-                onMouseLeave={() => setActiveNode(null)}
-                className="cursor-pointer"
-              >
-                <rect 
-                  x="0" y="0" width="40" height="40" 
-                  fill="hsl(var(--primary))" 
-                  rx="8"
-                  filter={activeNode === 0 ? 'url(#nodeGlow)' : ''}
-                  className="transition-all duration-300"
-                />
-                <text x="20" y="25" fontSize="8" fill="white" textAnchor="middle" fontWeight="bold">PRO</text>
-                {/* Signal indicator */}
-                <g transform="translate(20, -10)">
-                  <circle r="4" fill="hsl(var(--primary))" className="animate-pulse-subtle"/>
-                </g>
-              </g>
-
-              {/* Worker Nodes (Auralis Core) - Mesh Formation */}
-              {[
-                { x: 80, y: 60 }, { x: 120, y: 120 }, { x: 80, y: 180 },
-                { x: 160, y: 60 }, { x: 180, y: 150 }, { x: 140, y: 210 },
-                { x: 320, y: 60 }, { x: 360, y: 120 }, { x: 320, y: 180 },
-                { x: 280, y: 150 }, { x: 300, y: 210 }, { x: 380, y: 60 },
-              ].map((pos, i) => (
-                <g key={i}>
-                  {/* Connection lines to gateway */}
-                  <line 
-                    x1={pos.x + 15} y1={pos.y + 15} 
-                    x2="250" y2="110"
-                    stroke="hsl(var(--primary))" 
-                    strokeWidth="1" 
-                    opacity="0.3"
-                    strokeDasharray={activeNode === i + 1 ? '0' : '3,3'}
-                    className="transition-all duration-300"
-                  />
-                  {/* Node */}
-                  <g 
-                    transform={`translate(${pos.x}, ${pos.y})`}
-                    onMouseEnter={() => setActiveNode(i + 1)}
-                    onMouseLeave={() => setActiveNode(null)}
-                    className="cursor-pointer"
-                  >
-                    <rect 
-                      x="0" y="0" width="30" height="30" 
-                      fill={activeNode === i + 1 ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'} 
-                      opacity={activeNode === i + 1 ? 1 : 0.3}
-                      rx="6"
-                      className="transition-all duration-300"
-                    />
-                    <text x="15" y="20" fontSize="6" fill="white" textAnchor="middle">CORE</text>
-                  </g>
-                </g>
-              ))}
-
-              {/* Wi-Fi Symbol near Gateway */}
-              <g transform="translate(255, 145)">
-                <path d="M-15 8 Q0 -5 15 8" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" opacity="0.8"/>
-                <path d="M-10 5 Q0 -2 10 5" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" opacity="0.6"/>
-                <path d="M-5 2 Q0 0 5 2" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" opacity="0.4"/>
-                <text x="0" y="22" fontSize="8" fill="hsl(var(--primary))" textAnchor="middle">ESP-MESH</text>
-              </g>
-            </svg>
-
-            {/* Legend */}
-            <div className="absolute bottom-4 left-4 flex gap-6 text-xs">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-primary"/>
-                <span className="text-foreground/70">Auralis Pro (Gateway)</span>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-3 gap-6 pt-6">
+              <div className="text-center">
+                <div className="text-3xl sm:text-4xl font-bold" style={{ color: '#19b35c' }}>
+                  50:1
+                </div>
+                <div className="text-sm text-gray-600 mt-2">Node Ratio</div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-foreground/30"/>
-                <span className="text-foreground/70">Auralis Core (Worker)</span>
+              <div className="text-center">
+                <div className="text-3xl sm:text-4xl font-bold" style={{ color: '#19b35c' }}>
+                  98%
+                </div>
+                <div className="text-sm text-gray-600 mt-2">Cost Reduction</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl sm:text-4xl font-bold" style={{ color: '#19b35c' }}>
+                  &lt;100ms
+                </div>
+                <div className="text-sm text-gray-600 mt-2">Latency</div>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
 
-        {/* Topology Explanation */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-4xl mx-auto transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="p-8 rounded-2xl bg-card border border-primary/10">
-            <div className="flex items-center gap-3 mb-4">
-              <Wifi className="w-8 h-8 text-primary" />
-              <h3 className="text-2xl font-bold">Local Mesh</h3>
+          {/* Right Side: Interactive Animation in Glass Card */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            {/* White Glass Card Container */}
+            <div className="p-8 sm:p-10 rounded-3xl border-2 border-white bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative">
+              <div className="aspect-[4/3] w-full">
+                <MeshNetworkAnimation />
+              </div>
             </div>
-            <p className="text-foreground/70">
-              Workers communicate via ESP-MESH Wi-Fi. Self-healing topology automatically reroutes if any node fails.
-            </p>
-          </div>
-          <div className="p-8 rounded-2xl bg-card border border-primary/10">
-            <div className="flex items-center gap-3 mb-4">
-              <Signal className="w-8 h-8 text-primary" />
-              <h3 className="text-2xl font-bold">Cloud Backhaul</h3>
-            </div>
-            <p className="text-foreground/70">
-              One Gateway connects to the cloud via 4G LTE. MQTT protocol ensures reliable data delivery.
-            </p>
-          </div>
-        </div>
-
-        {/* Key Stats */}
-        <div className={`flex flex-wrap justify-center gap-8 mt-12 transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          {[
-            { value: '50:1', label: 'Node to Gateway Ratio' },
-            { value: '98%', label: 'SIM Cost Reduction' },
-            { value: '<100ms', label: 'Network Latency' }
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="text-4xl sm:text-5xl font-bold text-gradient">{stat.value}</div>
-              <div className="text-foreground/60 text-sm mt-1">{stat.label}</div>
-            </div>
-          ))}
+          </motion.div>
         </div>
       </div>
     </section>
