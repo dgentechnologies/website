@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Wifi, Zap, ShieldCheck, Sun, GaugeCircle, Cpu, Network, Radar } from 'lucide-react';
 import Link from 'next/link';
 import { products } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -11,72 +11,247 @@ import { useParallax, useScrollAnimation, useFloatingAnimation } from '@/hooks/u
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'about-story');
 
-function ProductCard({ product, index }: { product: typeof products[0]; index: number }) {
+// Bento Grid Product Cards
+function AuralisCard() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const product = products.find(p => p.slug === 'auralis-ecosystem')!;
 
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 perspective-container ${
+      className={`transition-all duration-700 ${
         isVisible
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-10'
+          ? 'opacity-100 translate-y-0 scale-100'
+          : 'opacity-0 translate-y-10 scale-95'
       }`}
-      style={{ transitionDelay: `${index * 150}ms` }}
     >
       <Link 
         href={`/products/${product.slug}`}
         className="block h-full"
-        aria-label={`View ${product.title} - ${product.category}`}
+        aria-label={`View ${product.title}`}
       >
-        <div className="relative h-full rounded-2xl overflow-hidden bg-gradient-to-br from-card via-card to-card/80 border-2 border-primary/10 hover:border-primary/50 shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 group cursor-pointer">
-          {/* Large Hero Image - Bigger for attention-grabbing */}
-          {product.images[0] && (
-            <div className="relative aspect-[3/2] sm:aspect-[4/3] lg:aspect-[3/2] w-full overflow-hidden">
-              <Image
-                src={product.images[0].url}
-                alt={`${product.title} - DGEN Technologies`}
-                fill
-                className="object-cover transition-all duration-700 group-hover:scale-110"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                loading="lazy"
-              />
-              {/* Gradient overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              
-              {/* Category badge positioned on image */}
-              <div className="absolute top-4 left-4">
-                <Badge className="bg-primary/90 backdrop-blur-sm text-white px-3 py-1 text-xs font-medium shadow-lg">
-                  {product.category}
-                </Badge>
-              </div>
-              
-              {/* Product icon floating on image */}
-              <div className="absolute top-4 right-4 p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 group-hover:bg-primary/30 group-hover:scale-110 transition-all duration-300">
-                <product.icon className="h-6 w-6 text-white" aria-hidden="true" />
-              </div>
+        <div className="relative h-full min-h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-primary/30 hover:border-primary/60 shadow-2xl hover:shadow-primary/30 transition-all duration-500 group cursor-pointer">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src={product.images[0].url}
+              alt={product.title}
+              fill
+              className="object-cover opacity-30 transition-all duration-700 group-hover:scale-105 group-hover:opacity-40"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80" />
+          </div>
 
-              {/* Title overlay on image bottom */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-7">
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-headline font-bold text-white mb-3 group-hover:text-primary-foreground transition-colors drop-shadow-lg">
-                  {product.title}
-                </h3>
-                <p className="text-white/80 text-sm sm:text-base line-clamp-2 leading-relaxed">
-                  {product.shortDescription.includes('.') 
-                    ? `${product.shortDescription.split('.')[0]}.`
-                    : product.shortDescription}
-                </p>
+          {/* Glassmorphism Content Overlay */}
+          <div className="relative h-full flex flex-col p-8 md:p-10">
+            <div className="flex-1">
+              <Badge className="bg-primary/20 backdrop-blur-md border border-primary/40 text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-lg mb-4">
+                {product.category}
+              </Badge>
+              
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-headline font-extrabold text-white mb-4 drop-shadow-2xl">
+                {product.title}
+              </h3>
+              
+              <p className="text-white/90 text-lg md:text-xl leading-relaxed mb-6 max-w-2xl">
+                Flagship smart city lighting system with Hybrid Wireless Mesh Network technology
+              </p>
+
+              {/* Feature Icons Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <Wifi className="h-7 w-7 text-primary" />
+                  <span className="text-white text-xs font-medium">ESP-MESH</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <Network className="h-7 w-7 text-primary" />
+                  <span className="text-white text-xs font-medium">4G LTE</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <Radar className="h-7 w-7 text-primary" />
+                  <span className="text-white text-xs font-medium">Radar</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <Cpu className="h-7 w-7 text-primary" />
+                  <span className="text-white text-xs font-medium">IoT Core</span>
+                </div>
               </div>
             </div>
-          )}
-          
-          {/* CTA Section */}
-          <div className="p-6 bg-gradient-to-b from-card/50 to-card">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-foreground/70 font-medium">Explore Product</span>
-              <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-3 transition-all duration-300">
-                <span className="text-sm">Learn More</span>
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+
+            {/* CTA Button */}
+            <div className="mt-auto">
+              <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 group-hover:gap-4">
+                <span className="text-base">Explore Ecosystem</span>
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
+function SolarCard() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const product = products.find(p => p.slug === 'solar-street-light')!;
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ${
+        isVisible
+          ? 'opacity-100 translate-y-0 scale-100'
+          : 'opacity-0 translate-y-10 scale-95'
+      }`}
+      style={{ transitionDelay: '150ms' }}
+    >
+      <Link 
+        href={`/products/${product.slug}`}
+        className="block h-full"
+        aria-label={`View ${product.title}`}
+      >
+        <div className="relative h-full min-h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-primary/30 hover:border-primary/60 shadow-2xl hover:shadow-primary/30 transition-all duration-500 group cursor-pointer">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src={product.images[0].url}
+              alt={product.title}
+              fill
+              className="object-cover opacity-40 transition-all duration-700 group-hover:scale-105 group-hover:opacity-50"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80" />
+          </div>
+
+          {/* Content */}
+          <div className="relative h-full flex flex-col p-8 md:p-10">
+            <div className="flex-1">
+              <Badge className="bg-primary/20 backdrop-blur-md border border-primary/40 text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-lg mb-4">
+                {product.category}
+              </Badge>
+              
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-headline font-extrabold text-white mb-4 drop-shadow-2xl">
+                {product.title}
+              </h3>
+              
+              <p className="text-white/90 text-base md:text-lg leading-relaxed mb-6">
+                Autonomous off-grid lighting powered by green energy
+              </p>
+
+              {/* Feature Icons */}
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <Sun className="h-6 w-6 text-primary" />
+                  <span className="text-white text-xs font-medium">Solar</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <GaugeCircle className="h-6 w-6 text-primary" />
+                  <span className="text-white text-xs font-medium">Autonomy</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <Cpu className="h-6 w-6 text-primary" />
+                  <span className="text-white text-xs font-medium">Smart</span>
+                </div>
+              </div>
+
+              <div className="space-y-2 text-white/80 text-sm">
+                <p>✓ 3-5 nights autonomy</p>
+                <p>✓ 8+ years battery life</p>
+                <p>✓ Zero grid dependency</p>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="mt-auto">
+              <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 group-hover:gap-4">
+                <span className="text-base">Learn More</span>
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
+function LEDCard() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const product = products.find(p => p.slug === 'led-street-light')!;
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ${
+        isVisible
+          ? 'opacity-100 translate-y-0 scale-100'
+          : 'opacity-0 translate-y-10 scale-95'
+      }`}
+      style={{ transitionDelay: '300ms' }}
+    >
+      <Link 
+        href={`/products/${product.slug}`}
+        className="block h-full"
+        aria-label={`View ${product.title}`}
+      >
+        <div className="relative h-full min-h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-primary/30 hover:border-primary/60 shadow-2xl hover:shadow-primary/30 transition-all duration-500 group cursor-pointer">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src={product.images[0].url}
+              alt={product.title}
+              fill
+              className="object-cover opacity-40 transition-all duration-700 group-hover:scale-105 group-hover:opacity-50"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80" />
+          </div>
+
+          {/* Content */}
+          <div className="relative h-full flex flex-col p-8 md:p-10">
+            <div className="flex-1">
+              <Badge className="bg-primary/20 backdrop-blur-md border border-primary/40 text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-lg mb-4">
+                {product.category}
+              </Badge>
+              
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-headline font-extrabold text-white mb-4 drop-shadow-2xl">
+                {product.title}
+              </h3>
+              
+              <p className="text-white/90 text-base md:text-lg leading-relaxed mb-6">
+                High-efficiency lighting built for durability and performance
+              </p>
+
+              {/* Feature Icons */}
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <Zap className="h-6 w-6 text-primary" />
+                  <span className="text-white text-xs font-medium">Efficient</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <ShieldCheck className="h-6 w-6 text-primary" />
+                  <span className="text-white text-xs font-medium">Durable</span>
+                </div>
+                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
+                  <GaugeCircle className="h-6 w-6 text-primary" />
+                  <span className="text-white text-xs font-medium">Long Life</span>
+                </div>
+              </div>
+
+              <div className="space-y-2 text-white/80 text-sm">
+                <p>✓ 70% energy savings</p>
+                <p>✓ 50,000+ hour lifespan</p>
+                <p>✓ IP66 weather protection</p>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="mt-auto">
+              <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 group-hover:gap-4">
+                <span className="text-base">Learn More</span>
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
               </div>
             </div>
           </div>
@@ -110,7 +285,8 @@ export default function ProductsPage() {
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
             src="/videos/product-page-hero.mp4"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
+          {/* Enhanced dark gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90"></div>
         </div>
 
         {/* Floating decorative elements */}
@@ -119,24 +295,27 @@ export default function ProductsPage() {
           style={{ transform: `translateY(${floatOffset}px)` }}
         />
         <div 
-          className="absolute bottom-1/4 right-10 w-24 h-24 sm:w-40 sm:h-40 rounded-full bg-accent/15 blur-3xl animate-float hidden sm:block"
+          className="absolute bottom-1/4 right-10 w-24 h-24 sm:w-40 sm:h-40 rounded-full bg-primary/15 blur-3xl animate-float hidden sm:block"
           style={{ transform: `translateY(${-floatOffset}px)`, animationDelay: '1s' }}
         />
 
-        {/* Hero Content */}
+        {/* Hero Content - Enhanced */}
         <div className="relative z-10 w-full flex flex-col items-center justify-center px-4 md:px-6">
           <div className="space-y-4 sm:space-y-6 flex flex-col items-center justify-center">
             <Badge variant="default" className="py-1.5 px-4 text-sm sm:text-base font-semibold animate-slide-down mx-auto">
               Our Products
             </Badge>
             <h1 
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight text-white leading-tight animate-slide-up text-center mx-auto" 
-              style={{ animationDelay: '0.2s' }}
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-headline font-black tracking-tight text-white leading-tight animate-slide-up text-center mx-auto drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]" 
+              style={{ 
+                animationDelay: '0.2s',
+                textShadow: '0 4px 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.6)'
+              }}
             >
               Smart City Solutions
             </h1>
             <p 
-              className="max-w-2xl mx-auto text-white/90 text-lg sm:text-xl md:text-2xl animate-slide-up text-center" 
+              className="max-w-2xl mx-auto text-white/90 text-lg sm:text-xl md:text-2xl animate-slide-up text-center drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" 
               style={{ animationDelay: '0.3s' }}
             >
               Made in India IoT Solutions
@@ -155,58 +334,64 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Products Grid - Main Focus */}
-      <div className="relative z-10 bg-background flex flex-col items-center justify-center">
+      {/* Products Bento Grid - Main Focus */}
+      <div className="relative z-10 bg-black flex flex-col items-center justify-center w-full">
         {/* Subtle decorative background */}
-        <div className="absolute top-20 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
-        <div className="absolute bottom-20 right-0 w-72 h-72 bg-accent/5 rounded-full blur-3xl translate-x-1/2 pointer-events-none" />
+        <div className="absolute top-20 left-0 w-72 h-72 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-20 right-0 w-72 h-72 bg-primary/10 rounded-full blur-3xl translate-x-1/2 pointer-events-none" />
 
-        <section className="w-full py-10 md:py-14 lg:py-20 overflow-hidden relative">
-          <div className="container max-w-screen-xl px-4 md:px-6">
+        <section className="w-full py-16 md:py-20 lg:py-24 overflow-hidden relative">
+          <div className="container max-w-screen-2xl px-4 md:px-6 lg:px-8">
             {/* Section Header - Minimal */}
             <div 
               ref={productsRef}
-              className={`text-center mb-8 md:mb-12 transition-all duration-700 ${
+              className={`text-center mb-12 md:mb-16 transition-all duration-700 ${
                 productsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
             >
-              <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tight md:text-4xl">
+              <h2 className="text-3xl sm:text-4xl font-headline font-bold tracking-tight md:text-5xl text-white">
                 Choose Your Solution
               </h2>
-              <p className="mt-2 text-foreground/60 text-sm sm:text-base max-w-lg mx-auto">
-                Click any product to explore features and specifications
+              <p className="mt-3 text-white/60 text-base sm:text-lg max-w-2xl mx-auto">
+                Premium industrial-grade products for modern smart city infrastructure
               </p>
             </div>
             
-            {/* Products Grid - Larger Cards for Impact */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 max-w-5xl mx-auto">
-              {products.map((product, index) => (
-                <ProductCard key={product.slug} product={product} index={index} />
-              ))}
+            {/* Bento Grid Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
+              {/* Auralis Ecosystem - Full Width on Mobile, Spanning Both Columns on Desktop */}
+              <div className="lg:col-span-2">
+                <AuralisCard />
+              </div>
+              
+              {/* Solar and LED - Side by Side */}
+              <SolarCard />
+              <LEDCard />
             </div>
           </div>
         </section>
 
         {/* CTA Section - Streamlined */}
-        <section className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-br from-card via-card to-primary/5 overflow-hidden relative">
+        <section className="w-full py-16 md:py-20 lg:py-24 bg-gradient-to-br from-zinc-900 via-zinc-800 to-black overflow-hidden relative border-t border-primary/20">
           <div 
             ref={ctaRef}
             className={`container max-w-screen-md px-4 md:px-6 text-center transition-all duration-700 relative ${
               ctaVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
           >
-            <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tight md:text-4xl">
+            <h2 className="text-3xl sm:text-4xl font-headline font-bold tracking-tight md:text-5xl text-white">
               Need a Custom Solution?
             </h2>
-            <p className="mt-3 text-foreground/70 text-sm sm:text-base max-w-md mx-auto">
+            <p className="mt-4 text-white/70 text-base sm:text-lg max-w-md mx-auto">
               We design custom IoT hardware tailored to your requirements.
             </p>
-            <div className="mt-6">
-              <Button asChild size="lg" className="group shadow-lg hover:shadow-primary/30 transition-all duration-300">
-                <Link href="/contact?subject=Custom+Hardware+Inquiry">
-                  Get in Touch <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
+            <div className="mt-8">
+              <Link href="/contact?subject=Custom+Hardware+Inquiry">
+                <div className="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 group text-lg">
+                  <span>Get in Touch</span>
+                  <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                </div>
+              </Link>
             </div>
           </div>
         </section>
