@@ -722,7 +722,7 @@ function MeshNetworkSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
 
   return (
-    <section ref={ref} className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden" style={{ backgroundColor: '#F3F4F6' }}>
+    <section ref={ref} className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden bg-gray-100">
       <div className="container max-w-screen-xl px-4 md:px-6">
         {/* Split Layout: Text Left, Animation Right */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -813,7 +813,7 @@ function HardwareSection() {
   const specs = activeMode === 'core' ? coreSpecs : proSpecs;
 
   return (
-    <section ref={ref} className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden" style={{ backgroundColor: '#F3F4F6' }}>
+    <section ref={ref} className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden bg-gray-100">
       <div className="container max-w-screen-xl px-4 md:px-6">
         {/* Section Header */}
         <motion.div
