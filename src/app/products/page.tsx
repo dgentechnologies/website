@@ -23,7 +23,7 @@ function ProductColumn({ product, icon, features, keyPoints }: ProductColumnProp
   return (
     <Link 
       href={`/products/${product.slug}`}
-      className="flex-1 min-h-[500px] lg:min-h-0 group relative overflow-hidden transition-all duration-700 ease-in-out lg:hover:flex-[1.8] cursor-pointer"
+      className="flex-1 min-h-[70vh] md:min-h-0 group relative overflow-hidden transition-all duration-700 ease-in-out md:hover:flex-[1.8] cursor-pointer"
       aria-label={`View ${product.title}`}
     >
       {/* Background Image */}
@@ -32,8 +32,8 @@ function ProductColumn({ product, icon, features, keyPoints }: ProductColumnProp
           src={product.images[0].url}
           alt={product.title}
           fill
-          className="object-cover transition-all duration-700 group-hover:scale-105"
-          sizes="(max-width: 1024px) 100vw, 33vw"
+          className="object-cover object-center transition-all duration-700 md:group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, 33vw"
           priority
         />
         {/* Dark gradient overlay (bottom-to-top) for text readability */}
@@ -41,31 +41,31 @@ function ProductColumn({ product, icon, features, keyPoints }: ProductColumnProp
       </div>
 
       {/* Content Container */}
-      <div className="relative h-full flex flex-col justify-end p-6 lg:p-10">
+      <div className="relative h-full flex flex-col justify-end p-6 md:p-10">
         {/* Collapsed State Content - Always Visible */}
-        <div className="mb-4 lg:mb-6">
-          <div className="flex items-center gap-3 lg:gap-4 mb-3">
-            <div className="p-3 lg:p-4 rounded-xl bg-primary/20 backdrop-blur-sm border border-primary/40">
+        <div className="mb-4 md:mb-6">
+          <div className="flex items-center gap-3 md:gap-4 mb-3">
+            <div className="p-2.5 md:p-4 rounded-xl bg-primary/20 backdrop-blur-sm border border-primary/40">
               {icon}
             </div>
-            <h3 className="text-2xl lg:text-3xl xl:text-4xl font-headline font-bold text-white">
+            <h3 className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-headline font-bold text-white leading-tight">
               {product.title}
             </h3>
           </div>
         </div>
 
-        {/* Expanded State Content - Visible on mobile, fades in on desktop hover */}
-        <div className="lg:opacity-0 lg:max-h-0 max-h-none lg:overflow-hidden transition-all duration-700 lg:group-hover:opacity-100 lg:group-hover:max-h-[500px]">
-          <p className="text-white/90 text-sm lg:text-base xl:text-lg leading-relaxed mb-4 lg:mb-6">
+        {/* Expanded State Content - Always visible on mobile, fades in on desktop hover */}
+        <div className="md:opacity-0 md:max-h-0 max-h-none md:overflow-hidden transition-all duration-700 md:group-hover:opacity-100 md:group-hover:max-h-[500px]">
+          <p className="text-white/90 text-sm md:text-base xl:text-lg leading-relaxed mb-4 md:mb-6">
             {product.shortDescription.split('.')[0]}.
           </p>
 
           {/* Feature Icons */}
-          <div className="grid grid-cols-3 gap-2 lg:gap-3 mb-4 lg:mb-6">
+          <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4 md:mb-6">
             {features.map((feature, idx) => (
               <div 
                 key={idx}
-                className="flex flex-col items-center gap-1 lg:gap-2 p-2 lg:p-3 rounded-lg bg-white/10 backdrop-blur-md border border-white/20"
+                className="flex flex-col items-center gap-1 md:gap-2 p-2 md:p-3 rounded-lg bg-white/10 backdrop-blur-md border border-white/20"
               >
                 {feature.icon}
                 <span className="text-white text-xs font-medium text-center">{feature.label}</span>
@@ -74,16 +74,16 @@ function ProductColumn({ product, icon, features, keyPoints }: ProductColumnProp
           </div>
 
           {/* Key Points */}
-          <div className="space-y-1 lg:space-y-2 text-white/80 text-xs lg:text-sm mb-4 lg:mb-6">
+          <div className="space-y-1 md:space-y-2 text-white/80 text-xs md:text-sm mb-4 md:mb-6">
             {keyPoints.map((point, idx) => (
               <p key={idx}>✓ {point}</p>
             ))}
           </div>
 
           {/* Learn More Button */}
-          <div className="inline-flex items-center gap-2 lg:gap-3 px-5 lg:px-6 py-2.5 lg:py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl transition-all duration-300 group/btn">
-            <span className="text-xs lg:text-sm">Learn More</span>
-            <ArrowRight className="h-3 w-3 lg:h-4 lg:w-4 group-hover/btn:translate-x-1 transition-transform" />
+          <div className="inline-flex items-center gap-2 md:gap-3 px-5 md:px-6 py-2.5 md:py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl transition-all duration-300 group/btn">
+            <span className="text-xs md:text-sm">Learn More</span>
+            <ArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover/btn:translate-x-1 transition-transform" />
           </div>
         </div>
       </div>
@@ -169,10 +169,10 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Expanding Flex Gallery - NEW */}
+      {/* Expanding Flex Gallery - Responsive */}
       <section className="relative w-full bg-black">
-        {/* Desktop: Horizontal Flex Gallery */}
-        <div className="hidden lg:flex h-screen">
+        {/* Desktop: Horizontal Flex Gallery (md and up) */}
+        <div className="hidden md:flex h-screen">
           <ProductColumn
             product={auralisProduct}
             icon={<Cpu className="h-8 w-8 text-primary" />}
@@ -219,15 +219,15 @@ export default function ProductsPage() {
           />
         </div>
 
-        {/* Mobile: Vertical Stack */}
-        <div className="lg:hidden flex flex-col">
+        {/* Mobile: Vertical Stack (below md) */}
+        <div className="md:hidden flex flex-col">
           <ProductColumn
             product={auralisProduct}
-            icon={<Cpu className="h-8 w-8 text-primary" />}
+            icon={<Cpu className="h-7 w-7 text-primary" />}
             features={[
-              { icon: <Wifi className="h-6 w-6 text-primary" />, label: "ESP-MESH" },
-              { icon: <Network className="h-6 w-6 text-primary" />, label: "4G LTE" },
-              { icon: <Radar className="h-6 w-6 text-primary" />, label: "Radar" },
+              { icon: <Wifi className="h-5 w-5 text-primary" />, label: "ESP-MESH" },
+              { icon: <Network className="h-5 w-5 text-primary" />, label: "4G LTE" },
+              { icon: <Radar className="h-5 w-5 text-primary" />, label: "Radar" },
             ]}
             keyPoints={[
               "Hybrid Wireless Mesh Network",
@@ -238,11 +238,11 @@ export default function ProductsPage() {
           
           <ProductColumn
             product={solarProduct}
-            icon={<Sun className="h-8 w-8 text-primary" />}
+            icon={<Sun className="h-7 w-7 text-primary" />}
             features={[
-              { icon: <Sun className="h-6 w-6 text-primary" />, label: "Solar" },
-              { icon: <GaugeCircle className="h-6 w-6 text-primary" />, label: "Autonomy" },
-              { icon: <Cpu className="h-6 w-6 text-primary" />, label: "Smart" },
+              { icon: <Sun className="h-5 w-5 text-primary" />, label: "Solar" },
+              { icon: <GaugeCircle className="h-5 w-5 text-primary" />, label: "Autonomy" },
+              { icon: <Cpu className="h-5 w-5 text-primary" />, label: "Smart" },
             ]}
             keyPoints={[
               "3-5 nights autonomy",
@@ -253,11 +253,11 @@ export default function ProductsPage() {
           
           <ProductColumn
             product={ledProduct}
-            icon={<Zap className="h-8 w-8 text-primary" />}
+            icon={<Zap className="h-7 w-7 text-primary" />}
             features={[
-              { icon: <Zap className="h-6 w-6 text-primary" />, label: "Efficient" },
-              { icon: <ShieldCheck className="h-6 w-6 text-primary" />, label: "Durable" },
-              { icon: <GaugeCircle className="h-6 w-6 text-primary" />, label: "Long Life" },
+              { icon: <Zap className="h-5 w-5 text-primary" />, label: "Efficient" },
+              { icon: <ShieldCheck className="h-5 w-5 text-primary" />, label: "Durable" },
+              { icon: <GaugeCircle className="h-5 w-5 text-primary" />, label: "Long Life" },
             ]}
             keyPoints={[
               "70% energy savings",
