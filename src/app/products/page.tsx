@@ -11,253 +11,83 @@ import { useParallax, useScrollAnimation, useFloatingAnimation } from '@/hooks/u
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'about-story');
 
-// Bento Grid Product Cards
-function AuralisCard() {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
-  const product = products.find(p => p.slug === 'auralis-ecosystem')!;
-
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ${
-        isVisible
-          ? 'opacity-100 translate-y-0 scale-100'
-          : 'opacity-0 translate-y-10 scale-95'
-      }`}
-    >
-      <Link 
-        href={`/products/${product.slug}`}
-        className="block h-full"
-        aria-label={`View ${product.title}`}
-      >
-        <div className="relative h-full min-h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-primary/30 hover:border-primary/60 shadow-2xl hover:shadow-primary/30 transition-all duration-500 group cursor-pointer">
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <Image
-              src={product.images[0].url}
-              alt={product.title}
-              fill
-              className="object-cover opacity-30 transition-all duration-700 group-hover:scale-105 group-hover:opacity-40"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80" />
-          </div>
-
-          {/* Glassmorphism Content Overlay */}
-          <div className="relative h-full flex flex-col p-8 md:p-10">
-            <div className="flex-1">
-              <Badge className="bg-primary/20 backdrop-blur-md border border-primary/40 text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-lg mb-4">
-                {product.category}
-              </Badge>
-              
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-headline font-extrabold text-white mb-4 drop-shadow-2xl">
-                {product.title}
-              </h3>
-              
-              <p className="text-white/90 text-lg md:text-xl leading-relaxed mb-6 max-w-2xl">
-                Flagship smart city lighting system with Hybrid Wireless Mesh Network technology
-              </p>
-
-              {/* Feature Icons Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <Wifi className="h-7 w-7 text-primary" />
-                  <span className="text-white text-xs font-medium">ESP-MESH</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <Network className="h-7 w-7 text-primary" />
-                  <span className="text-white text-xs font-medium">4G LTE</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <Radar className="h-7 w-7 text-primary" />
-                  <span className="text-white text-xs font-medium">Radar</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <Cpu className="h-7 w-7 text-primary" />
-                  <span className="text-white text-xs font-medium">IoT Core</span>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="mt-auto">
-              <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 group-hover:gap-4">
-                <span className="text-base">Explore Ecosystem</span>
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </div>
-  );
+// Expanding Flex Gallery Product Column
+interface ProductColumnProps {
+  product: typeof products[0];
+  icon: React.ReactNode;
+  features: Array<{ icon: React.ReactNode; label: string }>;
+  keyPoints: string[];
 }
 
-function SolarCard() {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
-  const product = products.find(p => p.slug === 'solar-street-light')!;
-
+function ProductColumn({ product, icon, features, keyPoints }: ProductColumnProps) {
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ${
-        isVisible
-          ? 'opacity-100 translate-y-0 scale-100'
-          : 'opacity-0 translate-y-10 scale-95'
-      }`}
-      style={{ transitionDelay: '150ms' }}
+    <Link 
+      href={`/products/${product.slug}`}
+      className="flex-1 min-h-[500px] lg:min-h-0 group relative overflow-hidden transition-all duration-700 ease-in-out lg:hover:flex-[1.8] cursor-pointer"
+      aria-label={`View ${product.title}`}
     >
-      <Link 
-        href={`/products/${product.slug}`}
-        className="block h-full"
-        aria-label={`View ${product.title}`}
-      >
-        <div className="relative h-full min-h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-primary/30 hover:border-primary/60 shadow-2xl hover:shadow-primary/30 transition-all duration-500 group cursor-pointer">
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <Image
-              src={product.images[0].url}
-              alt={product.title}
-              fill
-              className="object-cover opacity-40 transition-all duration-700 group-hover:scale-105 group-hover:opacity-50"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80" />
-          </div>
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src={product.images[0].url}
+          alt={product.title}
+          fill
+          className="object-cover transition-all duration-700 group-hover:scale-105"
+          sizes="(max-width: 1024px) 100vw, 33vw"
+          priority
+        />
+        {/* Dark gradient overlay (bottom-to-top) for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/40" />
+      </div>
 
-          {/* Content */}
-          <div className="relative h-full flex flex-col p-8 md:p-10">
-            <div className="flex-1">
-              <Badge className="bg-primary/20 backdrop-blur-md border border-primary/40 text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-lg mb-4">
-                {product.category}
-              </Badge>
-              
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-headline font-extrabold text-white mb-4 drop-shadow-2xl">
-                {product.title}
-              </h3>
-              
-              <p className="text-white/90 text-base md:text-lg leading-relaxed mb-6">
-                Autonomous off-grid lighting powered by green energy
-              </p>
-
-              {/* Feature Icons */}
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <Sun className="h-6 w-6 text-primary" />
-                  <span className="text-white text-xs font-medium">Solar</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <GaugeCircle className="h-6 w-6 text-primary" />
-                  <span className="text-white text-xs font-medium">Autonomy</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <Cpu className="h-6 w-6 text-primary" />
-                  <span className="text-white text-xs font-medium">Smart</span>
-                </div>
-              </div>
-
-              <div className="space-y-2 text-white/80 text-sm">
-                <p>✓ 3-5 nights autonomy</p>
-                <p>✓ 8+ years battery life</p>
-                <p>✓ Zero grid dependency</p>
-              </div>
+      {/* Content Container */}
+      <div className="relative h-full flex flex-col justify-end p-6 lg:p-10">
+        {/* Collapsed State Content - Always Visible */}
+        <div className="mb-4 lg:mb-6">
+          <div className="flex items-center gap-3 lg:gap-4 mb-3">
+            <div className="p-3 lg:p-4 rounded-xl bg-primary/20 backdrop-blur-sm border border-primary/40">
+              {icon}
             </div>
-
-            {/* CTA Button */}
-            <div className="mt-auto">
-              <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 group-hover:gap-4">
-                <span className="text-base">Learn More</span>
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
-              </div>
-            </div>
+            <h3 className="text-2xl lg:text-3xl xl:text-4xl font-headline font-bold text-white">
+              {product.title}
+            </h3>
           </div>
         </div>
-      </Link>
-    </div>
-  );
-}
 
-function LEDCard() {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
-  const product = products.find(p => p.slug === 'led-street-light')!;
+        {/* Expanded State Content - Visible on mobile, fades in on desktop hover */}
+        <div className="lg:opacity-0 lg:max-h-0 max-h-none lg:overflow-hidden transition-all duration-700 lg:group-hover:opacity-100 lg:group-hover:max-h-[500px]">
+          <p className="text-white/90 text-sm lg:text-base xl:text-lg leading-relaxed mb-4 lg:mb-6">
+            {product.shortDescription.split('.')[0]}.
+          </p>
 
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ${
-        isVisible
-          ? 'opacity-100 translate-y-0 scale-100'
-          : 'opacity-0 translate-y-10 scale-95'
-      }`}
-      style={{ transitionDelay: '300ms' }}
-    >
-      <Link 
-        href={`/products/${product.slug}`}
-        className="block h-full"
-        aria-label={`View ${product.title}`}
-      >
-        <div className="relative h-full min-h-[600px] rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-primary/30 hover:border-primary/60 shadow-2xl hover:shadow-primary/30 transition-all duration-500 group cursor-pointer">
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <Image
-              src={product.images[0].url}
-              alt={product.title}
-              fill
-              className="object-cover opacity-40 transition-all duration-700 group-hover:scale-105 group-hover:opacity-50"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80" />
+          {/* Feature Icons */}
+          <div className="grid grid-cols-3 gap-2 lg:gap-3 mb-4 lg:mb-6">
+            {features.map((feature, idx) => (
+              <div 
+                key={idx}
+                className="flex flex-col items-center gap-1 lg:gap-2 p-2 lg:p-3 rounded-lg bg-white/10 backdrop-blur-md border border-white/20"
+              >
+                {feature.icon}
+                <span className="text-white text-xs font-medium text-center">{feature.label}</span>
+              </div>
+            ))}
           </div>
 
-          {/* Content */}
-          <div className="relative h-full flex flex-col p-8 md:p-10">
-            <div className="flex-1">
-              <Badge className="bg-primary/20 backdrop-blur-md border border-primary/40 text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-lg mb-4">
-                {product.category}
-              </Badge>
-              
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-headline font-extrabold text-white mb-4 drop-shadow-2xl">
-                {product.title}
-              </h3>
-              
-              <p className="text-white/90 text-base md:text-lg leading-relaxed mb-6">
-                High-efficiency lighting built for durability and performance
-              </p>
+          {/* Key Points */}
+          <div className="space-y-1 lg:space-y-2 text-white/80 text-xs lg:text-sm mb-4 lg:mb-6">
+            {keyPoints.map((point, idx) => (
+              <p key={idx}>✓ {point}</p>
+            ))}
+          </div>
 
-              {/* Feature Icons */}
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <Zap className="h-6 w-6 text-primary" />
-                  <span className="text-white text-xs font-medium">Efficient</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <ShieldCheck className="h-6 w-6 text-primary" />
-                  <span className="text-white text-xs font-medium">Durable</span>
-                </div>
-                <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all">
-                  <GaugeCircle className="h-6 w-6 text-primary" />
-                  <span className="text-white text-xs font-medium">Long Life</span>
-                </div>
-              </div>
-
-              <div className="space-y-2 text-white/80 text-sm">
-                <p>✓ 70% energy savings</p>
-                <p>✓ 50,000+ hour lifespan</p>
-                <p>✓ IP66 weather protection</p>
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="mt-auto">
-              <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 group-hover:gap-4">
-                <span className="text-base">Learn More</span>
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
-              </div>
-            </div>
+          {/* Learn More Button */}
+          <div className="inline-flex items-center gap-2 lg:gap-3 px-5 lg:px-6 py-2.5 lg:py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl transition-all duration-300 group/btn">
+            <span className="text-xs lg:text-sm">Learn More</span>
+            <ArrowRight className="h-3 w-3 lg:h-4 lg:w-4 group-hover/btn:translate-x-1 transition-transform" />
           </div>
         </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
 
@@ -267,9 +97,14 @@ export default function ProductsPage() {
   const [productsRef, productsVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
   const [ctaRef, ctaVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
 
+  // Get products
+  const auralisProduct = products.find(p => p.slug === 'auralis-ecosystem')!;
+  const solarProduct = products.find(p => p.slug === 'solar-street-light')!;
+  const ledProduct = products.find(p => p.slug === 'led-street-light')!;
+
   return (
     <div className="flex flex-col overflow-hidden items-center justify-center">
-      {/* Full Screen Hero Section */}
+      {/* Full Screen Hero Section - UNCHANGED */}
       <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex flex-col items-center justify-center text-center">
         {/* Parallax Video Background Layer */}
         <div 
@@ -334,44 +169,107 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Products Bento Grid - Main Focus */}
+      {/* Expanding Flex Gallery - NEW */}
+      <section className="relative w-full bg-black">
+        {/* Desktop: Horizontal Flex Gallery */}
+        <div className="hidden lg:flex h-screen">
+          <ProductColumn
+            product={auralisProduct}
+            icon={<Cpu className="h-8 w-8 text-primary" />}
+            features={[
+              { icon: <Wifi className="h-6 w-6 text-primary" />, label: "ESP-MESH" },
+              { icon: <Network className="h-6 w-6 text-primary" />, label: "4G LTE" },
+              { icon: <Radar className="h-6 w-6 text-primary" />, label: "Radar" },
+            ]}
+            keyPoints={[
+              "Hybrid Wireless Mesh Network",
+              "ESP-MESH + 4G LTE connectivity",
+              "98% reduction in SIM costs",
+            ]}
+          />
+          
+          <ProductColumn
+            product={solarProduct}
+            icon={<Sun className="h-8 w-8 text-primary" />}
+            features={[
+              { icon: <Sun className="h-6 w-6 text-primary" />, label: "Solar" },
+              { icon: <GaugeCircle className="h-6 w-6 text-primary" />, label: "Autonomy" },
+              { icon: <Cpu className="h-6 w-6 text-primary" />, label: "Smart" },
+            ]}
+            keyPoints={[
+              "3-5 nights autonomy",
+              "8+ years battery life",
+              "Zero grid dependency",
+            ]}
+          />
+          
+          <ProductColumn
+            product={ledProduct}
+            icon={<Zap className="h-8 w-8 text-primary" />}
+            features={[
+              { icon: <Zap className="h-6 w-6 text-primary" />, label: "Efficient" },
+              { icon: <ShieldCheck className="h-6 w-6 text-primary" />, label: "Durable" },
+              { icon: <GaugeCircle className="h-6 w-6 text-primary" />, label: "Long Life" },
+            ]}
+            keyPoints={[
+              "70% energy savings",
+              "50,000+ hour lifespan",
+              "IP66 weather protection",
+            ]}
+          />
+        </div>
+
+        {/* Mobile: Vertical Stack */}
+        <div className="lg:hidden flex flex-col">
+          <ProductColumn
+            product={auralisProduct}
+            icon={<Cpu className="h-8 w-8 text-primary" />}
+            features={[
+              { icon: <Wifi className="h-6 w-6 text-primary" />, label: "ESP-MESH" },
+              { icon: <Network className="h-6 w-6 text-primary" />, label: "4G LTE" },
+              { icon: <Radar className="h-6 w-6 text-primary" />, label: "Radar" },
+            ]}
+            keyPoints={[
+              "Hybrid Wireless Mesh Network",
+              "ESP-MESH + 4G LTE connectivity",
+              "98% reduction in SIM costs",
+            ]}
+          />
+          
+          <ProductColumn
+            product={solarProduct}
+            icon={<Sun className="h-8 w-8 text-primary" />}
+            features={[
+              { icon: <Sun className="h-6 w-6 text-primary" />, label: "Solar" },
+              { icon: <GaugeCircle className="h-6 w-6 text-primary" />, label: "Autonomy" },
+              { icon: <Cpu className="h-6 w-6 text-primary" />, label: "Smart" },
+            ]}
+            keyPoints={[
+              "3-5 nights autonomy",
+              "8+ years battery life",
+              "Zero grid dependency",
+            ]}
+          />
+          
+          <ProductColumn
+            product={ledProduct}
+            icon={<Zap className="h-8 w-8 text-primary" />}
+            features={[
+              { icon: <Zap className="h-6 w-6 text-primary" />, label: "Efficient" },
+              { icon: <ShieldCheck className="h-6 w-6 text-primary" />, label: "Durable" },
+              { icon: <GaugeCircle className="h-6 w-6 text-primary" />, label: "Long Life" },
+            ]}
+            keyPoints={[
+              "70% energy savings",
+              "50,000+ hour lifespan",
+              "IP66 weather protection",
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* CTA Section - UNCHANGED */}
       <div className="relative z-10 bg-black flex flex-col items-center justify-center w-full">
-        {/* Subtle decorative background */}
-        <div className="absolute top-20 left-0 w-72 h-72 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
-        <div className="absolute bottom-20 right-0 w-72 h-72 bg-primary/10 rounded-full blur-3xl translate-x-1/2 pointer-events-none" />
-
-        <section className="w-full py-16 md:py-20 lg:py-24 overflow-hidden relative">
-          <div className="container max-w-screen-2xl px-4 md:px-6 lg:px-8">
-            {/* Section Header - Minimal */}
-            <div 
-              ref={productsRef}
-              className={`text-center mb-12 md:mb-16 transition-all duration-700 ${
-                productsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-            >
-              <h2 className="text-3xl sm:text-4xl font-headline font-bold tracking-tight md:text-5xl text-white">
-                Choose Your Solution
-              </h2>
-              <p className="mt-3 text-white/60 text-base sm:text-lg max-w-2xl mx-auto">
-                Premium industrial-grade products for modern smart city infrastructure
-              </p>
-            </div>
-            
-            {/* Bento Grid Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
-              {/* Auralis Ecosystem - Full Width on Mobile, Spanning Both Columns on Desktop */}
-              <div className="lg:col-span-2">
-                <AuralisCard />
-              </div>
-              
-              {/* Solar and LED - Side by Side */}
-              <SolarCard />
-              <LEDCard />
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section - Streamlined */}
         <section className="w-full py-16 md:py-20 lg:py-24 bg-gradient-to-br from-zinc-900 via-zinc-800 to-black overflow-hidden relative border-t border-primary/20">
           <div 
             ref={ctaRef}
