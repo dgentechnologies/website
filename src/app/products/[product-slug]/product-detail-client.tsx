@@ -1006,12 +1006,12 @@ function CommandCenterSection() {
     <motion.section 
       ref={sectionRef}
       style={{ backgroundColor }}
-      className="h-screen flex flex-col justify-between py-6 md:py-8 relative overflow-hidden"
+      className="h-screen flex flex-col relative overflow-hidden"
     >
-      <div className="container max-w-7xl px-4 md:px-6 flex flex-col justify-between h-full">
-        {/* Section Header - Very Compact */}
+      <div className="container max-w-7xl px-4 md:px-6 h-full flex flex-col">
+        {/* Section Header - Fixed Size Top Element */}
         <motion.div
-          className="text-center mb-4"
+          className="text-center py-6 md:py-8 flex-shrink-0"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -1025,25 +1025,25 @@ function CommandCenterSection() {
           </p>
         </motion.div>
 
-        {/* Laptop/Monitor Mockup - Center Stage - Height Constrained */}
+        {/* Laptop/Monitor Mockup - Middle Element with flex-1 to expand */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mx-auto mb-4 flex-1 flex items-center justify-center max-h-[60vh]"
+          className="flex-1 w-full flex items-center justify-center min-h-0 z-10"
         >
-          {/* MacBook Pro Mockup */}
-          <div className="relative w-full h-full flex items-center justify-center">
-            {/* Laptop Frame */}
-            <div className="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-t-2xl p-2 md:p-3 shadow-2xl max-h-full">
+          {/* MacBook Pro Mockup Container - Takes all available space */}
+          <div className="relative w-full h-full max-w-5xl flex flex-col items-center justify-center">
+            {/* Laptop Frame - Uses object-contain approach */}
+            <div className="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-t-2xl p-2 md:p-3 shadow-2xl w-full h-full flex flex-col max-h-full">
               {/* Screen Bezel */}
-              <div className="bg-black rounded-lg overflow-hidden border border-gray-700 shadow-inner">
-                {/* Screen Content - Dashboard UI */}
-                <div className="aspect-video bg-[#0f0f0f] relative overflow-hidden max-h-[50vh]">
+              <div className="bg-black rounded-lg overflow-hidden border border-gray-700 shadow-inner flex-1 flex flex-col min-h-0">
+                {/* Screen Content - Dashboard UI with object-contain behavior */}
+                <div className="w-full h-full bg-[#0f0f0f] relative overflow-hidden">
                   {/* Dashboard Content */}
                   <motion.div
-                    className="absolute inset-0 p-2 md:p-3 lg:p-4 flex flex-col"
+                    className="absolute inset-0 p-2 md:p-3 lg:p-4 flex flex-col w-full h-full"
                     animate={{
                       opacity: activeFeature === 'map' ? 1 : 0.7,
                     }}
@@ -1184,26 +1184,28 @@ function CommandCenterSection() {
                   </motion.div>
                 </div>
               </div>
-            </div>
 
-            {/* Laptop Base */}
-            <div className="h-1.5 md:h-2 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl" />
-            <div className="h-4 md:h-6 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-2xl shadow-2xl relative">
-              {/* Trackpad indicator */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 md:w-20 h-2 md:h-3 bg-gray-700/50 rounded-full" />
+              {/* Laptop Base - Part of the laptop frame */}
+              <div className="flex-shrink-0 w-full flex flex-col items-center -mt-1">
+                <div className="h-1.5 md:h-2 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl w-11/12" />
+                <div className="h-4 md:h-6 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-2xl shadow-2xl relative w-full">
+                  {/* Trackpad indicator */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 md:w-20 h-2 md:h-3 bg-gray-700/50 rounded-full" />
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Feature Toggles - Slim Horizontal Navigation Bar */}
+        {/* Feature Toggles - Fixed Size Bottom Element */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="max-w-4xl mx-auto"
+          className="pb-6 md:pb-8 flex-shrink-0"
         >
-          <div className="grid grid-cols-3 gap-2 md:gap-3">
+          <div className="max-w-4xl mx-auto grid grid-cols-3 gap-2 md:gap-3">
             {features.map((feature, i) => {
               const Icon = feature.icon;
               const isActive = activeFeature === feature.id;
