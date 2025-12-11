@@ -1355,9 +1355,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         <div className={`absolute inset-0 bg-gradient-to-b from-background via-card to-background ${showFallback ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`} />
         <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent ${showFallback ? 'opacity-50' : 'opacity-0'} transition-opacity duration-1000`} />
         
-        {/* Mobile: flex-col-reverse (3D top, text bottom), Desktop: grid */}
-        <div className="relative h-screen flex flex-col-reverse lg:grid lg:grid-cols-2 items-center">
-          {/* Mobile 3D Container (Top on mobile due to flex-col-reverse) */}
+        {/* Mobile: flex-col (3D top, text bottom), Desktop: grid */}
+        <div className="relative h-screen flex flex-col lg:grid lg:grid-cols-2 items-center">
+          {/* Mobile 3D Container (Top on mobile) */}
           {!mobileSplineError ? (
             <Scene3DMobile
               onLoad={() => setMobileSplineLoaded(true)}
@@ -1370,7 +1370,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           {/* Desktop: Left Column (3D Space) - Empty spacer for fixed Spline background */}
           <div className="hidden lg:block" aria-hidden="true" />
           
-          {/* Text Content (Bottom on mobile, Right on desktop) - auto height */}
+          {/* Text Content (Below 3D on mobile, Right on desktop) - auto height */}
           <div className="z-10 flex flex-col justify-center items-start px-4 sm:px-6 lg:pl-10 lg:pr-20 py-8 lg:py-0 h-auto lg:h-full">
             {/* Main Title - Responsive sizing */}
             <motion.h1 
