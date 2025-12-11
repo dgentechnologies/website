@@ -584,64 +584,64 @@ function MeshNetworkSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
 
   return (
-    <section ref={ref} className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden bg-gray-100">
+    <section ref={ref} className="min-h-screen flex items-center justify-center py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-gray-100">
       <div className="container max-w-screen-xl px-4 md:px-6">
-        {/* Split Layout: Text Left, Animation Right */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Side: Content */}
+        {/* Split Layout: Vertical on mobile, Horizontal on desktop */}
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Content */}
           <motion.div
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
             initial={{ opacity: 0, x: -50 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
-            {/* Headline */}
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight text-gray-900">
+            {/* Headline - Responsive sizing */}
+            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-headline font-bold tracking-tight text-gray-900">
               50 Nodes. 1 SIM Card.{' '}
               <span className="block mt-2">Zero Dead Zones.</span>
             </h2>
 
-            {/* Sub-headline */}
-            <h3 className="text-2xl sm:text-3xl font-headline font-semibold text-primary">
+            {/* Sub-headline - Responsive sizing */}
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-headline font-semibold text-primary">
               The Hybrid Wireless Mesh Network.
             </h3>
 
             {/* Body Copy */}
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
               Auralis drastically reduces cellular costs. A single Auralis Pro Gateway acts as the cluster head for up to 50 Auralis Core streetlights. If one node fails, the mesh instantly self-heals, rerouting data to keep the network live.
             </p>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-3 gap-6 pt-6">
+            <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-4 sm:pt-6">
               <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-primary">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
                   50:1
                 </div>
-                <div className="text-sm text-gray-600 mt-2">Node Ratio</div>
+                <div className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2">Node Ratio</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-primary">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
                   98%
                 </div>
-                <div className="text-sm text-gray-600 mt-2">Cost Reduction</div>
+                <div className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2">Cost Reduction</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-primary">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">
                   &lt;100ms
                 </div>
-                <div className="text-sm text-gray-600 mt-2">Latency</div>
+                <div className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2">Latency</div>
               </div>
             </div>
           </motion.div>
 
-          {/* Right Side: Interactive Animation in Glass Card */}
+          {/* Interactive Animation in Glass Card */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             {/* White Glass Card Container */}
-            <div className="p-8 sm:p-10 rounded-3xl border-2 border-white bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative">
+            <div className="p-6 sm:p-8 lg:p-10 rounded-3xl border-2 border-white bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative">
               <div className="aspect-[4/3] w-full">
                 <MeshNetworkAnimation />
               </div>
@@ -673,19 +673,19 @@ function HardwareSection() {
   ];
 
   return (
-    <section ref={ref} className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden bg-gray-100">
+    <section ref={ref} className="min-h-screen flex items-center justify-center py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-gray-100">
       <div className="container max-w-screen-xl px-4 md:px-6">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-headline font-bold tracking-tight text-gray-900 mb-3 sm:mb-4">
             Inside the Brain
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
             Industrial-grade intelligence. Engineered for reliability.
           </p>
         </motion.div>
@@ -698,31 +698,31 @@ function HardwareSection() {
           className="max-w-6xl mx-auto"
         >
           {/* Single Wide Display Container - Showcase Stage */}
-          <div className="p-8 md:p-12 rounded-3xl bg-white/60 backdrop-blur-xl border-2 border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+          <div className="p-6 sm:p-8 lg:p-12 rounded-3xl bg-white/60 backdrop-blur-xl border-2 border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
             
-            {/* Both Devices Side-by-Side in One Container */}
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12 relative">
+            {/* Devices: Vertical Stack on Mobile, Side-by-Side on Desktop */}
+            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 relative">
               
               {/* Auralis Core Device */}
               <div 
-                className="relative group cursor-pointer"
+                className="relative group cursor-pointer lg:cursor-pointer"
                 onMouseEnter={() => setHoveredDevice('core')}
                 onMouseLeave={() => setHoveredDevice(null)}
               >
                 {/* Device Image */}
                 <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl flex items-center justify-center relative overflow-hidden transition-all duration-300">
                   <div className="text-center z-10">
-                    <div className="text-8xl mb-4 transition-transform duration-300 group-hover:scale-110">
+                    <div className="text-6xl sm:text-7xl lg:text-8xl mb-4 transition-transform duration-300 group-hover:scale-110">
                       📡
                     </div>
                   </div>
 
-                  {/* Hover-Reveal Frosted Glass Overlay */}
+                  {/* Hover-Reveal Frosted Glass Overlay - Desktop Only */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: hoveredDevice === 'core' ? 1 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center pointer-events-none"
+                    className="hidden lg:flex absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex-col justify-center pointer-events-none"
                   >
                     <h4 className="text-xl font-bold text-gray-900 mb-4">Technical Specifications</h4>
                     <div className="space-y-3">
@@ -738,38 +738,51 @@ function HardwareSection() {
 
                 {/* Device Title */}
                 <div className="mt-4 text-center">
-                  <h3 className="text-2xl font-headline font-bold text-gray-900">
+                  <h3 className="text-xl sm:text-2xl font-headline font-bold text-gray-900">
                     Auralis Core
                   </h3>
                   <p className="text-sm text-gray-600 mt-1">
                     The Worker Node
                   </p>
                 </div>
+
+                {/* Mobile: Permanent Tech Specs Below Image */}
+                <div className="lg:hidden mt-4 bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200">
+                  <h4 className="text-base font-bold text-gray-900 mb-3">Technical Specifications</h4>
+                  <div className="space-y-2">
+                    {coreSpecs.map((spec) => (
+                      <div key={spec.title} className="flex justify-between items-start text-sm">
+                        <span className="font-semibold text-gray-700">{spec.title}:</span>
+                        <span className="text-gray-900 text-right ml-2">{spec.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              {/* Subtle Divider */}
-              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent" />
+              {/* Subtle Divider - Desktop Only */}
+              <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent" />
 
               {/* Auralis Pro Device */}
               <div 
-                className="relative group cursor-pointer"
+                className="relative group cursor-pointer lg:cursor-pointer"
                 onMouseEnter={() => setHoveredDevice('pro')}
                 onMouseLeave={() => setHoveredDevice(null)}
               >
                 {/* Device Image */}
                 <div className="aspect-square bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl flex items-center justify-center relative overflow-hidden border border-primary/10 transition-all duration-300">
                   <div className="text-center z-10">
-                    <div className="text-8xl mb-4 transition-transform duration-300 group-hover:scale-110">
+                    <div className="text-6xl sm:text-7xl lg:text-8xl mb-4 transition-transform duration-300 group-hover:scale-110">
                       🔌
                     </div>
                   </div>
 
-                  {/* Hover-Reveal Frosted Glass Overlay */}
+                  {/* Hover-Reveal Frosted Glass Overlay - Desktop Only */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: hoveredDevice === 'pro' ? 1 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center pointer-events-none"
+                    className="hidden lg:flex absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex-col justify-center pointer-events-none"
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <h4 className="text-xl font-bold text-gray-900">Technical Specifications</h4>
@@ -787,25 +800,247 @@ function HardwareSection() {
                     </div>
                   </motion.div>
 
-                  {/* Subtle pulsing border on hover */}
+                  {/* Subtle pulsing border on hover - Desktop Only */}
                   {hoveredDevice === 'pro' && (
-                    <div className="absolute inset-0 rounded-2xl border-2 border-primary/40 animate-pulse pointer-events-none" />
+                    <div className="hidden lg:block absolute inset-0 rounded-2xl border-2 border-primary/40 animate-pulse pointer-events-none" />
                   )}
                 </div>
 
                 {/* Device Title */}
                 <div className="mt-4 text-center">
-                  <h3 className="text-2xl font-headline font-bold text-gray-900">
+                  <h3 className="text-xl sm:text-2xl font-headline font-bold text-gray-900">
                     Auralis Pro
                   </h3>
                   <p className="text-sm text-gray-600 mt-1">
                     The Gateway
                   </p>
                 </div>
+
+                {/* Mobile: Permanent Tech Specs Below Image */}
+                <div className="lg:hidden mt-4 bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-primary/20">
+                  <div className="flex items-center gap-2 mb-3">
+                    <h4 className="text-base font-bold text-gray-900">Technical Specifications</h4>
+                    <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-primary/20 text-primary">
+                      Gateway
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {proSpecs.map((spec) => (
+                      <div key={spec.title} className="flex justify-between items-start text-sm">
+                        <span className="font-semibold text-gray-700">{spec.title}:</span>
+                        <span className="text-gray-900 text-right ml-2 font-medium">{spec.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// Instant Fault Detection Section: Split Screen with Animation
+function InstantFaultDetectionSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+  const [showNotification, setShowNotification] = useState(false);
+
+  useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => {
+        setShowNotification(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
+
+  return (
+    <section ref={ref} className="min-h-screen flex items-center justify-center py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-background">
+      <div className="container max-w-screen-xl px-4 md:px-6">
+        {/* Section Header */}
+        <motion.div
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-headline font-bold tracking-tight mb-3 sm:mb-4">
+            Instant Fault Detection
+          </h2>
+          <p className="text-base sm:text-lg text-foreground/70 max-w-2xl mx-auto">
+            Real-time alerts the moment a failure occurs. No dark streets.
+          </p>
+        </motion.div>
+
+        {/* Split Screen: Vertical on mobile, Horizontal on desktop */}
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-6xl mx-auto">
+          
+          {/* Street Light Grid Animation (Top on mobile, Left on desktop) */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="w-full"
+          >
+            <div className="relative bg-card/50 backdrop-blur-sm rounded-3xl border-2 border-card p-6 sm:p-8 lg:p-10 shadow-xl">
+              {/* Street Light Grid Visualization */}
+              <div className="aspect-square sm:aspect-video lg:aspect-square flex items-center justify-center relative">
+                {/* Grid of Street Lights */}
+                <div className="grid grid-cols-5 gap-3 sm:gap-4">
+                  {Array.from({ length: 15 }).map((_, i) => {
+                    const isFaulty = i === 7; // Middle light is faulty
+                    return (
+                      <motion.div
+                        key={i}
+                        className="relative flex flex-col items-center gap-2"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+                        transition={{ duration: 0.5, delay: i * 0.05 }}
+                      >
+                        {/* Light Pole */}
+                        <div className="w-1 h-12 sm:h-16 bg-gray-400 rounded-full" />
+                        {/* Light Bulb */}
+                        <motion.div
+                          className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full ${
+                            isFaulty ? 'bg-red-500' : 'bg-amber-400'
+                          } shadow-lg`}
+                          animate={
+                            isFaulty
+                              ? { opacity: [1, 0.3, 1], scale: [1, 0.9, 1] }
+                              : { opacity: 1 }
+                          }
+                          transition={
+                            isFaulty
+                              ? { duration: 1, repeat: Infinity }
+                              : {}
+                          }
+                          style={{
+                            boxShadow: isFaulty
+                              ? '0 0 20px rgba(239, 68, 68, 0.6)'
+                              : '0 0 20px rgba(251, 191, 36, 0.6)',
+                          }}
+                        />
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                {/* Alert Icon Above Faulty Light */}
+                <motion.div
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-20 sm:-translate-y-24"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={
+                    isVisible && showNotification
+                      ? { opacity: [0, 1, 1], y: [-20, 0, 0] }
+                      : {}
+                  }
+                  transition={{ duration: 0.5, delay: 1 }}
+                >
+                  <div className="bg-red-500 rounded-full p-2 sm:p-3 shadow-lg">
+                    <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Grid Label */}
+              <div className="mt-6 text-center">
+                <p className="text-sm sm:text-base font-semibold text-foreground">
+                  Street Light Grid
+                </p>
+                <p className="text-xs sm:text-sm text-foreground/60 mt-1">
+                  Live monitoring across the network
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Mobile App Notification Card (Bottom on mobile, Right on desktop) */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="w-full relative"
+          >
+            {/* Notification Card */}
+            <motion.div
+              className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-3xl border-2 border-gray-200 dark:border-gray-700 shadow-2xl p-6 sm:p-8 max-w-md mx-auto lg:mx-0"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={
+                isVisible && showNotification
+                  ? { scale: 1, y: 0 }
+                  : { scale: 0.9, y: 20 }
+              }
+              transition={{ duration: 0.5, delay: 1.2 }}
+            >
+              {/* Phone Mockup Header */}
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Radar className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-base sm:text-lg">AuralisView</h4>
+                  <p className="text-xs sm:text-sm text-foreground/60">Smart City Monitor</p>
+                </div>
+              </div>
+
+              {/* Notification Content */}
+              <div className="space-y-4">
+                {/* Alert Badge */}
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs sm:text-sm font-semibold rounded-full">
+                    URGENT ALERT
+                  </span>
+                  <span className="text-xs text-foreground/50">Just now</span>
+                </div>
+
+                {/* Fault Details */}
+                <div className="space-y-2">
+                  <h5 className="font-bold text-lg sm:text-xl text-foreground">
+                    Light Failure Detected
+                  </h5>
+                  <p className="text-sm sm:text-base text-foreground/70">
+                    <strong>Location:</strong> MG Road, Sector 14
+                  </p>
+                  <p className="text-sm sm:text-base text-foreground/70">
+                    <strong>Node ID:</strong> AUR-CORE-247
+                  </p>
+                  <p className="text-sm sm:text-base text-foreground/70">
+                    <strong>Issue:</strong> LED Driver Failure
+                  </p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-4">
+                  <button className="flex-1 px-4 py-2.5 bg-primary text-white rounded-lg font-semibold text-sm sm:text-base hover:bg-primary/90 transition-colors">
+                    Dispatch Team
+                  </button>
+                  <button className="px-4 py-2.5 bg-gray-200 dark:bg-gray-700 text-foreground rounded-lg font-semibold text-sm sm:text-base hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                    View Map
+                  </button>
+                </div>
+              </div>
+
+              {/* Pulse Animation Ring */}
+              <motion.div
+                className="absolute -inset-1 rounded-3xl border-2 border-red-500 pointer-events-none"
+                animate={{ opacity: [0, 0.5, 0], scale: [0.95, 1.02, 0.95] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.div>
+
+            {/* Info Text Below Card */}
+            <div className="mt-6 text-center lg:text-left">
+              <p className="text-sm sm:text-base font-semibold text-foreground">
+                Instant Push Notifications
+              </p>
+              <p className="text-xs sm:text-sm text-foreground/60 mt-1">
+                Receive alerts the moment a fault is detected
+              </p>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -868,70 +1103,70 @@ function CommandCenterSection() {
     <motion.section 
       ref={sectionRef}
       style={{ backgroundColor }}
-      className="flex h-screen w-full overflow-hidden bg-[#0a0a0a]"
+      className="flex min-h-screen w-full overflow-hidden bg-[#0a0a0a] py-12 lg:py-0"
     >
-      {/* Flexbox Layout: 70% Monitor / 30% Controls - Stacks on mobile */}
-      <div className="flex flex-col lg:flex-row h-screen w-full overflow-hidden">
+      {/* Flexbox Layout: Stacks vertically on mobile, Horizontal on desktop */}
+      <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-hidden">
         
-        {/* Left Panel (Monitor): 70% width */}
+        {/* Monitor Panel: Full width on mobile, 70% on desktop */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="w-full lg:w-[70%] h-full flex items-center justify-center p-0"
+          className="w-full lg:w-[70%] flex items-center justify-center p-4 lg:p-0"
         >
-          {/* Desktop Monitor Mockup - fills available space */}
-          <div className="relative w-full h-auto max-h-[90vh] flex items-center justify-center">
+          {/* Desktop Monitor Mockup */}
+          <div className="relative w-full h-auto lg:max-h-[90vh] flex items-center justify-center">
             {/* Bezel-less Monitor Frame */}
-            <div className="relative bg-gray-900 rounded-2xl p-4 shadow-2xl w-full">
+            <div className="relative bg-gray-900 rounded-2xl p-2 sm:p-4 shadow-2xl w-full max-h-[60vh] lg:max-h-none">
               {/* Screen with minimal bezel */}
-              <div className="bg-black rounded-xl overflow-hidden border-4 border-gray-800 shadow-inner">
+              <div className="bg-black rounded-xl overflow-hidden border-2 lg:border-4 border-gray-800 shadow-inner">
                 {/* Screen Content - Dashboard UI */}
                 <div className="w-full bg-[#0f0f0f] relative overflow-hidden aspect-video">
                     {/* Dashboard Content */}
                   <motion.div
-                    className="absolute inset-0 p-4 md:p-6 lg:p-8 flex flex-col w-full h-full"
+                    className="absolute inset-0 p-2 sm:p-4 lg:p-8 flex flex-col w-full h-full"
                     animate={{
                       opacity: activeFeature === 'map' ? 1 : 0.7,
                     }}
                     transition={{ duration: 0.3 }}
                   >
                     {/* Dashboard Header */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                          <Radar className="w-6 h-6 text-white" />
+                    <div className="flex items-center justify-between mb-2 lg:mb-4">
+                      <div className="flex items-center gap-2 lg:gap-3">
+                        <div className="w-8 h-8 lg:w-12 lg:h-12 bg-primary rounded-lg flex items-center justify-center">
+                          <Radar className="w-4 h-4 lg:w-6 lg:h-6 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold text-base">AuralisView Dashboard</h3>
-                          <p className="text-gray-500 text-sm">Smart City Monitoring</p>
+                          <h3 className="text-white font-semibold text-xs lg:text-base">AuralisView Dashboard</h3>
+                          <p className="text-gray-500 text-xs lg:text-sm hidden sm:block">Smart City Monitoring</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
-                        <span className="text-green-500 text-sm font-medium">Live</span>
+                      <div className="flex items-center gap-1 lg:gap-2">
+                        <div className="w-2 h-2 lg:w-2.5 lg:h-2.5 bg-green-500 rounded-full animate-pulse" />
+                        <span className="text-green-500 text-xs lg:text-sm font-medium">Live</span>
                       </div>
                     </div>
 
                     {/* Main Dashboard Area */}
-                    <div className="flex-1 grid grid-cols-3 gap-4">
+                    <div className="flex-1 grid grid-cols-3 gap-2 lg:gap-4">
                       {/* Sidebar - Node List */}
-                      <div className="col-span-1 bg-gray-900/50 rounded-lg p-4 border border-gray-800">
-                        <h4 className="text-white text-sm font-semibold mb-3">Active Nodes</h4>
-                        <div className="space-y-2">
+                      <div className="col-span-1 bg-gray-900/50 rounded-lg p-2 lg:p-4 border border-gray-800">
+                        <h4 className="text-white text-xs lg:text-sm font-semibold mb-2 lg:mb-3">Active Nodes</h4>
+                        <div className="space-y-1 lg:space-y-2">
                           {NODE_DATA.map((node) => (
-                            <div key={node.id} className="flex items-center gap-2 bg-gray-800/50 p-2 rounded text-xs">
-                              <div className={`w-2 h-2 rounded-full ${node.status === 'warning' ? 'bg-amber-500' : 'bg-green-500'}`} />
-                              <span className="text-gray-300 flex-1">Node #{node.id}47</span>
-                              <span className="text-gray-500">{node.status === 'warning' ? '⚠️' : '✓'}</span>
+                            <div key={node.id} className="flex items-center gap-1 lg:gap-2 bg-gray-800/50 p-1 lg:p-2 rounded text-xs">
+                              <div className={`w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full ${node.status === 'warning' ? 'bg-amber-500' : 'bg-green-500'}`} />
+                              <span className="text-gray-300 flex-1 text-xs">Node #{node.id}47</span>
+                              <span className="text-gray-500 hidden sm:inline">{node.status === 'warning' ? '⚠️' : '✓'}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
                       {/* Center - Map/Chart Area */}
-                      <div className="col-span-2 bg-gray-900/30 rounded-lg p-4 border border-gray-800 relative overflow-hidden">
+                      <div className="col-span-2 bg-gray-900/30 rounded-lg p-2 lg:p-4 border border-gray-800 relative overflow-hidden">
                         {/* Highlight based on active feature */}
                         <motion.div
                           className="absolute inset-0 bg-primary/5 rounded-lg"
@@ -943,11 +1178,11 @@ function CommandCenterSection() {
                         
                         {/* Map visualization */}
                         <div className="relative h-full flex items-center justify-center">
-                          <div className="grid grid-cols-5 gap-3">
+                          <div className="grid grid-cols-5 gap-1.5 lg:gap-3">
                             {Array.from({ length: TOTAL_MAP_NODES }).map((_, i) => (
                               <motion.div
                                 key={i}
-                                className={`w-5 h-5 rounded-full ${
+                                className={`w-3 h-3 lg:w-5 lg:h-5 rounded-full ${
                                   i === 7 ? 'bg-amber-500' : 'bg-green-500'
                                 }`}
                                 animate={{
@@ -973,9 +1208,9 @@ function CommandCenterSection() {
                           }}
                           transition={{ duration: 0.3 }}
                         >
-                          <div className="w-full px-8">
+                          <div className="w-full px-4 lg:px-8">
                             {/* Simple bar chart visualization */}
-                            <div className="flex items-end justify-around h-48 gap-3">
+                            <div className="flex items-end justify-around h-32 lg:h-48 gap-1.5 lg:gap-3">
                               {ENERGY_CHART_DATA.map((height, i) => (
                                 <motion.div
                                   key={i}
@@ -999,15 +1234,15 @@ function CommandCenterSection() {
                           }}
                           transition={{ duration: 0.3 }}
                         >
-                          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-5 max-w-md">
+                          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 lg:p-5 max-w-md">
                             <div className="flex items-center gap-2 mb-2">
-                              <AlertTriangle className="w-6 h-6 text-amber-500" />
-                              <span className="text-white font-semibold text-base">Fault Detected</span>
+                              <AlertTriangle className="w-4 h-4 lg:w-6 lg:h-6 text-amber-500" />
+                              <span className="text-white font-semibold text-sm lg:text-base">Fault Detected</span>
                             </div>
-                            <p className="text-gray-300 text-sm mb-3">Light #247 - LED Driver Failure</p>
+                            <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3">Light #247 - LED Driver Failure</p>
                             <div className="flex gap-2">
-                              <div className="px-3 py-1.5 bg-primary/20 text-primary text-sm rounded">Dispatched</div>
-                              <div className="px-3 py-1.5 bg-gray-700 text-gray-300 text-sm rounded">ETA: 12 min</div>
+                              <div className="px-2 lg:px-3 py-1 lg:py-1.5 bg-primary/20 text-primary text-xs lg:text-sm rounded">Dispatched</div>
+                              <div className="px-2 lg:px-3 py-1 lg:py-1.5 bg-gray-700 text-gray-300 text-xs lg:text-sm rounded">ETA: 12 min</div>
                             </div>
                           </div>
                         </motion.div>
@@ -1015,26 +1250,26 @@ function CommandCenterSection() {
                     </div>
 
                     {/* Bottom Stats Bar */}
-                    <div className="mt-4 flex items-center justify-around bg-gray-900/50 rounded-lg p-3 border border-gray-800">
+                    <div className="mt-2 lg:mt-4 flex items-center justify-around bg-gray-900/50 rounded-lg p-2 lg:p-3 border border-gray-800">
                       <div className="text-center">
-                        <p className="text-primary text-sm font-bold">247</p>
-                        <p className="text-gray-500 text-xs">Active Nodes</p>
+                        <p className="text-primary text-xs lg:text-sm font-bold">247</p>
+                        <p className="text-gray-500 text-xs hidden sm:block">Active Nodes</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-green-500 text-sm font-bold">98.7%</p>
-                        <p className="text-gray-500 text-xs">Uptime</p>
+                        <p className="text-green-500 text-xs lg:text-sm font-bold">98.7%</p>
+                        <p className="text-gray-500 text-xs hidden sm:block">Uptime</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-blue-400 text-sm font-bold">2.4 kW</p>
-                        <p className="text-gray-500 text-xs">Power Draw</p>
+                        <p className="text-blue-400 text-xs lg:text-sm font-bold">2.4 kW</p>
+                        <p className="text-gray-500 text-xs hidden sm:block">Power Draw</p>
                       </div>
                     </div>
                   </motion.div>
                 </div>
               </div>
               
-              {/* Monitor Stand */}
-              <div className="flex flex-col items-center mt-3">
+              {/* Monitor Stand - Hidden on mobile */}
+              <div className="hidden lg:flex flex-col items-center mt-3">
                 <div className="w-20 h-4 bg-gray-800 rounded-t" />
                 <div className="w-32 h-2 bg-gray-900 rounded-b-lg shadow-lg" />
               </div>
@@ -1042,26 +1277,26 @@ function CommandCenterSection() {
           </div>
         </motion.div>
 
-        {/* Right Panel (Controls): 30% width */}
+        {/* Controls Panel: Full width on mobile, 30% on desktop */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="w-full lg:w-[30%] h-full flex flex-col justify-center px-8 space-y-6"
+          className="w-full lg:w-[30%] flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 space-y-4 sm:space-y-6"
         >
-          {/* Compact Text Content */}
+          {/* Text Content */}
           <div className="text-left">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold tracking-tight text-white mb-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-5xl font-headline font-bold tracking-tight text-white mb-2 sm:mb-3">
               Command Center.
             </h2>
-            <p className="text-sm md:text-base text-gray-400 max-w-md">
+            <p className="text-sm lg:text-base text-gray-400 max-w-md">
               Global control from a single pane of glass. Schedule dimming, analyze power, and manage assets remotely.
             </p>
           </div>
 
-          {/* Compact Control List - Sleek Low-Profile Rows */}
-          <div className="space-y-3">
+          {/* Control Buttons: 2x2 Grid on mobile, Vertical List on desktop */}
+          <div className="grid grid-cols-2 lg:flex lg:flex-col gap-3">
             {features.map((feature) => {
               const Icon = feature.icon;
               const isActive = activeFeature === feature.id;
@@ -1069,28 +1304,29 @@ function CommandCenterSection() {
               return (
                 <motion.div
                   key={feature.id}
+                  onClick={() => setActiveFeature(feature.id)}
                   onMouseEnter={() => setActiveFeature(feature.id)}
-                  className={`py-3 px-4 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-between ${
+                  className={`py-3 px-3 lg:px-4 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-between ${
                     isActive
                       ? 'bg-primary/10 border border-primary shadow-[0_0_20px_rgba(25,179,92,0.2)]'
                       : 'bg-gray-900/50 border border-gray-800 hover:border-gray-700'
                   }`}
-                  whileHover={{ scale: 1.02, x: 5 }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-md transition-colors ${
+                  <div className="flex items-center gap-2 lg:gap-3">
+                    <div className={`p-1.5 lg:p-2 rounded-md transition-colors ${
                       isActive ? 'bg-primary text-white' : 'bg-gray-800 text-gray-400'
                     }`}>
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-4 h-4 lg:w-5 lg:h-5" />
                     </div>
-                    <span className={`text-sm font-semibold transition-colors ${
+                    <span className={`text-xs lg:text-sm font-semibold transition-colors ${
                       isActive ? 'text-white' : 'text-gray-300'
                     }`}>
                       {feature.name}
                     </span>
                   </div>
-                  <div className={`transition-colors ${
+                  <div className={`hidden lg:block transition-colors ${
                     isActive ? 'text-primary' : 'text-gray-600'
                   }`}>
                     →
@@ -1182,6 +1418,9 @@ function EcosystemProductView({ product }: { product: Product }) {
       {/* Hardware Section */}
       <HardwareSection />
       
+      {/* Instant Fault Detection Section */}
+      <InstantFaultDetectionSection />
+      
       {/* Command Center Section */}
       <CommandCenterSection />
       
@@ -1246,7 +1485,7 @@ function useScrollTransform(): ScrollTransformState {
 function Scene3D({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
   return (
     <div 
-      className="fixed top-0 left-0 w-full h-screen hidden md:block"
+      className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ zIndex: -1 }}
     >
       <SplineViewer
@@ -1255,7 +1494,8 @@ function Scene3D({ onLoad, onError }: { onLoad?: () => void; onError?: () => voi
         onError={onError}
         style={{ 
           width: '100%', 
-          height: '100%'
+          height: '100%',
+          touchAction: 'none'
         }}
       />
     </div>
@@ -1272,19 +1512,19 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   // Detect mobile devices for performance optimization
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 1024);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
-  // Show fallback gradient if on mobile, spline not loaded, or error occurred
-  const showFallback = isMobile || !splineLoaded || splineError;
+  // Show fallback gradient if spline not loaded or error occurred
+  const showFallback = !splineLoaded || splineError;
   
   return (
     <>
-      {/* Spline 3D Background - Fixed position, hidden on mobile */}
+      {/* Spline 3D Background - Fixed position on desktop, hidden on mobile */}
       {!isMobile && !splineError && (
         <Scene3D 
           onLoad={() => setSplineLoaded(true)} 
@@ -1294,20 +1534,42 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
       
       {/* Section 1: Hero (0% - 100% Viewport) - 2-column grid layout */}
       <section className="relative w-full min-h-screen overflow-hidden">
-        {/* Fallback gradient background for mobile */}
+        {/* Fallback gradient background for mobile or when spline isn't loaded */}
         <div className={`absolute inset-0 bg-gradient-to-b from-background via-card to-background ${showFallback ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`} />
         <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent ${showFallback ? 'opacity-50' : 'opacity-0'} transition-opacity duration-1000`} />
         
-        {/* 2-Column Grid: Mobile: flex-col-reverse (text on top), Desktop: grid */}
+        {/* Mobile: flex-col-reverse (3D top, text bottom), Desktop: grid */}
         <div className="relative h-screen flex flex-col-reverse lg:grid lg:grid-cols-2 items-center">
-          {/* Left Column (3D Space) - Empty spacer for Spline background */}
+          {/* Mobile 3D Container (Top on mobile due to flex-col-reverse) - 50vh height */}
+          <div className="lg:hidden w-full h-[50vh] relative overflow-hidden">
+            {!splineError && (
+              <div className="w-full h-full" style={{ touchAction: 'none' }}>
+                <SplineViewer
+                  scene="https://prod.spline.design/kYNR21QjvqQUcBTD/scene.splinecode"
+                  onLoad={() => setSplineLoaded(true)}
+                  onError={() => setSplineError(true)}
+                  style={{ 
+                    width: '100%', 
+                    height: '100%',
+                    touchAction: 'none'
+                  }}
+                />
+              </div>
+            )}
+            {/* Fallback gradient for mobile if Spline fails */}
+            {splineError && (
+              <div className="w-full h-full bg-gradient-to-b from-primary/20 via-background to-background" />
+            )}
+          </div>
+          
+          {/* Desktop: Left Column (3D Space) - Empty spacer for fixed Spline background */}
           <div className="hidden lg:block" aria-hidden="true" />
           
-          {/* Right Column (Content) - Text and buttons */}
-          <div className="z-10 flex flex-col justify-center items-start pl-6 pr-6 sm:pl-10 sm:pr-10 lg:pl-10 lg:pr-20 py-12 lg:py-0">
-            {/* Main Title - Left-aligned, bold typography */}
+          {/* Text Content (Bottom on mobile, Right on desktop) - auto height */}
+          <div className="z-10 flex flex-col justify-center items-start px-4 sm:px-6 lg:pl-10 lg:pr-20 py-8 lg:py-0 h-auto lg:h-full">
+            {/* Main Title - Responsive sizing */}
             <motion.h1 
-              className="text-5xl lg:text-7xl font-headline font-bold leading-tight text-white text-left"
+              className="text-3xl sm:text-4xl lg:text-7xl font-headline font-bold leading-tight text-white text-left"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: "easeOut" }}
@@ -1316,9 +1578,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
               <span className="block text-foreground/90">of the Smart City</span>
             </motion.h1>
 
-            {/* Subtitle - Left-aligned below headline */}
+            {/* Subtitle - Responsive sizing */}
             <motion.p 
-              className="text-xl text-gray-400 mt-6 max-w-lg text-left"
+              className="text-base sm:text-lg lg:text-xl text-gray-400 mt-4 lg:mt-6 max-w-lg text-left"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
@@ -1326,29 +1588,29 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
               Intelligent. Autonomous. Mesh-Connected. Transform legacy infrastructure into smart, responsive networks.
             </motion.p>
 
-            {/* CTA Buttons - Left-aligned, aligned with text */}
+            {/* CTA Buttons - Responsive sizing */}
             <motion.div 
-              className="flex gap-4 mt-8 pointer-events-auto"
+              className="flex gap-3 sm:gap-4 mt-6 lg:mt-8 pointer-events-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
             >
-              <Button asChild size="lg" className="text-base px-6 py-5 group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
+              <Button asChild size="lg" className="text-sm sm:text-base px-4 sm:px-6 py-4 sm:py-5 group hover:scale-[1.02] transition-transform shadow-lg hover:shadow-primary/25">
                 <Link href={`/contact?subject=Inquiry+about+${product.title}`}>
-                  Get Started <Sparkles className="ml-2 h-5 w-5" />
+                  Get Started <Sparkles className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-base px-6 py-5 group">
+              <Button asChild variant="outline" size="lg" className="text-sm sm:text-base px-4 sm:px-6 py-4 sm:py-5 group">
                 <Link href="#retrofit">
                   Learn More
-                  <Zap className="ml-2 h-5 w-5 group-hover:text-primary transition-colors" />
+                  <Zap className="ml-2 h-4 sm:h-5 w-4 sm:w-5 group-hover:text-primary transition-colors" />
                 </Link>
               </Button>
             </motion.div>
 
-            {/* Scroll indicator - Below buttons */}
+            {/* Scroll indicator - Hidden on mobile to save space */}
             <motion.div 
-              className="flex items-center gap-2 mt-12"
+              className="hidden lg:flex items-center gap-2 mt-12"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1 }}
@@ -1380,9 +1642,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
             viewport={{ once: true, amount: 0.3 }}
           >
             {/* Glassmorphism Card - Enhanced with brand green border and glow */}
-            <div className="p-10 rounded-3xl border-2 border-[#19b35c] bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06),0_0_60px_rgba(25,179,92,0.3)] pointer-events-auto">
+            <div className="p-6 sm:p-8 lg:p-10 rounded-3xl border-2 border-[#19b35c] bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06),0_0_60px_rgba(25,179,92,0.3)] pointer-events-auto">
               <motion.h2 
-                className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight mb-6"
+                className="text-3xl sm:text-4xl lg:text-6xl font-headline font-bold tracking-tight mb-4 sm:mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -1393,7 +1655,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
               </motion.h2>
               
               <motion.p 
-                className="text-lg sm:text-xl text-gray-600 leading-relaxed"
+                className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -1404,7 +1666,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
 
               {/* Quick stats */}
               <motion.div 
-                className="flex flex-wrap gap-6 mt-8"
+                className="flex flex-wrap gap-4 sm:gap-6 mt-6 sm:mt-8"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
