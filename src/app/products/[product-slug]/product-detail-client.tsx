@@ -1273,9 +1273,9 @@ function useScrollTransform(): ScrollTransformState {
   return state;
 }
 
-// Scene3D Component for Spline 3D Background
+// Desktop Scene3D Component for Spline 3D Background
 // Uses custom SplineViewer component with @splinetool/runtime to avoid React version conflicts
-function Scene3D({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
+function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
@@ -1295,14 +1295,36 @@ function Scene3D({ onLoad, onError }: { onLoad?: () => void; onError?: () => voi
   );
 }
 
+// Mobile Scene3D Component - Optimized for smaller screens
+function Scene3DMobile({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
+  return (
+    <div className="block lg:hidden w-full h-[50vh] relative overflow-hidden">
+      <div className="w-full h-full" style={{ touchAction: 'none' }}>
+        <SplineViewer
+          scene="https://prod.spline.design/brSNwljCXzZoxC1f/scene.splinecode"
+          onLoad={onLoad}
+          onError={onError}
+          style={{ 
+            width: '100%', 
+            height: '100%',
+            touchAction: 'none'
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
 // New Apple-style Hero Section for Auralis Ecosystem with Framer Motion
-// Left-aligned 3D / Right-aligned Text split layout
+// Device-specific 3D rendering with separate mobile and desktop scenes
 function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSectionProps) {
   const [isMobile, setIsMobile] = useState(false);
-  const [splineLoaded, setSplineLoaded] = useState(false);
-  const [splineError, setSplineError] = useState(false);
+  const [desktopSplineLoaded, setDesktopSplineLoaded] = useState(false);
+  const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
+  const [desktopSplineError, setDesktopSplineError] = useState(false);
+  const [mobileSplineError, setMobileSplineError] = useState(false);
   
-  // Detect mobile devices for performance optimization
+  // Detect screen size
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -1312,48 +1334,38 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
-  // Show fallback gradient if spline not loaded or error occurred
-  const showFallback = !splineLoaded || splineError;
+  // Show fallback gradient if appropriate spline not loaded or error occurred
+  const showFallback = isMobile 
+    ? (!mobileSplineLoaded || mobileSplineError)
+    : (!desktopSplineLoaded || desktopSplineError);
   
   return (
     <>
-      {/* Spline 3D Background - Fixed position on desktop, hidden on mobile */}
-      {!isMobile && !splineError && (
-        <Scene3D 
-          onLoad={() => setSplineLoaded(true)} 
-          onError={() => setSplineError(true)} 
+      {/* Desktop Spline 3D Background - Fixed position, visible only on lg+ screens */}
+      {!desktopSplineError && (
+        <Scene3DDesktop 
+          onLoad={() => setDesktopSplineLoaded(true)} 
+          onError={() => setDesktopSplineError(true)} 
         />
       )}
       
       {/* Section 1: Hero (0% - 100% Viewport) - 2-column grid layout */}
       <section className="relative w-full min-h-screen overflow-hidden">
-        {/* Fallback gradient background for mobile or when spline isn't loaded */}
+        {/* Fallback gradient background when spline isn't loaded */}
         <div className={`absolute inset-0 bg-gradient-to-b from-background via-card to-background ${showFallback ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`} />
         <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent ${showFallback ? 'opacity-50' : 'opacity-0'} transition-opacity duration-1000`} />
         
         {/* Mobile: flex-col-reverse (3D top, text bottom), Desktop: grid */}
         <div className="relative h-screen flex flex-col-reverse lg:grid lg:grid-cols-2 items-center">
-          {/* Mobile 3D Container (Top on mobile due to flex-col-reverse) - 50vh height */}
-          <div className="lg:hidden w-full h-[50vh] relative overflow-hidden">
-            {!splineError && (
-              <div className="w-full h-full" style={{ touchAction: 'none' }}>
-                <SplineViewer
-                  scene="https://prod.spline.design/kYNR21QjvqQUcBTD/scene.splinecode"
-                  onLoad={() => setSplineLoaded(true)}
-                  onError={() => setSplineError(true)}
-                  style={{ 
-                    width: '100%', 
-                    height: '100%',
-                    touchAction: 'none'
-                  }}
-                />
-              </div>
-            )}
-            {/* Fallback gradient for mobile if Spline fails */}
-            {splineError && (
-              <div className="w-full h-full bg-gradient-to-b from-primary/20 via-background to-background" />
-            )}
-          </div>
+          {/* Mobile 3D Container (Top on mobile due to flex-col-reverse) */}
+          {!mobileSplineError ? (
+            <Scene3DMobile
+              onLoad={() => setMobileSplineLoaded(true)}
+              onError={() => setMobileSplineError(true)}
+            />
+          ) : (
+            <div className="block lg:hidden w-full h-[50vh] bg-gradient-to-b from-primary/20 via-background to-background" />
+          )}
           
           {/* Desktop: Left Column (3D Space) - Empty spacer for fixed Spline background */}
           <div className="hidden lg:block" aria-hidden="true" />
