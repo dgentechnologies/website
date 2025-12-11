@@ -1006,23 +1006,23 @@ function CommandCenterSection() {
     <motion.section 
       ref={sectionRef}
       style={{ backgroundColor }}
-      className="h-screen relative overflow-hidden"
+      className="flex h-screen w-full overflow-hidden bg-[#0a0a0a]"
     >
-      {/* Strict 70/30 Grid Layout: 12 columns total */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 h-screen overflow-hidden px-8 items-center gap-6 lg:gap-8">
+      {/* Flexbox Layout: 70% Monitor / 30% Controls - Stacks on mobile */}
+      <div className="flex flex-col lg:flex-row h-screen w-full overflow-hidden">
         
-        {/* Left Column (Monitor): Takes 8/12 columns (70%) */}
+        {/* Left Panel (Monitor): 70% width */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="lg:col-span-8 flex items-center justify-center"
+          className="w-full lg:w-[70%] h-full flex items-center justify-center p-0"
         >
-          {/* Desktop Monitor Mockup Container - constrained by height */}
-          <div className="relative w-full max-h-[80vh] flex items-center justify-center">
+          {/* Desktop Monitor Mockup - fills available space */}
+          <div className="relative w-full h-auto max-h-[90vh] flex items-center justify-center">
             {/* Bezel-less Monitor Frame */}
-            <div className="relative bg-gray-900 rounded-2xl p-4 shadow-2xl max-h-[80vh]">
+            <div className="relative bg-gray-900 rounded-2xl p-4 shadow-2xl w-full">
               {/* Screen with minimal bezel */}
               <div className="bg-black rounded-xl overflow-hidden border-4 border-gray-800 shadow-inner">
                 {/* Screen Content - Dashboard UI */}
@@ -1180,13 +1180,13 @@ function CommandCenterSection() {
           </div>
         </motion.div>
 
-        {/* Right Column (Controls): Takes 4/12 columns (30%) */}
+        {/* Right Panel (Controls): 30% width */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="lg:col-span-4 flex flex-col justify-center space-y-6"
+          className="w-full lg:w-[30%] h-full flex flex-col justify-center px-8 space-y-6"
         >
           {/* Compact Text Content */}
           <div className="text-left">
