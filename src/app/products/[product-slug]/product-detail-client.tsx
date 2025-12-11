@@ -791,10 +791,10 @@ function MeshNetworkSection() {
   );
 }
 
-// Hardware Section: Auralis Core vs Pro Comparison
+// Hardware Section: Auralis Core vs Pro Simultaneous Split-View Comparison
 function HardwareSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
-  const [activeMode, setActiveMode] = useState<'core' | 'pro'>('core');
+  const [hoveredCard, setHoveredCard] = useState<'core' | 'pro' | null>(null);
 
   const coreSpecs = [
     { title: 'Role', value: 'Worker Node (Sensing & Relay)' },
@@ -810,14 +810,12 @@ function HardwareSection() {
     { title: 'Power', value: '10W High-Current Supply' }
   ];
 
-  const specs = activeMode === 'core' ? coreSpecs : proSpecs;
-
   return (
     <section ref={ref} className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden bg-gray-100">
       <div className="container max-w-screen-xl px-4 md:px-6">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -830,132 +828,148 @@ function HardwareSection() {
           </p>
         </motion.div>
 
-        {/* Toggle Switch - Center Stage */}
-        <motion.div
-          className="flex justify-center mb-12"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="inline-flex bg-white/60 backdrop-blur-xl border-2 border-white rounded-full p-2 shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
-            <button
-              onClick={() => setActiveMode('core')}
-              className={`px-8 py-3 rounded-full text-base font-semibold transition-all duration-300 relative ${
-                activeMode === 'core'
-                  ? 'text-primary'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              {activeMode === 'core' && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute inset-0 bg-primary/10 rounded-full"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-              <span className="relative z-10">Auralis Core</span>
-            </button>
-            <button
-              onClick={() => setActiveMode('pro')}
-              className={`px-8 py-3 rounded-full text-base font-semibold transition-all duration-300 relative ${
-                activeMode === 'pro'
-                  ? 'text-primary'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              {activeMode === 'pro' && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute inset-0 bg-primary/10 rounded-full"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-              <span className="relative z-10">Auralis Pro</span>
-            </button>
-          </div>
-        </motion.div>
+        {/* Simultaneous Split-View: Two-Column Grid */}
+        <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+          
+          {/* Left Column - Auralis Core (The Worker Node) */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            onMouseEnter={() => setHoveredCard('core')}
+            onMouseLeave={() => setHoveredCard(null)}
+            className={`transition-all duration-500 ${
+              hoveredCard === 'pro' ? 'opacity-50' : 'opacity-100'
+            } ${
+              hoveredCard === 'core' ? 'scale-105' : 'scale-100'
+            }`}
+          >
+            {/* Frosted Ice Glass Card - Auralis Core (Cleaner look for satellite) */}
+            <div className="p-8 rounded-3xl border-2 border-white bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] h-full">
+              {/* Header */}
+              <div className="mb-6">
+                <h3 className="text-2xl sm:text-3xl font-headline font-bold text-gray-900 mb-2">
+                  Auralis Core
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  The Worker Node - Distributed intelligence across every pole.
+                </p>
+              </div>
 
-        {/* Content Area - Two-Column Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-          {/* Left Column - Visual */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeMode}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.5 }}
-              className="relative"
-            >
-              {/* Frosted Ice Glass Card */}
-              <div className="p-8 sm:p-10 rounded-3xl border-2 border-white bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
-                <div className="aspect-square bg-gray-200 rounded-2xl flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl mb-4">
-                      {activeMode === 'core' ? '📡' : '🔌'}
-                    </div>
-                    <p className="text-sm text-gray-600 font-medium">
-                      {activeMode === 'core' ? 'Single-Antenna Mesh Node' : 'Dual-Antenna Gateway'}
-                    </p>
+              {/* Visual */}
+              <div className="mb-6 aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-7xl mb-3">
+                    📡
                   </div>
+                  <p className="text-sm text-gray-600 font-medium">
+                    Single-Antenna Mesh Node
+                  </p>
                 </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
 
-          {/* Right Column - Specs List */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeMode}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-6"
-            >
-              {/* Title */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                <h3 className="text-2xl sm:text-3xl font-headline font-bold text-gray-900 mb-2">
-                  {activeMode === 'core' ? 'Auralis Core' : 'Auralis Pro'}
-                </h3>
-                <p className="text-gray-600">
-                  {activeMode === 'core' 
-                    ? 'The Worker Node - Distributed intelligence across every pole.'
-                    : 'The Gateway - Bridging local mesh to cloud infrastructure.'
-                  }
-                </p>
-              </motion.div>
-
-              {/* Specs List with Staggered Animation */}
-              <div className="space-y-4">
-                {specs.map((spec, i) => (
+              {/* Specs List */}
+              <div className="space-y-3">
+                {coreSpecs.map((spec, i) => (
                   <motion.div
                     key={spec.title}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={isVisible ? { opacity: 1, y: 0 } : {}}
                     transition={{ 
                       duration: 0.4,
-                      delay: i * 0.1
+                      delay: 0.4 + (i * 0.1)
                     }}
-                    className="p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-white/60 shadow-sm"
+                    className="p-3 rounded-lg bg-white/40 backdrop-blur-sm border border-white/60"
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="font-semibold text-gray-700 min-w-[120px]">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="font-semibold text-gray-700 text-sm">
                         {spec.title}:
                       </div>
-                      <div className="text-gray-900 text-right flex-1">
+                      <div className="text-gray-900 text-sm text-right flex-1">
                         {spec.value}
                       </div>
                     </div>
                   </motion.div>
                 ))}
               </div>
-            </motion.div>
-          </AnimatePresence>
+            </div>
+          </motion.div>
+
+          {/* Right Column - Auralis Pro (The Gateway) */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={isVisible ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            onMouseEnter={() => setHoveredCard('pro')}
+            onMouseLeave={() => setHoveredCard(null)}
+            className={`transition-all duration-500 ${
+              hoveredCard === 'core' ? 'opacity-50' : 'opacity-100'
+            } ${
+              hoveredCard === 'pro' ? 'scale-105' : 'scale-100'
+            }`}
+          >
+            {/* Frosted Ice Glass Card - Auralis Pro (Pulsing border/glow for master) */}
+            <div className={`p-8 rounded-3xl border-2 bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] h-full relative ${
+              hoveredCard === 'pro' 
+                ? 'border-primary shadow-[0_8px_30px_rgb(0,0,0,0.06),0_0_40px_rgba(25,179,92,0.4)]' 
+                : 'border-primary/40'
+            }`}>
+              {/* Subtle pulsing glow effect */}
+              <div className="absolute inset-0 rounded-3xl border-2 border-primary/30 animate-pulse pointer-events-none" />
+              
+              {/* Header */}
+              <div className="mb-6 relative z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-2xl sm:text-3xl font-headline font-bold text-gray-900">
+                    Auralis Pro
+                  </h3>
+                  <span className="px-2 py-1 text-xs font-semibold rounded-full bg-primary/10 text-primary">
+                    Gateway
+                  </span>
+                </div>
+                <p className="text-gray-600 text-sm">
+                  The Gateway - Bridging local mesh to cloud infrastructure.
+                </p>
+              </div>
+
+              {/* Visual */}
+              <div className="mb-6 aspect-square bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl flex items-center justify-center relative z-10 border border-primary/10">
+                <div className="text-center">
+                  <div className="text-7xl mb-3">
+                    🔌
+                  </div>
+                  <p className="text-sm text-gray-600 font-medium">
+                    Dual-Antenna Gateway
+                  </p>
+                </div>
+              </div>
+
+              {/* Specs List */}
+              <div className="space-y-3 relative z-10">
+                {proSpecs.map((spec, i) => (
+                  <motion.div
+                    key={spec.title}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={isVisible ? { opacity: 1, y: 0 } : {}}
+                    transition={{ 
+                      duration: 0.4,
+                      delay: 0.5 + (i * 0.1)
+                    }}
+                    className="p-3 rounded-lg bg-white/40 backdrop-blur-sm border border-primary/20"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="font-semibold text-gray-700 text-sm">
+                        {spec.title}:
+                      </div>
+                      <div className="text-gray-900 text-sm text-right flex-1 font-medium">
+                        {spec.value}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
