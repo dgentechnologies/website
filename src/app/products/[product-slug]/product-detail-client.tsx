@@ -954,6 +954,17 @@ function CommandCenterSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
   const [activeFeature, setActiveFeature] = useState<'map' | 'analytics' | 'fault'>('map');
 
+  // Dashboard configuration constants
+  const TOTAL_MAP_NODES = 15;
+  const NODE_DATA = [
+    { id: 1, status: 'active' },
+    { id: 2, status: 'active' },
+    { id: 3, status: 'warning' },
+    { id: 4, status: 'active' },
+    { id: 5, status: 'active' },
+  ];
+  const ENERGY_CHART_DATA = [65, 80, 55, 90, 70, 85, 60];
+
   const features = [
     {
       id: 'map' as const,
@@ -1045,11 +1056,11 @@ function CommandCenterSection() {
                       <div className="col-span-1 bg-gray-900/50 rounded-lg p-4 border border-gray-800">
                         <h4 className="text-white text-xs font-semibold mb-3">Active Nodes</h4>
                         <div className="space-y-2">
-                          {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="flex items-center gap-2 bg-gray-800/50 p-2 rounded">
-                              <div className={`w-2 h-2 rounded-full ${i === 3 ? 'bg-amber-500' : 'bg-green-500'}`} />
-                              <span className="text-gray-300 text-xs flex-1">Node #{i}47</span>
-                              <span className="text-gray-500 text-xs">{i === 3 ? '⚠️' : '✓'}</span>
+                          {NODE_DATA.map((node) => (
+                            <div key={node.id} className="flex items-center gap-2 bg-gray-800/50 p-2 rounded">
+                              <div className={`w-2 h-2 rounded-full ${node.status === 'warning' ? 'bg-amber-500' : 'bg-green-500'}`} />
+                              <span className="text-gray-300 text-xs flex-1">Node #{node.id}47</span>
+                              <span className="text-gray-500 text-xs">{node.status === 'warning' ? '⚠️' : '✓'}</span>
                             </div>
                           ))}
                         </div>
@@ -1069,7 +1080,7 @@ function CommandCenterSection() {
                         {/* Map visualization */}
                         <div className="relative h-full flex items-center justify-center">
                           <div className="grid grid-cols-5 gap-3">
-                            {Array.from({ length: 15 }).map((_, i) => (
+                            {Array.from({ length: TOTAL_MAP_NODES }).map((_, i) => (
                               <motion.div
                                 key={i}
                                 className={`w-3 h-3 rounded-full ${
@@ -1101,7 +1112,7 @@ function CommandCenterSection() {
                           <div className="w-full px-6">
                             {/* Simple bar chart visualization */}
                             <div className="flex items-end justify-around h-32 gap-2">
-                              {[65, 80, 55, 90, 70, 85, 60].map((height, i) => (
+                              {ENERGY_CHART_DATA.map((height, i) => (
                                 <motion.div
                                   key={i}
                                   className="flex-1 bg-primary/80 rounded-t"
@@ -1184,7 +1195,6 @@ function CommandCenterSection() {
                 <motion.div
                   key={feature.id}
                   onMouseEnter={() => setActiveFeature(feature.id)}
-                  onClick={() => setActiveFeature(feature.id)}
                   className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 ${
                     isActive
                       ? 'bg-primary/10 border-2 border-primary shadow-[0_0_30px_rgba(25,179,92,0.2)]'
