@@ -791,10 +791,10 @@ function MeshNetworkSection() {
   );
 }
 
-// Hardware Section: Auralis Core vs Pro Simultaneous Split-View Comparison
+// Hardware Section: Unified Interactive Stage with Hover-Reveal Overlays
 function HardwareSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
-  const [hoveredCard, setHoveredCard] = useState<'core' | 'pro' | null>(null);
+  const [hoveredDevice, setHoveredDevice] = useState<'core' | 'pro' | null>(null);
 
   const coreSpecs = [
     { title: 'Role', value: 'Worker Node (Sensing & Relay)' },
@@ -828,151 +828,122 @@ function HardwareSection() {
           </p>
         </motion.div>
 
-        {/* Simultaneous Split-View: Two-Column Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          
-          {/* Left Column - Auralis Core (The Worker Node) */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            onMouseEnter={() => setHoveredCard('core')}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`transition-all duration-500 ${
-              hoveredCard === 'pro' ? 'opacity-50' : 'opacity-100'
-            } ${
-              hoveredCard === 'core' ? 'scale-105' : 'scale-100'
-            }`}
-          >
-            {/* Frosted Ice Glass Card - Auralis Core (Cleaner look for satellite) */}
-            <div className="p-8 rounded-3xl border-2 border-white bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] h-full">
-              {/* Header */}
-              <div className="mb-6">
-                <h3 className="text-2xl sm:text-3xl font-headline font-bold text-gray-900 mb-2">
-                  Auralis Core
-                </h3>
-                <p className="text-gray-600 text-sm">
-                  The Worker Node - Distributed intelligence across every pole.
-                </p>
-              </div>
-
-              {/* Visual */}
-              <div className="mb-6 aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-7xl mb-3">
-                    📡
+        {/* Unified Interactive Showcase Stage */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="max-w-6xl mx-auto"
+        >
+          {/* Single Wide Display Container - Showcase Stage */}
+          <div className="p-8 md:p-12 rounded-3xl bg-white/60 backdrop-blur-xl border-2 border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+            
+            {/* Both Devices Side-by-Side in One Container */}
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+              
+              {/* Auralis Core Device */}
+              <div 
+                className="relative group cursor-pointer"
+                onMouseEnter={() => setHoveredDevice('core')}
+                onMouseLeave={() => setHoveredDevice(null)}
+              >
+                {/* Device Image */}
+                <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl flex items-center justify-center relative overflow-hidden transition-all duration-300">
+                  <div className="text-center z-10">
+                    <div className="text-8xl mb-4 transition-transform duration-300 group-hover:scale-110">
+                      📡
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600 font-medium">
-                    Single-Antenna Mesh Node
+
+                  {/* Hover-Reveal Frosted Glass Overlay */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: hoveredDevice === 'core' ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center pointer-events-none"
+                  >
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">Technical Specifications</h4>
+                    <div className="space-y-3">
+                      {coreSpecs.map((spec) => (
+                        <div key={spec.title} className="flex justify-between items-start">
+                          <span className="font-semibold text-gray-700 text-sm">{spec.title}:</span>
+                          <span className="text-gray-900 text-sm text-right ml-2">{spec.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Device Title */}
+                <div className="mt-4 text-center">
+                  <h3 className="text-2xl font-headline font-bold text-gray-900">
+                    Auralis Core
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    The Worker Node
                   </p>
                 </div>
               </div>
 
-              {/* Specs List */}
-              <div className="space-y-3">
-                {coreSpecs.map((spec, i) => (
+              {/* Subtle Divider */}
+              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent" />
+
+              {/* Auralis Pro Device */}
+              <div 
+                className="relative group cursor-pointer"
+                onMouseEnter={() => setHoveredDevice('pro')}
+                onMouseLeave={() => setHoveredDevice(null)}
+              >
+                {/* Device Image */}
+                <div className="aspect-square bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl flex items-center justify-center relative overflow-hidden border border-primary/10 transition-all duration-300">
+                  <div className="text-center z-10">
+                    <div className="text-8xl mb-4 transition-transform duration-300 group-hover:scale-110">
+                      🔌
+                    </div>
+                  </div>
+
+                  {/* Hover-Reveal Frosted Glass Overlay */}
                   <motion.div
-                    key={spec.title}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                    transition={{ 
-                      duration: 0.4,
-                      delay: 0.4 + (i * 0.1)
-                    }}
-                    className="p-3 rounded-lg bg-white/40 backdrop-blur-sm border border-white/60"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: hoveredDevice === 'pro' ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex flex-col justify-center pointer-events-none"
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="font-semibold text-gray-700 text-sm">
-                        {spec.title}:
-                      </div>
-                      <div className="text-gray-900 text-sm text-right flex-1">
-                        {spec.value}
-                      </div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <h4 className="text-xl font-bold text-gray-900">Technical Specifications</h4>
+                      <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-primary/20 text-primary">
+                        Gateway
+                      </span>
+                    </div>
+                    <div className="space-y-3">
+                      {proSpecs.map((spec) => (
+                        <div key={spec.title} className="flex justify-between items-start">
+                          <span className="font-semibold text-gray-700 text-sm">{spec.title}:</span>
+                          <span className="text-gray-900 text-sm text-right ml-2 font-medium">{spec.value}</span>
+                        </div>
+                      ))}
                     </div>
                   </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
 
-          {/* Right Column - Auralis Pro (The Gateway) */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            onMouseEnter={() => setHoveredCard('pro')}
-            onMouseLeave={() => setHoveredCard(null)}
-            className={`transition-all duration-500 ${
-              hoveredCard === 'core' ? 'opacity-50' : 'opacity-100'
-            } ${
-              hoveredCard === 'pro' ? 'scale-105' : 'scale-100'
-            }`}
-          >
-            {/* Frosted Ice Glass Card - Auralis Pro (Pulsing border/glow for master) */}
-            <div className={`p-8 rounded-3xl border-2 bg-white/60 backdrop-blur-xl h-full relative ${
-              hoveredCard === 'pro' 
-                ? 'border-primary shadow-[0_8px_30px_rgb(0,0,0,0.06),0_0_40px_rgba(25,179,92,0.4)]' 
-                : 'border-primary/40 shadow-[0_8px_30px_rgb(0,0,0,0.06)]'
-            }`}>
-              {/* Subtle pulsing glow effect - only when hovered */}
-              {hoveredCard === 'pro' && (
-                <div className="absolute inset-0 rounded-3xl border-2 border-primary/30 animate-pulse pointer-events-none" />
-              )}
-              
-              {/* Header */}
-              <div className="mb-6 relative z-10">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-2xl sm:text-3xl font-headline font-bold text-gray-900">
+                  {/* Subtle pulsing border on hover */}
+                  {hoveredDevice === 'pro' && (
+                    <div className="absolute inset-0 rounded-2xl border-2 border-primary/40 animate-pulse pointer-events-none" />
+                  )}
+                </div>
+
+                {/* Device Title */}
+                <div className="mt-4 text-center">
+                  <h3 className="text-2xl font-headline font-bold text-gray-900">
                     Auralis Pro
                   </h3>
-                  <span className="px-2 py-1 text-xs font-semibold rounded-full bg-primary/10 text-primary">
-                    Gateway
-                  </span>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  The Gateway - Bridging local mesh to cloud infrastructure.
-                </p>
-              </div>
-
-              {/* Visual */}
-              <div className="mb-6 aspect-square bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl flex items-center justify-center relative z-10 border border-primary/10">
-                <div className="text-center">
-                  <div className="text-7xl mb-3">
-                    🔌
-                  </div>
-                  <p className="text-sm text-gray-600 font-medium">
-                    Dual-Antenna Gateway
+                  <p className="text-sm text-gray-600 mt-1">
+                    The Gateway
                   </p>
                 </div>
               </div>
-
-              {/* Specs List */}
-              <div className="space-y-3 relative z-10">
-                {proSpecs.map((spec, i) => (
-                  <motion.div
-                    key={spec.title}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                    transition={{ 
-                      duration: 0.4,
-                      delay: 0.5 + (i * 0.1)
-                    }}
-                    className="p-3 rounded-lg bg-white/40 backdrop-blur-sm border border-primary/20"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="font-semibold text-gray-700 text-sm">
-                        {spec.title}:
-                      </div>
-                      <div className="text-gray-900 text-sm text-right flex-1 font-medium">
-                        {spec.value}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
