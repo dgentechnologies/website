@@ -24,7 +24,7 @@ const SplineViewer = dynamic(
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar } from 'lucide-react';
+import { ArrowLeft, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3 } from 'lucide-react';
 import {
     Carousel,
     CarouselContent,
@@ -949,6 +949,277 @@ function HardwareSection() {
   );
 }
 
+// Command Center Section: AuralisView Software Interface
+function CommandCenterSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+  const [activeFeature, setActiveFeature] = useState<'map' | 'analytics' | 'fault'>('map');
+
+  const features = [
+    {
+      id: 'map' as const,
+      name: 'Live Map',
+      icon: MapPin,
+      description: 'Real-time monitoring of all nodes',
+      focus: 'Live city-wide node status visualization'
+    },
+    {
+      id: 'analytics' as const,
+      name: 'Energy Analytics',
+      icon: BarChart3,
+      description: 'Power consumption insights',
+      focus: 'Energy graphs and consumption trends'
+    },
+    {
+      id: 'fault' as const,
+      name: 'Fault Management',
+      icon: AlertTriangle,
+      description: 'Instant fault detection & alerts',
+      focus: 'Alert system and maintenance tracking'
+    }
+  ];
+
+  return (
+    <section 
+      ref={ref} 
+      className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden bg-[#0a0a0a]"
+    >
+      <div className="container max-w-screen-xl px-4 md:px-6">
+        {/* Section Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight text-white mb-4">
+            Command Center.
+          </h2>
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+            Global control from a single pane of glass. Schedule dimming, analyze power, and manage assets remotely.
+          </p>
+        </motion.div>
+
+        {/* Laptop/Monitor Mockup - Center Stage */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="max-w-6xl mx-auto mb-16"
+        >
+          {/* MacBook Pro Mockup */}
+          <div className="relative">
+            {/* Laptop Frame */}
+            <div className="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-t-2xl p-3 shadow-2xl">
+              {/* Screen Bezel */}
+              <div className="bg-black rounded-lg overflow-hidden border border-gray-700 shadow-inner">
+                {/* Screen Content - Dashboard UI */}
+                <div className="aspect-video bg-[#0f0f0f] relative overflow-hidden">
+                  {/* Dashboard Content */}
+                  <motion.div
+                    className="absolute inset-0 p-6 flex flex-col"
+                    animate={{
+                      opacity: activeFeature === 'map' ? 1 : 0.7,
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {/* Dashboard Header */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                          <Radar className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-white font-semibold text-sm">AuralisView Dashboard</h3>
+                          <p className="text-gray-500 text-xs">Smart City Monitoring</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                        <span className="text-green-500 text-xs font-medium">Live</span>
+                      </div>
+                    </div>
+
+                    {/* Main Dashboard Area */}
+                    <div className="flex-1 grid grid-cols-3 gap-4">
+                      {/* Sidebar - Node List */}
+                      <div className="col-span-1 bg-gray-900/50 rounded-lg p-4 border border-gray-800">
+                        <h4 className="text-white text-xs font-semibold mb-3">Active Nodes</h4>
+                        <div className="space-y-2">
+                          {[1, 2, 3, 4, 5].map((i) => (
+                            <div key={i} className="flex items-center gap-2 bg-gray-800/50 p-2 rounded">
+                              <div className={`w-2 h-2 rounded-full ${i === 3 ? 'bg-amber-500' : 'bg-green-500'}`} />
+                              <span className="text-gray-300 text-xs flex-1">Node #{i}47</span>
+                              <span className="text-gray-500 text-xs">{i === 3 ? '⚠️' : '✓'}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Center - Map/Chart Area */}
+                      <div className="col-span-2 bg-gray-900/30 rounded-lg p-4 border border-gray-800 relative overflow-hidden">
+                        {/* Highlight based on active feature */}
+                        <motion.div
+                          className="absolute inset-0 bg-primary/5 rounded-lg"
+                          animate={{
+                            opacity: activeFeature === 'map' ? 1 : 0,
+                          }}
+                          transition={{ duration: 0.3 }}
+                        />
+                        
+                        {/* Map visualization */}
+                        <div className="relative h-full flex items-center justify-center">
+                          <div className="grid grid-cols-5 gap-3">
+                            {Array.from({ length: 15 }).map((_, i) => (
+                              <motion.div
+                                key={i}
+                                className={`w-3 h-3 rounded-full ${
+                                  i === 7 ? 'bg-amber-500' : 'bg-green-500'
+                                }`}
+                                animate={{
+                                  scale: activeFeature === 'map' ? [1, 1.2, 1] : 1,
+                                  opacity: activeFeature === 'fault' && i === 7 ? [1, 0.5, 1] : 1,
+                                }}
+                                transition={{
+                                  duration: 2,
+                                  repeat: Infinity,
+                                  delay: i * 0.1,
+                                }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Energy Analytics Overlay */}
+                        <motion.div
+                          className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm rounded-lg flex items-center justify-center"
+                          animate={{
+                            opacity: activeFeature === 'analytics' ? 1 : 0,
+                            pointerEvents: activeFeature === 'analytics' ? 'auto' : 'none',
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div className="w-full px-6">
+                            {/* Simple bar chart visualization */}
+                            <div className="flex items-end justify-around h-32 gap-2">
+                              {[65, 80, 55, 90, 70, 85, 60].map((height, i) => (
+                                <motion.div
+                                  key={i}
+                                  className="flex-1 bg-primary/80 rounded-t"
+                                  style={{ height: `${height}%` }}
+                                  initial={{ height: 0 }}
+                                  animate={{ height: activeFeature === 'analytics' ? `${height}%` : 0 }}
+                                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        {/* Fault Alert Overlay */}
+                        <motion.div
+                          className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm rounded-lg flex items-center justify-center"
+                          animate={{
+                            opacity: activeFeature === 'fault' ? 1 : 0,
+                            pointerEvents: activeFeature === 'fault' ? 'auto' : 'none',
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 max-w-sm">
+                            <div className="flex items-center gap-3 mb-2">
+                              <AlertTriangle className="w-5 h-5 text-amber-500" />
+                              <span className="text-white font-semibold text-sm">Fault Detected</span>
+                            </div>
+                            <p className="text-gray-300 text-xs mb-2">Light #247 - LED Driver Failure</p>
+                            <div className="flex gap-2">
+                              <div className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">Dispatched</div>
+                              <div className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded">ETA: 12 min</div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Bottom Stats Bar */}
+                    <div className="mt-4 flex items-center justify-around bg-gray-900/50 rounded-lg p-3 border border-gray-800">
+                      <div className="text-center">
+                        <p className="text-primary text-sm font-bold">247</p>
+                        <p className="text-gray-500 text-xs">Active Nodes</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-green-500 text-sm font-bold">98.7%</p>
+                        <p className="text-gray-500 text-xs">Uptime</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-blue-400 text-sm font-bold">2.4 kW</p>
+                        <p className="text-gray-500 text-xs">Power Draw</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+
+            {/* Laptop Base */}
+            <div className="h-2 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl" />
+            <div className="h-6 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-2xl shadow-2xl relative">
+              {/* Trackpad indicator */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-3 bg-gray-700/50 rounded-full" />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Feature Toggles - Interactive */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="grid md:grid-cols-3 gap-4">
+            {features.map((feature, i) => {
+              const Icon = feature.icon;
+              const isActive = activeFeature === feature.id;
+
+              return (
+                <motion.div
+                  key={feature.id}
+                  onMouseEnter={() => setActiveFeature(feature.id)}
+                  onClick={() => setActiveFeature(feature.id)}
+                  className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 ${
+                    isActive
+                      ? 'bg-primary/10 border-2 border-primary shadow-[0_0_30px_rgba(25,179,92,0.2)]'
+                      : 'bg-gray-900/50 border-2 border-gray-800 hover:border-gray-700'
+                  }`}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className={`p-3 rounded-xl transition-colors ${
+                      isActive ? 'bg-primary text-white' : 'bg-gray-800 text-gray-400'
+                    }`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className={`font-semibold transition-colors ${
+                      isActive ? 'text-white' : 'text-gray-300'
+                    }`}>
+                      {feature.name}
+                    </h3>
+                  </div>
+                  <p className={`text-sm transition-colors ${
+                    isActive ? 'text-gray-300' : 'text-gray-500'
+                  }`}>
+                    {feature.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 // Fault Detection Section: Alert Simulation
 function FaultDetectionSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
@@ -1222,6 +1493,9 @@ function EcosystemProductView({ product }: { product: Product }) {
       
       {/* Hardware Section */}
       <HardwareSection />
+      
+      {/* Command Center Section */}
+      <CommandCenterSection />
       
       {/* Fault Detection Section */}
       <FaultDetectionSection />
