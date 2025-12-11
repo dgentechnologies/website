@@ -1031,8 +1031,7 @@ function CommandCenterSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mx-auto mb-4 flex-1 flex items-center justify-center"
-          style={{ maxHeight: '60vh' }}
+          className="mx-auto mb-4 flex-1 flex items-center justify-center max-h-[60vh]"
         >
           {/* MacBook Pro Mockup */}
           <div className="relative w-full h-full flex items-center justify-center">
@@ -1041,7 +1040,7 @@ function CommandCenterSection() {
               {/* Screen Bezel */}
               <div className="bg-black rounded-lg overflow-hidden border border-gray-700 shadow-inner">
                 {/* Screen Content - Dashboard UI */}
-                <div className="aspect-video bg-[#0f0f0f] relative overflow-hidden" style={{ maxHeight: '50vh' }}>
+                <div className="aspect-video bg-[#0f0f0f] relative overflow-hidden max-h-[50vh]">
                   {/* Dashboard Content */}
                   <motion.div
                     className="absolute inset-0 p-2 md:p-3 lg:p-4 flex flex-col"
