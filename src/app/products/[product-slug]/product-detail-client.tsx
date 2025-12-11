@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
 
 // Dynamically import the custom SplineViewer component with SSR disabled
@@ -953,6 +953,20 @@ function HardwareSection() {
 function CommandCenterSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
   const [activeFeature, setActiveFeature] = useState<'map' | 'analytics' | 'fault'>('map');
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Scroll-driven background transition
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start start"]
+  });
+
+  // Transform scroll progress to background color (from light grey to dark)
+  const backgroundColor = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    ["rgb(243, 244, 246)", "rgb(30, 30, 30)", "rgb(10, 10, 10)"]
+  );
 
   // Dashboard configuration constants
   const TOTAL_MAP_NODES = 15;
@@ -990,32 +1004,33 @@ function CommandCenterSection() {
   ];
 
   return (
-    <section 
-      ref={ref} 
-      className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden bg-[#0a0a0a]"
+    <motion.section 
+      ref={sectionRef}
+      style={{ backgroundColor }}
+      className="min-h-screen flex flex-col justify-center py-12 md:py-16 relative overflow-hidden"
     >
-      <div className="container max-w-screen-xl px-4 md:px-6">
-        {/* Section Header */}
+      <div className="container max-w-7xl px-4 md:px-6 flex flex-col justify-center flex-1">
+        {/* Section Header - Compact */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-bold tracking-tight text-white mb-3">
             Command Center.
           </h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+          <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">
             Global control from a single pane of glass. Schedule dimming, analyze power, and manage assets remotely.
           </p>
         </motion.div>
 
-        {/* Laptop/Monitor Mockup - Center Stage */}
+        {/* Laptop/Monitor Mockup - Center Stage - Scaled Down */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-6xl mx-auto mb-16"
+          className="max-w-5xl mx-auto mb-8 md:mb-12 w-full"
         >
           {/* MacBook Pro Mockup */}
           <div className="relative">
@@ -1027,21 +1042,21 @@ function CommandCenterSection() {
                 <div className="aspect-video bg-[#0f0f0f] relative overflow-hidden">
                   {/* Dashboard Content */}
                   <motion.div
-                    className="absolute inset-0 p-6 flex flex-col"
+                    className="absolute inset-0 p-3 md:p-4 lg:p-5 flex flex-col"
                     animate={{
                       opacity: activeFeature === 'map' ? 1 : 0.7,
                     }}
                     transition={{ duration: 0.3 }}
                   >
                     {/* Dashboard Header */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                          <Radar className="w-6 h-6 text-white" />
+                    <div className="flex items-center justify-between mb-2 md:mb-3">
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-lg flex items-center justify-center">
+                          <Radar className="w-4 h-4 md:w-6 md:h-6 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold text-sm">AuralisView Dashboard</h3>
-                          <p className="text-gray-500 text-xs">Smart City Monitoring</p>
+                          <h3 className="text-white font-semibold text-xs md:text-sm">AuralisView Dashboard</h3>
+                          <p className="text-gray-500 text-[10px] md:text-xs">Smart City Monitoring</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -1051,23 +1066,23 @@ function CommandCenterSection() {
                     </div>
 
                     {/* Main Dashboard Area */}
-                    <div className="flex-1 grid grid-cols-3 gap-4">
+                    <div className="flex-1 grid grid-cols-3 gap-2 md:gap-3">
                       {/* Sidebar - Node List */}
-                      <div className="col-span-1 bg-gray-900/50 rounded-lg p-4 border border-gray-800">
-                        <h4 className="text-white text-xs font-semibold mb-3">Active Nodes</h4>
-                        <div className="space-y-2">
+                      <div className="col-span-1 bg-gray-900/50 rounded-lg p-2 md:p-3 border border-gray-800">
+                        <h4 className="text-white text-[10px] md:text-xs font-semibold mb-1.5 md:mb-2">Active Nodes</h4>
+                        <div className="space-y-1 md:space-y-1.5">
                           {NODE_DATA.map((node) => (
-                            <div key={node.id} className="flex items-center gap-2 bg-gray-800/50 p-2 rounded">
-                              <div className={`w-2 h-2 rounded-full ${node.status === 'warning' ? 'bg-amber-500' : 'bg-green-500'}`} />
-                              <span className="text-gray-300 text-xs flex-1">Node #{node.id}47</span>
-                              <span className="text-gray-500 text-xs">{node.status === 'warning' ? '⚠️' : '✓'}</span>
+                            <div key={node.id} className="flex items-center gap-1.5 bg-gray-800/50 p-1.5 md:p-2 rounded text-[10px] md:text-xs">
+                              <div className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${node.status === 'warning' ? 'bg-amber-500' : 'bg-green-500'}`} />
+                              <span className="text-gray-300 flex-1">Node #{node.id}47</span>
+                              <span className="text-gray-500">{node.status === 'warning' ? '⚠️' : '✓'}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
                       {/* Center - Map/Chart Area */}
-                      <div className="col-span-2 bg-gray-900/30 rounded-lg p-4 border border-gray-800 relative overflow-hidden">
+                      <div className="col-span-2 bg-gray-900/30 rounded-lg p-2 md:p-3 border border-gray-800 relative overflow-hidden">
                         {/* Highlight based on active feature */}
                         <motion.div
                           className="absolute inset-0 bg-primary/5 rounded-lg"
@@ -1079,7 +1094,7 @@ function CommandCenterSection() {
                         
                         {/* Map visualization */}
                         <div className="relative h-full flex items-center justify-center">
-                          <div className="grid grid-cols-5 gap-3">
+                          <div className="grid grid-cols-5 gap-1.5 md:gap-2">
                             {Array.from({ length: TOTAL_MAP_NODES }).map((_, i) => (
                               <motion.div
                                 key={i}
@@ -1151,18 +1166,18 @@ function CommandCenterSection() {
                     </div>
 
                     {/* Bottom Stats Bar */}
-                    <div className="mt-4 flex items-center justify-around bg-gray-900/50 rounded-lg p-3 border border-gray-800">
+                    <div className="mt-2 md:mt-3 flex items-center justify-around bg-gray-900/50 rounded-lg p-2 md:p-2.5 border border-gray-800">
                       <div className="text-center">
-                        <p className="text-primary text-sm font-bold">247</p>
-                        <p className="text-gray-500 text-xs">Active Nodes</p>
+                        <p className="text-primary text-xs md:text-sm font-bold">247</p>
+                        <p className="text-gray-500 text-[10px] md:text-xs">Active Nodes</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-green-500 text-sm font-bold">98.7%</p>
-                        <p className="text-gray-500 text-xs">Uptime</p>
+                        <p className="text-green-500 text-xs md:text-sm font-bold">98.7%</p>
+                        <p className="text-gray-500 text-[10px] md:text-xs">Uptime</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-blue-400 text-sm font-bold">2.4 kW</p>
-                        <p className="text-gray-500 text-xs">Power Draw</p>
+                        <p className="text-blue-400 text-xs md:text-sm font-bold">2.4 kW</p>
+                        <p className="text-gray-500 text-[10px] md:text-xs">Power Draw</p>
                       </div>
                     </div>
                   </motion.div>
@@ -1179,14 +1194,14 @@ function CommandCenterSection() {
           </div>
         </motion.div>
 
-        {/* Feature Toggles - Interactive */}
+        {/* Feature Toggles - Compact Horizontal Row */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="max-w-4xl mx-auto"
         >
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-3 md:gap-4">
             {features.map((feature, i) => {
               const Icon = feature.icon;
               const isActive = activeFeature === feature.id;
@@ -1195,7 +1210,7 @@ function CommandCenterSection() {
                 <motion.div
                   key={feature.id}
                   onMouseEnter={() => setActiveFeature(feature.id)}
-                  className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 ${
+                  className={`p-4 md:p-5 rounded-xl cursor-pointer transition-all duration-300 ${
                     isActive
                       ? 'bg-primary/10 border-2 border-primary shadow-[0_0_30px_rgba(25,179,92,0.2)]'
                       : 'bg-gray-900/50 border-2 border-gray-800 hover:border-gray-700'
@@ -1203,30 +1218,30 @@ function CommandCenterSection() {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className={`p-3 rounded-xl transition-colors ${
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <div className={`p-2.5 md:p-3 rounded-lg transition-colors ${
                       isActive ? 'bg-primary text-white' : 'bg-gray-800 text-gray-400'
                     }`}>
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-4 h-4 md:w-5 md:h-5" />
                     </div>
-                    <h3 className={`font-semibold transition-colors ${
+                    <h3 className={`text-sm md:text-base font-semibold transition-colors ${
                       isActive ? 'text-white' : 'text-gray-300'
                     }`}>
                       {feature.name}
                     </h3>
+                    <p className={`text-xs md:text-sm transition-colors hidden md:block ${
+                      isActive ? 'text-gray-300' : 'text-gray-500'
+                    }`}>
+                      {feature.description}
+                    </p>
                   </div>
-                  <p className={`text-sm transition-colors ${
-                    isActive ? 'text-gray-300' : 'text-gray-500'
-                  }`}>
-                    {feature.description}
-                  </p>
                 </motion.div>
               );
             })}
           </div>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
