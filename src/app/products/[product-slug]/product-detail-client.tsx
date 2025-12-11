@@ -705,7 +705,7 @@ function HardwareSection() {
               
               {/* Auralis Core Device */}
               <div 
-                className="relative group cursor-pointer lg:cursor-pointer"
+                className="relative group cursor-pointer"
                 onMouseEnter={() => setHoveredDevice('core')}
                 onMouseLeave={() => setHoveredDevice(null)}
               >
@@ -765,7 +765,7 @@ function HardwareSection() {
 
               {/* Auralis Pro Device */}
               <div 
-                className="relative group cursor-pointer lg:cursor-pointer"
+                className="relative group cursor-pointer"
                 onMouseEnter={() => setHoveredDevice('pro')}
                 onMouseLeave={() => setHoveredDevice(null)}
               >
@@ -1304,8 +1304,8 @@ function CommandCenterSection() {
               return (
                 <motion.div
                   key={feature.id}
-                  onClick={() => setActiveFeature(feature.id)}
-                  onMouseEnter={() => setActiveFeature(feature.id)}
+                  onMouseEnter={() => setActiveFeature(feature.id)} // Desktop hover
+                  onClick={() => setActiveFeature(feature.id)} // Mobile tap
                   className={`py-3 px-3 lg:px-4 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-between ${
                     isActive
                       ? 'bg-primary/10 border border-primary shadow-[0_0_20px_rgba(25,179,92,0.2)]'
