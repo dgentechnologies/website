@@ -839,7 +839,7 @@ function HardwareSection() {
           <div className="p-8 md:p-12 rounded-3xl bg-white/60 backdrop-blur-xl border-2 border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
             
             {/* Both Devices Side-by-Side in One Container */}
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 relative">
               
               {/* Auralis Core Device */}
               <div 
