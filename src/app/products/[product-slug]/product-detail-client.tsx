@@ -951,7 +951,6 @@ function HardwareSection() {
 
 // Command Center Section: AuralisView Software Interface
 function CommandCenterSection() {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
   const [activeFeature, setActiveFeature] = useState<'map' | 'analytics' | 'fault'>('map');
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -1014,7 +1013,8 @@ function CommandCenterSection() {
         <motion.div
           className="text-center mb-8 md:mb-12"
           initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-bold tracking-tight text-white mb-3">
@@ -1028,7 +1028,8 @@ function CommandCenterSection() {
         {/* Laptop/Monitor Mockup - Center Stage - Scaled Down */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-5xl mx-auto mb-8 md:mb-12 w-full"
         >
@@ -1197,7 +1198,8 @@ function CommandCenterSection() {
         {/* Feature Toggles - Compact Horizontal Row */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="max-w-4xl mx-auto"
         >
