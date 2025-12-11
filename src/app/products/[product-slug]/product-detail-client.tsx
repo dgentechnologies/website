@@ -1006,84 +1006,70 @@ function CommandCenterSection() {
     <motion.section 
       ref={sectionRef}
       style={{ backgroundColor }}
-      className="h-screen flex flex-col relative overflow-hidden"
+      className="h-screen relative overflow-hidden"
     >
-      <div className="container max-w-7xl px-4 md:px-6 h-full flex flex-col">
-        {/* Section Header - Fixed Size Top Element */}
+      {/* 2-Column Grid Layout: Mobile stacked, Desktop side-by-side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 h-screen items-center gap-8 lg:gap-12 px-4 md:px-8">
+        
+        {/* Left Column: Laptop Mockup ONLY */}
         <motion.div
-          className="text-center py-6 md:py-8 flex-shrink-0"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
+          className="flex items-center justify-center h-full w-full"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold tracking-tight text-white mb-2">
-            Command Center.
-          </h2>
-          <p className="text-sm md:text-base text-gray-400 max-w-2xl mx-auto">
-            Global control from a single pane of glass. Schedule dimming, analyze power, and manage assets remotely.
-          </p>
-        </motion.div>
-
-        {/* Laptop/Monitor Mockup - Middle Element with flex-1 to expand */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex-1 w-full flex items-center justify-center min-h-0 z-10"
-        >
-          {/* MacBook Pro Mockup Container - Takes all available space */}
-          <div className="relative w-full h-full max-w-5xl flex flex-col items-center justify-center">
-            {/* Laptop Frame - Uses object-contain approach */}
-            <div className="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-t-2xl p-2 md:p-3 shadow-2xl w-full h-full flex flex-col max-h-full">
+          {/* MacBook Pro Mockup Container */}
+          <div className="relative w-full max-w-4xl">
+            {/* Laptop Frame */}
+            <div className="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-t-2xl p-3 md:p-4 shadow-2xl">
               {/* Screen Bezel */}
-              <div className="bg-black rounded-lg overflow-hidden border border-gray-700 shadow-inner flex-1 flex flex-col min-h-0">
-                {/* Screen Content - Dashboard UI with object-contain behavior */}
+              <div className="bg-black rounded-lg overflow-hidden border border-gray-700 shadow-inner aspect-video">
+                {/* Screen Content - Dashboard UI */}
                 <div className="w-full h-full bg-[#0f0f0f] relative overflow-hidden">
                   {/* Dashboard Content */}
                   <motion.div
-                    className="absolute inset-0 p-2 md:p-3 lg:p-4 flex flex-col w-full h-full"
+                    className="absolute inset-0 p-3 md:p-4 lg:p-6 flex flex-col w-full h-full"
                     animate={{
                       opacity: activeFeature === 'map' ? 1 : 0.7,
                     }}
                     transition={{ duration: 0.3 }}
                   >
                     {/* Dashboard Header */}
-                    <div className="flex items-center justify-between mb-1.5 md:mb-2">
-                      <div className="flex items-center gap-1.5 md:gap-2">
-                        <div className="w-6 h-6 md:w-8 md:h-8 bg-primary rounded-lg flex items-center justify-center">
-                          <Radar className="w-3 h-3 md:w-4 md:h-4 text-white" />
+                    <div className="flex items-center justify-between mb-2 md:mb-3">
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-primary rounded-lg flex items-center justify-center">
+                          <Radar className="w-4 h-4 md:w-5 md:h-5 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-white font-semibold text-[10px] md:text-xs">AuralisView Dashboard</h3>
-                          <p className="text-gray-500 text-[8px] md:text-[10px]">Smart City Monitoring</p>
+                          <h3 className="text-white font-semibold text-xs md:text-sm">AuralisView Dashboard</h3>
+                          <p className="text-gray-500 text-[10px] md:text-xs">Smart City Monitoring</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                        <span className="text-green-500 text-[10px] font-medium">Live</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                        <span className="text-green-500 text-xs font-medium">Live</span>
                       </div>
                     </div>
 
                     {/* Main Dashboard Area */}
-                    <div className="flex-1 grid grid-cols-3 gap-1.5 md:gap-2">
+                    <div className="flex-1 grid grid-cols-3 gap-2 md:gap-3">
                       {/* Sidebar - Node List */}
-                      <div className="col-span-1 bg-gray-900/50 rounded-lg p-1.5 md:p-2 border border-gray-800">
-                        <h4 className="text-white text-[8px] md:text-[10px] font-semibold mb-1">Active Nodes</h4>
-                        <div className="space-y-1">
+                      <div className="col-span-1 bg-gray-900/50 rounded-lg p-2 md:p-3 border border-gray-800">
+                        <h4 className="text-white text-[10px] md:text-xs font-semibold mb-2">Active Nodes</h4>
+                        <div className="space-y-1.5">
                           {NODE_DATA.map((node) => (
-                            <div key={node.id} className="flex items-center gap-1 bg-gray-800/50 p-1 md:p-1.5 rounded text-[8px] md:text-[10px]">
-                              <div className={`w-1 h-1 md:w-1.5 md:h-1.5 rounded-full ${node.status === 'warning' ? 'bg-amber-500' : 'bg-green-500'}`} />
+                            <div key={node.id} className="flex items-center gap-1.5 bg-gray-800/50 p-1.5 md:p-2 rounded text-[10px] md:text-xs">
+                              <div className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${node.status === 'warning' ? 'bg-amber-500' : 'bg-green-500'}`} />
                               <span className="text-gray-300 flex-1">Node #{node.id}47</span>
-                              <span className="text-gray-500 text-[10px]">{node.status === 'warning' ? '⚠️' : '✓'}</span>
+                              <span className="text-gray-500">{node.status === 'warning' ? '⚠️' : '✓'}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
                       {/* Center - Map/Chart Area */}
-                      <div className="col-span-2 bg-gray-900/30 rounded-lg p-1.5 md:p-2 border border-gray-800 relative overflow-hidden">
+                      <div className="col-span-2 bg-gray-900/30 rounded-lg p-2 md:p-3 border border-gray-800 relative overflow-hidden">
                         {/* Highlight based on active feature */}
                         <motion.div
                           className="absolute inset-0 bg-primary/5 rounded-lg"
@@ -1095,11 +1081,11 @@ function CommandCenterSection() {
                         
                         {/* Map visualization */}
                         <div className="relative h-full flex items-center justify-center">
-                          <div className="grid grid-cols-5 gap-1 md:gap-1.5">
+                          <div className="grid grid-cols-5 gap-1.5 md:gap-2">
                             {Array.from({ length: TOTAL_MAP_NODES }).map((_, i) => (
                               <motion.div
                                 key={i}
-                                className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${
+                                className={`w-3 h-3 md:w-4 md:h-4 rounded-full ${
                                   i === 7 ? 'bg-amber-500' : 'bg-green-500'
                                 }`}
                                 animate={{
@@ -1125,9 +1111,9 @@ function CommandCenterSection() {
                           }}
                           transition={{ duration: 0.3 }}
                         >
-                          <div className="w-full px-4 md:px-6">
+                          <div className="w-full px-4 md:px-8">
                             {/* Simple bar chart visualization */}
-                            <div className="flex items-end justify-around h-20 md:h-32 gap-1 md:gap-2">
+                            <div className="flex items-end justify-around h-32 md:h-40 gap-2 md:gap-3">
                               {ENERGY_CHART_DATA.map((height, i) => (
                                 <motion.div
                                   key={i}
@@ -1151,15 +1137,15 @@ function CommandCenterSection() {
                           }}
                           transition={{ duration: 0.3 }}
                         >
-                          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-2 md:p-3 max-w-xs">
-                            <div className="flex items-center gap-2 mb-1">
-                              <AlertTriangle className="w-4 h-4 text-amber-500" />
-                              <span className="text-white font-semibold text-xs">Fault Detected</span>
+                          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 md:p-4 max-w-sm">
+                            <div className="flex items-center gap-2 mb-2">
+                              <AlertTriangle className="w-5 h-5 text-amber-500" />
+                              <span className="text-white font-semibold text-sm">Fault Detected</span>
                             </div>
-                            <p className="text-gray-300 text-[10px] mb-1.5">Light #247 - LED Driver Failure</p>
-                            <div className="flex gap-1.5">
-                              <div className="px-1.5 py-0.5 bg-primary/20 text-primary text-[10px] rounded">Dispatched</div>
-                              <div className="px-1.5 py-0.5 bg-gray-700 text-gray-300 text-[10px] rounded">ETA: 12 min</div>
+                            <p className="text-gray-300 text-xs mb-2">Light #247 - LED Driver Failure</p>
+                            <div className="flex gap-2">
+                              <div className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">Dispatched</div>
+                              <div className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded">ETA: 12 min</div>
                             </div>
                           </div>
                         </motion.div>
@@ -1167,46 +1153,57 @@ function CommandCenterSection() {
                     </div>
 
                     {/* Bottom Stats Bar */}
-                    <div className="mt-1.5 md:mt-2 flex items-center justify-around bg-gray-900/50 rounded-lg p-1.5 md:p-2 border border-gray-800">
+                    <div className="mt-2 md:mt-3 flex items-center justify-around bg-gray-900/50 rounded-lg p-2 md:p-3 border border-gray-800">
                       <div className="text-center">
-                        <p className="text-primary text-[10px] md:text-xs font-bold">247</p>
-                        <p className="text-gray-500 text-[8px] md:text-[10px]">Active Nodes</p>
+                        <p className="text-primary text-xs md:text-sm font-bold">247</p>
+                        <p className="text-gray-500 text-[10px] md:text-xs">Active Nodes</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-green-500 text-[10px] md:text-xs font-bold">98.7%</p>
-                        <p className="text-gray-500 text-[8px] md:text-[10px]">Uptime</p>
+                        <p className="text-green-500 text-xs md:text-sm font-bold">98.7%</p>
+                        <p className="text-gray-500 text-[10px] md:text-xs">Uptime</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-blue-400 text-[10px] md:text-xs font-bold">2.4 kW</p>
-                        <p className="text-gray-500 text-[8px] md:text-[10px]">Power Draw</p>
+                        <p className="text-blue-400 text-xs md:text-sm font-bold">2.4 kW</p>
+                        <p className="text-gray-500 text-[10px] md:text-xs">Power Draw</p>
                       </div>
                     </div>
                   </motion.div>
                 </div>
               </div>
 
-              {/* Laptop Base - Part of the laptop frame */}
+              {/* Laptop Base */}
               <div className="flex-shrink-0 w-full flex flex-col items-center -mt-1">
-                <div className="h-1.5 md:h-2 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl w-11/12" />
-                <div className="h-4 md:h-6 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-2xl shadow-2xl relative w-full">
+                <div className="h-2 bg-gradient-to-b from-gray-700 to-gray-800 rounded-b-xl w-11/12" />
+                <div className="h-6 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-2xl shadow-2xl relative w-full">
                   {/* Trackpad indicator */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 md:w-20 h-2 md:h-3 bg-gray-700/50 rounded-full" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-3 bg-gray-700/50 rounded-full" />
                 </div>
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Feature Toggles - Fixed Size Bottom Element */}
+        {/* Right Column: Text and Feature Toggles ONLY */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="pb-6 md:pb-8 flex-shrink-0"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex flex-col justify-center space-y-8 md:space-y-12"
         >
-          <div className="max-w-4xl mx-auto grid grid-cols-3 gap-2 md:gap-3">
-            {features.map((feature, i) => {
+          {/* Text Content */}
+          <div className="text-left">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight text-white mb-4 md:mb-6">
+              Command Center.
+            </h2>
+            <p className="text-base md:text-lg lg:text-xl text-gray-400 max-w-lg">
+              Global control from a single pane of glass. Schedule dimming, analyze power, and manage assets remotely.
+            </p>
+          </div>
+
+          {/* Feature Toggles - Vertically Stacked */}
+          <div className="space-y-4 md:space-y-5">
+            {features.map((feature) => {
               const Icon = feature.icon;
               const isActive = activeFeature === feature.id;
 
@@ -1214,25 +1211,32 @@ function CommandCenterSection() {
                 <motion.div
                   key={feature.id}
                   onMouseEnter={() => setActiveFeature(feature.id)}
-                  className={`py-2 md:py-3 px-3 md:px-4 rounded-lg cursor-pointer transition-all duration-300 ${
+                  className={`py-4 md:py-5 px-5 md:px-6 rounded-xl cursor-pointer transition-all duration-300 ${
                     isActive
-                      ? 'bg-primary/10 border border-primary shadow-[0_0_20px_rgba(25,179,92,0.15)]'
-                      : 'bg-gray-900/50 border border-gray-800 hover:border-gray-700'
+                      ? 'bg-primary/10 border-2 border-primary shadow-[0_0_30px_rgba(25,179,92,0.25)]'
+                      : 'bg-gray-900/50 border-2 border-gray-800 hover:border-gray-700'
                   }`}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.03, x: 10 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="flex items-center justify-center gap-2">
-                    <div className={`p-1.5 md:p-2 rounded transition-colors ${
+                  <div className="flex items-center gap-4">
+                    <div className={`p-3 md:p-4 rounded-lg transition-colors ${
                       isActive ? 'bg-primary text-white' : 'bg-gray-800 text-gray-400'
                     }`}>
-                      <Icon className="w-3 h-3 md:w-4 md:h-4" />
+                      <Icon className="w-6 h-6 md:w-7 md:h-7" />
                     </div>
-                    <h3 className={`text-xs md:text-sm font-semibold transition-colors ${
-                      isActive ? 'text-white' : 'text-gray-300'
-                    }`}>
-                      {feature.name}
-                    </h3>
+                    <div className="flex-1">
+                      <h3 className={`text-base md:text-lg font-semibold transition-colors ${
+                        isActive ? 'text-white' : 'text-gray-300'
+                      }`}>
+                        {feature.name}
+                      </h3>
+                      <p className={`text-sm md:text-base transition-colors mt-1 ${
+                        isActive ? 'text-gray-300' : 'text-gray-500'
+                      }`}>
+                        {feature.description}
+                      </p>
+                    </div>
                   </div>
                 </motion.div>
               );
