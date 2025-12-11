@@ -909,13 +909,15 @@ function HardwareSection() {
             }`}
           >
             {/* Frosted Ice Glass Card - Auralis Pro (Pulsing border/glow for master) */}
-            <div className={`p-8 rounded-3xl border-2 bg-white/60 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] h-full relative ${
+            <div className={`p-8 rounded-3xl border-2 bg-white/60 backdrop-blur-xl h-full relative ${
               hoveredCard === 'pro' 
                 ? 'border-primary shadow-[0_8px_30px_rgb(0,0,0,0.06),0_0_40px_rgba(25,179,92,0.4)]' 
-                : 'border-primary/40'
+                : 'border-primary/40 shadow-[0_8px_30px_rgb(0,0,0,0.06)]'
             }`}>
-              {/* Subtle pulsing glow effect */}
-              <div className="absolute inset-0 rounded-3xl border-2 border-primary/30 animate-pulse pointer-events-none" />
+              {/* Subtle pulsing glow effect - only when hovered */}
+              {hoveredCard === 'pro' && (
+                <div className="absolute inset-0 rounded-3xl border-2 border-primary/30 animate-pulse pointer-events-none" />
+              )}
               
               {/* Header */}
               <div className="mb-6 relative z-10">
