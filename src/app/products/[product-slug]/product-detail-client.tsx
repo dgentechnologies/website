@@ -711,22 +711,19 @@ function HardwareSection() {
               >
                 {/* Device Image */}
                 <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl flex items-center justify-center relative overflow-hidden transition-all duration-300">
-                  <div className="relative w-full h-full flex items-center justify-center z-10">
-                    <Image
-                      src="/images/auralis-core.png"
-                      alt="Auralis Core - Worker Node"
-                      width={400}
-                      height={400}
-                      className="object-contain p-8 transition-transform duration-300 group-hover:scale-110"
-                    />
-                  </div>
+                  <Image
+                    src="/images/auralis-core.png"
+                    alt="Auralis Core - Worker Node"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
 
                   {/* Hover-Reveal Frosted Glass Overlay - Desktop Only */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: hoveredDevice === 'core' ? 1 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="hidden lg:flex absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex-col justify-center pointer-events-none"
+                    className="hidden lg:flex absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex-col justify-center pointer-events-none z-10"
                   >
                     <h4 className="text-xl font-bold text-gray-900 mb-4">Technical Specifications</h4>
                     <div className="space-y-3">
@@ -775,22 +772,19 @@ function HardwareSection() {
               >
                 {/* Device Image */}
                 <div className="aspect-square bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl flex items-center justify-center relative overflow-hidden border border-primary/10 transition-all duration-300">
-                  <div className="relative w-full h-full flex items-center justify-center z-10">
-                    <Image
-                      src="/images/auralis-pro.png"
-                      alt="Auralis Pro - Gateway Node"
-                      width={400}
-                      height={400}
-                      className="object-contain p-8 transition-transform duration-300 group-hover:scale-110"
-                    />
-                  </div>
+                  <Image
+                    src="/images/auralis-pro.png"
+                    alt="Auralis Pro - Gateway Node"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
 
                   {/* Hover-Reveal Frosted Glass Overlay - Desktop Only */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: hoveredDevice === 'pro' ? 1 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="hidden lg:flex absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex-col justify-center pointer-events-none"
+                    className="hidden lg:flex absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex-col justify-center pointer-events-none z-10"
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <h4 className="text-xl font-bold text-gray-900">Technical Specifications</h4>
