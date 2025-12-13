@@ -723,7 +723,7 @@ function HardwareSection() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: hoveredDevice === 'core' ? 1 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="hidden lg:flex absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex-col justify-center pointer-events-none z-10"
+                    className="hidden lg:flex absolute inset-0 bg-white/40 backdrop-blur-sm rounded-2xl p-6 flex-col justify-center pointer-events-none z-10"
                   >
                     <h4 className="text-xl font-bold text-gray-900 mb-4">Technical Specifications</h4>
                     <div className="space-y-3">
@@ -784,7 +784,7 @@ function HardwareSection() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: hoveredDevice === 'pro' ? 1 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="hidden lg:flex absolute inset-0 bg-white/80 backdrop-blur-md rounded-2xl p-6 flex-col justify-center pointer-events-none z-10"
+                    className="hidden lg:flex absolute inset-0 bg-white/40 backdrop-blur-sm rounded-2xl p-6 flex-col justify-center pointer-events-none z-10"
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <h4 className="text-xl font-bold text-gray-900">Technical Specifications</h4>
