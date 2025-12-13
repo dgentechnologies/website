@@ -659,17 +659,17 @@ function HardwareSection() {
   const [hoveredDevice, setHoveredDevice] = useState<'core' | 'pro' | null>(null);
 
   const coreSpecs = [
-    { title: 'Role', value: 'Worker Node (Sensing & Relay)' },
-    { title: 'Connectivity', value: 'ESP-MESH (Wi-Fi)' },
-    { title: 'Sensors', value: 'Microwave Radar + Light Sensor' },
-    { title: 'Power', value: '3W Isolated Supply' }
+    { title: 'Role', value: 'Distributed Intelligence Node' },
+    { title: 'Network', value: 'Self-Healing Hybrid Mesh' },
+    { title: 'Sensing', value: 'Adaptive Volumetric Motion' },
+    { title: 'Efficiency', value: 'Ultra-Low Power Architecture' }
   ];
 
   const proSpecs = [
-    { title: 'Role', value: 'Cluster Head (Cloud Uplink)' },
-    { title: 'Connectivity', value: '4G LTE Cat 1 + Mesh' },
-    { title: 'Processing', value: 'Dual-Core Aggregation' },
-    { title: 'Power', value: '10W High-Current Supply' }
+    { title: 'Role', value: 'Intelligent Edge Gateway' },
+    { title: 'Uplink', value: 'Secure Cellular IoT (LTE)' },
+    { title: 'Compute', value: 'Real-Time Edge Analytics' },
+    { title: 'Reliability', value: 'Industrial-Grade Surge Protection' }
   ];
 
   return (
