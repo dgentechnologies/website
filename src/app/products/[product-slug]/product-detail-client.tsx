@@ -711,10 +711,14 @@ function HardwareSection() {
               >
                 {/* Device Image */}
                 <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl flex items-center justify-center relative overflow-hidden transition-all duration-300">
-                  <div className="text-center z-10">
-                    <div className="text-6xl sm:text-7xl lg:text-8xl mb-4 transition-transform duration-300 group-hover:scale-110">
-                      📡
-                    </div>
+                  <div className="relative w-full h-full flex items-center justify-center z-10">
+                    <Image
+                      src="/images/auralis-core.png"
+                      alt="Auralis Core - Worker Node"
+                      width={400}
+                      height={400}
+                      className="object-contain p-8 transition-transform duration-300 group-hover:scale-110"
+                    />
                   </div>
 
                   {/* Hover-Reveal Frosted Glass Overlay - Desktop Only */}
@@ -771,10 +775,14 @@ function HardwareSection() {
               >
                 {/* Device Image */}
                 <div className="aspect-square bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl flex items-center justify-center relative overflow-hidden border border-primary/10 transition-all duration-300">
-                  <div className="text-center z-10">
-                    <div className="text-6xl sm:text-7xl lg:text-8xl mb-4 transition-transform duration-300 group-hover:scale-110">
-                      🔌
-                    </div>
+                  <div className="relative w-full h-full flex items-center justify-center z-10">
+                    <Image
+                      src="/images/auralis-pro.png"
+                      alt="Auralis Pro - Gateway Node"
+                      width={400}
+                      height={400}
+                      className="object-contain p-8 transition-transform duration-300 group-hover:scale-110"
+                    />
                   </div>
 
                   {/* Hover-Reveal Frosted Glass Overlay - Desktop Only */}
