@@ -57,7 +57,7 @@ function TeamMemberCard({ member, index }: { member: typeof teamMembers[0]; inde
         <Avatar className="w-24 h-24 sm:w-32 sm:h-32 mb-3 sm:mb-4 border-2 border-primary">
           <AvatarImage 
             src={member.image} 
-            alt={`Professional headshot of ${member.name}, ${member.role} at DGEN Technologies`} 
+            alt={member.alt} 
             className="object-cover" 
           />
           <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
