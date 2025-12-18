@@ -99,5 +99,50 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...blogRoutes, ...productRoutes, ...leaderRoutes];
+  // Image sitemap entries
+  const imageRoutes: MetadataRoute.Sitemap = [
+    // Team member images
+    ...teamMembers.map(member => ({
+      url: `${baseUrl}${member.image}`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.4,
+    })),
+    // Product images
+    ...products.flatMap(product => 
+      product.images
+        .filter(img => img.url.startsWith('/images/'))
+        .map(img => ({
+          url: `${baseUrl}${img.url}`,
+          lastModified: new Date(),
+          changeFrequency: 'yearly' as const,
+          priority: 0.5,
+        }))
+    ),
+    // Static images
+    {
+      url: `${baseUrl}/images/logo.png`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/images/auralis-architecture-diagram.png`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+  ];
+
+  // Video sitemap entries
+  const videoRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/videos/product-page-hero.mp4`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+  ];
+
+  return [...staticRoutes, ...blogRoutes, ...productRoutes, ...leaderRoutes, ...imageRoutes, ...videoRoutes];
 }
