@@ -159,6 +159,9 @@ export default function ProductsPage() {
         </div>
       </section>
 
+      {/* Separator/Transition */}
+      <div className="relative z-10 bg-gradient-to-b from-black via-background/95 to-black h-16 md:h-24"></div>
+
       {/* Expanding Flex Gallery - Responsive */}
       <section className="relative w-full bg-black">
         {/* Desktop: Horizontal Flex Gallery (md and up) */}
