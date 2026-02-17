@@ -8,15 +8,15 @@ import dynamic from 'next/dynamic';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
 
-// Dynamically import the custom SplineViewer component with SSR disabled
-// This avoids the ReactCurrentDispatcher/ReactCurrentOwner errors
-const SplineViewer = dynamic(
-  () => import('@/components/spline-viewer'),
+// Dynamically import the custom Model3DViewer component with SSR disabled
+// This uses Google's model-viewer for better performance and no watermarks
+const Model3DViewer = dynamic(
+  () => import('@/components/model-3d-viewer'),
   {
     ssr: false,
     loading: () => (
       <div className="w-full h-full flex items-center justify-center">
-        <div className="animate-pulse text-foreground/30">Loading 3D Scene...</div>
+        <div className="animate-pulse text-foreground/30">Loading 3D Model...</div>
       </div>
     )
   }
@@ -1275,18 +1275,22 @@ function useScrollTransform(): ScrollTransformState {
   return state;
 }
 
-// Desktop Scene3D Component for Spline 3D Background
-// Uses custom SplineViewer component with @splinetool/runtime to avoid React version conflicts
+// Desktop Scene3D Component for 3D Background
+// Uses Google's model-viewer for better performance and no watermarks
 function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ zIndex: -1 }}
     >
-      <SplineViewer
-        scene="https://prod.spline.design/kYNR21QjvqQUcBTD/scene.splinecode"
+      <Model3DViewer
+        src="/models/auralis-desktop.glb"
+        alt="Auralis Ecosystem 3D Model"
         onLoad={onLoad}
         onError={onError}
+        autoRotate={true}
+        cameraControls={false}
+        lazy={false}
         style={{ 
           width: '100%', 
           height: '100%',
@@ -1302,10 +1306,14 @@ function Scene3DMobile({ onLoad, onError }: { onLoad?: () => void; onError?: () 
   return (
     <div className="block lg:hidden w-full h-[50vh] relative overflow-hidden">
       <div className="w-full h-full" style={{ touchAction: 'none' }}>
-        <SplineViewer
-          scene="https://prod.spline.design/brSNwljCXzZoxC1f/scene.splinecode"
+        <Model3DViewer
+          src="/models/auralis-mobile.glb"
+          alt="Auralis Ecosystem 3D Model"
           onLoad={onLoad}
           onError={onError}
+          autoRotate={true}
+          cameraControls={true}
+          lazy={false}
           style={{ 
             width: '100%', 
             height: '100%',
