@@ -69,7 +69,10 @@ export default function SplineViewer({
     document.head.appendChild(link);
     
     return () => {
-      document.head.removeChild(link);
+      // Safely remove the link element if it's still in the document
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
+      }
     };
   }, [scene, preload]);
 
@@ -109,6 +112,10 @@ export default function SplineViewer({
     const app = new Application(canvas);
     appRef.current = app;
     
+    // Maximum timeout to wait before forcing scene load (in milliseconds)
+    // This prevents indefinite deferral if the browser stays busy
+    const IDLE_CALLBACK_TIMEOUT_MS = 2000;
+    
     // Use requestIdleCallback for non-critical loading, fallback to setTimeout
     const loadScene = () => {
       app.load(scene)
@@ -125,7 +132,7 @@ export default function SplineViewer({
     };
 
     if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadScene, { timeout: 2000 });
+      requestIdleCallback(loadScene, { timeout: IDLE_CALLBACK_TIMEOUT_MS });
     } else {
       setTimeout(loadScene, 0);
     }
