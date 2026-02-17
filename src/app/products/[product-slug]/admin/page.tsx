@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,11 +38,12 @@ export default function ProductAdminPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
-  useEffect(() => {
-    loadSettings();
-  }, [productSlug]);
+  const showMessage = useCallback((type: 'success' | 'error', text: string) => {
+    setMessage({ type, text });
+    setTimeout(() => setMessage(null), 3000);
+  }, []);
 
-  const loadSettings = async () => {
+  const loadSettings = useCallback(async () => {
     try {
       const docRef = doc(firestore, 'product-settings', productSlug);
       const docSnap = await getDoc(docRef);
@@ -61,7 +62,11 @@ export default function ProductAdminPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [productSlug, showMessage]);
+
+  useEffect(() => {
+    loadSettings();
+  }, [loadSettings]);
 
   const saveSettings = async () => {
     setSaving(true);
@@ -85,13 +90,18 @@ export default function ProductAdminPage() {
     showMessage('success', 'Settings reset to defaults');
   };
 
-  const showMessage = (type: 'success' | 'error', text: string) => {
-    setMessage({ type, text });
-    setTimeout(() => setMessage(null), 3000);
-  };
-
   const getCameraOrbit = () => {
     return `${settings.theta}deg ${settings.phi}deg ${settings.radius}%`;
+  };
+
+  // Determine model path based on product slug
+  const getModelPath = () => {
+    // For auralis-ecosystem, use desktop model, others can be added later
+    if (productSlug === 'auralis-ecosystem') {
+      return '/models/auralis-desktop.glb';
+    }
+    // Default fallback
+    return '/models/auralis-desktop.glb';
   };
 
   if (loading) {
@@ -248,7 +258,7 @@ export default function ProductAdminPage() {
             <CardContent>
               <div className="aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-background via-muted/30 to-background">
                 <Model3DViewer
-                  src="/models/auralis-desktop.glb"
+                  src={getModelPath()}
                   alt="3D Model Preview"
                   autoRotate={false}
                   cameraControls={true}
