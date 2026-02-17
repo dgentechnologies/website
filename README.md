@@ -167,10 +167,10 @@ flowchart LR
 - `docs/admin.md` — Admin UI usage and configuration
 - `docs/api.md` — API routes and AI flows
 - `docs/performance.md` — Performance guidance and integrations
-- `CONTRIBUTING.md` — Contribution standards and workflow
- - `SECURITY.md` — Security policy and vulnerability reporting
- - `CODE_OF_CONDUCT.md` — Community standards and enforcement
- - `PRIVACY.md` — Data handling and retention notice
+- `docs/CONTRIBUTING.md` — Contribution standards and workflow
+- `SECURITY.md` — Security policy and vulnerability reporting
+- `docs/CODE_OF_CONDUCT.md` — Community standards and enforcement
+- `docs/PRIVACY.md` — Data handling and retention notice
 
 ---
 
