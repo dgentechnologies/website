@@ -49,6 +49,13 @@ export default function SplineViewer({
   useEffect(() => {
     if (!lazy) return;
     
+    // Feature detection for IntersectionObserver
+    if (typeof IntersectionObserver === 'undefined') {
+      // If IntersectionObserver is not supported, load immediately
+      setIsVisible(true);
+      return;
+    }
+    
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
