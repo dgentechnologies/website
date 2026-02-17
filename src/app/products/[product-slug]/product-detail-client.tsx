@@ -1282,7 +1282,7 @@ function useScrollTransform(): ScrollTransformState {
 
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
-function Scene3DDesktop({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string }) {
+function Scene3DDesktop({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT, orientation }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string; orientation?: string }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
@@ -1296,6 +1296,7 @@ function Scene3DDesktop({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT }:
         autoRotate={false}
         cameraControls={false}
         cameraOrbit={cameraOrbit}
+        orientation={orientation}
         lazy={false}
         style={{ 
           width: '100%', 
@@ -1308,7 +1309,7 @@ function Scene3DDesktop({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT }:
 }
 
 // Mobile Scene3D Component - Optimized for smaller screens
-function Scene3DMobile({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string }) {
+function Scene3DMobile({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT, orientation }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string; orientation?: string }) {
   return (
     <div className="block lg:hidden w-full h-[50vh] relative overflow-hidden">
       <div className="w-full h-full" style={{ touchAction: 'none' }}>
@@ -1320,6 +1321,7 @@ function Scene3DMobile({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT }: 
           autoRotate={false}
           cameraControls={true}
           cameraOrbit={cameraOrbit}
+          orientation={orientation}
           lazy={false}
           style={{ 
             width: '100%', 
@@ -1341,8 +1343,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
   const [cameraOrbit, setCameraOrbit] = useState(DEFAULT_CAMERA_ORBIT);
+  const [orientation, setOrientation] = useState<string | undefined>(undefined);
   
-  // Load camera orbit settings from Firestore
+  // Load camera orbit and orientation settings from Firestore
   useEffect(() => {
     const loadSettings = async () => {
       try {
@@ -1355,6 +1358,14 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           const phi = data.phi ?? 75;
           const radius = data.radius ?? 105;
           setCameraOrbit(`${theta}deg ${phi}deg ${radius}%`);
+          
+          // Load orientation settings
+          const rotationX = data.rotationX ?? 0;
+          const rotationY = data.rotationY ?? 0;
+          const rotationZ = data.rotationZ ?? 0;
+          if (rotationX !== 0 || rotationY !== 0 || rotationZ !== 0) {
+            setOrientation(`${rotationX}deg ${rotationY}deg ${rotationZ}deg`);
+          }
         }
       } catch (error) {
         console.error(`Error loading camera settings for ${product.slug}:`, error);
@@ -1388,6 +1399,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           onLoad={() => setDesktopSplineLoaded(true)} 
           onError={() => setDesktopSplineError(true)}
           cameraOrbit={cameraOrbit}
+          orientation={orientation}
         />
       )}
       
@@ -1405,6 +1417,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
               onLoad={() => setMobileSplineLoaded(true)}
               onError={() => setMobileSplineError(true)}
               cameraOrbit={cameraOrbit}
+              orientation={orientation}
             />
           ) : (
             <div className="block lg:hidden w-full h-[50vh] bg-gradient-to-b from-primary/20 via-background to-background" />

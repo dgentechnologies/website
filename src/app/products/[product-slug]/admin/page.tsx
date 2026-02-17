@@ -21,12 +21,18 @@ interface ModelSettings {
   theta: number;
   phi: number;
   radius: number;
+  rotationX: number;
+  rotationY: number;
+  rotationZ: number;
 }
 
 const DEFAULT_SETTINGS: ModelSettings = {
   theta: 90,
   phi: 75,
   radius: 105,
+  rotationX: 0,
+  rotationY: 0,
+  rotationZ: 0,
 };
 
 // Map product slugs to their model paths
@@ -60,6 +66,9 @@ export default function ProductAdminPage() {
           theta: data.theta ?? DEFAULT_SETTINGS.theta,
           phi: data.phi ?? DEFAULT_SETTINGS.phi,
           radius: data.radius ?? DEFAULT_SETTINGS.radius,
+          rotationX: data.rotationX ?? DEFAULT_SETTINGS.rotationX,
+          rotationY: data.rotationY ?? DEFAULT_SETTINGS.rotationY,
+          rotationZ: data.rotationZ ?? DEFAULT_SETTINGS.rotationZ,
         });
       }
     } catch (error) {
@@ -98,6 +107,10 @@ export default function ProductAdminPage() {
 
   const getCameraOrbit = () => {
     return `${settings.theta}deg ${settings.phi}deg ${settings.radius}%`;
+  };
+
+  const getOrientation = () => {
+    return `${settings.rotationX}deg ${settings.rotationY}deg ${settings.rotationZ}deg`;
   };
 
   // Get model path for the current product
@@ -217,11 +230,85 @@ export default function ProductAdminPage() {
                 </p>
               </div>
 
+              {/* Divider */}
+              <div className="border-t border-border my-4" />
+
+              {/* Rotation X */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="rotationX">Rotation X-Axis</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.rotationX}°
+                  </span>
+                </div>
+                <Slider
+                  id="rotationX"
+                  min={-180}
+                  max={180}
+                  step={1}
+                  value={[settings.rotationX]}
+                  onValueChange={([value]) => setSettings({ ...settings, rotationX: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Rotates the model around the X-axis (-180° to 180°)
+                </p>
+              </div>
+
+              {/* Rotation Y */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="rotationY">Rotation Y-Axis</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.rotationY}°
+                  </span>
+                </div>
+                <Slider
+                  id="rotationY"
+                  min={-180}
+                  max={180}
+                  step={1}
+                  value={[settings.rotationY]}
+                  onValueChange={([value]) => setSettings({ ...settings, rotationY: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Rotates the model around the Y-axis (-180° to 180°)
+                </p>
+              </div>
+
+              {/* Rotation Z */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="rotationZ">Rotation Z-Axis</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.rotationZ}°
+                  </span>
+                </div>
+                <Slider
+                  id="rotationZ"
+                  min={-180}
+                  max={180}
+                  step={1}
+                  value={[settings.rotationZ]}
+                  onValueChange={([value]) => setSettings({ ...settings, rotationZ: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Rotates the model around the Z-axis (-180° to 180°)
+                </p>
+              </div>
+
               {/* Camera Orbit String */}
               <div className="space-y-2 p-4 bg-muted rounded-lg">
-                <Label>Camera Orbit String</Label>
+                <Label>Camera Orbit</Label>
                 <code className="text-sm font-mono block break-all">
                   {getCameraOrbit()}
+                </code>
+              </div>
+
+              {/* Orientation String */}
+              <div className="space-y-2 p-4 bg-muted rounded-lg">
+                <Label>Model Orientation</Label>
+                <code className="text-sm font-mono block break-all">
+                  {getOrientation()}
                 </code>
               </div>
 
@@ -246,27 +333,55 @@ export default function ProductAdminPage() {
             </CardContent>
           </Card>
 
-          {/* Preview */}
+          {/* Preview with Model and Text */}
           <Card>
             <CardHeader>
-              <CardTitle>Live Preview</CardTitle>
+              <CardTitle>Live Preview with Content</CardTitle>
               <CardDescription>
-                See how your changes affect the 3D model
+                See the 3D model positioned alongside the actual website text
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-background via-muted/30 to-background">
-                <Model3DViewer
-                  src={modelPath}
-                  alt="3D Model Preview"
-                  autoRotate={false}
-                  cameraControls={true}
-                  cameraOrbit={getCameraOrbit()}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }}
-                />
+              <div className="rounded-lg overflow-hidden bg-gradient-to-br from-background via-muted/30 to-background">
+                {/* Split layout matching the actual product page */}
+                <div className="grid grid-cols-2 gap-4 min-h-[500px]">
+                  {/* Left: 3D Model */}
+                  <div className="relative">
+                    <Model3DViewer
+                      src={modelPath}
+                      alt="3D Model Preview"
+                      autoRotate={false}
+                      cameraControls={true}
+                      cameraOrbit={getCameraOrbit()}
+                      orientation={getOrientation()}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
+                  </div>
+                  
+                  {/* Right: Website Text Content */}
+                  <div className="flex flex-col justify-center p-6 space-y-4">
+                    <h1 className="text-3xl font-bold leading-tight">
+                      <span className="text-gradient bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">The Brain</span>
+                      <span className="block mt-2">of the Smart City</span>
+                    </h1>
+                    
+                    <p className="text-base text-muted-foreground">
+                      Intelligent. Autonomous. Mesh-Connected. Transform legacy infrastructure into smart, responsive networks.
+                    </p>
+                    
+                    <div className="flex gap-3 pt-2">
+                      <Button size="sm" className="bg-primary hover:bg-primary/90">
+                        Get Started
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        Learn More
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -279,16 +394,30 @@ export default function ProductAdminPage() {
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <p>
-              <strong>Theta:</strong> Controls the horizontal rotation (azimuth). 0° is front view, 90° is right side, 180° is back, 270° is left side.
+              <strong>Theta:</strong> Controls the horizontal camera rotation (azimuth). 0° is front view, 90° is right side, 180° is back, 270° is left side.
             </p>
             <p>
-              <strong>Phi:</strong> Controls the vertical angle (elevation). 0° is top view, 90° is eye level, 180° is bottom view.
+              <strong>Phi:</strong> Controls the vertical camera angle (elevation). 0° is top view, 90° is eye level, 180° is bottom view.
             </p>
             <p>
               <strong>Radius:</strong> Controls the camera distance. 100% is the default distance, lower values zoom in, higher values zoom out.
             </p>
+            <div className="pt-2 border-t border-border space-y-2">
+              <p>
+                <strong>Rotation X/Y/Z:</strong> Free rotation of the model itself around each axis. This allows you to position the model at any angle independently of the camera.
+              </p>
+              <p>
+                <strong>X-Axis:</strong> Pitch (tilts model forward/backward)
+              </p>
+              <p>
+                <strong>Y-Axis:</strong> Yaw (spins model left/right)
+              </p>
+              <p>
+                <strong>Z-Axis:</strong> Roll (tilts model side to side)
+              </p>
+            </div>
             <p className="pt-2 border-t border-border">
-              After saving, the settings will be applied to the main product page at <code className="bg-muted px-1 rounded">/products/{productSlug}</code>.
+              The preview shows the model positioned alongside the actual website text. Drag the model using camera controls to fine-tune positioning. After saving, the settings will be applied to the main product page at <code className="bg-muted px-1 rounded">/products/{productSlug}</code>.
             </p>
           </CardContent>
         </Card>
