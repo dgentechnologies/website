@@ -160,7 +160,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Separator/Transition */}
-      <div className="relative z-10 bg-gradient-to-b from-black via-background/95 to-black h-16 md:h-24"></div>
+      <div className="relative z-10 bg-gradient-to-b from-black via-background/95 to-black h-16 md:h-24" aria-hidden="true"></div>
 
       {/* Expanding Flex Gallery - Responsive */}
       <section className="relative w-full bg-black">
