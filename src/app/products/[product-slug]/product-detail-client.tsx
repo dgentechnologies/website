@@ -10,9 +10,6 @@ import { products, Product, EcosystemDetail } from '@/lib/products-data';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 
-// Default camera orbit settings
-const DEFAULT_CAMERA_ORBIT = "90deg 75deg 105%";
-
 // Dynamically import the custom Model3DViewer component with SSR disabled
 // This uses Google's model-viewer for better performance and no watermarks
 const Model3DViewer = dynamic(
@@ -1282,7 +1279,7 @@ function useScrollTransform(): ScrollTransformState {
 
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
-function Scene3DDesktop({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT, orientation }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string; orientation?: string }) {
+function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void; onError?: () => void; orientation?: string }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
@@ -1295,7 +1292,6 @@ function Scene3DDesktop({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT, o
         onError={onError}
         autoRotate={false}
         cameraControls={false}
-        cameraOrbit={cameraOrbit}
         orientation={orientation}
         lazy={false}
         style={{ 
@@ -1309,7 +1305,7 @@ function Scene3DDesktop({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT, o
 }
 
 // Mobile Scene3D Component - Optimized for smaller screens
-function Scene3DMobile({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT, orientation }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string; orientation?: string }) {
+function Scene3DMobile({ onLoad, onError, orientation }: { onLoad?: () => void; onError?: () => void; orientation?: string }) {
   return (
     <div className="block lg:hidden w-full h-[50vh] relative overflow-hidden">
       <div className="w-full h-full" style={{ touchAction: 'none' }}>
@@ -1320,7 +1316,6 @@ function Scene3DMobile({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT, or
           onError={onError}
           autoRotate={false}
           cameraControls={true}
-          cameraOrbit={cameraOrbit}
           orientation={orientation}
           lazy={false}
           style={{ 
@@ -1342,10 +1337,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
-  const [cameraOrbit, setCameraOrbit] = useState(DEFAULT_CAMERA_ORBIT);
   const [orientation, setOrientation] = useState<string | undefined>(undefined);
   
-  // Load camera orbit and orientation settings from Firestore
+  // Load orientation settings from Firestore
   useEffect(() => {
     const loadSettings = async () => {
       try {
@@ -1354,10 +1348,6 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         
         if (docSnap.exists()) {
           const data = docSnap.data();
-          const theta = data.theta ?? 90;
-          const phi = data.phi ?? 75;
-          const radius = data.radius ?? 105;
-          setCameraOrbit(`${theta}deg ${phi}deg ${radius}%`);
           
           // Load orientation settings
           const rotationX = data.rotationX ?? 0;
@@ -1368,7 +1358,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           }
         }
       } catch (error) {
-        console.error(`Error loading camera settings for ${product.slug}:`, error);
+        console.error(`Error loading model settings for ${product.slug}:`, error);
         // Use default settings on error
       }
     };
@@ -1398,7 +1388,6 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         <Scene3DDesktop 
           onLoad={() => setDesktopSplineLoaded(true)} 
           onError={() => setDesktopSplineError(true)}
-          cameraOrbit={cameraOrbit}
           orientation={orientation}
         />
       )}
@@ -1416,7 +1405,6 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
             <Scene3DMobile
               onLoad={() => setMobileSplineLoaded(true)}
               onError={() => setMobileSplineError(true)}
-              cameraOrbit={cameraOrbit}
               orientation={orientation}
             />
           ) : (

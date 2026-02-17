@@ -18,18 +18,12 @@ const Model3DViewer = dynamic(
 );
 
 interface ModelSettings {
-  theta: number;
-  phi: number;
-  radius: number;
   rotationX: number;
   rotationY: number;
   rotationZ: number;
 }
 
 const DEFAULT_SETTINGS: ModelSettings = {
-  theta: 90,
-  phi: 75,
-  radius: 105,
   rotationX: 0,
   rotationY: 0,
   rotationZ: 0,
@@ -63,9 +57,6 @@ export default function ProductAdminPage() {
       if (docSnap.exists()) {
         const data = docSnap.data();
         setSettings({
-          theta: data.theta ?? DEFAULT_SETTINGS.theta,
-          phi: data.phi ?? DEFAULT_SETTINGS.phi,
-          radius: data.radius ?? DEFAULT_SETTINGS.radius,
           rotationX: data.rotationX ?? DEFAULT_SETTINGS.rotationX,
           rotationY: data.rotationY ?? DEFAULT_SETTINGS.rotationY,
           rotationZ: data.rotationZ ?? DEFAULT_SETTINGS.rotationZ,
@@ -103,10 +94,6 @@ export default function ProductAdminPage() {
   const resetSettings = () => {
     setSettings(DEFAULT_SETTINGS);
     showMessage('success', 'Settings reset to defaults');
-  };
-
-  const getCameraOrbit = () => {
-    return `${settings.theta}deg ${settings.phi}deg ${settings.radius}%`;
   };
 
   const getOrientation = () => {
@@ -161,82 +148,16 @@ export default function ProductAdminPage() {
           {/* Controls */}
           <Card>
             <CardHeader>
-              <CardTitle>Camera Position Controls</CardTitle>
+              <CardTitle>3D Model Rotation</CardTitle>
               <CardDescription>
-                Adjust the 3D model camera position and orientation
+                Rotate the model on X, Y, Z axes. Use camera controls to zoom and drag/move the view.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Theta (Horizontal Rotation) */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="theta">Theta (Horizontal Rotation)</Label>
-                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
-                    {settings.theta}°
-                  </span>
-                </div>
-                <Slider
-                  id="theta"
-                  min={0}
-                  max={360}
-                  step={1}
-                  value={[settings.theta]}
-                  onValueChange={([value]) => setSettings({ ...settings, theta: value })}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Controls the horizontal rotation around the model (0-360°)
-                </p>
-              </div>
-
-              {/* Phi (Vertical Angle) */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="phi">Phi (Vertical Angle)</Label>
-                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
-                    {settings.phi}°
-                  </span>
-                </div>
-                <Slider
-                  id="phi"
-                  min={0}
-                  max={180}
-                  step={1}
-                  value={[settings.phi]}
-                  onValueChange={([value]) => setSettings({ ...settings, phi: value })}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Controls the vertical viewing angle (0-180°)
-                </p>
-              </div>
-
-              {/* Radius (Distance) */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="radius">Radius (Distance)</Label>
-                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
-                    {settings.radius}%
-                  </span>
-                </div>
-                <Slider
-                  id="radius"
-                  min={50}
-                  max={200}
-                  step={1}
-                  value={[settings.radius]}
-                  onValueChange={([value]) => setSettings({ ...settings, radius: value })}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Controls the camera distance from the model (50-200%)
-                </p>
-              </div>
-
-              {/* Divider */}
-              <div className="border-t border-border my-4" />
-
               {/* Rotation X */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="rotationX">Rotation X-Axis</Label>
+                  <Label htmlFor="rotationX">Rotation X-Axis (Pitch)</Label>
                   <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
                     {settings.rotationX}°
                   </span>
@@ -250,14 +171,13 @@ export default function ProductAdminPage() {
                   onValueChange={([value]) => setSettings({ ...settings, rotationX: value })}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Rotates the model around the X-axis (-180° to 180°)
+                  Tilts the model forward/backward (-180° to 180°)
                 </p>
               </div>
-
               {/* Rotation Y */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="rotationY">Rotation Y-Axis</Label>
+                  <Label htmlFor="rotationY">Rotation Y-Axis (Yaw)</Label>
                   <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
                     {settings.rotationY}°
                   </span>
@@ -271,14 +191,14 @@ export default function ProductAdminPage() {
                   onValueChange={([value]) => setSettings({ ...settings, rotationY: value })}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Rotates the model around the Y-axis (-180° to 180°)
+                  Spins the model left/right (-180° to 180°)
                 </p>
               </div>
 
               {/* Rotation Z */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="rotationZ">Rotation Z-Axis</Label>
+                  <Label htmlFor="rotationZ">Rotation Z-Axis (Roll)</Label>
                   <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
                     {settings.rotationZ}°
                   </span>
@@ -292,21 +212,13 @@ export default function ProductAdminPage() {
                   onValueChange={([value]) => setSettings({ ...settings, rotationZ: value })}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Rotates the model around the Z-axis (-180° to 180°)
+                  Tilts the model side to side (-180° to 180°)
                 </p>
-              </div>
-
-              {/* Camera Orbit String */}
-              <div className="space-y-2 p-4 bg-muted rounded-lg">
-                <Label>Camera Orbit</Label>
-                <code className="text-sm font-mono block break-all">
-                  {getCameraOrbit()}
-                </code>
               </div>
 
               {/* Orientation String */}
               <div className="space-y-2 p-4 bg-muted rounded-lg">
-                <Label>Model Orientation</Label>
+                <Label>Model Orientation (X Y Z)</Label>
                 <code className="text-sm font-mono block break-all">
                   {getOrientation()}
                 </code>
@@ -338,7 +250,7 @@ export default function ProductAdminPage() {
             <CardHeader>
               <CardTitle>Live Preview with Content</CardTitle>
               <CardDescription>
-                See the 3D model positioned alongside the actual website text
+                Drag and zoom the 3D model. Position it alongside the website text.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -352,7 +264,6 @@ export default function ProductAdminPage() {
                       alt="3D Model Preview"
                       autoRotate={false}
                       cameraControls={true}
-                      cameraOrbit={getCameraOrbit()}
                       orientation={getOrientation()}
                       style={{
                         width: '100%',
@@ -394,30 +305,18 @@ export default function ProductAdminPage() {
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <p>
-              <strong>Theta:</strong> Controls the horizontal camera rotation (azimuth). 0° is front view, 90° is right side, 180° is back, 270° is left side.
+              <strong>Model Rotation:</strong> Use the X, Y, Z sliders to rotate the 3D model on each axis.
             </p>
-            <p>
-              <strong>Phi:</strong> Controls the vertical camera angle (elevation). 0° is top view, 90° is eye level, 180° is bottom view.
-            </p>
-            <p>
-              <strong>Radius:</strong> Controls the camera distance. 100% is the default distance, lower values zoom in, higher values zoom out.
-            </p>
-            <div className="pt-2 border-t border-border space-y-2">
-              <p>
-                <strong>Rotation X/Y/Z:</strong> Free rotation of the model itself around each axis. This allows you to position the model at any angle independently of the camera.
-              </p>
-              <p>
-                <strong>X-Axis:</strong> Pitch (tilts model forward/backward)
-              </p>
-              <p>
-                <strong>Y-Axis:</strong> Yaw (spins model left/right)
-              </p>
-              <p>
-                <strong>Z-Axis:</strong> Roll (tilts model side to side)
-              </p>
+            <div className="space-y-1 pl-4">
+              <p>• <strong>X-Axis (Pitch):</strong> Tilts the model forward/backward</p>
+              <p>• <strong>Y-Axis (Yaw):</strong> Spins the model left/right</p>
+              <p>• <strong>Z-Axis (Roll):</strong> Tilts the model side to side</p>
             </div>
             <p className="pt-2 border-t border-border">
-              The preview shows the model positioned alongside the actual website text. Drag the model using camera controls to fine-tune positioning. After saving, the settings will be applied to the main product page at <code className="bg-muted px-1 rounded">/products/{productSlug}</code>.
+              <strong>Camera Controls:</strong> Use your mouse/trackpad in the preview to zoom (scroll), drag (left-click), and move the camera view.
+            </p>
+            <p className="pt-2 border-t border-border">
+              The preview shows the model alongside the actual website text. Position the model using rotation controls and camera drag/zoom. After saving, the settings will be applied to the main product page at <code className="bg-muted px-1 rounded">/products/{productSlug}</code>.
             </p>
           </CardContent>
         </Card>
