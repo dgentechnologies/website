@@ -157,16 +157,6 @@ export default function ProductsPage() {
             </p>
           </div>
         </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-white/70 text-sm font-medium">Scroll to explore</span>
-            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
-              <div className="w-1.5 h-3 bg-white/70 rounded-full animate-scroll-indicator"></div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Expanding Flex Gallery - Responsive */}

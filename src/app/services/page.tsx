@@ -157,13 +157,6 @@ export default function ServicesPage() {
             </p>
           </div>
         </div>
-        
-        {/* Scroll Indicator - Hidden on small screens */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce hidden sm:block">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
-            <div className="w-1 h-3 bg-white/70 rounded-full animate-scroll-indicator"></div>
-          </div>
-        </div>
       </section>
 
       <div className="relative z-10 bg-background">
