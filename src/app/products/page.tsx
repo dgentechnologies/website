@@ -41,7 +41,7 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
       >
         <Card className="bg-card backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-[450px] md:h-[500px] rounded-3xl group-hover:scale-105 group-hover:-translate-y-2">
           {/* Image Section - Full Card Height */}
-          <div className="relative h-full w-full overflow-hidden rounded-3xl">
+          <div className="relative h-full w-full overflow-hidden">
             <Image
               src={product.images[0].url}
               alt={product.title}
