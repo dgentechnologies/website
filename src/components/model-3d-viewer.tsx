@@ -35,6 +35,7 @@ export default function Model3DViewer({
   const modelViewerRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [modelNotFound, setModelNotFound] = useState(false);
   const [isVisible, setIsVisible] = useState(!lazy);
   const [scriptsLoaded, setScriptsLoaded] = useState(false);
 
@@ -121,11 +122,11 @@ export default function Model3DViewer({
     };
 
     const handleError = (e: any) => {
-      console.error('Model loading error:', e);
-      // Don't set error state immediately - the model might just not exist yet
-      // Show a friendly message instead
+      console.warn('Model file not found or failed to load:', src);
+      // Set modelNotFound state for graceful degradation
+      // The component will still render but show loading state
       setIsLoading(false);
-      setError(false); // Keep showing the component
+      setModelNotFound(true);
       onError?.();
     };
 
@@ -165,16 +166,25 @@ export default function Model3DViewer({
         position: 'relative'
       }}
     >
-      {isLoading && (
+      {(isLoading || modelNotFound) && (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-background via-muted/30 to-background">
           <div className="text-center space-y-4">
-            <div className="relative w-16 h-16 mx-auto">
-              <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
-              <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            </div>
-            <div className="text-sm text-muted-foreground animate-pulse">
-              Loading 3D Model...
-            </div>
+            {!modelNotFound ? (
+              <>
+                <div className="relative w-16 h-16 mx-auto">
+                  <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+                  <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+                <div className="text-sm text-muted-foreground animate-pulse">
+                  Loading 3D Model...
+                </div>
+              </>
+            ) : (
+              <div className="text-sm text-muted-foreground">
+                <p>3D Model placeholder</p>
+                <p className="text-xs mt-2 opacity-60">Add your GLB file to /public/models/</p>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -199,11 +209,26 @@ export default function Model3DViewer({
   );
 }
 
-// Add TypeScript declaration for model-viewer custom element
+// TypeScript declarations for model-viewer custom element
+interface ModelViewerElement extends HTMLElement {
+  src: string;
+  alt?: string;
+  'auto-rotate'?: string;
+  'camera-controls'?: string;
+  'shadow-intensity'?: string;
+  addEventListener(event: 'load', callback: () => void): void;
+  addEventListener(event: 'error', callback: (e: any) => void): void;
+  removeEventListener(event: 'load', callback: () => void): void;
+  removeEventListener(event: 'error', callback: (e: any) => void): void;
+}
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'model-viewer': any;
+      'model-viewer': Partial<ModelViewerElement> & {
+        ref?: React.Ref<any>;
+        style?: React.CSSProperties;
+      };
     }
   }
 }
