@@ -9,6 +9,8 @@ interface SplineViewerProps {
   onError?: () => void;
   className?: string;
   style?: React.CSSProperties;
+  lazy?: boolean; // Enable lazy loading with Intersection Observer
+  preload?: boolean; // Enable preloading of the scene
 }
 
 export default function SplineViewer({
@@ -16,7 +18,9 @@ export default function SplineViewer({
   onLoad,
   onError,
   className,
-  style
+  style,
+  lazy = false,
+  preload = true
 }: SplineViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -24,6 +28,7 @@ export default function SplineViewer({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(!lazy); // If lazy, start as not visible
 
   // Wait for container to have valid dimensions before initializing
   const checkDimensions = useCallback(() => {
@@ -31,6 +36,42 @@ export default function SplineViewer({
     const { offsetWidth, offsetHeight } = containerRef.current;
     return offsetWidth > 0 && offsetHeight > 0;
   }, []);
+
+  // Lazy loading with Intersection Observer
+  useEffect(() => {
+    if (!lazy) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' } // Start loading 200px before visible
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [lazy]);
+
+  // Preload scene resource hint
+  useEffect(() => {
+    if (!preload || typeof window === 'undefined') return;
+    
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = scene;
+    link.as = 'fetch';
+    document.head.appendChild(link);
+    
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, [scene, preload]);
 
   // Initialize dimensions check
   useEffect(() => {
@@ -47,9 +88,9 @@ export default function SplineViewer({
     requestAnimationFrame(checkReady);
   }, [checkDimensions]);
 
-  // Load Spline scene once container is ready
+  // Load Spline scene once container is ready and visible
   useEffect(() => {
-    if (!isReady || !canvasRef.current || !containerRef.current) return;
+    if (!isReady || !canvasRef.current || !containerRef.current || !isVisible) return;
 
     // Set explicit canvas dimensions to prevent zero-size WebGL error
     const container = containerRef.current;
@@ -68,17 +109,26 @@ export default function SplineViewer({
     const app = new Application(canvas);
     appRef.current = app;
     
-    app.load(scene)
-      .then(() => {
-        setIsLoading(false);
-        onLoad?.();
-      })
-      .catch((err) => {
-        console.error('Spline load error:', err);
-        setError(true);
-        setIsLoading(false);
-        onError?.();
-      });
+    // Use requestIdleCallback for non-critical loading, fallback to setTimeout
+    const loadScene = () => {
+      app.load(scene)
+        .then(() => {
+          setIsLoading(false);
+          onLoad?.();
+        })
+        .catch((err) => {
+          console.error('Spline load error:', err);
+          setError(true);
+          setIsLoading(false);
+          onError?.();
+        });
+    };
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadScene, { timeout: 2000 });
+    } else {
+      setTimeout(loadScene, 0);
+    }
 
     // Handle resize
     const handleResize = () => {
@@ -100,7 +150,7 @@ export default function SplineViewer({
         appRef.current = null;
       }
     };
-  }, [isReady, scene, onLoad, onError]);
+  }, [isReady, scene, onLoad, onError, isVisible]);
 
   if (error) {
     return null;

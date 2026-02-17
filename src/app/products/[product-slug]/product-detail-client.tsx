@@ -1287,6 +1287,8 @@ function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: ()
         scene="https://prod.spline.design/kYNR21QjvqQUcBTD/scene.splinecode"
         onLoad={onLoad}
         onError={onError}
+        lazy={false}
+        preload={true}
         style={{ 
           width: '100%', 
           height: '100%',
@@ -1306,6 +1308,8 @@ function Scene3DMobile({ onLoad, onError }: { onLoad?: () => void; onError?: () 
           scene="https://prod.spline.design/brSNwljCXzZoxC1f/scene.splinecode"
           onLoad={onLoad}
           onError={onError}
+          lazy={false}
+          preload={true}
           style={{ 
             width: '100%', 
             height: '100%',
