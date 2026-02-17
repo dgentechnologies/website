@@ -10,6 +10,9 @@ import { products, Product, EcosystemDetail } from '@/lib/products-data';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 
+// Default camera orbit settings
+const DEFAULT_CAMERA_ORBIT = "90deg 75deg 105%";
+
 // Dynamically import the custom Model3DViewer component with SSR disabled
 // This uses Google's model-viewer for better performance and no watermarks
 const Model3DViewer = dynamic(
@@ -1279,7 +1282,7 @@ function useScrollTransform(): ScrollTransformState {
 
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
-function Scene3DDesktop({ onLoad, onError, cameraOrbit = "90deg 75deg 105%" }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string }) {
+function Scene3DDesktop({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
@@ -1305,7 +1308,7 @@ function Scene3DDesktop({ onLoad, onError, cameraOrbit = "90deg 75deg 105%" }: {
 }
 
 // Mobile Scene3D Component - Optimized for smaller screens
-function Scene3DMobile({ onLoad, onError, cameraOrbit = "90deg 75deg 105%" }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string }) {
+function Scene3DMobile({ onLoad, onError, cameraOrbit = DEFAULT_CAMERA_ORBIT }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string }) {
   return (
     <div className="block lg:hidden w-full h-[50vh] relative overflow-hidden">
       <div className="w-full h-full" style={{ touchAction: 'none' }}>
@@ -1337,7 +1340,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
-  const [cameraOrbit, setCameraOrbit] = useState("90deg 75deg 105%");
+  const [cameraOrbit, setCameraOrbit] = useState(DEFAULT_CAMERA_ORBIT);
   
   // Load camera orbit settings from Firestore
   useEffect(() => {
@@ -1354,7 +1357,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           setCameraOrbit(`${theta}deg ${phi}deg ${radius}%`);
         }
       } catch (error) {
-        console.error('Error loading camera settings:', error);
+        console.error(`Error loading camera settings for ${product.slug}:`, error);
         // Use default settings on error
       }
     };

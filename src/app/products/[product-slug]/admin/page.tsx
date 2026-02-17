@@ -29,6 +29,12 @@ const DEFAULT_SETTINGS: ModelSettings = {
   radius: 105,
 };
 
+// Map product slugs to their model paths
+const MODEL_PATHS: Record<string, string> = {
+  'auralis-ecosystem': '/models/auralis-desktop.glb',
+  // Add more products here as needed
+};
+
 export default function ProductAdminPage() {
   const params = useParams();
   const productSlug = params['product-slug'] as string;
@@ -94,15 +100,8 @@ export default function ProductAdminPage() {
     return `${settings.theta}deg ${settings.phi}deg ${settings.radius}%`;
   };
 
-  // Determine model path based on product slug
-  const getModelPath = () => {
-    // For auralis-ecosystem, use desktop model, others can be added later
-    if (productSlug === 'auralis-ecosystem') {
-      return '/models/auralis-desktop.glb';
-    }
-    // Default fallback
-    return '/models/auralis-desktop.glb';
-  };
+  // Get model path for the current product
+  const modelPath = MODEL_PATHS[productSlug] || '/models/auralis-desktop.glb';
 
   if (loading) {
     return (
@@ -258,7 +257,7 @@ export default function ProductAdminPage() {
             <CardContent>
               <div className="aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-background via-muted/30 to-background">
                 <Model3DViewer
-                  src={getModelPath()}
+                  src={modelPath}
                   alt="3D Model Preview"
                   autoRotate={false}
                   cameraControls={true}
