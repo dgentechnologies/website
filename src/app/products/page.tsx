@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { ArrowRight, Wifi, Zap, ShieldCheck, Sun, GaugeCircle, Cpu, Network, Radar } from 'lucide-react';
 import Link from 'next/link';
 import { products } from '@/lib/products-data';
@@ -11,83 +12,103 @@ import { useParallax, useScrollAnimation, useFloatingAnimation } from '@/hooks/u
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'about-story');
 
-// Expanding Flex Gallery Product Column
-interface ProductColumnProps {
+// Premium Product Card
+interface ProductCardProps {
   product: typeof products[0];
   icon: React.ReactNode;
   features: Array<{ icon: React.ReactNode; label: string }>;
   keyPoints: string[];
+  index: number;
 }
 
-function ProductColumn({ product, icon, features, keyPoints }: ProductColumnProps) {
+function ProductCard({ product, icon, features, keyPoints, index }: ProductCardProps) {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  
   return (
-    <Link 
-      href={`/products/${product.slug}`}
-      className="flex-1 min-h-[70vh] md:min-h-0 group relative overflow-hidden transition-all duration-700 ease-in-out md:hover:flex-[1.8] cursor-pointer"
-      aria-label={`View ${product.title}`}
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ${
+        isVisible
+          ? 'opacity-100 translate-y-0'
+          : 'opacity-0 translate-y-10'
+      }`}
+      style={{ transitionDelay: `${index * 150}ms` }}
     >
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <Image
-          src={product.images[0].url}
-          alt={product.title}
-          fill
-          className="object-cover object-center transition-all duration-700 md:group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 33vw"
-          priority
-        />
-        {/* Dark gradient overlay (bottom-to-top) for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/40" />
-      </div>
-
-      {/* Content Container */}
-      <div className="relative h-full flex flex-col justify-end p-6 md:p-10">
-        {/* Collapsed State Content - Always Visible */}
-        <div className="mb-4 md:mb-6">
-          <div className="flex items-center gap-3 md:gap-4 mb-3">
-            <div className="p-2.5 md:p-4 rounded-xl bg-primary/20 backdrop-blur-sm border border-primary/40">
+      <Link 
+        href={`/products/${product.slug}`}
+        className="block group"
+        aria-label={`View ${product.title}`}
+      >
+        <Card className="bg-card backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-700 ease-in-out overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-[450px] md:h-[500px] rounded-3xl group-hover:scale-[1.03] group-hover:-translate-y-1">
+          {/* Image Section - Full Card Height */}
+          <div className="relative h-full w-full overflow-hidden">
+            <Image
+              src={product.images[0].url}
+              alt={product.title}
+              fill
+              className="object-cover object-center transition-all duration-900 ease-in-out group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+            
+            {/* Bottom blur gradient - Always visible with more emphasis at bottom */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent transition-all duration-700 ease-in-out group-hover:from-black/95 group-hover:via-black/80 group-hover:to-black/60" />
+            
+            {/* Icon Badge - positioned on image */}
+            <div className="absolute top-4 right-4 p-3 md:p-4 rounded-2xl bg-primary/90 backdrop-blur-md border-2 border-primary shadow-lg shadow-primary/50 transition-all duration-600 ease-in-out group-hover:scale-105 group-hover:rotate-2">
               {icon}
             </div>
-            <h3 className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-headline font-bold text-white leading-tight">
-              {product.title}
-            </h3>
-          </div>
-        </div>
 
-        {/* Expanded State Content - Always visible on mobile, fades in on desktop hover */}
-        <div className="md:opacity-0 md:max-h-0 max-h-none md:overflow-hidden transition-all duration-700 md:group-hover:opacity-100 md:group-hover:max-h-[500px]">
-          <p className="text-white/90 text-sm md:text-base xl:text-lg leading-relaxed mb-4 md:mb-6">
-            {product.shortDescription.split('.')[0]}.
-          </p>
+            {/* Product Title - Always visible at bottom on blur */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-headline font-bold text-white leading-tight mb-2">
+                {product.title}
+              </h3>
+              
+              {/* Details - Hidden by default, shown on hover */}
+              <div className="opacity-0 max-h-0 overflow-hidden transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:max-h-[500px] space-y-4">
+                {/* Description */}
+                <p className="text-sm md:text-base text-white/90 leading-relaxed">
+                  {product.shortDescription.split('.')[0]}.
+                </p>
 
-          {/* Feature Icons */}
-          <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4 md:mb-6">
-            {features.map((feature, idx) => (
-              <div 
-                key={idx}
-                className="flex flex-col items-center gap-1 md:gap-2 p-2 md:p-3 rounded-lg bg-white/10 backdrop-blur-md border border-white/20"
-              >
-                {feature.icon}
-                <span className="text-white text-xs font-medium text-center">{feature.label}</span>
+                {/* Feature Pills */}
+                <div className="flex flex-wrap gap-2">
+                  {features.map((feature, idx) => (
+                    <div 
+                      key={idx}
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/30"
+                    >
+                      <div className="shrink-0">
+                        {feature.icon}
+                      </div>
+                      <span className="text-xs md:text-sm font-medium text-white">{feature.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Key Points */}
+                <div className="space-y-1.5">
+                  {keyPoints.map((point, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-sm text-white/90">
+                      <span className="text-primary font-bold mt-0.5">✓</span>
+                      <span>{point}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Learn More Button */}
+                <div className="pt-2">
+                  <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 ease-in-out focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                    <span className="text-sm">Learn More</span>
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300 ease-in-out" />
+                  </div>
+                </div>
               </div>
-            ))}
+            </div>
           </div>
-
-          {/* Key Points */}
-          <div className="space-y-1 md:space-y-2 text-white/80 text-xs md:text-sm mb-4 md:mb-6">
-            {keyPoints.map((point, idx) => (
-              <p key={idx}>✓ {point}</p>
-            ))}
-          </div>
-
-          {/* Learn More Button */}
-          <div className="inline-flex items-center gap-2 md:gap-3 px-5 md:px-6 py-2.5 md:py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-xl transition-all duration-300 group/btn">
-            <span className="text-xs md:text-sm">Learn More</span>
-            <ArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover/btn:translate-x-1 transition-transform" />
-          </div>
-        </div>
-      </div>
-    </Link>
+        </Card>
+      </Link>
+    </div>
   );
 }
 
@@ -157,143 +178,104 @@ export default function ProductsPage() {
             </p>
           </div>
         </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-white/70 text-sm font-medium">Scroll to explore</span>
-            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
-              <div className="w-1.5 h-3 bg-white/70 rounded-full animate-scroll-indicator"></div>
-            </div>
-          </div>
-        </div>
       </section>
 
-      {/* Expanding Flex Gallery - Responsive */}
-      <section className="relative w-full bg-black">
-        {/* Desktop: Horizontal Flex Gallery (md and up) */}
-        <div className="hidden md:flex h-screen">
-          <ProductColumn
-            product={auralisProduct}
-            icon={<Cpu className="h-8 w-8 text-primary" />}
-            features={[
-              { icon: <Wifi className="h-6 w-6 text-primary" />, label: "ESP-MESH" },
-              { icon: <Network className="h-6 w-6 text-primary" />, label: "4G LTE" },
-              { icon: <Radar className="h-6 w-6 text-primary" />, label: "Radar" },
-            ]}
-            keyPoints={[
-              "Hybrid Wireless Mesh Network",
-              "ESP-MESH + 4G LTE connectivity",
-              "98% reduction in SIM costs",
-            ]}
-          />
-          
-          <ProductColumn
-            product={solarProduct}
-            icon={<Sun className="h-8 w-8 text-primary" />}
-            features={[
-              { icon: <Sun className="h-6 w-6 text-primary" />, label: "Solar" },
-              { icon: <GaugeCircle className="h-6 w-6 text-primary" />, label: "Autonomy" },
-              { icon: <Cpu className="h-6 w-6 text-primary" />, label: "Smart" },
-            ]}
-            keyPoints={[
-              "3-5 nights autonomy",
-              "8+ years battery life",
-              "Zero grid dependency",
-            ]}
-          />
-          
-          <ProductColumn
-            product={ledProduct}
-            icon={<Zap className="h-8 w-8 text-primary" />}
-            features={[
-              { icon: <Zap className="h-6 w-6 text-primary" />, label: "Efficient" },
-              { icon: <ShieldCheck className="h-6 w-6 text-primary" />, label: "Durable" },
-              { icon: <GaugeCircle className="h-6 w-6 text-primary" />, label: "Long Life" },
-            ]}
-            keyPoints={[
-              "70% energy savings",
-              "50,000+ hour lifespan",
-              "IP66 weather protection",
-            ]}
-          />
-        </div>
-
-        {/* Mobile: Vertical Stack (below md) */}
-        <div className="md:hidden flex flex-col">
-          <ProductColumn
-            product={auralisProduct}
-            icon={<Cpu className="h-7 w-7 text-primary" />}
-            features={[
-              { icon: <Wifi className="h-5 w-5 text-primary" />, label: "ESP-MESH" },
-              { icon: <Network className="h-5 w-5 text-primary" />, label: "4G LTE" },
-              { icon: <Radar className="h-5 w-5 text-primary" />, label: "Radar" },
-            ]}
-            keyPoints={[
-              "Hybrid Wireless Mesh Network",
-              "ESP-MESH + 4G LTE connectivity",
-              "98% reduction in SIM costs",
-            ]}
-          />
-          
-          <ProductColumn
-            product={solarProduct}
-            icon={<Sun className="h-7 w-7 text-primary" />}
-            features={[
-              { icon: <Sun className="h-5 w-5 text-primary" />, label: "Solar" },
-              { icon: <GaugeCircle className="h-5 w-5 text-primary" />, label: "Autonomy" },
-              { icon: <Cpu className="h-5 w-5 text-primary" />, label: "Smart" },
-            ]}
-            keyPoints={[
-              "3-5 nights autonomy",
-              "8+ years battery life",
-              "Zero grid dependency",
-            ]}
-          />
-          
-          <ProductColumn
-            product={ledProduct}
-            icon={<Zap className="h-7 w-7 text-primary" />}
-            features={[
-              { icon: <Zap className="h-5 w-5 text-primary" />, label: "Efficient" },
-              { icon: <ShieldCheck className="h-5 w-5 text-primary" />, label: "Durable" },
-              { icon: <GaugeCircle className="h-5 w-5 text-primary" />, label: "Long Life" },
-            ]}
-            keyPoints={[
-              "70% energy savings",
-              "50,000+ hour lifespan",
-              "IP66 weather protection",
-            ]}
-          />
-        </div>
-      </section>
-
-      {/* CTA Section - UNCHANGED */}
-      <div className="relative z-10 bg-black flex flex-col items-center justify-center w-full">
-        <section className="w-full py-16 md:py-20 lg:py-24 bg-gradient-to-br from-zinc-900 via-zinc-800 to-black overflow-hidden relative border-t border-primary/20">
+      {/* Products Grid Section - Premium Card Layout */}
+      <section className="relative w-full bg-background py-16 md:py-20 lg:py-24 overflow-hidden">
+        <div className="container px-4 md:px-6">
+          {/* Section Header */}
           <div 
-            ref={ctaRef}
-            className={`container max-w-screen-md px-4 md:px-6 text-center transition-all duration-700 relative ${
-              ctaVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            ref={productsRef}
+            className={`text-center mb-12 md:mb-16 transition-all duration-700 ${
+              productsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <h2 className="text-3xl sm:text-4xl font-headline font-bold tracking-tight md:text-5xl text-white">
-              Need a Custom Solution?
+            <Badge variant="default" className="mb-4">Premium Solutions</Badge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold tracking-tight mb-4">
+              Our Product Lineup
             </h2>
-            <p className="mt-4 text-white/70 text-base sm:text-lg max-w-md mx-auto">
-              We design custom IoT hardware tailored to your requirements.
+            <p className="text-foreground/70 text-base md:text-lg max-w-2xl mx-auto">
+              Choose from our range of smart lighting solutions designed for modern cities
             </p>
-            <div className="mt-8">
-              <Link href="/contact?subject=Custom+Hardware+Inquiry">
-                <div className="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 group text-lg">
-                  <span>Get in Touch</span>
-                  <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform" />
-                </div>
-              </Link>
-            </div>
           </div>
-        </section>
-      </div>
+
+          {/* Products Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <ProductCard
+              product={auralisProduct}
+              icon={<Cpu className="h-7 w-7 md:h-8 md:w-8 text-white" />}
+              features={[
+                { icon: <Wifi className="h-4 w-4 text-primary" />, label: "ESP-MESH" },
+                { icon: <Network className="h-4 w-4 text-primary" />, label: "4G LTE" },
+                { icon: <Radar className="h-4 w-4 text-primary" />, label: "Radar" },
+              ]}
+              keyPoints={[
+                "Hybrid Wireless Mesh Network",
+                "ESP-MESH + 4G LTE connectivity",
+                "98% reduction in SIM costs",
+              ]}
+              index={0}
+            />
+            
+            <ProductCard
+              product={solarProduct}
+              icon={<Sun className="h-7 w-7 md:h-8 md:w-8 text-white" />}
+              features={[
+                { icon: <Sun className="h-4 w-4 text-primary" />, label: "Solar" },
+                { icon: <GaugeCircle className="h-4 w-4 text-primary" />, label: "Autonomy" },
+                { icon: <Cpu className="h-4 w-4 text-primary" />, label: "Smart" },
+              ]}
+              keyPoints={[
+                "3-5 nights autonomy",
+                "8+ years battery life",
+                "Zero grid dependency",
+              ]}
+              index={1}
+            />
+            
+            <ProductCard
+              product={ledProduct}
+              icon={<Zap className="h-7 w-7 md:h-8 md:w-8 text-white" />}
+              features={[
+                { icon: <Zap className="h-4 w-4 text-primary" />, label: "Efficient" },
+                { icon: <ShieldCheck className="h-4 w-4 text-primary" />, label: "Durable" },
+                { icon: <GaugeCircle className="h-4 w-4 text-primary" />, label: "Long Life" },
+              ]}
+              keyPoints={[
+                "70% energy savings",
+                "50,000+ hour lifespan",
+                "IP66 weather protection",
+              ]}
+              index={2}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="w-full py-16 md:py-20 lg:py-24 bg-card overflow-hidden relative border-t border-border/50">
+        <div 
+          ref={ctaRef}
+          className={`container max-w-screen-md px-4 md:px-6 text-center transition-all duration-700 relative ${
+            ctaVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
+        >
+          <h2 className="text-3xl sm:text-4xl font-headline font-bold tracking-tight md:text-5xl">
+            Need a Custom Solution?
+          </h2>
+          <p className="mt-4 text-foreground/70 text-base sm:text-lg max-w-md mx-auto">
+            We design custom IoT hardware tailored to your requirements.
+          </p>
+          <div className="mt-8">
+            <Link href="/contact?subject=Custom+Hardware+Inquiry">
+              <div className="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 group text-lg">
+                <span>Get in Touch</span>
+                <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform" />
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

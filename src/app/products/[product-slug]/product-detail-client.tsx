@@ -1414,23 +1414,6 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
                 </Link>
               </Button>
             </motion.div>
-
-            {/* Scroll indicator - Hidden on mobile to save space */}
-            <motion.div 
-              className="hidden lg:flex items-center gap-2 mt-12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1 }}
-            >
-              <div className="w-5 h-8 rounded-full border border-foreground/20 flex items-start justify-center p-1.5">
-                <motion.div 
-                  className="w-1 h-2 bg-foreground/40 rounded-full"
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </div>
-              <span className="text-foreground/40 text-xs font-medium tracking-wide">Scroll to explore</span>
-            </motion.div>
           </div>
         </div>
       </section>
