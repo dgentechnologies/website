@@ -76,6 +76,8 @@ export default function Model3DViewer({
       return;
     }
 
+    let cleanup: (() => void) | undefined;
+
     const loadScript = () => {
       const script = document.createElement('script');
       script.type = 'module';
@@ -96,7 +98,7 @@ export default function Model3DViewer({
 
       document.head.appendChild(script);
 
-      return () => {
+      cleanup = () => {
         if (script.parentNode) {
           script.parentNode.removeChild(script);
         }
@@ -109,6 +111,10 @@ export default function Model3DViewer({
     } else {
       setTimeout(loadScript, FALLBACK_LOAD_DELAY_MS);
     }
+
+    return () => {
+      if (cleanup) cleanup();
+    };
   }, [isVisible, onError]);
 
   // Handle model-viewer events
@@ -122,7 +128,7 @@ export default function Model3DViewer({
       onLoad?.();
     };
 
-    const handleError = (e: any) => {
+    const handleError = (e: ErrorEvent | Event) => {
       console.warn('Model file not found or failed to load:', src);
       // Set modelNotFound state for graceful degradation
       // The component will still render but show loading state
@@ -194,8 +200,8 @@ export default function Model3DViewer({
           ref={modelViewerRef}
           src={src}
           alt={alt}
-          auto-rotate={autoRotate ? '' : undefined}
-          camera-controls={cameraControls ? '' : undefined}
+          {...(autoRotate && { 'auto-rotate': '' })}
+          {...(cameraControls && { 'camera-controls': '' })}
           shadow-intensity="1"
           style={{
             width: '100%',
@@ -217,10 +223,6 @@ interface ModelViewerElement extends HTMLElement {
   'auto-rotate'?: string;
   'camera-controls'?: string;
   'shadow-intensity'?: string;
-  addEventListener(event: 'load', callback: () => void): void;
-  addEventListener(event: 'error', callback: (e: any) => void): void;
-  removeEventListener(event: 'load', callback: () => void): void;
-  removeEventListener(event: 'error', callback: (e: any) => void): void;
 }
 
 declare global {
