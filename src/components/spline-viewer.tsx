@@ -3,6 +3,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Application } from '@splinetool/runtime';
 
+// Maximum timeout to wait before forcing scene load (in milliseconds)
+// This prevents indefinite deferral if the browser stays busy
+const IDLE_CALLBACK_TIMEOUT_MS = 2000;
+
+// Fallback timeout for browsers without requestIdleCallback
+// Small delay to approximate idle callback behavior
+const FALLBACK_LOAD_DELAY_MS = 100;
+
 interface SplineViewerProps {
   scene: string;
   onLoad?: () => void;
@@ -112,10 +120,6 @@ export default function SplineViewer({
     const app = new Application(canvas);
     appRef.current = app;
     
-    // Maximum timeout to wait before forcing scene load (in milliseconds)
-    // This prevents indefinite deferral if the browser stays busy
-    const IDLE_CALLBACK_TIMEOUT_MS = 2000;
-    
     // Use requestIdleCallback for non-critical loading, fallback to setTimeout
     const loadScene = () => {
       app.load(scene)
@@ -134,7 +138,8 @@ export default function SplineViewer({
     if ('requestIdleCallback' in window) {
       requestIdleCallback(loadScene, { timeout: IDLE_CALLBACK_TIMEOUT_MS });
     } else {
-      setTimeout(loadScene, 0);
+      // Fallback with a small delay to approximate idle behavior
+      setTimeout(loadScene, FALLBACK_LOAD_DELAY_MS);
     }
 
     // Handle resize
