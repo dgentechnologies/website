@@ -39,21 +39,21 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
         className="block group"
         aria-label={`View ${product.title}`}
       >
-        <Card className="bg-card/80 backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 h-full flex flex-col">
+        <Card className="bg-card/80 backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-full flex flex-col group-hover:-translate-y-2">
           {/* Image Section */}
           <div className="relative h-64 md:h-80 overflow-hidden">
             <Image
               src={product.images[0].url}
               alt={product.title}
               fill
-              className="object-cover object-center transition-all duration-700 group-hover:scale-110"
+              className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
             
             {/* Icon Badge - positioned on image */}
-            <div className="absolute top-4 right-4 p-3 md:p-4 rounded-2xl bg-primary/90 backdrop-blur-md border-2 border-primary shadow-lg shadow-primary/50 transform transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+            <div className="absolute top-4 right-4 p-3 md:p-4 rounded-2xl bg-primary/90 backdrop-blur-md border-2 border-primary shadow-lg shadow-primary/50 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
               {icon}
             </div>
           </div>
@@ -95,7 +95,7 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
 
             {/* Learn More Button */}
             <div className="pt-4">
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 group-hover/btn">
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300">
                 <span className="text-sm">Learn More</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
