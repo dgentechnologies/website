@@ -32,7 +32,7 @@ export default function Model3DViewer({
   lazy = false,
 }: Model3DViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const modelViewerRef = useRef<any>(null);
+  const modelViewerRef = useRef<ModelViewerElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [modelNotFound, setModelNotFound] = useState(false);
@@ -79,7 +79,8 @@ export default function Model3DViewer({
     const loadScript = () => {
       const script = document.createElement('script');
       script.type = 'module';
-      script.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js';
+      // Match the CDN version with installed package version (4.1.0)
+      script.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js';
       script.async = true;
       
       script.onload = () => {
@@ -137,7 +138,7 @@ export default function Model3DViewer({
       modelViewer.removeEventListener('load', handleLoad);
       modelViewer.removeEventListener('error', handleError);
     };
-  }, [scriptsLoaded, onLoad, onError]);
+  }, [scriptsLoaded, onLoad, onError, src]);
 
   if (error) {
     return null;
