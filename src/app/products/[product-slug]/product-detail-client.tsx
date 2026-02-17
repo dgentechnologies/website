@@ -7,6 +7,8 @@ import Script from 'next/script';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
+import { doc, getDoc } from 'firebase/firestore';
+import { firestore } from '@/firebase/client';
 
 // Dynamically import the custom Model3DViewer component with SSR disabled
 // This uses Google's model-viewer for better performance and no watermarks
@@ -1277,7 +1279,7 @@ function useScrollTransform(): ScrollTransformState {
 
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
-function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
+function Scene3DDesktop({ onLoad, onError, cameraOrbit = "90deg 75deg 105%" }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
@@ -1290,7 +1292,7 @@ function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: ()
         onError={onError}
         autoRotate={false}
         cameraControls={false}
-        cameraOrbit="90deg 75deg 105%"
+        cameraOrbit={cameraOrbit}
         lazy={false}
         style={{ 
           width: '100%', 
@@ -1303,7 +1305,7 @@ function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: ()
 }
 
 // Mobile Scene3D Component - Optimized for smaller screens
-function Scene3DMobile({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
+function Scene3DMobile({ onLoad, onError, cameraOrbit = "90deg 75deg 105%" }: { onLoad?: () => void; onError?: () => void; cameraOrbit?: string }) {
   return (
     <div className="block lg:hidden w-full h-[50vh] relative overflow-hidden">
       <div className="w-full h-full" style={{ touchAction: 'none' }}>
@@ -1314,7 +1316,7 @@ function Scene3DMobile({ onLoad, onError }: { onLoad?: () => void; onError?: () 
           onError={onError}
           autoRotate={false}
           cameraControls={true}
-          cameraOrbit="90deg 75deg 105%"
+          cameraOrbit={cameraOrbit}
           lazy={false}
           style={{ 
             width: '100%', 
@@ -1335,6 +1337,30 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
+  const [cameraOrbit, setCameraOrbit] = useState("90deg 75deg 105%");
+  
+  // Load camera orbit settings from Firestore
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const docRef = doc(firestore, 'product-settings', product.slug);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const theta = data.theta ?? 90;
+          const phi = data.phi ?? 75;
+          const radius = data.radius ?? 105;
+          setCameraOrbit(`${theta}deg ${phi}deg ${radius}%`);
+        }
+      } catch (error) {
+        console.error('Error loading camera settings:', error);
+        // Use default settings on error
+      }
+    };
+    
+    loadSettings();
+  }, [product.slug]);
   
   // Detect screen size
   useEffect(() => {
@@ -1357,7 +1383,8 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
       {!desktopSplineError && (
         <Scene3DDesktop 
           onLoad={() => setDesktopSplineLoaded(true)} 
-          onError={() => setDesktopSplineError(true)} 
+          onError={() => setDesktopSplineError(true)}
+          cameraOrbit={cameraOrbit}
         />
       )}
       
@@ -1374,6 +1401,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
             <Scene3DMobile
               onLoad={() => setMobileSplineLoaded(true)}
               onError={() => setMobileSplineError(true)}
+              cameraOrbit={cameraOrbit}
             />
           ) : (
             <div className="block lg:hidden w-full h-[50vh] bg-gradient-to-b from-primary/20 via-background to-background" />
