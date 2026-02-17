@@ -39,9 +39,9 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
         className="block group"
         aria-label={`View ${product.title}`}
       >
-        <Card className="bg-card backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-[400px] md:h-[450px] hover:h-[600px] md:hover:h-[650px] group-hover:-translate-y-2">
+        <Card className="bg-card backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-[450px] md:h-[500px] rounded-3xl group-hover:scale-105 group-hover:-translate-y-2">
           {/* Image Section - Full Card Height */}
-          <div className="relative h-full w-full overflow-hidden">
+          <div className="relative h-full w-full overflow-hidden rounded-3xl">
             <Image
               src={product.images[0].url}
               alt={product.title}
@@ -50,8 +50,8 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             
-            {/* Bottom blur gradient - Always visible */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent transition-all duration-500 group-hover:from-black/95 group-hover:via-black/80 group-hover:to-black/60" />
+            {/* Bottom blur gradient - Always visible with more emphasis at bottom */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent transition-all duration-500 group-hover:from-black/95 group-hover:via-black/80 group-hover:to-black/60" />
             
             {/* Icon Badge - positioned on image */}
             <div className="absolute top-4 right-4 p-3 md:p-4 rounded-2xl bg-primary/90 backdrop-blur-md border-2 border-primary shadow-lg shadow-primary/50 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
