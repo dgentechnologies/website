@@ -1288,8 +1288,9 @@ function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: ()
         alt="Auralis Ecosystem 3D Model"
         onLoad={onLoad}
         onError={onError}
-        autoRotate={true}
+        autoRotate={false}
         cameraControls={false}
+        cameraOrbit="90deg 75deg 105%"
         lazy={false}
         style={{ 
           width: '100%', 
@@ -1311,8 +1312,9 @@ function Scene3DMobile({ onLoad, onError }: { onLoad?: () => void; onError?: () 
           alt="Auralis Ecosystem 3D Model"
           onLoad={onLoad}
           onError={onError}
-          autoRotate={true}
+          autoRotate={false}
           cameraControls={true}
+          cameraOrbit="90deg 75deg 105%"
           lazy={false}
           style={{ 
             width: '100%', 
