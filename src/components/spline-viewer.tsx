@@ -73,7 +73,7 @@ export default function SplineViewer({
     const link = document.createElement('link');
     link.rel = 'prefetch';
     link.href = scene;
-    link.as = 'fetch';
+    // Let browser determine resource type automatically for Spline scenes
     document.head.appendChild(link);
     
     return () => {
@@ -135,7 +135,8 @@ export default function SplineViewer({
         });
     };
 
-    if ('requestIdleCallback' in window) {
+    // Safe feature detection for requestIdleCallback
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
       requestIdleCallback(loadScene, { timeout: IDLE_CALLBACK_TIMEOUT_MS });
     } else {
       // Fallback with a small delay to approximate idle behavior
