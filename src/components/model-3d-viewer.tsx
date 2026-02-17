@@ -120,10 +120,12 @@ export default function Model3DViewer({
       onLoad?.();
     };
 
-    const handleError = () => {
-      console.error('Model loading error');
-      setError(true);
+    const handleError = (e: any) => {
+      console.error('Model loading error:', e);
+      // Don't set error state immediately - the model might just not exist yet
+      // Show a friendly message instead
       setIsLoading(false);
+      setError(false); // Keep showing the component
       onError?.();
     };
 
