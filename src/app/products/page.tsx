@@ -39,22 +39,22 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
         className="block group"
         aria-label={`View ${product.title}`}
       >
-        <Card className="bg-card backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-[450px] md:h-[500px] rounded-3xl group-hover:scale-105 group-hover:-translate-y-2">
+        <Card className="bg-card backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-700 ease-in-out overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-[450px] md:h-[500px] rounded-3xl group-hover:scale-[1.03] group-hover:-translate-y-1">
           {/* Image Section - Full Card Height */}
           <div className="relative h-full w-full overflow-hidden">
             <Image
               src={product.images[0].url}
               alt={product.title}
               fill
-              className="object-cover object-center transition-all duration-700 group-hover:scale-110"
+              className="object-cover object-center transition-all duration-900 ease-in-out group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             
             {/* Bottom blur gradient - Always visible with more emphasis at bottom */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent transition-all duration-500 group-hover:from-black/95 group-hover:via-black/80 group-hover:to-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent transition-all duration-700 ease-in-out group-hover:from-black/95 group-hover:via-black/80 group-hover:to-black/60" />
             
             {/* Icon Badge - positioned on image */}
-            <div className="absolute top-4 right-4 p-3 md:p-4 rounded-2xl bg-primary/90 backdrop-blur-md border-2 border-primary shadow-lg shadow-primary/50 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+            <div className="absolute top-4 right-4 p-3 md:p-4 rounded-2xl bg-primary/90 backdrop-blur-md border-2 border-primary shadow-lg shadow-primary/50 transition-all duration-600 ease-in-out group-hover:scale-105 group-hover:rotate-2">
               {icon}
             </div>
 
@@ -65,7 +65,7 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
               </h3>
               
               {/* Details - Hidden by default, shown on hover */}
-              <div className="opacity-0 max-h-0 overflow-hidden transition-all duration-500 group-hover:opacity-100 group-hover:max-h-[500px] space-y-4">
+              <div className="opacity-0 max-h-0 overflow-hidden transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:max-h-[500px] space-y-4">
                 {/* Description */}
                 <p className="text-sm md:text-base text-white/90 leading-relaxed">
                   {product.shortDescription.split('.')[0]}.
@@ -98,9 +98,9 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
 
                 {/* Learn More Button */}
                 <div className="pt-2">
-                  <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                  <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 ease-in-out focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                     <span className="text-sm">Learn More</span>
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300 ease-in-out" />
                   </div>
                 </div>
               </div>
