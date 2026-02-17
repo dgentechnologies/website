@@ -170,8 +170,16 @@ export default function SplineViewer({
       }}
     >
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="animate-pulse text-foreground/30">Loading 3D Scene...</div>
+        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-background via-muted/30 to-background">
+          <div className="text-center space-y-4">
+            <div className="relative w-16 h-16 mx-auto">
+              <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+              <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <div className="text-sm text-muted-foreground animate-pulse">
+              Loading 3D Scene...
+            </div>
+          </div>
         </div>
       )}
       {isReady && (
