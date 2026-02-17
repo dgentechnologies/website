@@ -39,68 +39,73 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
         className="block group"
         aria-label={`View ${product.title}`}
       >
-        <Card className="bg-card/80 backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-full flex flex-col group-hover:-translate-y-2">
-          {/* Image Section */}
-          <div className="relative h-64 md:h-80 overflow-hidden">
+        <Card className="bg-card backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:shadow-primary/20 h-[400px] md:h-[450px] hover:h-[600px] md:hover:h-[650px] group-hover:-translate-y-2">
+          {/* Image Section - Full Card Height */}
+          <div className="relative h-full w-full overflow-hidden">
             <Image
               src={product.images[0].url}
               alt={product.title}
               fill
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
+              className="object-cover object-center transition-all duration-700 group-hover:scale-110"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+            
+            {/* Bottom blur gradient - Always visible */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent transition-all duration-500 group-hover:from-black/95 group-hover:via-black/80 group-hover:to-black/60" />
             
             {/* Icon Badge - positioned on image */}
             <div className="absolute top-4 right-4 p-3 md:p-4 rounded-2xl bg-primary/90 backdrop-blur-md border-2 border-primary shadow-lg shadow-primary/50 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
               {icon}
             </div>
-          </div>
 
-          <CardHeader className="space-y-2 pb-3">
-            <h3 className="text-2xl md:text-3xl font-headline font-bold text-foreground group-hover:text-primary transition-colors">
-              {product.title}
-            </h3>
-            <p className="text-sm md:text-base text-foreground/70 leading-relaxed">
-              {product.shortDescription.split('.')[0]}.
-            </p>
-          </CardHeader>
+            {/* Product Title - Always visible at bottom on blur */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-headline font-bold text-white leading-tight mb-2">
+                {product.title}
+              </h3>
+              
+              {/* Details - Hidden by default, shown on hover */}
+              <div className="opacity-0 max-h-0 overflow-hidden transition-all duration-500 group-hover:opacity-100 group-hover:max-h-[500px] space-y-4">
+                {/* Description */}
+                <p className="text-sm md:text-base text-white/90 leading-relaxed">
+                  {product.shortDescription.split('.')[0]}.
+                </p>
 
-          <CardContent className="space-y-4 flex-grow">
-            {/* Feature Pills */}
-            <div className="flex flex-wrap gap-2">
-              {features.map((feature, idx) => (
-                <div 
-                  key={idx}
-                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-primary/10 border border-primary/30 hover:bg-primary/20 transition-colors"
-                >
-                  <div className="shrink-0">
-                    {feature.icon}
+                {/* Feature Pills */}
+                <div className="flex flex-wrap gap-2">
+                  {features.map((feature, idx) => (
+                    <div 
+                      key={idx}
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/30"
+                    >
+                      <div className="shrink-0">
+                        {feature.icon}
+                      </div>
+                      <span className="text-xs md:text-sm font-medium text-white">{feature.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Key Points */}
+                <div className="space-y-1.5">
+                  {keyPoints.map((point, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-sm text-white/90">
+                      <span className="text-primary font-bold mt-0.5">✓</span>
+                      <span>{point}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Learn More Button */}
+                <div className="pt-2">
+                  <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                    <span className="text-sm">Learn More</span>
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </div>
-                  <span className="text-xs md:text-sm font-medium text-foreground">{feature.label}</span>
                 </div>
-              ))}
-            </div>
-
-            {/* Key Points */}
-            <div className="space-y-2 pt-2">
-              {keyPoints.map((point, idx) => (
-                <div key={idx} className="flex items-start gap-2 text-sm text-foreground/80">
-                  <span className="text-primary font-bold mt-0.5">✓</span>
-                  <span>{point}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Learn More Button */}
-            <div className="pt-4">
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-                <span className="text-sm">Learn More</span>
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
       </Link>
     </div>
