@@ -1342,7 +1342,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
-  const [orientation, setOrientation] = useState<string | undefined>(undefined);
+  const [orientation, setOrientation] = useState<string | undefined>("-75deg -89deg 19deg"); // Default orientation matching admin
   
   // Load orientation settings from Firestore
   useEffect(() => {
@@ -1355,16 +1355,15 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           const data = docSnap.data();
           
           // Load orientation settings
-          const rotationX = data.rotationX ?? 0;
-          const rotationY = data.rotationY ?? 0;
-          const rotationZ = data.rotationZ ?? 0;
-          if (rotationX !== 0 || rotationY !== 0 || rotationZ !== 0) {
-            setOrientation(`${rotationX}deg ${rotationY}deg ${rotationZ}deg`);
-          }
+          const rotationX = data.rotationX ?? -75;
+          const rotationY = data.rotationY ?? -89;
+          const rotationZ = data.rotationZ ?? 19;
+          setOrientation(`${rotationX}deg ${rotationY}deg ${rotationZ}deg`);
         }
+        // If document doesn't exist, keep the default orientation set in state
       } catch (error) {
         console.error(`Error loading model settings for ${product.slug}:`, error);
-        // Use default settings on error
+        // Keep default settings on error
       }
     };
     
