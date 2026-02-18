@@ -25,8 +25,8 @@ interface ModelSettings {
 
 const DEFAULT_SETTINGS: ModelSettings = {
   rotationX: -75,
-  rotationY: -89,
-  rotationZ: 19,
+  rotationY: -90,
+  rotationZ: 20,
 };
 
 // Map product slugs to their model paths
@@ -268,7 +268,7 @@ export default function ProductAdminPage() {
                       style={{
                         width: '100%',
                         height: '100%',
-                        filter: 'brightness(0.3) contrast(1.2)', // Make model darker/black to match production
+                        filter: 'brightness(0.25) contrast(1.3) saturate(0)', // Darker with high contrast, grayscale
                       }}
                     />
                   </div>

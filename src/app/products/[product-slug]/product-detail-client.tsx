@@ -1283,7 +1283,7 @@ function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void;
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ 
         zIndex: -1,
-        transform: 'translateX(-15%) scale(0.9)' // Shift left and zoom out slightly
+        transform: 'translateX(-20%) scale(0.9)' // Shift more to the left and zoom out slightly
       }}
     >
       <Model3DViewer
@@ -1299,7 +1299,7 @@ function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void;
           width: '100%', 
           height: '100%',
           touchAction: 'none',
-          filter: 'brightness(0.3) contrast(1.2)' // Make model darker/black
+          filter: 'brightness(0.25) contrast(1.3) saturate(0)' // Darker with high contrast, grayscale to allow text differentiation
         }}
       />
     </div>
@@ -1324,7 +1324,7 @@ function Scene3DMobile({ onLoad, onError, orientation }: { onLoad?: () => void; 
             width: '100%', 
             height: '100%',
             touchAction: 'none',
-            filter: 'brightness(0.3) contrast(1.2)' // Make model darker/black
+            filter: 'brightness(0.25) contrast(1.3) saturate(0)' // Darker with high contrast, grayscale to allow text differentiation
           }}
         />
       </div>
@@ -1340,7 +1340,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
-  const [orientation] = useState<string>("-75deg -89deg 19deg"); // Fixed orientation values
+  const [orientation] = useState<string>("-75deg -90deg 20deg"); // Fixed orientation values
   
   // Detect screen size
   useEffect(() => {
