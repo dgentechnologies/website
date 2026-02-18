@@ -7,8 +7,6 @@ import Script from 'next/script';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { products, Product, EcosystemDetail } from '@/lib/products-data';
-import { doc, getDoc } from 'firebase/firestore';
-import { firestore } from '@/firebase/client';
 
 // Dynamically import the custom Model3DViewer component with SSR disabled
 // This uses Google's model-viewer for better performance and no watermarks
@@ -1285,7 +1283,7 @@ function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void;
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ 
         zIndex: -1,
-        transform: 'translateX(-15%) scale(1.2)' // Shift left and bring closer (scale up)
+        transform: 'translateX(-15%) scale(0.9)' // Shift left and zoom out slightly
       }}
     >
       <Model3DViewer
@@ -1342,33 +1340,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
-  const [orientation, setOrientation] = useState<string | undefined>("-75deg -89deg 19deg"); // Default orientation matching admin
-  
-  // Load orientation settings from Firestore
-  useEffect(() => {
-    const loadSettings = async () => {
-      try {
-        const docRef = doc(firestore, 'product-settings', product.slug);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          
-          // Load orientation settings
-          const rotationX = data.rotationX ?? -75;
-          const rotationY = data.rotationY ?? -89;
-          const rotationZ = data.rotationZ ?? 19;
-          setOrientation(`${rotationX}deg ${rotationY}deg ${rotationZ}deg`);
-        }
-        // If document doesn't exist, keep the default orientation set in state
-      } catch (error) {
-        console.error(`Error loading model settings for ${product.slug}:`, error);
-        // Keep default settings on error
-      }
-    };
-    
-    loadSettings();
-  }, [product.slug]);
+  const [orientation] = useState<string>("-75deg -89deg 19deg"); // Fixed orientation values
   
   // Detect screen size
   useEffect(() => {
