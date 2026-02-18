@@ -24,9 +24,9 @@ interface ModelSettings {
 }
 
 const DEFAULT_SETTINGS: ModelSettings = {
-  rotationX: -70,
-  rotationY: 0,
-  rotationZ: -3,
+  rotationX: -75,
+  rotationY: -89,
+  rotationZ: 19,
 };
 
 // Map product slugs to their model paths

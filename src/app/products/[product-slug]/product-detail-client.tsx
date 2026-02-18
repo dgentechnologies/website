@@ -1285,7 +1285,7 @@ function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void;
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ 
         zIndex: -1,
-        transform: 'translateX(-15%)' // Shift model more to the left
+        transform: 'translateX(-15%) scale(1.2)' // Shift left and bring closer (scale up)
       }}
     >
       <Model3DViewer
