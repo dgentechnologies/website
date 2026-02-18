@@ -1277,24 +1277,29 @@ function useScrollTransform(): ScrollTransformState {
 
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
-function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
+function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void; onError?: () => void; orientation?: string }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
-      style={{ zIndex: -1 }}
+      style={{ 
+        zIndex: -1,
+        transform: 'translateX(-20%) scale(0.9)' // Shift more to the left and zoom out slightly
+      }}
     >
       <Model3DViewer
         src="/models/auralis-desktop.glb"
         alt="Auralis Ecosystem 3D Model"
         onLoad={onLoad}
         onError={onError}
-        autoRotate={true}
+        autoRotate={false}
         cameraControls={false}
+        orientation={orientation}
         lazy={false}
         style={{ 
           width: '100%', 
           height: '100%',
-          touchAction: 'none'
+          touchAction: 'none',
+          filter: 'brightness(0.25) contrast(1.3) saturate(0)' // Darker with high contrast, grayscale to allow text differentiation
         }}
       />
     </div>
@@ -1302,7 +1307,7 @@ function Scene3DDesktop({ onLoad, onError }: { onLoad?: () => void; onError?: ()
 }
 
 // Mobile Scene3D Component - Optimized for smaller screens
-function Scene3DMobile({ onLoad, onError }: { onLoad?: () => void; onError?: () => void }) {
+function Scene3DMobile({ onLoad, onError, orientation }: { onLoad?: () => void; onError?: () => void; orientation?: string }) {
   return (
     <div className="block lg:hidden w-full h-[50vh] relative overflow-hidden">
       <div className="w-full h-full" style={{ touchAction: 'none' }}>
@@ -1311,13 +1316,15 @@ function Scene3DMobile({ onLoad, onError }: { onLoad?: () => void; onError?: () 
           alt="Auralis Ecosystem 3D Model"
           onLoad={onLoad}
           onError={onError}
-          autoRotate={true}
+          autoRotate={false}
           cameraControls={true}
+          orientation={orientation}
           lazy={false}
           style={{ 
             width: '100%', 
             height: '100%',
-            touchAction: 'none'
+            touchAction: 'none',
+            filter: 'brightness(0.25) contrast(1.3) saturate(0)' // Darker with high contrast, grayscale to allow text differentiation
           }}
         />
       </div>
@@ -1333,6 +1340,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
+  const [orientation] = useState<string>("-75deg -90deg 20deg"); // Fixed orientation values
   
   // Detect screen size
   useEffect(() => {
@@ -1355,7 +1363,8 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
       {!desktopSplineError && (
         <Scene3DDesktop 
           onLoad={() => setDesktopSplineLoaded(true)} 
-          onError={() => setDesktopSplineError(true)} 
+          onError={() => setDesktopSplineError(true)}
+          orientation={orientation}
         />
       )}
       
@@ -1372,6 +1381,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
             <Scene3DMobile
               onLoad={() => setMobileSplineLoaded(true)}
               onError={() => setMobileSplineError(true)}
+              orientation={orientation}
             />
           ) : (
             <div className="block lg:hidden w-full h-[50vh] bg-gradient-to-b from-primary/20 via-background to-background" />

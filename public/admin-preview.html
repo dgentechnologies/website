@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Admin - Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
+    <style>
+        body { background: #0a0a0a; color: #fff; }
+        .slider { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 5px; background: #333; outline: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #4ade80; cursor: pointer; }
+        .slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #4ade80; cursor: pointer; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-6 flex items-center gap-4">
+            <button class="px-4 py-2 border border-gray-700 rounded hover:bg-gray-800 flex items-center gap-2">
+                <span>←</span> Back to Product
+            </button>
+            <div>
+                <h1 class="text-3xl font-bold">3D Model Configuration</h1>
+                <p class="text-gray-400">Product: auralis-ecosystem</p>
+            </div>
+        </div>
+
+        <!-- Success Message Example -->
+        <div class="mb-4 p-4 rounded-lg bg-green-500/10 text-green-500 border border-green-500/20">
+            Settings saved successfully!
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Controls Card -->
+            <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-bold mb-2">Camera Position Controls</h2>
+                <p class="text-gray-400 text-sm mb-6">Adjust the 3D model camera position and orientation</p>
+
+                <!-- Theta Control -->
+                <div class="mb-6">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-sm font-medium">Theta (Horizontal Rotation)</label>
+                        <span class="text-sm font-mono bg-gray-800 px-2 py-1 rounded" id="theta-value">90°</span>
+                    </div>
+                    <input type="range" id="theta" class="slider" min="0" max="360" value="90">
+                    <p class="text-xs text-gray-500 mt-1">Controls the horizontal rotation around the model (0-360°)</p>
+                </div>
+
+                <!-- Phi Control -->
+                <div class="mb-6">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-sm font-medium">Phi (Vertical Angle)</label>
+                        <span class="text-sm font-mono bg-gray-800 px-2 py-1 rounded" id="phi-value">75°</span>
+                    </div>
+                    <input type="range" id="phi" class="slider" min="0" max="180" value="75">
+                    <p class="text-xs text-gray-500 mt-1">Controls the vertical viewing angle (0-180°)</p>
+                </div>
+
+                <!-- Radius Control -->
+                <div class="mb-6">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-sm font-medium">Radius (Distance)</label>
+                        <span class="text-sm font-mono bg-gray-800 px-2 py-1 rounded" id="radius-value">105%</span>
+                    </div>
+                    <input type="range" id="radius" class="slider" min="50" max="200" value="105">
+                    <p class="text-xs text-gray-500 mt-1">Controls the camera distance from the model (50-200%)</p>
+                </div>
+
+                <!-- Camera Orbit Display -->
+                <div class="mb-6 p-4 bg-gray-800 rounded-lg">
+                    <label class="text-sm font-medium block mb-2">Camera Orbit String</label>
+                    <code class="text-sm font-mono text-green-400" id="orbit-string">90deg 75deg 105%</code>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex gap-3">
+                    <button class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 rounded font-medium flex items-center justify-center gap-2">
+                        <span>💾</span> Save Settings
+                    </button>
+                    <button class="px-4 py-2 border border-gray-700 rounded hover:bg-gray-800 flex items-center gap-2">
+                        <span>↻</span> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview Card -->
+            <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-bold mb-2">Live Preview</h2>
+                <p class="text-gray-400 text-sm mb-4">See how your changes affect the 3D model</p>
+                
+                <div class="aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+                    <model-viewer
+                        id="model-preview"
+                        src="/models/auralis-desktop.glb"
+                        alt="3D Model Preview"
+                        camera-controls
+                        camera-orbit="90deg 75deg 105%"
+                        shadow-intensity="1"
+                        style="width: 100%; height: 100%;">
+                    </model-viewer>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mt-6 bg-gray-900 border border-gray-800 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">Instructions</h2>
+            <div class="space-y-2 text-sm text-gray-400">
+                <p><strong class="text-white">Theta:</strong> Controls the horizontal rotation (azimuth). 0° is front view, 90° is right side, 180° is back, 270° is left side.</p>
+                <p><strong class="text-white">Phi:</strong> Controls the vertical angle (elevation). 0° is top view, 90° is eye level, 180° is bottom view.</p>
+                <p><strong class="text-white">Radius:</strong> Controls the camera distance. 100% is the default distance, lower values zoom in, higher values zoom out.</p>
+                <p class="pt-2 border-t border-gray-800">After saving, the settings will be applied to the main product page at <code class="bg-gray-800 px-1 rounded">/products/auralis-ecosystem</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const theta = document.getElementById('theta');
+        const phi = document.getElementById('phi');
+        const radius = document.getElementById('radius');
+        const thetaValue = document.getElementById('theta-value');
+        const phiValue = document.getElementById('phi-value');
+        const radiusValue = document.getElementById('radius-value');
+        const orbitString = document.getElementById('orbit-string');
+        const modelViewer = document.getElementById('model-preview');
+
+        function updateValues() {
+            const t = theta.value;
+            const p = phi.value;
+            const r = radius.value;
+            
+            thetaValue.textContent = `${t}°`;
+            phiValue.textContent = `${p}°`;
+            radiusValue.textContent = `${r}%`;
+            orbitString.textContent = `${t}deg ${p}deg ${r}%`;
+            
+            if (modelViewer) {
+                modelViewer.setAttribute('camera-orbit', `${t}deg ${p}deg ${r}%`);
+            }
+        }
+
+        theta.addEventListener('input', updateValues);
+        phi.addEventListener('input', updateValues);
+        radius.addEventListener('input', updateValues);
+    </script>
+</body>
+</html>
