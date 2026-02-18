@@ -1283,7 +1283,10 @@ function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void;
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
-      style={{ zIndex: -1 }}
+      style={{ 
+        zIndex: -1,
+        transform: 'translateX(-15%)' // Shift model more to the left
+      }}
     >
       <Model3DViewer
         src="/models/auralis-desktop.glb"
@@ -1297,7 +1300,8 @@ function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void;
         style={{ 
           width: '100%', 
           height: '100%',
-          touchAction: 'none'
+          touchAction: 'none',
+          filter: 'brightness(0.3) contrast(1.2)' // Make model darker/black
         }}
       />
     </div>
@@ -1321,7 +1325,8 @@ function Scene3DMobile({ onLoad, onError, orientation }: { onLoad?: () => void; 
           style={{ 
             width: '100%', 
             height: '100%',
-            touchAction: 'none'
+            touchAction: 'none',
+            filter: 'brightness(0.3) contrast(1.2)' // Make model darker/black
           }}
         />
       </div>
