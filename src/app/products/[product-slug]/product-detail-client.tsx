@@ -1302,7 +1302,6 @@ function Scene3DDesktop({ onLoad, onError, orientation, scale }: { onLoad?: () =
           width: '100%', 
           height: '100%',
           touchAction: 'none',
-          filter: 'brightness(0.25) contrast(1.3) saturate(0)' // Darker with high contrast, grayscale to allow text differentiation
         }}
       />
     </div>
@@ -1328,7 +1327,6 @@ function Scene3DMobile({ onLoad, onError, orientation, scale }: { onLoad?: () =>
             width: '100%', 
             height: '100%',
             touchAction: 'none',
-            filter: 'brightness(0.25) contrast(1.3) saturate(0)' // Darker with high contrast, grayscale to allow text differentiation
           }}
         />
       </div>
@@ -1344,7 +1342,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
-  const [orientation, setOrientation] = useState<string>("-75deg -90deg 20deg");
+  const [orientation, setOrientation] = useState<string>("0deg 0deg -50deg");
   const [scale, setScale] = useState<string>("1 1 1");
   
   // Fetch model settings from Firestore
@@ -1355,9 +1353,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
-          const rotX = data.rotationX ?? -75;
-          const rotY = data.rotationY ?? -90;
-          const rotZ = data.rotationZ ?? 20;
+          const rotX = data.rotationX ?? 0;
+          const rotY = data.rotationY ?? 0;
+          const rotZ = data.rotationZ ?? -50;
           setOrientation(`${rotX}deg ${rotY}deg ${rotZ}deg`);
           const scX = data.scaleX ?? 1;
           const scY = data.scaleY ?? 1;

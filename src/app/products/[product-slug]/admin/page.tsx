@@ -27,9 +27,9 @@ interface ModelSettings {
 }
 
 const DEFAULT_SETTINGS: ModelSettings = {
-  rotationX: -75,
-  rotationY: -90,
-  rotationZ: 20,
+  rotationX: 0,
+  rotationY: 0,
+  rotationZ: -50,
   scaleX: 1,
   scaleY: 1,
   scaleZ: 1,
@@ -353,7 +353,6 @@ export default function ProductAdminPage() {
                       style={{
                         width: '100%',
                         height: '100%',
-                        filter: 'brightness(0.25) contrast(1.3) saturate(0)', // Darker with high contrast, grayscale
                       }}
                     />
                   </div>
