@@ -29,7 +29,7 @@ interface ModelSettings {
 const DEFAULT_SETTINGS: ModelSettings = {
   rotationX: 0,
   rotationY: 0,
-  rotationZ: -50,
+  rotationZ: -60,
   scaleX: 1,
   scaleY: 1,
   scaleZ: 1,

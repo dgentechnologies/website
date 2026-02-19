@@ -1342,7 +1342,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
-  const [orientation, setOrientation] = useState<string>("0deg 0deg -50deg");
+  const [orientation, setOrientation] = useState<string>("0deg 0deg -60deg");
   const [scale, setScale] = useState<string>("1 1 1");
   
   // Fetch model settings from Firestore
@@ -1355,7 +1355,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           const data = docSnap.data();
           const rotX = data.rotationX ?? 0;
           const rotY = data.rotationY ?? 0;
-          const rotZ = data.rotationZ ?? -50;
+          const rotZ = data.rotationZ ?? -60;
           setOrientation(`${rotX}deg ${rotY}deg ${rotZ}deg`);
           const scX = data.scaleX ?? 1;
           const scY = data.scaleY ?? 1;
