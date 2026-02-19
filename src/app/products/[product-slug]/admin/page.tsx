@@ -21,12 +21,18 @@ interface ModelSettings {
   rotationX: number;
   rotationY: number;
   rotationZ: number;
+  scaleX: number;
+  scaleY: number;
+  scaleZ: number;
 }
 
 const DEFAULT_SETTINGS: ModelSettings = {
   rotationX: -75,
   rotationY: -90,
   rotationZ: 20,
+  scaleX: 1,
+  scaleY: 1,
+  scaleZ: 1,
 };
 
 // Map product slugs to their model paths
@@ -60,6 +66,9 @@ export default function ProductAdminPage() {
           rotationX: data.rotationX ?? DEFAULT_SETTINGS.rotationX,
           rotationY: data.rotationY ?? DEFAULT_SETTINGS.rotationY,
           rotationZ: data.rotationZ ?? DEFAULT_SETTINGS.rotationZ,
+          scaleX: data.scaleX ?? DEFAULT_SETTINGS.scaleX,
+          scaleY: data.scaleY ?? DEFAULT_SETTINGS.scaleY,
+          scaleZ: data.scaleZ ?? DEFAULT_SETTINGS.scaleZ,
         });
       }
     } catch (error) {
@@ -98,6 +107,10 @@ export default function ProductAdminPage() {
 
   const getOrientation = () => {
     return `${settings.rotationX}deg ${settings.rotationY}deg ${settings.rotationZ}deg`;
+  };
+
+  const getScale = () => {
+    return `${settings.scaleX} ${settings.scaleY} ${settings.scaleZ}`;
   };
 
   // Get model path for the current product
@@ -224,6 +237,77 @@ export default function ProductAdminPage() {
                 </code>
               </div>
 
+              {/* Scale X */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="scaleX">Scale X-Axis (Width)</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.scaleX.toFixed(2)}
+                  </span>
+                </div>
+                <Slider
+                  id="scaleX"
+                  min={0.1}
+                  max={5}
+                  step={0.01}
+                  value={[settings.scaleX]}
+                  onValueChange={([value]) => setSettings({ ...settings, scaleX: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Scales the model along the X axis (0.1 to 5)
+                </p>
+              </div>
+
+              {/* Scale Y */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="scaleY">Scale Y-Axis (Height)</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.scaleY.toFixed(2)}
+                  </span>
+                </div>
+                <Slider
+                  id="scaleY"
+                  min={0.1}
+                  max={5}
+                  step={0.01}
+                  value={[settings.scaleY]}
+                  onValueChange={([value]) => setSettings({ ...settings, scaleY: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Scales the model along the Y axis (0.1 to 5)
+                </p>
+              </div>
+
+              {/* Scale Z */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="scaleZ">Scale Z-Axis (Depth)</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.scaleZ.toFixed(2)}
+                  </span>
+                </div>
+                <Slider
+                  id="scaleZ"
+                  min={0.1}
+                  max={5}
+                  step={0.01}
+                  value={[settings.scaleZ]}
+                  onValueChange={([value]) => setSettings({ ...settings, scaleZ: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Scales the model along the Z axis (0.1 to 5)
+                </p>
+              </div>
+
+              {/* Scale String */}
+              <div className="space-y-2 p-4 bg-muted rounded-lg">
+                <Label>Model Scale (X Y Z)</Label>
+                <code className="text-sm font-mono block break-all">
+                  {getScale()}
+                </code>
+              </div>
+
               {/* Action Buttons */}
               <div className="flex gap-3">
                 <Button 
@@ -265,6 +349,7 @@ export default function ProductAdminPage() {
                       autoRotate={false}
                       cameraControls={true}
                       orientation={getOrientation()}
+                      scale={getScale()}
                       style={{
                         width: '100%',
                         height: '100%',
@@ -312,6 +397,14 @@ export default function ProductAdminPage() {
               <p>• <strong>X-Axis (Pitch):</strong> Tilts the model forward/backward</p>
               <p>• <strong>Y-Axis (Yaw):</strong> Spins the model left/right</p>
               <p>• <strong>Z-Axis (Roll):</strong> Tilts the model side to side</p>
+            </div>
+            <p className="pt-2 border-t border-border">
+              <strong>Model Scale:</strong> Use the Scale X, Y, Z sliders to resize the model independently on each axis.
+            </p>
+            <div className="space-y-1 pl-4">
+              <p>• <strong>Scale X (Width):</strong> Stretches or compresses the model horizontally</p>
+              <p>• <strong>Scale Y (Height):</strong> Stretches or compresses the model vertically</p>
+              <p>• <strong>Scale Z (Depth):</strong> Stretches or compresses the model in depth</p>
             </div>
             <p className="pt-2 border-t border-border">
               <strong>Camera Controls:</strong> Use your mouse/trackpad in the preview to zoom (scroll), drag (left-click), and move the camera view.

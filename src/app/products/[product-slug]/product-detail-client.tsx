@@ -25,6 +25,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3 } from 'lucide-react';
+import { doc, getDoc } from 'firebase/firestore';
+import { firestore } from '@/firebase/client';
 import {
     Carousel,
     CarouselContent,
@@ -1277,7 +1279,7 @@ function useScrollTransform(): ScrollTransformState {
 
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
-function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void; onError?: () => void; orientation?: string }) {
+function Scene3DDesktop({ onLoad, onError, orientation, scale }: { onLoad?: () => void; onError?: () => void; orientation?: string; scale?: string }) {
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
@@ -1294,6 +1296,7 @@ function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void;
         autoRotate={false}
         cameraControls={false}
         orientation={orientation}
+        scale={scale}
         lazy={false}
         style={{ 
           width: '100%', 
@@ -1307,7 +1310,7 @@ function Scene3DDesktop({ onLoad, onError, orientation }: { onLoad?: () => void;
 }
 
 // Mobile Scene3D Component - Optimized for smaller screens
-function Scene3DMobile({ onLoad, onError, orientation }: { onLoad?: () => void; onError?: () => void; orientation?: string }) {
+function Scene3DMobile({ onLoad, onError, orientation, scale }: { onLoad?: () => void; onError?: () => void; orientation?: string; scale?: string }) {
   return (
     <div className="block lg:hidden w-full h-[50vh] relative overflow-hidden">
       <div className="w-full h-full" style={{ touchAction: 'none' }}>
@@ -1319,6 +1322,7 @@ function Scene3DMobile({ onLoad, onError, orientation }: { onLoad?: () => void; 
           autoRotate={false}
           cameraControls={true}
           orientation={orientation}
+          scale={scale}
           lazy={false}
           style={{ 
             width: '100%', 
@@ -1340,7 +1344,32 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineLoaded, setMobileSplineLoaded] = useState(false);
   const [desktopSplineError, setDesktopSplineError] = useState(false);
   const [mobileSplineError, setMobileSplineError] = useState(false);
-  const [orientation] = useState<string>("-75deg -90deg 20deg"); // Fixed orientation values
+  const [orientation, setOrientation] = useState<string>("-75deg -90deg 20deg");
+  const [scale, setScale] = useState<string>("1 1 1");
+  
+  // Fetch model settings from Firestore
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const docRef = doc(firestore, 'product-settings', product.slug);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const rotX = data.rotationX ?? -75;
+          const rotY = data.rotationY ?? -90;
+          const rotZ = data.rotationZ ?? 20;
+          setOrientation(`${rotX}deg ${rotY}deg ${rotZ}deg`);
+          const scX = data.scaleX ?? 1;
+          const scY = data.scaleY ?? 1;
+          const scZ = data.scaleZ ?? 1;
+          setScale(`${scX} ${scY} ${scZ}`);
+        }
+      } catch {
+        // Use default values on error
+      }
+    };
+    fetchSettings();
+  }, [product.slug]);
   
   // Detect screen size
   useEffect(() => {
@@ -1365,6 +1394,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           onLoad={() => setDesktopSplineLoaded(true)} 
           onError={() => setDesktopSplineError(true)}
           orientation={orientation}
+          scale={scale}
         />
       )}
       
@@ -1382,6 +1412,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
               onLoad={() => setMobileSplineLoaded(true)}
               onError={() => setMobileSplineError(true)}
               orientation={orientation}
+              scale={scale}
             />
           ) : (
             <div className="block lg:hidden w-full h-[50vh] bg-gradient-to-b from-primary/20 via-background to-background" />
