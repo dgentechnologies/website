@@ -20,6 +20,7 @@ interface Model3DViewerProps {
   lazy?: boolean; // Enable lazy loading with Intersection Observer
   cameraOrbit?: string; // Camera position in format "theta phi radius" (e.g., "90deg 75deg 105%")
   orientation?: string; // Model rotation in format "x y z" (e.g., "0deg 45deg 90deg")
+  scale?: string; // Model scale in format "x y z" (e.g., "1 1 1")
 }
 
 export default function Model3DViewer({
@@ -34,6 +35,7 @@ export default function Model3DViewer({
   lazy = false,
   cameraOrbit,
   orientation,
+  scale,
 }: Model3DViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const modelViewerRef = useRef<ModelViewerElement | null>(null);
@@ -208,6 +210,7 @@ export default function Model3DViewer({
           {...(cameraControls && { 'camera-controls': '' })}
           {...(cameraOrbit && { 'camera-orbit': cameraOrbit })}
           {...(orientation && { 'orientation': orientation })}
+          {...(scale && { 'scale': scale })}
           shadow-intensity="1"
           style={{
             width: '100%',
@@ -231,6 +234,7 @@ interface ModelViewerElement extends HTMLElement {
   'shadow-intensity'?: string;
   'camera-orbit'?: string;
   'orientation'?: string;
+  'scale'?: string;
 }
 
 declare global {
