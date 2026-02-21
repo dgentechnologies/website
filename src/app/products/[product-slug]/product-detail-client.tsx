@@ -1280,29 +1280,38 @@ function useScrollTransform(): ScrollTransformState {
 interface Scene3DDesktopProps {
   onLoad?: () => void;
   onError?: () => void;
-  orientation?: string;
   scale?: string;
-  section2RotateZ: number;
+  startRotX: number;
+  startRotY: number;
+  startRotZ: number;
+  section2RotationX: number;
+  section2RotationY: number;
+  section2RotationZ: number;
   section2TranslateX: number;
   section2Scale: number;
 }
 
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
-function Scene3DDesktop({ onLoad, onError, orientation, scale, section2RotateZ, section2TranslateX, section2Scale }: Scene3DDesktopProps) {
+function Scene3DDesktop({ onLoad, onError, scale, startRotX, startRotY, startRotZ, section2RotationX, section2RotationY, section2RotationZ, section2TranslateX, section2Scale }: Scene3DDesktopProps) {
   const { progress } = useScrollTransform();
 
-  // Interpolate transform values driven by scroll progress
+  // Interpolate CSS transform values driven by scroll progress
   const translateX = -20 + progress * (section2TranslateX - (-20)); // -20% → section2TranslateX
   const scaleFactor = 0.9 - progress * (0.9 - section2Scale);       // 0.9 → section2Scale
-  const rotateZ = progress * section2RotateZ;                        // 0deg → section2RotateZ
+
+  // Interpolate model orientation (X/Y/Z) between section 1 start and section 2 end
+  const rotX = startRotX + progress * (section2RotationX - startRotX);
+  const rotY = startRotY + progress * (section2RotationY - startRotY);
+  const rotZ = startRotZ + progress * (section2RotationZ - startRotZ);
+  const interpolatedOrientation = `${rotX}deg ${rotY}deg ${rotZ}deg`;
 
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ 
         zIndex: -1,
-        transform: `translateX(${translateX}%) scale(${scaleFactor}) rotateZ(${rotateZ}deg)`,
+        transform: `translateX(${translateX}%) scale(${scaleFactor})`,
         willChange: 'transform',
       }}
     >
@@ -1313,7 +1322,7 @@ function Scene3DDesktop({ onLoad, onError, orientation, scale, section2RotateZ, 
         onError={onError}
         autoRotate={false}
         cameraControls={false}
-        orientation={orientation}
+        orientation={interpolatedOrientation}
         scale={scale}
         lazy={false}
         style={{ 
@@ -1362,7 +1371,12 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineError, setMobileSplineError] = useState(false);
   const [orientation, setOrientation] = useState<string>("0deg 0deg -60deg");
   const [scale, setScale] = useState<string>("1 1 1");
-  const [section2RotateZ, setSection2RotateZ] = useState<number>(60);
+  const [startRotX, setStartRotX] = useState<number>(0);
+  const [startRotY, setStartRotY] = useState<number>(0);
+  const [startRotZ, setStartRotZ] = useState<number>(-60);
+  const [section2RotationX, setSection2RotationX] = useState<number>(0);
+  const [section2RotationY, setSection2RotationY] = useState<number>(0);
+  const [section2RotationZ, setSection2RotationZ] = useState<number>(-60);
   const [section2TranslateX, setSection2TranslateX] = useState<number>(20);
   const [section2Scale, setSection2Scale] = useState<number>(0.45);
   
@@ -1378,11 +1392,16 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           const rotY = data.rotationY ?? 0;
           const rotZ = data.rotationZ ?? -60;
           setOrientation(`${rotX}deg ${rotY}deg ${rotZ}deg`);
+          setStartRotX(rotX);
+          setStartRotY(rotY);
+          setStartRotZ(rotZ);
           const scX = data.scaleX ?? 1;
           const scY = data.scaleY ?? 1;
           const scZ = data.scaleZ ?? 1;
           setScale(`${scX} ${scY} ${scZ}`);
-          setSection2RotateZ(data.section2RotateZ ?? 60);
+          setSection2RotationX(data.section2RotationX ?? 0);
+          setSection2RotationY(data.section2RotationY ?? 0);
+          setSection2RotationZ(data.section2RotationZ ?? -60);
           setSection2TranslateX(data.section2TranslateX ?? 20);
           setSection2Scale(data.section2Scale ?? 0.45);
         }
@@ -1415,9 +1434,13 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
         <Scene3DDesktop 
           onLoad={() => setDesktopSplineLoaded(true)} 
           onError={() => setDesktopSplineError(true)}
-          orientation={orientation}
           scale={scale}
-          section2RotateZ={section2RotateZ}
+          startRotX={startRotX}
+          startRotY={startRotY}
+          startRotZ={startRotZ}
+          section2RotationX={section2RotationX}
+          section2RotationY={section2RotationY}
+          section2RotationZ={section2RotationZ}
           section2TranslateX={section2TranslateX}
           section2Scale={section2Scale}
         />

@@ -24,8 +24,10 @@ interface ModelSettings {
   scaleX: number;
   scaleY: number;
   scaleZ: number;
-  // Section 2 scroll-animation end-state (CSS transform target values)
-  section2RotateZ: number;
+  // Section 2 scroll-animation end-state
+  section2RotationX: number;
+  section2RotationY: number;
+  section2RotationZ: number;
   section2TranslateX: number;
   section2Scale: number;
 }
@@ -37,8 +39,9 @@ const DEFAULT_SETTINGS: ModelSettings = {
   scaleX: 1,
   scaleY: 1,
   scaleZ: 1,
-  // Defaults match the previously hardcoded scroll animation targets
-  section2RotateZ: 60,
+  section2RotationX: 0,
+  section2RotationY: 0,
+  section2RotationZ: -60,
   section2TranslateX: 20,
   section2Scale: 0.45,
 };
@@ -77,7 +80,9 @@ export default function ProductAdminPage() {
           scaleX: data.scaleX ?? DEFAULT_SETTINGS.scaleX,
           scaleY: data.scaleY ?? DEFAULT_SETTINGS.scaleY,
           scaleZ: data.scaleZ ?? DEFAULT_SETTINGS.scaleZ,
-          section2RotateZ: data.section2RotateZ ?? DEFAULT_SETTINGS.section2RotateZ,
+          section2RotationX: data.section2RotationX ?? DEFAULT_SETTINGS.section2RotationX,
+          section2RotationY: data.section2RotationY ?? DEFAULT_SETTINGS.section2RotationY,
+          section2RotationZ: data.section2RotationZ ?? DEFAULT_SETTINGS.section2RotationZ,
           section2TranslateX: data.section2TranslateX ?? DEFAULT_SETTINGS.section2TranslateX,
           section2Scale: data.section2Scale ?? DEFAULT_SETTINGS.section2Scale,
         });
@@ -122,6 +127,10 @@ export default function ProductAdminPage() {
 
   const getScale = () => {
     return `${settings.scaleX} ${settings.scaleY} ${settings.scaleZ}`;
+  };
+
+  const getSection2Orientation = () => {
+    return `${settings.section2RotationX}deg ${settings.section2RotationY}deg ${settings.section2RotationZ}deg`;
   };
 
   // Get model path for the current product
@@ -401,29 +410,79 @@ export default function ProductAdminPage() {
             <CardHeader>
               <CardTitle>Section 2 – Scroll Animation Target</CardTitle>
               <CardDescription>
-                Configure where the 3D model lands (CSS transform end state) as the user scrolls into the &quot;Revitalize Existing Infrastructure&quot; section.
+                Configure the model orientation and position when the user scrolls into the &quot;Revitalize Existing Infrastructure&quot; section.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Section 2 RotateZ */}
+              {/* Section 2 Rotation X */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="section2RotateZ">End Rotation Z (CSS rotateZ)</Label>
+                  <Label htmlFor="section2RotationX">Rotation X-Axis (Pitch)</Label>
                   <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
-                    {settings.section2RotateZ}°
+                    {settings.section2RotationX}°
                   </span>
                 </div>
                 <Slider
-                  id="section2RotateZ"
+                  id="section2RotationX"
                   min={-180}
                   max={180}
                   step={1}
-                  value={[settings.section2RotateZ]}
-                  onValueChange={([value]) => setSettings({ ...settings, section2RotateZ: value })}
+                  value={[settings.section2RotationX]}
+                  onValueChange={([value]) => setSettings({ ...settings, section2RotationX: value })}
                 />
                 <p className="text-xs text-muted-foreground">
-                  The Z rotation (CSS) the model flips to at the end of the scroll animation (-180° to 180°)
+                  Tilts the model forward/backward (-180° to 180°)
                 </p>
+              </div>
+
+              {/* Section 2 Rotation Y */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="section2RotationY">Rotation Y-Axis (Yaw)</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.section2RotationY}°
+                  </span>
+                </div>
+                <Slider
+                  id="section2RotationY"
+                  min={-180}
+                  max={180}
+                  step={1}
+                  value={[settings.section2RotationY]}
+                  onValueChange={([value]) => setSettings({ ...settings, section2RotationY: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Spins the model left/right (-180° to 180°)
+                </p>
+              </div>
+
+              {/* Section 2 Rotation Z */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="section2RotationZ">Rotation Z-Axis (Roll)</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.section2RotationZ}°
+                  </span>
+                </div>
+                <Slider
+                  id="section2RotationZ"
+                  min={-180}
+                  max={180}
+                  step={1}
+                  value={[settings.section2RotationZ]}
+                  onValueChange={([value]) => setSettings({ ...settings, section2RotationZ: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Tilts the model side to side (-180° to 180°)
+                </p>
+              </div>
+
+              {/* Section 2 Orientation String */}
+              <div className="space-y-2 p-4 bg-muted rounded-lg">
+                <Label>Section 2 Model Orientation (X Y Z)</Label>
+                <code className="text-sm font-mono block break-all">
+                  {getSection2Orientation()}
+                </code>
               </div>
 
               {/* Section 2 TranslateX */}
@@ -468,14 +527,6 @@ export default function ProductAdminPage() {
                 </p>
               </div>
 
-              {/* Summary */}
-              <div className="space-y-2 p-4 bg-muted rounded-lg">
-                <Label>Section 2 End Transform</Label>
-                <code className="text-sm font-mono block break-all">
-                  translateX({settings.section2TranslateX}%) scale({settings.section2Scale.toFixed(2)}) rotateZ({settings.section2RotateZ}deg)
-                </code>
-              </div>
-
               {/* Action Buttons */}
               <div className="flex gap-3">
                 <Button
@@ -502,17 +553,17 @@ export default function ProductAdminPage() {
             <CardHeader>
               <CardTitle>Section 2 Live Preview</CardTitle>
               <CardDescription>
-                Preview of the 3D model at its scroll-animation end state alongside the &quot;Revitalize&quot; section content.
+                Preview of the 3D model at its scroll-animation end state alongside the &quot;Revitalize&quot; section content — matches the actual website exactly.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="rounded-lg overflow-hidden bg-white/60 backdrop-blur-xl border-2 border-[#19b35c] shadow-[0_8px_30px_rgb(0,0,0,0.06),0_0_60px_rgba(25,179,92,0.3)]">
                 <div className="grid grid-cols-2 gap-4 min-h-[400px]">
-                  {/* Right (model end position – shown on left for layout simplicity) */}
+                  {/* Model at section 2 end position */}
                   <div
                     className="relative"
                     style={{
-                      transform: `scale(${settings.section2Scale}) rotateZ(${settings.section2RotateZ}deg)`,
+                      transform: `scale(${settings.section2Scale})`,
                       transformOrigin: 'center center',
                     }}
                   >
@@ -521,13 +572,13 @@ export default function ProductAdminPage() {
                       alt="3D Model Section 2 Preview"
                       autoRotate={false}
                       cameraControls={true}
-                      orientation={getOrientation()}
+                      orientation={getSection2Orientation()}
                       scale={getScale()}
                       style={{ width: '100%', height: '400px' }}
                     />
                   </div>
 
-                  {/* Left: Section 2 text content */}
+                  {/* Section 2 text content (matches actual website) */}
                   <div className="flex flex-col justify-center p-6 space-y-4">
                     <h2 className="text-2xl font-bold leading-tight">
                       <span className="bg-gradient-to-r from-[#19b35c] to-[#19b35c]/60 bg-clip-text text-transparent">Revitalize</span>
@@ -575,10 +626,10 @@ export default function ProductAdminPage() {
               <strong>Camera Controls:</strong> Use your mouse/trackpad in the preview to zoom (scroll), drag (left-click), and move the camera view.
             </p>
             <p className="pt-2 border-t border-border">
-              <strong>Section 2 Scroll Animation Target:</strong> These values control where the 3D model ends up (CSS transform) as the user scrolls from Section 1 (Hero) into Section 2 (Revitalize). Adjust the sliders, check the Section 2 Live Preview, then Save.
+              <strong>Section 2 Scroll Animation Target:</strong> These values control where the 3D model ends up as the user scrolls from Section 1 (Hero) into Section 2 (Revitalize). Use the X/Y/Z rotation sliders (same as Section 1) to set the model&apos;s orientation at the end of the scroll. Adjust the sliders, check the Section 2 Live Preview, then Save.
             </p>
             <div className="space-y-1 pl-4">
-              <p>• <strong>End Rotation Z:</strong> Final CSS Z-rotation (flip angle) of the model container</p>
+              <p>• <strong>Rotation X/Y/Z:</strong> Model orientation (via model-viewer) at the Section 2 end state — same axes as Section 1</p>
               <p>• <strong>End Translate X:</strong> How far right (%) the model drifts to sit alongside Section 2 content</p>
               <p>• <strong>End Scale:</strong> How small the model shrinks to at the end of the scroll</p>
             </div>
