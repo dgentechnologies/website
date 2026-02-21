@@ -41,7 +41,7 @@ const DEFAULT_SETTINGS: ModelSettings = {
   scaleZ: 1,
   section2RotationX: 0,
   section2RotationY: 0,
-  section2RotationZ: -60,
+  section2RotationZ: -120,
   section2TranslateX: 20,
   section2Scale: 0.45,
 };

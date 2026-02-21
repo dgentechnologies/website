@@ -1376,7 +1376,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [startRotZ, setStartRotZ] = useState<number>(-60);
   const [section2RotationX, setSection2RotationX] = useState<number>(0);
   const [section2RotationY, setSection2RotationY] = useState<number>(0);
-  const [section2RotationZ, setSection2RotationZ] = useState<number>(-60);
+  const [section2RotationZ, setSection2RotationZ] = useState<number>(-120);
   const [section2TranslateX, setSection2TranslateX] = useState<number>(20);
   const [section2Scale, setSection2Scale] = useState<number>(0.45);
   
@@ -1401,7 +1401,7 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           setScale(`${scX} ${scY} ${scZ}`);
           setSection2RotationX(data.section2RotationX ?? 0);
           setSection2RotationY(data.section2RotationY ?? 0);
-          setSection2RotationZ(data.section2RotationZ ?? -60);
+          setSection2RotationZ(data.section2RotationZ ?? -120);
           setSection2TranslateX(data.section2TranslateX ?? 20);
           setSection2Scale(data.section2Scale ?? 0.45);
         }
