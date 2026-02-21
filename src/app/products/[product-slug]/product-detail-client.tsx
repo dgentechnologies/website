@@ -1280,12 +1280,20 @@ function useScrollTransform(): ScrollTransformState {
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
 function Scene3DDesktop({ onLoad, onError, orientation, scale }: { onLoad?: () => void; onError?: () => void; orientation?: string; scale?: string }) {
+  const { progress } = useScrollTransform();
+
+  // Interpolate transform values driven by scroll progress
+  const translateX = -20 + progress * 40; // -20% → +20% (moves to right side for section 2)
+  const scaleFactor = 0.9 - progress * 0.45; // 0.9 → 0.45 (scales down to ~0.5)
+  const rotateZ = progress * 60; // 0deg → +60deg (flip in Z axis)
+
   return (
     <div 
       className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ 
         zIndex: -1,
-        transform: 'translateX(-20%) scale(0.9)' // Shift more to the left and zoom out slightly
+        transform: `translateX(${translateX}%) scale(${scaleFactor}) rotateZ(${rotateZ}deg)`,
+        willChange: 'transform',
       }}
     >
       <Model3DViewer
