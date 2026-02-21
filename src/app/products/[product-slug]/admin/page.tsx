@@ -42,7 +42,7 @@ const DEFAULT_SETTINGS: ModelSettings = {
   section2RotationX: 0,
   section2RotationY: 0,
   section2RotationZ: -120,
-  section2TranslateX: 20,
+  section2TranslateX: 30,
   section2Scale: 0.45,
 };
 
