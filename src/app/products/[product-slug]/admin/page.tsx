@@ -24,6 +24,10 @@ interface ModelSettings {
   scaleX: number;
   scaleY: number;
   scaleZ: number;
+  // Section 2 scroll-animation end-state (CSS transform target values)
+  section2RotateZ: number;
+  section2TranslateX: number;
+  section2Scale: number;
 }
 
 const DEFAULT_SETTINGS: ModelSettings = {
@@ -33,6 +37,10 @@ const DEFAULT_SETTINGS: ModelSettings = {
   scaleX: 1,
   scaleY: 1,
   scaleZ: 1,
+  // Defaults match the previously hardcoded scroll animation targets
+  section2RotateZ: 60,
+  section2TranslateX: 20,
+  section2Scale: 0.45,
 };
 
 // Map product slugs to their model paths
@@ -69,6 +77,9 @@ export default function ProductAdminPage() {
           scaleX: data.scaleX ?? DEFAULT_SETTINGS.scaleX,
           scaleY: data.scaleY ?? DEFAULT_SETTINGS.scaleY,
           scaleZ: data.scaleZ ?? DEFAULT_SETTINGS.scaleZ,
+          section2RotateZ: data.section2RotateZ ?? DEFAULT_SETTINGS.section2RotateZ,
+          section2TranslateX: data.section2TranslateX ?? DEFAULT_SETTINGS.section2TranslateX,
+          section2Scale: data.section2Scale ?? DEFAULT_SETTINGS.section2Scale,
         });
       }
     } catch (error) {
@@ -383,7 +394,162 @@ export default function ProductAdminPage() {
           </Card>
         </div>
 
-        {/* Instructions */}
+        {/* Section 2 Scroll Animation Target */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          {/* Section 2 Controls */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Section 2 – Scroll Animation Target</CardTitle>
+              <CardDescription>
+                Configure where the 3D model lands (CSS transform end state) as the user scrolls into the &quot;Revitalize Existing Infrastructure&quot; section.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Section 2 RotateZ */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="section2RotateZ">End Rotation Z (CSS rotateZ)</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.section2RotateZ}°
+                  </span>
+                </div>
+                <Slider
+                  id="section2RotateZ"
+                  min={-180}
+                  max={180}
+                  step={1}
+                  value={[settings.section2RotateZ]}
+                  onValueChange={([value]) => setSettings({ ...settings, section2RotateZ: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  The Z rotation (CSS) the model flips to at the end of the scroll animation (-180° to 180°)
+                </p>
+              </div>
+
+              {/* Section 2 TranslateX */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="section2TranslateX">End Translate X (%)</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.section2TranslateX}%
+                  </span>
+                </div>
+                <Slider
+                  id="section2TranslateX"
+                  min={-100}
+                  max={100}
+                  step={1}
+                  value={[settings.section2TranslateX]}
+                  onValueChange={([value]) => setSettings({ ...settings, section2TranslateX: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  How far right the model drifts (as a % of container width) to sit alongside the section 2 content
+                </p>
+              </div>
+
+              {/* Section 2 Scale */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="section2Scale">End Scale (CSS scale)</Label>
+                  <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                    {settings.section2Scale.toFixed(2)}×
+                  </span>
+                </div>
+                <Slider
+                  id="section2Scale"
+                  min={0.1}
+                  max={2}
+                  step={0.01}
+                  value={[settings.section2Scale]}
+                  onValueChange={([value]) => setSettings({ ...settings, section2Scale: value })}
+                />
+                <p className="text-xs text-muted-foreground">
+                  The CSS scale the model shrinks to at the end of the scroll animation (0.1× to 2×)
+                </p>
+              </div>
+
+              {/* Summary */}
+              <div className="space-y-2 p-4 bg-muted rounded-lg">
+                <Label>Section 2 End Transform</Label>
+                <code className="text-sm font-mono block break-all">
+                  translateX({settings.section2TranslateX}%) scale({settings.section2Scale.toFixed(2)}) rotateZ({settings.section2RotateZ}deg)
+                </code>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <Button
+                  onClick={saveSettings}
+                  disabled={saving}
+                  className="flex-1"
+                >
+                  <Save className="h-4 w-4 mr-2" />
+                  {saving ? 'Saving...' : 'Save Settings'}
+                </Button>
+                <Button
+                  onClick={resetSettings}
+                  variant="outline"
+                >
+                  <RotateCcw className="h-4 w-4 mr-2" />
+                  Reset
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Section 2 Preview */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Section 2 Live Preview</CardTitle>
+              <CardDescription>
+                Preview of the 3D model at its scroll-animation end state alongside the &quot;Revitalize&quot; section content.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-lg overflow-hidden bg-white/60 backdrop-blur-xl border-2 border-[#19b35c] shadow-[0_8px_30px_rgb(0,0,0,0.06),0_0_60px_rgba(25,179,92,0.3)]">
+                <div className="grid grid-cols-2 gap-4 min-h-[400px]">
+                  {/* Right (model end position – shown on left for layout simplicity) */}
+                  <div
+                    className="relative"
+                    style={{
+                      transform: `scale(${settings.section2Scale}) rotateZ(${settings.section2RotateZ}deg)`,
+                      transformOrigin: 'center center',
+                    }}
+                  >
+                    <Model3DViewer
+                      src={modelPath}
+                      alt="3D Model Section 2 Preview"
+                      autoRotate={false}
+                      cameraControls={true}
+                      orientation={getOrientation()}
+                      scale={getScale()}
+                      style={{ width: '100%', height: '400px' }}
+                    />
+                  </div>
+
+                  {/* Left: Section 2 text content */}
+                  <div className="flex flex-col justify-center p-6 space-y-4">
+                    <h2 className="text-2xl font-bold leading-tight">
+                      <span className="bg-gradient-to-r from-[#19b35c] to-[#19b35c]/60 bg-clip-text text-transparent">Revitalize</span>
+                      <span className="block text-gray-900">Existing Infrastructure.</span>
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      Don&apos;t replace your poles. Upgrade them. Auralis attaches to any NEMA or wired setup in minutes.
+                    </p>
+                    <div className="flex gap-4">
+                      {[{ value: '5 min', label: 'Install Time' }, { value: 'Zero', label: 'Rewiring' }, { value: 'IP66', label: 'Weather Rated' }].map((stat) => (
+                        <div key={stat.label} className="text-center">
+                          <div className="text-xl font-bold text-[#19b35c]">{stat.value}</div>
+                          <div className="text-xs text-gray-500">{stat.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
         <Card className="mt-6">
           <CardHeader>
             <CardTitle>Instructions</CardTitle>
@@ -408,6 +574,14 @@ export default function ProductAdminPage() {
             <p className="pt-2 border-t border-border">
               <strong>Camera Controls:</strong> Use your mouse/trackpad in the preview to zoom (scroll), drag (left-click), and move the camera view.
             </p>
+            <p className="pt-2 border-t border-border">
+              <strong>Section 2 Scroll Animation Target:</strong> These values control where the 3D model ends up (CSS transform) as the user scrolls from Section 1 (Hero) into Section 2 (Revitalize). Adjust the sliders, check the Section 2 Live Preview, then Save.
+            </p>
+            <div className="space-y-1 pl-4">
+              <p>• <strong>End Rotation Z:</strong> Final CSS Z-rotation (flip angle) of the model container</p>
+              <p>• <strong>End Translate X:</strong> How far right (%) the model drifts to sit alongside Section 2 content</p>
+              <p>• <strong>End Scale:</strong> How small the model shrinks to at the end of the scroll</p>
+            </div>
             <p className="pt-2 border-t border-border">
               The preview shows the model alongside the actual website text. Position the model using rotation controls and camera drag/zoom. After saving, the settings will be applied to the main product page at <code className="bg-muted px-1 rounded">/products/{productSlug}</code>.
             </p>

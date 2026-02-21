@@ -1277,15 +1277,25 @@ function useScrollTransform(): ScrollTransformState {
   return state;
 }
 
+interface Scene3DDesktopProps {
+  onLoad?: () => void;
+  onError?: () => void;
+  orientation?: string;
+  scale?: string;
+  section2RotateZ: number;
+  section2TranslateX: number;
+  section2Scale: number;
+}
+
 // Desktop Scene3D Component for 3D Background
 // Uses Google's model-viewer for better performance and no watermarks
-function Scene3DDesktop({ onLoad, onError, orientation, scale }: { onLoad?: () => void; onError?: () => void; orientation?: string; scale?: string }) {
+function Scene3DDesktop({ onLoad, onError, orientation, scale, section2RotateZ, section2TranslateX, section2Scale }: Scene3DDesktopProps) {
   const { progress } = useScrollTransform();
 
   // Interpolate transform values driven by scroll progress
-  const translateX = -20 + progress * 40; // -20% → +20% (moves to right side for section 2)
-  const scaleFactor = 0.9 - progress * 0.45; // 0.9 → 0.45 (scales down to ~0.5)
-  const rotateZ = progress * 60; // 0deg → +60deg (flip in Z axis)
+  const translateX = -20 + progress * (section2TranslateX - (-20)); // -20% → section2TranslateX
+  const scaleFactor = 0.9 - progress * (0.9 - section2Scale);       // 0.9 → section2Scale
+  const rotateZ = progress * section2RotateZ;                        // 0deg → section2RotateZ
 
   return (
     <div 
@@ -1352,6 +1362,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
   const [mobileSplineError, setMobileSplineError] = useState(false);
   const [orientation, setOrientation] = useState<string>("0deg 0deg -60deg");
   const [scale, setScale] = useState<string>("1 1 1");
+  const [section2RotateZ, setSection2RotateZ] = useState<number>(60);
+  const [section2TranslateX, setSection2TranslateX] = useState<number>(20);
+  const [section2Scale, setSection2Scale] = useState<number>(0.45);
   
   // Fetch model settings from Firestore
   useEffect(() => {
@@ -1369,6 +1382,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           const scY = data.scaleY ?? 1;
           const scZ = data.scaleZ ?? 1;
           setScale(`${scX} ${scY} ${scZ}`);
+          setSection2RotateZ(data.section2RotateZ ?? 60);
+          setSection2TranslateX(data.section2TranslateX ?? 20);
+          setSection2Scale(data.section2Scale ?? 0.45);
         }
       } catch {
         // Use default values on error
@@ -1401,6 +1417,9 @@ function EcosystemHeroSection({ product, parallaxOffset, floatOffset }: HeroSect
           onError={() => setDesktopSplineError(true)}
           orientation={orientation}
           scale={scale}
+          section2RotateZ={section2RotateZ}
+          section2TranslateX={section2TranslateX}
+          section2Scale={section2Scale}
         />
       )}
       
