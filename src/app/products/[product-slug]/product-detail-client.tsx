@@ -1296,13 +1296,9 @@ interface Scene3DDesktopProps {
 function Scene3DDesktop({ onLoad, onError, scale, startRotX, startRotY, startRotZ, section2RotationX, section2RotationY, section2RotationZ, section2TranslateX, section2Scale }: Scene3DDesktopProps) {
   const { progress } = useScrollTransform();
 
-  // Container is 200vh so halve the CSS scale to keep the model at the correct apparent size
-  const startScale = 0.9 * 0.5; // 0.45
-  const endScale = section2Scale * 0.5;
-
   // Interpolate CSS transform values driven by scroll progress
   const translateX = -20 + progress * (section2TranslateX - (-20)); // -20% → section2TranslateX
-  const scaleFactor = startScale - progress * (startScale - endScale); // 0.45 → endScale
+  const scaleFactor = 0.9 - progress * (0.9 - section2Scale);       // 0.9 → section2Scale
 
   // Interpolate model orientation (X/Y/Z) between section 1 start and section 2 end
   const rotX = startRotX + progress * (section2RotationX - startRotX);
@@ -1311,31 +1307,42 @@ function Scene3DDesktop({ onLoad, onError, scale, startRotX, startRotY, startRot
   const interpolatedOrientation = `${rotX}deg ${rotY}deg ${rotZ}deg`;
 
   return (
+    // Outer: viewport-sized fixed frame — transformOrigin '50% 50%' = exact viewport center
     <div 
-      className="fixed top-0 left-0 w-full h-[200vh] hidden lg:block"
+      className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ 
         zIndex: -1,
         transform: `translateX(${translateX}%) scale(${scaleFactor})`,
-        transformOrigin: '50vw 50vh',
+        transformOrigin: '50% 50%',
         willChange: 'transform',
+        overflow: 'visible',
       }}
     >
-      <Model3DViewer
-        src="/models/auralis-desktop.glb"
-        alt="Auralis Ecosystem 3D Model"
-        onLoad={onLoad}
-        onError={onError}
-        autoRotate={false}
-        cameraControls={false}
-        orientation={interpolatedOrientation}
-        scale={scale}
-        lazy={false}
-        style={{ 
-          width: '100%', 
-          height: '100vh',
-          touchAction: 'none',
-        }}
-      />
+      {/* Inner: oversized canvas so 3D model has room to render without bottom clip */}
+      <div style={{
+        position: 'absolute',
+        top: '-30vh',
+        left: 0,
+        width: '100%',
+        height: '160vh',
+      }}>
+        <Model3DViewer
+          src="/models/auralis-desktop.glb"
+          alt="Auralis Ecosystem 3D Model"
+          onLoad={onLoad}
+          onError={onError}
+          autoRotate={false}
+          cameraControls={false}
+          orientation={interpolatedOrientation}
+          scale={scale}
+          lazy={false}
+          style={{ 
+            width: '100%', 
+            height: '100%',
+            touchAction: 'none',
+          }}
+        />
+      </div>
     </div>
   );
 }
