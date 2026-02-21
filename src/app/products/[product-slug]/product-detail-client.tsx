@@ -1332,7 +1332,7 @@ function Scene3DDesktop({ onLoad, onError, scale, startRotX, startRotY, startRot
         lazy={false}
         style={{ 
           width: '100%', 
-          height: '100%',
+          height: '100vh',
           touchAction: 'none',
         }}
       />
