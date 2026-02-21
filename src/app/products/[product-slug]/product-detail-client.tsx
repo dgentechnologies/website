@@ -1298,7 +1298,7 @@ function Scene3DDesktop({ onLoad, onError, scale, startRotX, startRotY, startRot
 
   // Interpolate CSS transform values driven by scroll progress
   const translateX = -20 + progress * (section2TranslateX - (-20)); // -20% → section2TranslateX
-  const scaleFactor = 0.75 - progress * (0.75 - section2Scale);     // 0.75 → section2Scale
+  const scaleFactor = 0.5 - progress * (0.5 - section2Scale);     // 0.5 → section2Scale
 
   // Interpolate model orientation (X/Y/Z) between section 1 start and section 2 end
   const rotX = startRotX + progress * (section2RotationX - startRotX);
