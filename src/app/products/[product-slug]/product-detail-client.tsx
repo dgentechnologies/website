@@ -1308,10 +1308,11 @@ function Scene3DDesktop({ onLoad, onError, scale, startRotX, startRotY, startRot
 
   return (
     <div 
-      className="fixed top-0 left-0 w-full h-[200vh] hidden lg:block overflow-hidden"
+      className="fixed top-0 left-0 w-full h-screen hidden lg:block"
       style={{ 
         zIndex: -1,
         transform: `translateX(${translateX}%) scale(${scaleFactor})`,
+        transformOrigin: '50% 50%',
         willChange: 'transform',
       }}
     >
@@ -1327,7 +1328,7 @@ function Scene3DDesktop({ onLoad, onError, scale, startRotX, startRotY, startRot
         lazy={false}
         style={{ 
           width: '100%', 
-          height: '100vh',
+          height: '100%',
           touchAction: 'none',
         }}
       />
