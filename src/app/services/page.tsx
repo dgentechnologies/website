@@ -153,7 +153,7 @@ export default function ServicesPage() {
               The Future of Urban Intelligence
             </h1>
             <p className="max-w-2xl mx-auto text-white/80 text-sm sm:text-base md:text-lg lg:text-xl animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
-              Intelligent, efficient, and integrated smart city services designed to empower India&apos;s future cities with IoT and AI technology.
+              Advanced hardware and software technology services designed to empower society — from smart urban infrastructure to intelligent home solutions.
             </p>
           </div>
         </div>
@@ -265,7 +265,7 @@ export default function ServicesPage() {
             >
                 <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter md:text-4xl">Why Choose DGEN Technologies?</h2>
                 <p className="max-w-3xl mx-auto text-foreground/80 text-sm sm:text-base md:text-lg px-2">
-                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to your smart city success.
+                  Partner with us for unparalleled quality, innovation, and a steadfast commitment to advancing technology for the benefit of society.
                 </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-start">
@@ -311,11 +311,9 @@ export default function ServicesPage() {
               ctaVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}
           >
-              <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter md:text-4xl text-gradient px-2">
-                  Ready to Modernize Your City Infrastructure?
-              </h2>
+              <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter md:text-4xl px-2">Ready to Modernize with Advanced Technology?</h2>
               <p className="mt-3 md:mt-4 text-foreground/80 text-sm sm:text-base md:text-lg px-2">
-                  Let&apos;s discuss how our smart city services can transform your urban infrastructure. Schedule a personalized consultation with our experts today.
+                  Let&apos;s discuss how our technology services can transform your infrastructure. Schedule a personalized consultation with our experts today.
               </p>
               <div className="mt-6 md:mt-8">
                   <Button asChild size="lg" className="group hover:scale-105 transition-transform w-full sm:w-auto">

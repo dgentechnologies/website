@@ -168,13 +168,13 @@ export default function ProductsPage() {
                 textShadow: '0 4px 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.6)'
               }}
             >
-              Smart City Solutions
+              Advanced Technology Solutions
             </h1>
             <p 
               className="max-w-2xl mx-auto text-white/90 text-lg sm:text-xl md:text-2xl animate-slide-up text-center drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" 
               style={{ animationDelay: '0.3s' }}
             >
-              Made in India IoT Solutions
+              Made in India Hardware & Software Solutions
             </p>
           </div>
         </div>

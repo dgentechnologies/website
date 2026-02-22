@@ -10,7 +10,7 @@ import { useParallax, useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { teamMembers } from '@/lib/team-data';
 
 const values = [
-    { title: 'Innovation', description: 'We constantly push the boundaries of technology to create novel solutions for smart cities and homes.' },
+    { title: 'Innovation', description: 'We constantly push the boundaries of technology to create novel hardware and software solutions that help society.' },
     { title: 'Integrity', description: 'Our business is built on transparency, honesty, and ethical practices in all our dealings.' },
     { title: 'Excellence', description: 'We are committed to delivering the highest quality in everything we do for our clients.' },
     { title: 'Collaboration', description: 'We believe the best results come from working together with our clients and partners.' },
@@ -96,10 +96,10 @@ export default function AboutPage() {
           >
             <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary animate-slide-down">Our Story</Badge>
             <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter md:text-5xl lg:text-6xl text-gradient animate-slide-up px-2" style={{ animationDelay: '0.2s' }}>
-              Powering India&apos;s Future with Smart Technology
+              Powering Society with Smart Advanced Technology
             </h1>
             <p className="mx-auto max-w-[700px] text-foreground/80 text-sm sm:text-base md:text-xl animate-slide-up px-4" style={{ animationDelay: '0.4s' }}>
-              Learn about our journey building smart city solutions, our mission to innovate India&apos;s urban infrastructure, and the values that drive us forward.
+              Learn about our journey building advanced hardware and software technology solutions, our mission to innovate India&apos;s future, and the values that drive us forward.
             </p>
           </div>
         </div>
@@ -114,12 +114,12 @@ export default function AboutPage() {
               storyVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
             }`}
           >
-            <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter">Our Journey in Smart City Innovation</h2>
+            <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter">Our Journey in Technology & Innovation</h2>
             <p className="text-foreground/70 text-sm sm:text-base">
-              Founded in 2025, DGEN Technologies began with a mission to pioneer smart city solutions in India. Our flagship B2B product, &quot;Auralis,&quot; a smart street light with an advanced fault detection system, set the standard for urban innovation. From our headquarters in Kolkata, we have been dedicated to solving complex urban challenges through IoT technology.
+              Founded in 2025, DGEN Technologies began with a mission to create smart, advanced technologies that help society. We work with both hardware and software, delivering intelligent solutions across urban and residential domains. Our flagship B2B product, &quot;Auralis,&quot; a smart street light with an advanced fault detection system, set the standard for urban innovation. From our headquarters in Kolkata, we have been dedicated to solving complex challenges through IoT technology.
             </p>
             <p className="text-foreground/70 text-sm sm:text-base">
-              As we continue to transform cityscapes across India, we are also expanding our vision to the B2C market. Our goal is to bring the same level of intelligence and connectivity to every home, making daily life smarter and more efficient. We are committed to leading India&apos;s technological revolution, one smart device at a time.
+              As we continue to transform cityscapes across India, we are also expanding our vision to the B2C market. Our goal is to bring the same level of intelligence and connectivity to every home, making daily life smarter and more efficient. We are committed to leading India&apos;s technological revolution — creating new technologies for the benefit of society, one smart device at a time.
             </p>
           </div>
           <div 
@@ -155,7 +155,7 @@ export default function AboutPage() {
           >
             <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter">Our Core Values</h2>
             <p className="mt-3 md:mt-4 text-foreground/70 max-w-2xl mx-auto text-sm sm:text-base px-2">
-              The principles that guide DGEN Technologies in building smart solutions for India&apos;s cities and homes.
+              The principles that guide DGEN Technologies in building smart hardware and software solutions for society.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
@@ -177,7 +177,7 @@ export default function AboutPage() {
           >
             <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter">Meet the Leadership Team</h2>
             <p className="mt-3 md:mt-4 text-foreground/70 max-w-2xl mx-auto text-sm sm:text-base px-2">
-              The experienced leaders driving DGEN Technologies&apos; vision for smart cities and IoT innovation in India.
+              The experienced leaders driving DGEN Technologies&apos; vision for advanced technology and IoT innovation in India.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 lg:gap-12">

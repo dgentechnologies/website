@@ -17,7 +17,7 @@ const localBusinessSchema = {
   "@id": "https://www.dgentechnologies.com/#organization",
   "name": "Dgen Technologies Private Limited",
   "alternateName": ["Dgen Technologies", "DGEN Technologies", "Dgen Tech"],
-  "description": "Dgen Technologies is a pioneering smart city solutions company based in Kolkata, India. We specialize in the Auralis Ecosystem, a smart street lighting platform utilizing Hybrid Wireless Mesh Network technology with ESP-MESH and 4G LTE connectivity for intelligent urban infrastructure.",
+  "description": "Dgen Technologies is a technology company based in Kolkata, India that creates smart, advanced hardware and software solutions to help society. We specialize in the Auralis Ecosystem, a smart street lighting platform utilizing Hybrid Wireless Mesh Network technology with ESP-MESH and 4G LTE connectivity for intelligent urban infrastructure.",
   "url": "https://www.dgentechnologies.com",
   "logo": "https://www.dgentechnologies.com/images/logo.png",
   "image": "https://www.dgentechnologies.com/images/auralis-product-shot.png",
@@ -46,12 +46,14 @@ const localBusinessSchema = {
     "name": "Dgen Technologies Team"
   },
   "knowsAbout": [
-    "Smart City Solutions",
+    "Smart Technology Solutions",
+    "Hardware & Software Development",
     "IoT Street Lighting",
     "Hybrid Wireless Mesh Networks",
     "ESP-MESH Technology",
     "Predictive Maintenance",
-    "Urban Infrastructure"
+    "Urban Infrastructure",
+    "Smart Home Technologies"
   ],
   "makesOffer": [
     {
@@ -112,12 +114,12 @@ const advantages = [
     {
       icon: <BrainCircuit className="h-8 w-8 text-primary" />,
       title: 'Innovative Technology',
-      description: "We deliver future-proof solutions using Hybrid Wireless Mesh Networks (ESP-MESH + 4G LTE), helping you build India's next generation of smart cities."
+      description: "We deliver future-proof hardware and software solutions, from Hybrid Wireless Mesh Networks (ESP-MESH + 4G LTE) to smart home products, helping society build a smarter tomorrow."
     },
     {
       icon: <Users className="h-8 w-8 text-primary" />,
       title: 'Made in India Manufacturing',
-      description: 'Our products are proudly designed and manufactured in India, supporting the Smart Cities Mission and local economic growth in Kolkata and beyond.'
+      description: 'Our products are proudly designed and manufactured in India, supporting local economic growth and contributing to India\'s self-reliance in advanced technology.'
     },
     {
       icon: <ShieldCheck className="h-8 w-8 text-primary" />,
@@ -230,13 +232,13 @@ export default function Home() {
               className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-gradient leading-tight animate-slide-up px-2"
               style={{ animationDelay: '0.4s' }}
             >
-              Build Smart Cities with Integrated Solutions
+              Build a Smarter Future with Advanced Technology
             </h1>
             <p 
               className="max-w-3xl mx-auto text-white/90 text-sm sm:text-base md:text-lg lg:text-xl animate-slide-up px-4"
               style={{ animationDelay: '0.6s' }}
             >
-              Dgen Technologies helps you build the future with intelligent, connected solutions. From pioneering smart city infrastructure with the Auralis Ecosystem to bringing innovation into the consumer smart home, we deliver Made in India technology that powers a smarter tomorrow.
+              Dgen Technologies creates smart, advanced hardware and software solutions to help society. From pioneering urban infrastructure with the Auralis Ecosystem to bringing intelligent innovation into every home, we deliver Made in India technology that powers a smarter tomorrow.
             </p>
             <div 
               className="flex flex-col gap-3 sm:gap-4 sm:flex-row justify-center pt-2 animate-slide-up px-4"
@@ -272,7 +274,7 @@ export default function Home() {
                 Engineering the Connected Future
               </h2>
               <p className="max-w-3xl text-foreground/80 text-sm sm:text-base md:text-xl/relaxed px-2">
-                We provide end-to-end technology services designed to solve complex urban and residential challenges. Our expertise transforms your smart city and smart home visions into reality.
+                We provide end-to-end hardware and software technology services designed to solve complex urban and residential challenges. Our expertise transforms smart city and smart home visions into reality.
               </p>
             </div>
             <div className="mx-auto grid max-w-5xl items-stretch gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">
@@ -290,10 +292,10 @@ export default function Home() {
               <div className="space-y-4 md:space-y-6">
                 <Badge variant="outline" className="border-primary/50 text-primary">The Dgen Advantage</Badge>
                 <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter md:text-4xl">
-                  Your Strategic Partner in Smart City Transformation
+                  Your Strategic Partner in Technology & Innovation
                 </h2>
                 <p className="text-foreground/80 text-sm sm:text-base md:text-lg">
-                  Choosing Dgen Technologies means partnering with India&apos;s pioneers in Hybrid Wireless Mesh Networks. Our Auralis Ecosystem delivers 80% energy savings and 98% reduction in cellular costs.
+                  Choosing Dgen Technologies means partnering with a company that builds advanced hardware and software solutions to help society. Our Auralis Ecosystem delivers 80% energy savings and 98% reduction in cellular costs.
                 </p>
                 <div className="space-y-4 md:space-y-6 pt-2 md:pt-4">
                   {advantages.map((advantage, index) => (
@@ -335,7 +337,7 @@ export default function Home() {
               Ready to Build a Smarter Tomorrow?
             </h2>
             <p className="mt-3 md:mt-4 text-foreground/80 text-sm sm:text-base md:text-lg px-2">
-              Let&apos;s discuss how Dgen Technologies can elevate your smart city and residential projects. Schedule a free, no-obligation consultation with our engineering experts today to explore the possibilities.
+              Let&apos;s discuss how Dgen Technologies can help with your technology needs. Schedule a free, no-obligation consultation with our engineering experts today to explore the possibilities.
             </p>
             <div className="mt-6 md:mt-8">
               <Button asChild size="lg" className="group hover:scale-105 transition-transform w-full sm:w-auto">
