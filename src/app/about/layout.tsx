@@ -1,19 +1,19 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us - DGEN Technologies | Smart City Solutions India',
-  description: 'Discover DGEN Technologies, India\'s leading smart city innovators. Meet our leadership team and learn about Auralis, our flagship IoT ecosystem.',
-  keywords: ['DGEN Technologies', 'smart city India', 'IoT company India', 'Auralis', 'smart street light', 'urban technology', 'Kolkata tech company', 'smart city solutions'],
+  title: 'About Us - DGEN Technologies | Advanced Hardware & Software Solutions',
+  description: 'Discover DGEN Technologies, a company that creates smart, advanced hardware and software solutions to help society. Meet our leadership team and learn about Auralis, our flagship IoT ecosystem.',
+  keywords: ['DGEN Technologies', 'technology company India', 'hardware software solutions', 'IoT company India', 'Auralis', 'smart street light', 'urban technology', 'Kolkata tech company', 'smart city solutions'],
   openGraph: {
-    title: 'About DGEN Technologies - Smart City & IoT Innovators',
-    description: 'Learn about DGEN Technologies, pioneering smart city solutions in India with our flagship Auralis product and expanding into B2C smart home technology.',
+    title: 'About DGEN Technologies - Advanced Technology Solutions',
+    description: 'Learn about DGEN Technologies, a company creating smart, advanced hardware and software solutions to help society, including our flagship Auralis product and B2C smart home technology.',
     type: 'website',
     locale: 'en_IN',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About DGEN Technologies - Smart City Solutions India',
-    description: 'Learn about DGEN Technologies, pioneering smart city solutions in India with innovative IoT products.',
+    title: 'About DGEN Technologies - Advanced Technology Solutions',
+    description: 'Learn about DGEN Technologies, creating smart, advanced hardware and software solutions to help society with innovative IoT products.',
   },
 };
 
@@ -29,7 +29,7 @@ export default function AboutLayout({
     "alternateName": ["Dgen Technologies Private Limited", "DGEN Tech"],
     "url": "https://dgentechnologies.com",
     "logo": "https://dgentechnologies.com/logo.png",
-    "description": "DGEN Technologies pioneers smart city solutions in India with the flagship Auralis IoT ecosystem for intelligent street lighting and smart homes.",
+    "description": "DGEN Technologies creates smart, advanced hardware and software solutions to help society, including the flagship Auralis IoT ecosystem for intelligent street lighting and smart homes.",
     "foundingDate": "2025",
     "foundingLocation": {
       "@type": "Place",

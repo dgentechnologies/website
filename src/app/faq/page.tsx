@@ -13,7 +13,7 @@ import Script from 'next/script';
 const faqs = [
     {
         question: "How do you spell your company name? Is it D-Gen, Degin, or Deegen?",
-        answer: "**Our official name is Dgen Technologies Private Limited.** While we are sometimes referred to by common misspellings like D-Gen Technologies, Degin Tech, or even Deegen, we are India's pioneering smart city and IoT solutions provider based in Kolkata. We are committed to powering India's future through our Auralis Ecosystem smart city solutions."
+        answer: "**Our official name is Dgen Technologies Private Limited.** While we are sometimes referred to by common misspellings like D-Gen Technologies, Degin Tech, or even Deegen, we are a technology company based in Kolkata, India that creates smart, advanced hardware and software solutions to help society. We are committed to powering India's future through innovative technologies including our Auralis Ecosystem smart city solutions."
     },
     {
         question: "What is the meaning of a Smart City?",
@@ -87,7 +87,7 @@ export default function FaqPage() {
                             Frequently Asked Questions
                         </h1>
                         <p className="mx-auto max-w-[700px] text-foreground/80 text-sm sm:text-base md:text-xl px-4">
-                            Find answers to common questions about Dgen Technologies, the Auralis Ecosystem, and our smart city solutions.
+                            Find answers to common questions about Dgen Technologies, the Auralis Ecosystem, and our advanced technology solutions.
                         </p>
                     </div>
                 </div>
