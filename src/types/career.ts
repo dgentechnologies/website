@@ -5,7 +5,7 @@ export interface CareerListing {
   topic: string;
   type: 'job' | 'internship';
   workMode: 'remote' | 'onsite' | 'hybrid';
-  compensation: 'paid' | 'unpaid';
+  compensation: 'paid' | 'unpaid' | 'intern-paid';
   amount?: string;
   amountSpan?: 'per month' | 'per year' | 'per week' | 'fixed';
   duration: string;

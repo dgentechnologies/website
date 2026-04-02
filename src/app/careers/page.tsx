@@ -14,7 +14,7 @@ import {
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import { CareerListing } from '@/types/career';
-import { Briefcase, MapPin, Clock, DollarSign, Filter, Loader2 } from 'lucide-react';
+import { Briefcase, MapPin, Clock, IndianRupee, Filter, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 const WORK_MODE_LABELS: Record<string, string> = {
@@ -38,6 +38,7 @@ const AMOUNT_SPAN_LABELS: Record<string, string> = {
 const COMPENSATION_LABELS: Record<string, string> = {
   paid: 'Paid',
   unpaid: 'Unpaid',
+  'intern-paid': 'Intern Paid',
 };
 
 export default function CareersPage() {
@@ -149,6 +150,7 @@ export default function CareersPage() {
                 <SelectItem value="all">All</SelectItem>
                 <SelectItem value="paid">Paid</SelectItem>
                 <SelectItem value="unpaid">Unpaid</SelectItem>
+                <SelectItem value="intern-paid">Intern Paid</SelectItem>
               </SelectContent>
             </Select>
 
@@ -219,11 +221,10 @@ export default function CareersPage() {
                         <Clock className="h-3.5 w-3.5" />
                         {listing.duration}
                       </span>
-                      {listing.compensation === 'paid' && listing.amount ? (
+                      {(listing.compensation === 'paid' || listing.compensation === 'intern-paid') && listing.amount ? (
                         <span className="flex items-center gap-1">
-                          <DollarSign className="h-3.5 w-3.5" />
-                          {listing.amount}
-                          {listing.amountSpan ? ` / ${AMOUNT_SPAN_LABELS[listing.amountSpan] ?? listing.amountSpan}` : ''}
+                          <IndianRupee className="h-3.5 w-3.5" />
+                          {`${listing.compensation === 'intern-paid' ? 'Fee: ' : ''}${listing.amount}${listing.amountSpan ? ` / ${AMOUNT_SPAN_LABELS[listing.amountSpan] ?? listing.amountSpan}` : ''}`}
                         </span>
                       ) : (
                         <Badge variant="outline" className="text-xs font-normal">

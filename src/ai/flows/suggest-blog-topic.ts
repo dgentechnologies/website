@@ -35,7 +35,7 @@ function extractJson(text: string): string {
 
 export async function suggestBlogTopic(input: SuggestBlogTopicInput): Promise<SuggestBlogTopicOutput> {
   const { text } = await ai.generate({
-    model: 'googleai/gemini-2.5-flash',
+    model: 'googleai/gemini-3.1-flash-lite-preview',
     prompt: `
 You are a senior content strategist for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions.
 

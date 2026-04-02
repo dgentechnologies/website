@@ -28,10 +28,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowLeft, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { generateCareerListing } from '@/ai/flows/generate-career-listing';
 
 const formSchema = z.object({
   position: z.string().min(2, 'Position must be at least 2 characters.'),
@@ -39,7 +49,7 @@ const formSchema = z.object({
   topic: z.string().min(2, 'Topic is required.'),
   type: z.enum(['job', 'internship']),
   workMode: z.enum(['remote', 'onsite', 'hybrid']),
-  compensation: z.enum(['paid', 'unpaid']),
+  compensation: z.enum(['paid', 'unpaid', 'intern-paid']),
   amount: z.string().optional(),
   amountSpan: z.enum(['per month', 'per year', 'per week', 'fixed']).optional(),
   duration: z.string().min(2, 'Duration is required (e.g. "3 months", "Full-time permanent").'),
@@ -58,6 +68,9 @@ interface CareerFormProps {
 
 export default function CareerForm({ mode, listingId, defaultValues }: CareerFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [aiDialogOpen, setAiDialogOpen] = useState(false);
+  const [aiBrief, setAiBrief] = useState('');
   const router = useRouter();
   const { toast } = useToast();
 
@@ -82,6 +95,38 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
 
   const compensation = form.watch('compensation');
 
+  async function handleGenerateWithAI() {
+    if (!aiBrief.trim()) {
+      toast({ variant: 'destructive', title: 'Brief required', description: 'Please describe the role first.' });
+      return;
+    }
+    setIsGenerating(true);
+    try {
+      const result = await generateCareerListing({ brief: aiBrief.trim() });
+      form.setValue('position', result.position);
+      form.setValue('category', result.category);
+      form.setValue('topic', result.topic);
+      form.setValue('type', result.type);
+      form.setValue('workMode', result.workMode);
+      form.setValue('compensation', result.compensation);
+      form.setValue('amount', result.amount ?? '');
+      if (result.amountSpan) {
+        form.setValue('amountSpan', result.amountSpan);
+      }
+      form.setValue('duration', result.duration);
+      form.setValue('description', result.description);
+      form.setValue('requirements', result.requirements);
+      setAiDialogOpen(false);
+      setAiBrief('');
+      toast({ title: 'Form filled by AI!', description: 'Review and edit the generated content before publishing.' });
+    } catch (e) {
+      console.error(e);
+      toast({ variant: 'destructive', title: 'Generation Failed', description: 'The AI failed to generate the listing. Please try again.' });
+    } finally {
+      setIsGenerating(false);
+    }
+  }
+
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
     try {
@@ -95,8 +140,8 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
         type: values.type,
         workMode: values.workMode,
         compensation: values.compensation,
-        amount: values.compensation === 'paid' ? values.amount : undefined,
-        amountSpan: values.compensation === 'paid' ? values.amountSpan : undefined,
+        amount: (values.compensation === 'paid' || values.compensation === 'intern-paid') ? values.amount : undefined,
+        amountSpan: (values.compensation === 'paid' || values.compensation === 'intern-paid') ? values.amountSpan : undefined,
         duration: values.duration,
         description: values.description,
         requirements: values.requirements,
@@ -135,7 +180,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
             <span className="sr-only">Back</span>
           </Link>
         </Button>
-        <div>
+        <div className="flex-1">
           <h1 className="text-3xl font-headline font-bold">
             {mode === 'create' ? 'New Career Listing' : 'Edit Career Listing'}
           </h1>
@@ -145,6 +190,46 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
               : 'Update the details for this listing.'}
           </p>
         </div>
+        <Dialog open={aiDialogOpen} onOpenChange={setAiDialogOpen}>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="gap-2 shrink-0">
+              <Sparkles className="h-4 w-4" />
+              Generate with AI
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-primary" />
+                AI Career Listing Generator
+              </DialogTitle>
+              <DialogDescription>
+                Describe the role in a sentence or two and the AI will fill in all the form fields for you. You can edit the result afterwards.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-2">
+              <Textarea
+                placeholder={`e.g. "3-month remote React internship for IoT dashboard development, paid ₹10,000/month"\nor "Full-time backend engineer, Node.js and Python, hybrid, ₹8 LPA"`}
+                className="min-h-[120px] resize-none"
+                value={aiBrief}
+                onChange={(e) => setAiBrief(e.target.value)}
+                disabled={isGenerating}
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="ghost" onClick={() => setAiDialogOpen(false)} disabled={isGenerating}>
+                Cancel
+              </Button>
+              <Button onClick={handleGenerateWithAI} disabled={isGenerating || !aiBrief.trim()} className="gap-2">
+                {isGenerating ? (
+                  <><Loader2 className="h-4 w-4 animate-spin" />Generating…</>
+                ) : (
+                  <><Sparkles className="h-4 w-4" />Generate</>
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card>
@@ -204,7 +289,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Type</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select type" />
@@ -225,7 +310,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Work Mode</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select work mode" />
@@ -251,7 +336,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Compensation</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Paid / Unpaid" />
@@ -260,13 +345,14 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                         <SelectContent>
                           <SelectItem value="paid">Paid</SelectItem>
                           <SelectItem value="unpaid">Unpaid</SelectItem>
+                          <SelectItem value="intern-paid">Intern Paid (Intern Pays)</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                {compensation === 'paid' && (
+                {(compensation === 'paid' || compensation === 'intern-paid') && (
                   <>
                     <FormField
                       control={form.control}
@@ -275,7 +361,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                         <FormItem>
                           <FormLabel>Amount</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. ₹15,000 or $2,000" {...field} />
+                            <Input placeholder="e.g. ₹15,000" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -287,7 +373,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Pay Period</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select period" />
@@ -392,3 +478,4 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
     </div>
   );
 }
+

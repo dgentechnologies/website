@@ -3,3 +3,4 @@
 import './flows/generate-blog-post';
 import './flows/suggest-blog-topic';
 import './flows/generate-email-draft';
+import './flows/generate-career-listing';
