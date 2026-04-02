@@ -10,7 +10,7 @@ import AdminDashboardLayout from './(dashboard)/layout';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { MessageSquare, Users, FileText, ArrowRight, List, MoreHorizontal, Eye, Pencil, Trash2, Copy } from 'lucide-react';
+import { MessageSquare, Users, FileText, ArrowRight, List, MoreHorizontal, Eye, Pencil, Trash2, Copy, Briefcase, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -42,6 +42,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
 import { BlogPost } from '@/types/blog';
+import { CareerListing } from '@/types/career';
 import PerformanceView from '@/components/performance-view';
 import SettingsView from '@/components/settings-view';
 
@@ -508,10 +509,178 @@ const MessagesView = () => {
 };
 
 
+const WORK_MODE_LABELS: Record<string, string> = {
+  remote: 'Work From Home',
+  onsite: 'Work From Office',
+  hybrid: 'Hybrid',
+};
+
+const TYPE_LABELS: Record<string, string> = {
+  job: 'Full-Time Job',
+  internship: 'Internship',
+};
+
+const CareerView = () => {
+  const [listings, listingsLoading, listingsError] = useCollection(
+    query(collection(firestore, 'careerListings'), orderBy('createdAt', 'desc'))
+  );
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [listingToDelete, setListingToDelete] = useState<CareerListing | null>(null);
+  const { toast } = useToast();
+
+  const handleDeleteClick = (listing: CareerListing) => {
+    setListingToDelete(listing);
+    setShowDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!listingToDelete?.id) return;
+    try {
+      await deleteDoc(doc(firestore, 'careerListings', listingToDelete.id));
+      toast({ title: 'Listing Deleted', description: `"${listingToDelete.position}" has been deleted.` });
+    } catch {
+      toast({ variant: 'destructive', title: 'Error', description: 'Failed to delete. Please try again.' });
+    } finally {
+      setShowDeleteDialog(false);
+      setListingToDelete(null);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-headline font-bold">Career Listings</h1>
+          <p className="text-foreground/70 mt-1">Manage open positions visible on the Careers page.</p>
+        </div>
+        <Button asChild>
+          <Link href="/admin/careers/create">
+            <PlusCircle className="mr-2 h-4 w-4" /> New Listing
+          </Link>
+        </Button>
+      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>All Listings</CardTitle>
+          <CardDescription>
+            {listingsLoading ? 'Loading...' : `${listings?.size || 0} career listing(s) total.`}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Position</TableHead>
+                <TableHead className="hidden md:table-cell">Category</TableHead>
+                <TableHead className="hidden sm:table-cell">Type</TableHead>
+                <TableHead className="hidden sm:table-cell">Work Mode</TableHead>
+                <TableHead className="hidden lg:table-cell">Status</TableHead>
+                <TableHead><span className="sr-only">Actions</span></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {listingsLoading && Array.from({ length: 3 }).map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell><Skeleton className="h-5 w-40" /></TableCell>
+                  <TableCell className="hidden md:table-cell"><Skeleton className="h-5 w-24" /></TableCell>
+                  <TableCell className="hidden sm:table-cell"><Skeleton className="h-5 w-24" /></TableCell>
+                  <TableCell className="hidden sm:table-cell"><Skeleton className="h-5 w-24" /></TableCell>
+                  <TableCell className="hidden lg:table-cell"><Skeleton className="h-5 w-16" /></TableCell>
+                  <TableCell><Skeleton className="h-8 w-8 ml-auto" /></TableCell>
+                </TableRow>
+              ))}
+              {listingsError && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-destructive">
+                    Error: {listingsError.message}
+                  </TableCell>
+                </TableRow>
+              )}
+              {!listingsLoading && listings?.docs.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-foreground/70 py-10">
+                    No listings yet. Click &quot;New Listing&quot; to add one.
+                  </TableCell>
+                </TableRow>
+              )}
+              {!listingsLoading && listings?.docs.map((docSnap) => {
+                const listing = { id: docSnap.id, ...docSnap.data() } as CareerListing;
+                return (
+                  <TableRow key={listing.id}>
+                    <TableCell className="font-medium">{listing.position}</TableCell>
+                    <TableCell className="hidden md:table-cell">{listing.category}</TableCell>
+                    <TableCell className="hidden sm:table-cell">{TYPE_LABELS[listing.type]}</TableCell>
+                    <TableCell className="hidden sm:table-cell">{WORK_MODE_LABELS[listing.workMode]}</TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${listing.isActive ? 'bg-green-500/10 text-green-600' : 'bg-muted text-muted-foreground'}`}>
+                        {listing.isActive ? 'Active' : 'Inactive'}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button aria-haspopup="true" size="icon" variant="ghost">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuItem asChild>
+                            <Link href="/careers" target="_blank" className="flex items-center gap-2 cursor-pointer">
+                              <Eye className="h-4 w-4" /> View on Site
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href={`/admin/careers/edit/${listing.id}`} className="flex items-center gap-2 cursor-pointer">
+                              <Pencil className="h-4 w-4" /> Edit
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
+                            onClick={() => handleDeleteClick(listing)}
+                          >
+                            <Trash2 className="h-4 w-4" /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete the listing <span className="font-bold">"{listingToDelete?.position}"</span>.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+};
+
+
 export default function AdminRootPage() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages' | 'performance' | 'settings'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers'>('dashboard');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -544,6 +713,8 @@ export default function AdminRootPage() {
         return <PerformanceView />;
       case 'settings':
         return <SettingsView />;
+      case 'careers':
+        return <CareerView />;
       case 'dashboard':
       default:
         return <DashboardView />;

@@ -2,7 +2,7 @@
 'use client';
 
 import { signOut } from 'firebase/auth';
-import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings } from 'lucide-react';
+import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings, Briefcase } from 'lucide-react';
 import Image from 'next/image';
 import {
   Sidebar,
@@ -22,8 +22,8 @@ import Link from 'next/link';
 
 type AdminDashboardLayoutProps = {
   children: React.ReactNode;
-  activeView: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings';
-  setActiveView: (view: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings') => void;
+  activeView: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers';
+  setActiveView: (view: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers') => void;
 };
 
 export default function AdminDashboardLayout({ children, activeView, setActiveView }: AdminDashboardLayoutProps) {
@@ -76,6 +76,16 @@ export default function AdminDashboardLayout({ children, activeView, setActiveVi
               >
                 <BarChart2 className="h-4 w-4" />
                 <span>Performance</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                isActive={activeView === 'careers'} 
+                onClick={() => setActiveView('careers')}
+                tooltip="Careers"
+              >
+                <Briefcase className="h-4 w-4" />
+                <span>Careers</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
