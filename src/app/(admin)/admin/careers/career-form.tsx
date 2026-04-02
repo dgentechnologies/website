@@ -39,7 +39,7 @@ const formSchema = z.object({
   topic: z.string().min(2, 'Topic is required.'),
   type: z.enum(['job', 'internship']),
   workMode: z.enum(['remote', 'onsite', 'hybrid']),
-  compensation: z.enum(['paid', 'unpaid']),
+  compensation: z.enum(['paid', 'unpaid', 'intern-paid']),
   amount: z.string().optional(),
   amountSpan: z.enum(['per month', 'per year', 'per week', 'fixed']).optional(),
   duration: z.string().min(2, 'Duration is required (e.g. "3 months", "Full-time permanent").'),
@@ -95,8 +95,8 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
         type: values.type,
         workMode: values.workMode,
         compensation: values.compensation,
-        amount: values.compensation === 'paid' ? values.amount : undefined,
-        amountSpan: values.compensation === 'paid' ? values.amountSpan : undefined,
+        amount: (values.compensation === 'paid' || values.compensation === 'intern-paid') ? values.amount : undefined,
+        amountSpan: (values.compensation === 'paid' || values.compensation === 'intern-paid') ? values.amountSpan : undefined,
         duration: values.duration,
         description: values.description,
         requirements: values.requirements,
@@ -260,13 +260,14 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                         <SelectContent>
                           <SelectItem value="paid">Paid</SelectItem>
                           <SelectItem value="unpaid">Unpaid</SelectItem>
+                          <SelectItem value="intern-paid">Intern Paid (Intern Pays)</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                {compensation === 'paid' && (
+                {(compensation === 'paid' || compensation === 'intern-paid') && (
                   <>
                     <FormField
                       control={form.control}
@@ -275,7 +276,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                         <FormItem>
                           <FormLabel>Amount</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. ₹15,000 or $2,000" {...field} />
+                            <Input placeholder="e.g. ₹15,000" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
