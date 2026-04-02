@@ -53,7 +53,7 @@ Output ONLY a single, valid JSON object with a "draft" key containing the email 
 `;
 
     const { text } = await ai.generate({
-      model: 'googleai/gemini-2.5-flash',
+      model: 'googleai/gemini-3.1-flash-lite-preview',
       prompt: prompt,
       config: { temperature: 0.5 },
     });

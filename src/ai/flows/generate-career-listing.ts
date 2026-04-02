@@ -46,7 +46,7 @@ function extractJson(text: string): string {
 
 export async function generateCareerListing(input: CareerListingInput): Promise<CareerListingOutput> {
   const { text } = await ai.generate({
-    model: 'googleai/gemini-2.5-flash',
+    model: 'googleai/gemini-3.1-flash-lite-preview',
     prompt: `
 You are an expert HR content writer for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions based in India.
 
