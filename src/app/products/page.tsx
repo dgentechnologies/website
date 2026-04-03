@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { ArrowRight, Wifi, Zap, ShieldCheck, Sun, GaugeCircle, Cpu, Network, Radar, Bot } from 'lucide-react';
+import { ArrowRight, Wifi, Zap, ShieldCheck, Sun, GaugeCircle, Cpu, Network, Radar, Bot, Waves } from 'lucide-react';
 import Link from 'next/link';
 import { products } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -255,7 +255,7 @@ export default function ProductsPage() {
               icon={<Bot className="h-7 w-7 md:h-8 md:w-8 text-white" />}
               features={[
                 { icon: <Cpu className="h-4 w-4 text-primary" />, label: "Memory" },
-                { icon: <Bot className="h-4 w-4 text-primary" />, label: "Voice" },
+                { icon: <Waves className="h-4 w-4 text-primary" />, label: "Voice" },
                 { icon: <Radar className="h-4 w-4 text-primary" />, label: "Presence" },
               ]}
               keyPoints={[

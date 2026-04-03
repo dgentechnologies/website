@@ -18,10 +18,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
     }
 
-    await adminFirestore.collection('adam-waitlist').add({
+    await adminFirestore.collection('adam-waitlist').doc(trimmedEmail).set({
       email: trimmedEmail,
       createdAt: FieldValue.serverTimestamp(),
-    });
+    }, { merge: true });
 
     return NextResponse.json({ success: true });
   } catch {
