@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { ArrowRight, Wifi, Zap, ShieldCheck, Sun, GaugeCircle, Cpu, Network, Radar } from 'lucide-react';
+import { ArrowRight, Wifi, Zap, ShieldCheck, Sun, GaugeCircle, Cpu, Network, Radar, Bot, Waves } from 'lucide-react';
 import Link from 'next/link';
 import { products } from '@/lib/products-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -122,6 +122,7 @@ export default function ProductsPage() {
   const auralisProduct = products.find(p => p.slug === 'auralis-ecosystem')!;
   const solarProduct = products.find(p => p.slug === 'solar-street-light')!;
   const ledProduct = products.find(p => p.slug === 'led-street-light')!;
+  const adamProduct = products.find(p => p.slug === 'adam')!;
 
   return (
     <div className="flex flex-col overflow-hidden items-center justify-center">
@@ -247,6 +248,22 @@ export default function ProductsPage() {
                 "IP66 weather protection",
               ]}
               index={2}
+            />
+
+            <ProductCard
+              product={adamProduct}
+              icon={<Bot className="h-7 w-7 md:h-8 md:w-8 text-white" />}
+              features={[
+                { icon: <Cpu className="h-4 w-4 text-primary" />, label: "Memory" },
+                { icon: <Waves className="h-4 w-4 text-primary" />, label: "Voice" },
+                { icon: <Radar className="h-4 w-4 text-primary" />, label: "Presence" },
+              ]}
+              keyPoints={[
+                "First DGEN B2C product",
+                "Built entirely in India",
+                "Coming soon — join the waitlist",
+              ]}
+              index={3}
             />
           </div>
         </div>

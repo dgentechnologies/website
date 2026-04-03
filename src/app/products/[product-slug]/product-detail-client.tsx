@@ -24,7 +24,7 @@ const Model3DViewer = dynamic(
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3 } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import {
@@ -1632,6 +1632,405 @@ function DefaultHeroSection({ product, parallaxOffset, floatOffset }: HeroSectio
   );
 }
 
+// ============================================
+// ADAM — AUTONOMOUS DESKTOP AI MODULE PAGE
+// ============================================
+
+function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: number; floatOffset: number }) {
+  return (
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-black">
+      {/* Animated dark gradient background */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{ transform: `translateY(${parallaxOffset}px) scale(1.08)` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-950 to-black" />
+        {/* Subtle animated grid lines */}
+        <div className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(25,179,92,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(25,179,92,0.4) 1px, transparent 1px)',
+            backgroundSize: '60px 60px',
+          }}
+        />
+      </div>
+
+      {/* Floating glow orbs */}
+      <div
+        className="absolute top-1/4 left-16 w-40 h-40 rounded-full bg-primary/20 blur-3xl"
+        style={{ transform: `translateY(${floatOffset}px)` }}
+      />
+      <div
+        className="absolute bottom-1/4 right-16 w-56 h-56 rounded-full bg-primary/10 blur-3xl"
+        style={{ transform: `translateY(${-floatOffset}px)` }}
+      />
+
+      {/* Hero Content */}
+      <div className="relative z-10 flex flex-col items-center gap-6 px-4 md:px-6 max-w-4xl mx-auto">
+        <Badge variant="default" className="py-1.5 px-5 text-sm font-bold tracking-widest uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
+          Coming Soon — DGEN B2C
+        </Badge>
+
+        <h1
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-headline font-black tracking-tight text-white leading-tight animate-slide-up"
+          style={{ animationDelay: '0.15s', textShadow: '0 0 60px rgba(25,179,92,0.3)' }}
+        >
+          Something is waking up on your desk.
+        </h1>
+
+        <p className="text-lg sm:text-xl md:text-2xl text-white/70 max-w-2xl animate-slide-up" style={{ animationDelay: '0.3s' }}>
+          DGEN Technologies&apos; most ambitious project yet isn&apos;t a street light.
+          <br />
+          It&apos;s something that talks back.
+        </p>
+
+        <p className="text-xs sm:text-sm tracking-[0.2em] uppercase text-white/40 font-mono animate-slide-up" style={{ animationDelay: '0.45s' }}>
+          ADAM — Autonomous Desktop AI Module
+        </p>
+
+        <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
+          <a href="#waitlist">
+            <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-base group">
+              Be the First to Know
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdamSuspenseSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+  return (
+    <section className="w-full bg-gray-950 py-20 md:py-28 overflow-hidden">
+      <div className="container max-w-screen-md px-4 md:px-6">
+        <div
+          ref={ref}
+          className={`space-y-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
+            Meet ADAM. Almost.
+          </h2>
+          <div className="space-y-5 text-white/70 text-base sm:text-lg leading-relaxed">
+            <p>
+              For two years, DGEN has been making cities smarter — cutting energy waste by 80%, eliminating SIM costs by 98%, and wiring entire neighbourhoods with a single gateway.
+            </p>
+            <p>
+              Now we&apos;re bringing that same obsession with intelligent infrastructure to the one place that needs it most.
+            </p>
+            <p className="text-white font-semibold text-xl sm:text-2xl">
+              Your desk.
+            </p>
+            <p>
+              ADAM is DGEN&apos;s first B2C product. A compact AI companion built entirely in India — from the circuit board up. It doesn&apos;t just respond. It remembers. It reacts. It has opinions.
+            </p>
+            <p className="text-white/50 italic">
+              We&apos;re not ready to show you everything yet.
+              <br />
+              But we&apos;re ready to let you hear it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdamChatWidget() {
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState<{ role: 'user' | 'adam'; text: string }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = message.trim();
+    if (!trimmed || loading) return;
+
+    setMessage('');
+    setError('');
+    setMessages(prev => [...prev, { role: 'user', text: trimmed }]);
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/adam/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: trimmed }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        setError(data.error || 'Something went wrong.');
+      } else {
+        setMessages(prev => [...prev, { role: 'adam', text: data.reply }]);
+      }
+    } catch {
+      setError('Failed to reach ADAM. Try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-full max-w-2xl mx-auto">
+      {/* Widget Header */}
+      <div className="flex items-center gap-3 mb-4 px-1">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+          <span className="text-xs font-mono tracking-widest text-primary uppercase">ADAM — LIVE PREVIEW · Powered by DGEN AI</span>
+        </div>
+      </div>
+
+      {/* Chat Area */}
+      <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl overflow-hidden">
+        <div className="h-72 overflow-y-auto p-5 space-y-4 scrollbar-thin scrollbar-thumb-white/10">
+          {messages.length === 0 && (
+            <p className="text-white/30 text-sm text-center mt-20">Say something. ADAM is listening.</p>
+          )}
+          {messages.map((msg, i) => (
+            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div
+                className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                  msg.role === 'user'
+                    ? 'bg-primary text-white rounded-br-sm'
+                    : 'bg-white/10 text-white/90 rounded-bl-sm border border-white/10'
+                }`}
+              >
+                {msg.role === 'adam' && (
+                  <span className="block text-[10px] font-mono text-primary mb-1 tracking-widest">ADAM</span>
+                )}
+                {msg.text}
+              </div>
+            </div>
+          ))}
+          {loading && (
+            <div className="flex justify-start">
+              <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-white/10 border border-white/10">
+                <span className="block text-[10px] font-mono text-primary mb-1 tracking-widest">ADAM</span>
+                <span className="flex gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: '300ms' }} />
+                </span>
+              </div>
+            </div>
+          )}
+          {error && (
+            <p className="text-red-400 text-xs text-center">{error}</p>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input */}
+        <form onSubmit={handleSubmit} className="flex items-center gap-3 border-t border-white/10 p-4">
+          <input
+            type="text"
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            placeholder="Ask ADAM anything. Don't be boring."
+            maxLength={500}
+            className="flex-1 bg-transparent text-white placeholder-white/30 text-sm outline-none"
+            disabled={loading}
+          />
+          <button
+            type="submit"
+            disabled={loading || !message.trim()}
+            className="shrink-0 px-4 py-2 rounded-full bg-primary text-white text-sm font-semibold disabled:opacity-40 hover:bg-primary/90 transition-colors"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+
+      <p className="mt-3 text-center text-xs text-white/30 px-2">
+        This is a text preview of ADAM&apos;s personality engine. The full experience — voice, face, and physical presence — is coming soon.
+      </p>
+    </div>
+  );
+}
+
+function AdamChatSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+  return (
+    <section className="w-full bg-black py-20 md:py-28 overflow-hidden">
+      <div className="container px-4 md:px-6">
+        <div
+          ref={ref}
+          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          <div className="text-center space-y-3 max-w-2xl">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
+              Say Something. ADAM is Listening.
+            </h2>
+            <p className="text-white/60 text-base sm:text-lg">
+              Type a message below and get a real response from ADAM&apos;s AI core — the same personality engine that will power the physical robot.
+            </p>
+          </div>
+          <AdamChatWidget />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdamFeatureTease() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+  const features = [
+    {
+      emoji: '🧠',
+      title: 'Memory',
+      description: "ADAM doesn't forget. Your name, your habits, the embarrassing question you asked last Tuesday — it's all in there.",
+    },
+    {
+      emoji: '🎙️',
+      title: 'Voice',
+      description: 'Real-time voice interaction. Not a voice memo. Not a chatbot. A conversation.',
+    },
+    {
+      emoji: '🤖',
+      title: 'Presence',
+      description: 'It sits on your desk. It has a face. A neck. And an attitude that is entirely its own.',
+    },
+  ];
+
+  return (
+    <section className="w-full bg-gray-950 py-20 md:py-28 overflow-hidden">
+      <div className="container px-4 md:px-6">
+        <div
+          ref={ref}
+          className={`flex flex-col items-center gap-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white text-center">
+            What We Can Tell You
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+            {features.map((f, i) => (
+              <div
+                key={i}
+                className={`p-7 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-primary/40 hover:bg-white/10 transition-all duration-500 space-y-4 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                style={{ transitionDelay: `${i * 120}ms` }}
+              >
+                <span className="text-4xl">{f.emoji}</span>
+                <h3 className="text-xl font-headline font-bold text-white">{f.title}</h3>
+                <p className="text-white/60 text-sm leading-relaxed">{f.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-white/30 text-sm text-center max-w-md">
+            Full specifications, pricing, and launch date — when we&apos;re ready. Not before.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdamWaitlistSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || status === 'loading') return;
+    setStatus('loading');
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/adam/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        setErrorMsg(data.error || 'Something went wrong.');
+        setStatus('error');
+      } else {
+        setStatus('success');
+      }
+    } catch {
+      setErrorMsg('Failed to submit. Please try again.');
+      setStatus('error');
+    }
+  };
+
+  return (
+    <section id="waitlist" className="w-full bg-black py-20 md:py-28 overflow-hidden">
+      <div className="container max-w-screen-sm px-4 md:px-6">
+        <div
+          ref={ref}
+          className={`flex flex-col items-center gap-8 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
+            ADAM launches once. Be in the room.
+          </h2>
+          <p className="text-white/60 text-base sm:text-lg">
+            Early access. No spam. Just one email when ADAM is ready for you.
+          </p>
+
+          {status === 'success' ? (
+            <div className="w-full p-6 rounded-2xl border border-primary/40 bg-primary/10 text-primary font-semibold text-lg">
+              You&apos;re on the list. ADAM will find you.
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="w-full flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="flex-1 px-5 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/30 text-sm outline-none focus:border-primary/60 transition-colors"
+                disabled={status === 'loading'}
+              />
+              <button
+                type="submit"
+                disabled={status === 'loading' || !email.trim()}
+                className="px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold text-sm disabled:opacity-50 transition-colors whitespace-nowrap"
+              >
+                {status === 'loading' ? 'Submitting…' : 'Notify Me'}
+              </button>
+            </form>
+          )}
+
+          {status === 'error' && (
+            <p className="text-red-400 text-sm">{errorMsg}</p>
+          )}
+
+          <p className="text-white/25 text-xs tracking-widest uppercase">
+            Made in India · Built by DGEN Technologies · Kolkata
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdamProductView({ parallaxOffset, floatOffset }: { parallaxOffset: number; floatOffset: number }) {
+  return (
+    <>
+      <AdamHeroSection parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
+      <AdamSuspenseSection />
+      <AdamChatSection />
+      <AdamFeatureTease />
+      <AdamWaitlistSection />
+    </>
+  );
+}
+
 export function ProductDetailClient({ productSlug }: { productSlug: string }) {
   const parallaxOffset = useParallax(0.2);
   const floatOffset = useFloatingAnimation(0.7);
@@ -1643,6 +2042,7 @@ export function ProductDetailClient({ productSlug }: { productSlug: string }) {
   }
 
   const isEcosystemProduct = !!product.ecosystem;
+  const isAdamProduct = product.slug === 'adam';
   const productSchema = generateProductSchema(product);
 
   return (
@@ -1653,25 +2053,26 @@ export function ProductDetailClient({ productSlug }: { productSlug: string }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
-      
-      {/* Hero Section - Different for Ecosystem vs Regular Products */}
-      {isEcosystemProduct ? (
-        <EcosystemHeroSection product={product} parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
-      ) : (
-        <DefaultHeroSection product={product} parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
-      )}
 
-      {/* Main Content - Ecosystem has full-width sections, others have contained layout */}
-      {isEcosystemProduct ? (
-        <div id="features">
-          <EcosystemProductView product={product} />
-        </div>
-      ) : (
-        <section id="features" className="w-full py-12 sm:py-16 md:py-24 relative">
-          <div className="container max-w-screen-xl px-4 md:px-6">
-            <ProductDetailView product={product} />
+      {/* ADAM gets its own dedicated full-page experience */}
+      {isAdamProduct ? (
+        <AdamProductView parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
+      ) : isEcosystemProduct ? (
+        <>
+          <EcosystemHeroSection product={product} parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
+          <div id="features">
+            <EcosystemProductView product={product} />
           </div>
-        </section>
+        </>
+      ) : (
+        <>
+          <DefaultHeroSection product={product} parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
+          <section id="features" className="w-full py-12 sm:py-16 md:py-24 relative">
+            <div className="container max-w-screen-xl px-4 md:px-6">
+              <ProductDetailView product={product} />
+            </div>
+          </section>
+        </>
       )}
     </div>
   );

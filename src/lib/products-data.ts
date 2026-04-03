@@ -1,4 +1,4 @@
-import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine, Router, ToyBrick, Network } from 'lucide-react';
+import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine, Router, ToyBrick, Network, Bot } from 'lucide-react';
 
 export type ProductFeature = {
   icon: LucideIcon;
@@ -237,5 +237,23 @@ export const products: Product[] = [
       { question: 'Can these lights be upgraded to smart lights later?', answer: '**Yes, our LED Street Lights are designed to be future-proof.** They can be easily retrofitted with our Auralis Ecosystem IoT modules to become fully smart-managed lights with ESP-MESH connectivity whenever you are ready.' },
       { question: 'What is the warranty period?', answer: '**Our standard warranty is 5 years comprehensive coverage.** This covers manufacturing defects and performance degradation beyond normal parameters, backed by our Made in India quality assurance.' },
     ],
+  },
+  {
+    slug: 'adam',
+    title: 'ADAM',
+    category: 'AI Hardware · B2C',
+    shortDescription: "ADAM (Autonomous Desktop AI Module) is DGEN's first B2C product — a compact AI companion built entirely in India, from the circuit board up. It doesn't just respond. It remembers. It reacts. It has opinions.",
+    icon: Bot,
+    images: [
+      { url: '/images/adam-product-shot.png', alt: 'ADAM — Autonomous Desktop AI Module by DGEN Technologies', hint: 'robot desk AI' },
+    ],
+    longDescription: "For two years, DGEN has been making cities smarter — cutting energy waste by 80%, eliminating SIM costs by 98%, and wiring entire neighbourhoods with a single gateway. Now we're bringing that same obsession with intelligent infrastructure to the one place that needs it most. Your desk. ADAM is DGEN's first B2C product. A compact AI companion built entirely in India — from the circuit board up. It doesn't just respond. It remembers. It reacts. It has opinions. We're not ready to show you everything yet. But we're ready to let you hear it.",
+    features: [
+      { icon: Cpu, title: 'Memory', description: "ADAM doesn't forget. Your name, your habits, the embarrassing question you asked last Tuesday — it's all in there." },
+      { icon: Waves, title: 'Voice', description: 'Real-time voice interaction. Not a voice memo. Not a chatbot. A conversation.' },
+      { icon: Bot, title: 'Presence', description: 'It sits on your desk. It has a face. A neck. And an attitude that is entirely its own.' },
+    ],
+    specifications: [],
+    qna: [],
   },
 ];
