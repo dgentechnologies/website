@@ -75,6 +75,18 @@ service cloud.firestore {
       allow read: if true;
       allow create, update, delete: if request.auth != null;
     }
+
+    /**
+     * @description ADAM early-access waitlist.
+     * @path /adam-waitlist/{entryId}
+     * @allow (create) - Any user can join the waitlist.
+     * @allow (read, update, delete) - No client-side access to protect email privacy.
+     *   Aggregate count queries and write operations are handled server-side via the Admin SDK.
+     */
+    match /adam-waitlist/{entryId} {
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
   }
 }
 

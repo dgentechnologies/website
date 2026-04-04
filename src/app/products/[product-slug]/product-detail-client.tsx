@@ -1637,6 +1637,17 @@ function DefaultHeroSection({ product, parallaxOffset, floatOffset }: HeroSectio
 // ============================================
 
 function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: number; floatOffset: number }) {
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#waitlist') {
+      window.history.replaceState(null, '', window.location.pathname);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, []);
+
+  const scrollToWaitlist = () => {
+    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="relative w-full min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-black">
       {/* Animated dark gradient background */}
@@ -1688,12 +1699,13 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
         </p>
 
         <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
-          <a href="#waitlist">
-            <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-base group">
-              Be the First to Know
-              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </a>
+          <button
+            onClick={scrollToWaitlist}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-base group"
+          >
+            Be the First to Know
+            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
       </div>
     </section>
@@ -1737,129 +1749,7 @@ function AdamSuspenseSection() {
   );
 }
 
-function AdamChatWidget() {
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<{ role: 'user' | 'adam'; text: string }[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, loading]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = message.trim();
-    if (!trimmed || loading) return;
-
-    setMessage('');
-    setError('');
-    setMessages(prev => [...prev, { role: 'user', text: trimmed }]);
-    setLoading(true);
-
-    try {
-      const res = await fetch('/api/adam/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: trimmed }),
-      });
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        setError(data.error || 'Something went wrong.');
-      } else {
-        setMessages(prev => [...prev, { role: 'adam', text: data.reply }]);
-      }
-    } catch {
-      setError('Failed to reach ADAM. Try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="w-full max-w-2xl mx-auto">
-      {/* Widget Header */}
-      <div className="flex items-center gap-3 mb-4 px-1">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          <span className="text-xs font-mono tracking-widest text-primary uppercase">ADAM — LIVE PREVIEW · Powered by DGEN AI</span>
-        </div>
-      </div>
-
-      {/* Chat Area */}
-      <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl overflow-hidden">
-        <div className="h-72 overflow-y-auto p-5 space-y-4 scrollbar-thin scrollbar-thumb-white/10">
-          {messages.length === 0 && (
-            <p className="text-white/30 text-sm text-center mt-20">Say something. ADAM is listening.</p>
-          )}
-          {messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div
-                className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
-                  msg.role === 'user'
-                    ? 'bg-primary text-white rounded-br-sm'
-                    : 'bg-white/10 text-white/90 rounded-bl-sm border border-white/10'
-                }`}
-              >
-                {msg.role === 'adam' && (
-                  <span className="block text-[10px] font-mono text-primary mb-1 tracking-widest">ADAM</span>
-                )}
-                {msg.text}
-              </div>
-            </div>
-          ))}
-          {loading && (
-            <div className="flex justify-start">
-              <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-white/10 border border-white/10">
-                <span className="block text-[10px] font-mono text-primary mb-1 tracking-widest">ADAM</span>
-                <span className="flex gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: '300ms' }} />
-                </span>
-              </div>
-            </div>
-          )}
-          {error && (
-            <p className="text-red-400 text-xs text-center">{error}</p>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Input */}
-        <form onSubmit={handleSubmit} className="flex items-center gap-3 border-t border-white/10 p-4">
-          <input
-            type="text"
-            value={message}
-            onChange={e => setMessage(e.target.value)}
-            placeholder="Ask ADAM anything. Don't be boring."
-            maxLength={500}
-            className="flex-1 bg-transparent text-white placeholder-white/30 text-sm outline-none"
-            disabled={loading}
-          />
-          <button
-            type="submit"
-            disabled={loading || !message.trim()}
-            className="shrink-0 px-4 py-2 rounded-full bg-primary text-white text-sm font-semibold disabled:opacity-40 hover:bg-primary/90 transition-colors"
-          >
-            Send
-          </button>
-        </form>
-      </div>
-
-      <p className="mt-3 text-center text-xs text-white/30 px-2">
-        This is a text preview of ADAM&apos;s personality engine. The full experience — voice, face, and physical presence — is coming soon.
-      </p>
-    </div>
-  );
-}
-
-function AdamChatSection() {
+function AdamDemoSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
   return (
     <section className="w-full bg-black py-20 md:py-28 overflow-hidden">
@@ -1870,13 +1760,18 @@ function AdamChatSection() {
         >
           <div className="text-center space-y-3 max-w-2xl">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
-              Say Something. ADAM is Listening.
+              ADAM Wants to Talk.
             </h2>
             <p className="text-white/60 text-base sm:text-lg">
-              Type a message below and get a real response from ADAM&apos;s AI core — the same personality engine that will power the physical robot.
+              The full demo experience — voice, face, and that signature attitude — is in the lab. Want first access?
             </p>
           </div>
-          <AdamChatWidget />
+          <Link href="/products/adam/demo">
+            <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-primary/50 bg-primary/10 hover:bg-primary/20 text-primary font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-300 text-base group">
+              See the Demo Preview
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
         </div>
       </div>
     </section>
@@ -2024,7 +1919,7 @@ function AdamProductView({ parallaxOffset, floatOffset }: { parallaxOffset: numb
     <>
       <AdamHeroSection parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
       <AdamSuspenseSection />
-      <AdamChatSection />
+      <AdamDemoSection />
       <AdamFeatureTease />
       <AdamWaitlistSection />
     </>
