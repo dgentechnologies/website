@@ -21,7 +21,7 @@ const navLinks = [
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const isAdamPage = pathname === '/products/adam';
+  const isAdamPage = pathname?.startsWith('/products/adam') ?? false;
 
   return (
     <header className={`sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-opacity-60 ${
@@ -31,7 +31,7 @@ export function Header() {
     }`}>
       <div className="container flex h-14 sm:h-16 max-w-screen-2xl items-center px-4 md:px-6">
         <Link href="/" className="mr-4 sm:mr-6 flex items-center space-x-2">
-          <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={120} height={40} className="h-8 sm:h-10 w-auto" />
+          <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={120} height={40} className={`h-8 sm:h-10 w-auto transition-[filter] duration-300 ${isAdamPage ? 'brightness-0 invert' : ''}`} />
         </Link>
 
         <div className="flex flex-1 items-center justify-end">
