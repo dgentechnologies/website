@@ -45,4 +45,5 @@ firebase-debug.log
 firestore-debug.log
 
 desktop.ini
+*.ini
 Thumbs.db
