@@ -1935,7 +1935,7 @@ function AdamCookingSection() {
 
           {/* Comic punchline */}
           <div className="text-center space-y-2">
-            <p className="text-5xl animate-bounce">👨‍🍳</p>
+            <p className="text-5xl animate-bounce" role="img" aria-label="Animated chef emoji">👨‍🍳</p>
             <p className="text-white/40 text-sm italic">
               &ldquo;Chef says: Do not open the oven. ADAM is not ready to meet you yet.&rdquo;
             </p>
