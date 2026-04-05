@@ -1637,15 +1637,40 @@ function DefaultHeroSection({ product, parallaxOffset, floatOffset }: HeroSectio
 // ============================================
 
 function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: number; floatOffset: number }) {
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const glowRef = useRef<HTMLDivElement>(null);
+  const targetPos = useRef({ x: 0.5, y: 0.5 });
+  const currentPos = useRef({ x: 0.5, y: 0.5 });
+  const rafId = useRef<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    });
+    targetPos.current = {
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    };
   };
+
+  useEffect(() => {
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    const SPEED = 0.08; // lower = more lag / more fluid
+
+    const animate = () => {
+      currentPos.current.x = lerp(currentPos.current.x, targetPos.current.x, SPEED);
+      currentPos.current.y = lerp(currentPos.current.y, targetPos.current.y, SPEED);
+
+      if (glowRef.current && sectionRef.current) {
+        const { offsetWidth: w, offsetHeight: h } = sectionRef.current;
+        const glowSize = 288; // w-72 = 18rem = 288px
+        glowRef.current.style.transform = `translate(${currentPos.current.x * w - glowSize / 2}px, ${currentPos.current.y * h - glowSize / 2}px)`;
+      }
+
+      rafId.current = requestAnimationFrame(animate);
+    };
+
+    rafId.current = requestAnimationFrame(animate);
+    return () => { if (rafId.current !== null) cancelAnimationFrame(rafId.current); };
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.hash === '#waitlist') {
@@ -1660,6 +1685,7 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
 
   return (
     <section
+      ref={sectionRef}
       className="relative w-full min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-black"
       onMouseMove={handleMouseMove}
     >
@@ -1678,15 +1704,10 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
         />
       </div>
 
-      {/* Cursor-following glow orb */}
+      {/* Cursor-following glow orb — positioned via rAF lerp in transform */}
       <div
-        className="absolute w-72 h-72 rounded-full bg-primary/25 blur-3xl pointer-events-none"
-        style={{
-          left: `calc(${mousePos.x}% - 9rem)`,
-          top: `calc(${mousePos.y}% - 9rem)`,
-          transition: 'left 0.35s ease-out, top 0.35s ease-out',
-          transform: `translateY(${floatOffset}px)`,
-        }}
+        ref={glowRef}
+        className="absolute top-0 left-0 w-72 h-72 rounded-full bg-primary/25 blur-3xl pointer-events-none will-change-transform"
       />
       {/* Ambient secondary glow */}
       <div
