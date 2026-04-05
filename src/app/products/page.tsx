@@ -203,6 +203,22 @@ export default function ProductsPage() {
           {/* Products Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             <ProductCard
+              product={adamProduct}
+              icon={<Bot className="h-7 w-7 md:h-8 md:w-8 text-white" />}
+              features={[
+                { icon: <Cpu className="h-4 w-4 text-primary" />, label: "Memory" },
+                { icon: <Waves className="h-4 w-4 text-primary" />, label: "Voice" },
+                { icon: <Radar className="h-4 w-4 text-primary" />, label: "Presence" },
+              ]}
+              keyPoints={[
+                "First DGEN B2C product",
+                "Built entirely in India",
+                "Coming soon — join the waitlist",
+              ]}
+              index={0}
+            />
+
+            <ProductCard
               product={auralisProduct}
               icon={<Cpu className="h-7 w-7 md:h-8 md:w-8 text-white" />}
               features={[
@@ -215,7 +231,7 @@ export default function ProductsPage() {
                 "ESP-MESH + 4G LTE connectivity",
                 "98% reduction in SIM costs",
               ]}
-              index={0}
+              index={1}
             />
             
             <ProductCard
@@ -231,7 +247,7 @@ export default function ProductsPage() {
                 "8+ years battery life",
                 "Zero grid dependency",
               ]}
-              index={1}
+              index={2}
             />
             
             <ProductCard
@@ -246,22 +262,6 @@ export default function ProductsPage() {
                 "70% energy savings",
                 "50,000+ hour lifespan",
                 "IP66 weather protection",
-              ]}
-              index={2}
-            />
-
-            <ProductCard
-              product={adamProduct}
-              icon={<Bot className="h-7 w-7 md:h-8 md:w-8 text-white" />}
-              features={[
-                { icon: <Cpu className="h-4 w-4 text-primary" />, label: "Memory" },
-                { icon: <Waves className="h-4 w-4 text-primary" />, label: "Voice" },
-                { icon: <Radar className="h-4 w-4 text-primary" />, label: "Presence" },
-              ]}
-              keyPoints={[
-                "First DGEN B2C product",
-                "Built entirely in India",
-                "Coming soon — join the waitlist",
               ]}
               index={3}
             />

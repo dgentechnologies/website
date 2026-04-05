@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -19,12 +20,20 @@ const navLinks = [
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isAdamPage = pathname?.startsWith('/products/adam') ?? false;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className={`sticky top-0 z-50 w-full border-b ${
+      isAdamPage
+        ? 'border-white/10 bg-black'
+        : 'border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
+    }`}>
       <div className="container flex h-14 sm:h-16 max-w-screen-2xl items-center px-4 md:px-6">
         <Link href="/" className="mr-4 sm:mr-6 flex items-center space-x-2">
-          <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={120} height={40} className="h-8 sm:h-10 w-auto" />
+          <div className={isAdamPage ? 'bg-white rounded-lg px-2 py-1' : ''}>
+            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={120} height={40} className="h-8 sm:h-10 w-auto" />
+          </div>
         </Link>
 
         <div className="flex flex-1 items-center justify-end">
@@ -33,7 +42,11 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-medium text-foreground/60 transition-colors hover:text-foreground"
+                  className={`text-sm font-medium transition-colors ${
+                    isAdamPage
+                      ? 'text-white/70 hover:text-white'
+                      : 'text-foreground/60 hover:text-foreground'
+                  }`}
                 >
                   {link.label}
                 </Link>
@@ -42,7 +55,7 @@ export function Header() {
           
           <div className="flex items-center gap-2 sm:gap-4 ml-4 sm:ml-6">
              <div className="hidden md:flex">
-               <Button asChild size="sm">
+               <Button asChild size="sm" variant={isAdamPage ? 'outline' : 'default'} className={isAdamPage ? 'border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent' : ''}>
                   <Link href="/contact">
                       Get a Quote
                   </Link>
@@ -53,7 +66,7 @@ export function Header() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-10 w-10 p-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+                  className={`h-10 w-10 p-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden ${isAdamPage ? 'text-white' : ''}`}
                   aria-label="Open navigation menu"
                 >
                   <Menu className="h-6 w-6" />
