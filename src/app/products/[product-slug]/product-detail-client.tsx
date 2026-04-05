@@ -1686,7 +1686,7 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-black"
+      className="relative w-full min-h-[85vh] flex flex-col items-center justify-center text-center overflow-hidden bg-black"
       onMouseMove={handleMouseMove}
     >
       {/* Animated dark gradient background */}
@@ -1716,9 +1716,9 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       />
 
       {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center gap-6 px-4 md:px-6 max-w-4xl mx-auto">
+      <div className="relative z-10 flex flex-col items-center gap-5 px-4 md:px-6 max-w-4xl mx-auto py-10">
         <Badge variant="default" className="py-1.5 px-5 text-sm font-bold tracking-widest uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
-          Coming Soon — DGEN B2C
+          Coming Soon
         </Badge>
 
         <h1
@@ -1738,12 +1738,18 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
           ADAM — Autonomous Desktop AI Module
         </p>
 
-        <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
+        <div className="flex flex-col sm:flex-row gap-3 animate-slide-up" style={{ animationDelay: '0.6s' }}>
+          <Link href="/products/adam/demo">
+            <button className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-primary/50 bg-primary/10 hover:bg-primary/20 text-primary font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-300 text-base group">
+              See Demo
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
           <button
             onClick={scrollToWaitlist}
             className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-base group"
           >
-            Be the First to Know
+            Join Waiting List
             <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -1775,7 +1781,7 @@ function AdamSuspenseSection() {
               Your desk.
             </p>
             <p>
-              ADAM is DGEN&apos;s first B2C product. A compact AI companion built entirely in India — from the circuit board up. It doesn&apos;t just respond. It remembers. It reacts. It has opinions.
+            ADAM is a compact AI companion built entirely in India — from the circuit board up. It doesn&apos;t just respond. It remembers. It reacts. It has opinions.
             </p>
             <p className="text-white/50 italic">
               We&apos;re not ready to show you everything yet.
@@ -1872,6 +1878,74 @@ function AdamFeatureTease() {
   );
 }
 
+function AdamCookingSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+
+  const steps = [
+    { icon: '🔬', label: 'Research Lab', status: '✅ Done' },
+    { icon: '📐', label: 'Circuit Design', status: '✅ Done' },
+    { icon: '🧪', label: 'Prototype Testing', status: '🔥 In Progress' },
+    { icon: '🤖', label: 'AI Training', status: '🍳 Cooking' },
+    { icon: '🎤', label: 'Voice Tuning', status: '👨‍🍳 Simmering' },
+    { icon: '📦', label: 'Production Ready', status: '⏳ Almost...' },
+  ];
+
+  return (
+    <section className="w-full bg-black py-20 md:py-28 overflow-hidden border-t border-white/5">
+      <div className="container px-4 md:px-6">
+        <div
+          ref={ref}
+          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          {/* Header */}
+          <div className="text-center space-y-3">
+            <p className="text-4xl">🍳</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
+              Something&apos;s Cooking.
+            </h2>
+            <p className="text-white/50 text-base sm:text-lg max-w-lg mx-auto">
+              We&apos;re deep in the kitchen. The recipe is wild. The smells are incredible. Here&apos;s what&apos;s on the stove:
+            </p>
+          </div>
+
+          {/* Kitchen Status Board */}
+          <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden">
+            {/* Board Header */}
+            <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10 bg-white/5">
+              <span className="text-xl">📋</span>
+              <span className="text-white/70 font-mono text-sm tracking-widest uppercase">Kitchen Status Board — ADAM Build v0.x</span>
+            </div>
+            {/* Steps */}
+            <div className="divide-y divide-white/5">
+              {steps.map((step, i) => (
+                <div
+                  key={i}
+                  className={`flex items-center justify-between px-6 py-4 transition-all duration-500 hover:bg-white/5 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="text-2xl">{step.icon}</span>
+                    <span className="text-white font-medium text-sm sm:text-base">{step.label}</span>
+                  </div>
+                  <span className="text-white/60 font-mono text-xs sm:text-sm whitespace-nowrap">{step.status}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Comic punchline */}
+          <div className="text-center space-y-2">
+            <p className="text-5xl animate-bounce">👨‍🍳</p>
+            <p className="text-white/40 text-sm italic">
+              &ldquo;Chef says: Do not open the oven. ADAM is not ready to meet you yet.&rdquo;
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function AdamWaitlistSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   const [email, setEmail] = useState('');
@@ -1961,6 +2035,7 @@ function AdamProductView({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       <AdamSuspenseSection />
       <AdamDemoSection />
       <AdamFeatureTease />
+      <AdamCookingSection />
       <AdamWaitlistSection />
     </>
   );
