@@ -31,7 +31,9 @@ export function Header() {
     }`}>
       <div className="container flex h-14 sm:h-16 max-w-screen-2xl items-center px-4 md:px-6">
         <Link href="/" className="mr-4 sm:mr-6 flex items-center space-x-2">
-          <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={120} height={40} className="h-8 sm:h-10 w-auto" />
+          <div className={isAdamPage ? 'bg-white rounded-lg px-2 py-1' : ''}>
+            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={120} height={40} className="h-8 sm:h-10 w-auto" />
+          </div>
         </Link>
 
         <div className="flex flex-1 items-center justify-end">

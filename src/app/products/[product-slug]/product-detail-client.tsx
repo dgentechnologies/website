@@ -1637,6 +1637,16 @@ function DefaultHeroSection({ product, parallaxOffset, floatOffset }: HeroSectio
 // ============================================
 
 function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: number; floatOffset: number }) {
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  };
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.hash === '#waitlist') {
       window.history.replaceState(null, '', window.location.pathname);
@@ -1649,7 +1659,10 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
   };
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-black">
+    <section
+      className="relative w-full min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-black"
+      onMouseMove={handleMouseMove}
+    >
       {/* Animated dark gradient background */}
       <div
         className="absolute inset-0 z-0"
@@ -1665,13 +1678,19 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
         />
       </div>
 
-      {/* Floating glow orbs */}
+      {/* Cursor-following glow orb */}
       <div
-        className="absolute top-1/4 left-16 w-40 h-40 rounded-full bg-primary/20 blur-3xl"
-        style={{ transform: `translateY(${floatOffset}px)` }}
+        className="absolute w-72 h-72 rounded-full bg-primary/25 blur-3xl pointer-events-none"
+        style={{
+          left: `calc(${mousePos.x}% - 9rem)`,
+          top: `calc(${mousePos.y}% - 9rem)`,
+          transition: 'left 0.35s ease-out, top 0.35s ease-out',
+          transform: `translateY(${floatOffset}px)`,
+        }}
       />
+      {/* Ambient secondary glow */}
       <div
-        className="absolute bottom-1/4 right-16 w-56 h-56 rounded-full bg-primary/10 blur-3xl"
+        className="absolute bottom-1/4 right-16 w-40 h-40 rounded-full bg-primary/10 blur-3xl pointer-events-none"
         style={{ transform: `translateY(${-floatOffset}px)` }}
       />
 
