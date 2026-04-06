@@ -1755,33 +1755,37 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
 function AdamSuspenseSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
   const stats = [
-    { icon: '🏭', value: '100%', label: 'Made in India' },
     { icon: '🧠', value: 'AI', label: 'On-device intelligence' },
     { icon: '🎙️', value: 'Voice', label: 'Real-time interaction' },
     { icon: '⚡', value: '2 yrs', label: 'In development' },
   ];
   return (
-    <section className="w-full bg-gray-950 py-14 md:py-20 overflow-hidden border-b border-white/5">
+    <section className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden border-b border-white/5">
       <div className="container px-4 md:px-6">
         <div
           ref={ref}
-          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          className={`flex flex-col items-center gap-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
-          <p className="text-white/40 text-xs tracking-[0.3em] uppercase font-mono">What ADAM is made of</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl">
+          <div className="text-center space-y-3">
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">What ADAM is</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
+              Meet ADAM. Almost.
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-2xl">
             {stats.map((s, i) => (
               <div
                 key={i}
-                className={`flex flex-col items-center gap-2 p-6 rounded-2xl border border-white/8 bg-white/4 hover:border-primary/30 hover:bg-white/8 transition-all duration-400 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
-                style={{ transitionDelay: `${i * 80}ms` }}
+                className={`flex flex-col items-center gap-3 p-8 rounded-3xl border border-white/8 bg-white/3 hover:border-primary/30 hover:bg-primary/5 transition-all duration-500 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+                style={{ transitionDelay: `${i * 100}ms` }}
               >
-                <span className="text-3xl">{s.icon}</span>
-                <span className="text-2xl font-headline font-black text-white">{s.value}</span>
+                <span className="text-5xl">{s.icon}</span>
+                <span className="text-3xl font-headline font-black text-white">{s.value}</span>
                 <span className="text-white/40 text-xs text-center font-mono uppercase tracking-wider">{s.label}</span>
               </div>
             ))}
           </div>
-          <p className="text-white/50 text-sm sm:text-base text-center max-w-sm italic">
+          <p className="text-white/40 text-sm text-center max-w-xs italic">
             Same obsession that wired cities — now sitting on your desk.
           </p>
         </div>
@@ -1826,8 +1830,8 @@ function AdamFeatureTease() {
   ];
 
   return (
-    <section className="w-full bg-black py-14 md:py-20 overflow-hidden">
-      <div className="container px-4 md:px-6">
+    <section className="w-full min-h-screen bg-black flex items-center justify-center overflow-hidden">
+      <div className="container px-4 md:px-6 py-12">
         <div
           ref={ref}
           className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
@@ -1865,56 +1869,93 @@ function AdamFeatureTease() {
 }
 
 function AdamCookingSection() {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
 
   const steps = [
-    { icon: '🔬', label: 'Research Lab', status: '✅ Done' },
-    { icon: '📐', label: 'Circuit Design', status: '✅ Done' },
-    { icon: '🧪', label: 'Prototype Testing', status: '🔥 In Progress' },
-    { icon: '🤖', label: 'AI Training', status: '🍳 Cooking' },
-    { icon: '🎤', label: 'Voice Tuning', status: '👨‍🍳 Simmering' },
-    { icon: '📦', label: 'Production Ready', status: '⏳ Soon' },
+    { icon: '🔬', label: 'Research', sublabel: 'Lab & Discovery', state: 'done' },
+    { icon: '📐', label: 'Design', sublabel: 'Circuit Architecture', state: 'done' },
+    { icon: '🧪', label: 'Prototype', sublabel: 'Hardware Testing', state: 'active' },
+    { icon: '🤖', label: 'AI Core', sublabel: 'Model Training', state: 'active' },
+    { icon: '🎤', label: 'Voice', sublabel: 'Tuning & Refinement', state: 'upcoming' },
+    { icon: '🚀', label: 'Launch', sublabel: 'Ship to the world', state: 'upcoming' },
   ];
 
+  const stateStyles: Record<string, { card: string; badge: string; badgeText: string; glow: string }> = {
+    done: {
+      card: 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10',
+      badge: 'bg-green-500/15 border border-green-500/30 text-green-400',
+      badgeText: '✅ Done',
+      glow: 'shadow-[0_0_30px_-5px_rgba(34,197,94,0.3)]',
+    },
+    active: {
+      card: 'border-orange-400/40 bg-orange-400/5 hover:bg-orange-400/10 animate-pulse-subtle',
+      badge: 'bg-orange-400/15 border border-orange-400/30 text-orange-300',
+      badgeText: '🔥 Cooking',
+      glow: 'shadow-[0_0_40px_-5px_rgba(251,146,60,0.4)]',
+    },
+    upcoming: {
+      card: 'border-white/8 bg-white/3 hover:border-white/15',
+      badge: 'bg-white/8 border border-white/15 text-white/30',
+      badgeText: '⏳ Soon',
+      glow: '',
+    },
+  };
+
   return (
-    <section className="w-full bg-gray-950 py-14 md:py-20 overflow-hidden border-t border-white/5">
-      <div className="container px-4 md:px-6">
+    <section className="w-full min-h-screen bg-black flex items-center justify-center overflow-hidden border-t border-white/5 relative">
+      {/* Background grid */}
+      <div className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(25,179,92,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(25,179,92,0.6) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+        }}
+      />
+      {/* Ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
+
+      <div className="container px-4 md:px-6 py-16 relative z-10">
         <div
           ref={ref}
-          className={`flex flex-col items-center gap-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           {/* Header */}
-          <div className="text-center space-y-2">
-            <p className="text-3xl">🍳</p>
-            <h2 className="text-2xl sm:text-3xl font-headline font-bold text-white">
+          <div className="text-center space-y-3">
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Build progress</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white">
               Something&apos;s Cooking.
             </h2>
-            <p className="text-white/40 text-xs tracking-[0.2em] uppercase font-mono">Build progress</p>
+            <p className="text-white/40 text-sm max-w-xs mx-auto">We&apos;re deep in the kitchen. Here&apos;s the live status.</p>
           </div>
 
-          {/* Kitchen Status Board */}
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden">
-            <div className="divide-y divide-white/5">
-              {steps.map((step, i) => (
+          {/* Steps grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-4xl">
+            {steps.map((step, i) => {
+              const s = stateStyles[step.state];
+              return (
                 <div
                   key={i}
-                  className={`flex items-center justify-between px-5 py-3.5 transition-all duration-500 hover:bg-white/5 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
-                  style={{ transitionDelay: `${i * 80}ms` }}
+                  className={`relative flex flex-col items-center gap-4 p-6 md:p-8 rounded-3xl border transition-all duration-500 ${s.card} ${s.glow} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  style={{ transitionDelay: `${i * 100}ms` }}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">{step.icon}</span>
-                    <span className="text-white/80 text-sm">{step.label}</span>
+                  {/* Active pulse ring */}
+                  {step.state === 'active' && (
+                    <div className="absolute inset-0 rounded-3xl border border-orange-400/20 animate-pulse pointer-events-none" />
+                  )}
+                  <span className="text-5xl">{step.icon}</span>
+                  <div className="text-center">
+                    <p className="text-white font-headline font-bold text-lg">{step.label}</p>
+                    <p className="text-white/40 text-xs mt-0.5">{step.sublabel}</p>
                   </div>
-                  <span className="text-white/50 font-mono text-xs whitespace-nowrap">{step.status}</span>
+                  <span className={`px-3 py-1 rounded-full text-xs font-mono ${s.badge}`}>
+                    {s.badgeText}
+                  </span>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
 
-          {/* Punchline */}
-          <p className="text-white/30 text-xs italic text-center font-mono">
-            <span role="img" aria-label="chef emoji" className="mr-1">👨‍🍳</span>
-            Do not open the oven. Not ready yet.
+          <p className="text-white/20 text-xs font-mono italic">
+            👨‍🍳 Chef says: don&apos;t open the oven. Not yet.
           </p>
         </div>
       </div>
@@ -1953,8 +1994,8 @@ function AdamWaitlistSection() {
   };
 
   return (
-    <section id="waitlist" className="w-full bg-black py-20 md:py-28 overflow-hidden">
-      <div className="container max-w-screen-sm px-4 md:px-6">
+    <section id="waitlist" className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden">
+      <div className="container max-w-screen-sm px-4 md:px-6 py-16">
         <div
           ref={ref}
           className={`flex flex-col items-center gap-8 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
