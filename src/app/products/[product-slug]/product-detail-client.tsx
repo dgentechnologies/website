@@ -1717,7 +1717,7 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
 
       {/* Hero Content */}
       <div className="relative z-10 flex flex-col items-center gap-4 px-4 md:px-6 max-w-4xl mx-auto py-8">
-        <Badge variant="default" className="py-1 px-4 text-xs font-bold tracking-widest uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
+        <Badge variant="default" className="py-2 px-6 text-2xl sm:text-3xl md:text-4xl font-black tracking-widest uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
           Coming Soon
         </Badge>
 

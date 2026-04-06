@@ -129,6 +129,7 @@ const advantages = [
 ];
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'hero-home');
+const comingSoonImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
 const ctaImage = PlaceHolderImages.find(img => img.id === 'about-story');
 
 function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
@@ -198,6 +199,31 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
       
+      {/* Coming Soon Section */}
+      <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
+        {/* Blurred Background Image */}
+        <div className="absolute inset-0 z-0">
+          {comingSoonImage && (
+            <Image
+              src={comingSoonImage.imageUrl}
+              alt="Coming soon - Dgen Technologies"
+              fill
+              className="object-cover scale-110"
+              style={{ filter: 'blur(8px)' }}
+              priority
+            />
+          )}
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        {/* Coming Soon Content */}
+        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6 text-center">
+          <h2 className="text-[clamp(4rem,15vw,12rem)] font-headline font-black text-white tracking-tight leading-none">
+            Coming Soon
+          </h2>
+        </div>
+      </section>
+
       {/* Hero Section with Parallax */}
       <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
         {/* Parallax Background Image */}
