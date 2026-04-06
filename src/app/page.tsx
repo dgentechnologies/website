@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Building2, Router, BrainCircuit, Home as HomeIcon, ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { useParallax, useScrollAnimation, useFloatingAnimation } from '@/hooks/use-scroll-animation';
+import { useParallax, useScrollAnimation, useFloatingAnimation, useElementParallax } from '@/hooks/use-scroll-animation';
+import { useRef } from 'react';
 
 // LocalBusiness Schema for Dgen Technologies - Kolkata HQ
 const localBusinessSchema = {
@@ -185,7 +186,8 @@ function AdvantageItem({ advantage, index }: { advantage: typeof advantages[0]; 
 }
 
 export default function Home() {
-  const parallaxOffset = useParallax(0.3);
+  const heroRef = useRef<HTMLElement>(null);
+  const parallaxOffset = useElementParallax(heroRef, 0.3);
   const [servicesRef, servicesVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
   const [advantagesImageRef, advantagesImageVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   const [ctaRef, ctaVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3 });
@@ -209,23 +211,62 @@ export default function Home() {
               alt="Coming soon - Dgen Technologies"
               fill
               className="object-cover scale-110"
-              style={{ filter: 'blur(8px)' }}
+              style={{ filter: 'blur(10px)' }}
               priority
             />
           )}
-          <div className="absolute inset-0 bg-black/60"></div>
+          {/* Deep dark overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-black/85 to-black/90" />
+          {/* Brand-green radial glow */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse 80% 55% at 50% 50%, rgba(25,179,92,0.18) 0%, transparent 70%)' }}
+          />
         </div>
 
-        {/* Coming Soon Content */}
-        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6 text-center">
-          <h2 className="text-[clamp(4rem,15vw,12rem)] font-headline font-black text-white tracking-tight leading-none">
+        {/* Content */}
+        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6 text-center flex flex-col items-center gap-5">
+          {/* Pill label */}
+          <div className="inline-flex items-center gap-2 border border-primary/40 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-1.5 animate-slide-down">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse-subtle inline-block" />
+            <span className="text-primary text-xs font-bold tracking-[0.25em] uppercase">Something Big is Cooking</span>
+          </div>
+
+          {/* Main heading */}
+          <h2
+            className="text-[clamp(3.5rem,12vw,10rem)] font-headline font-black text-white tracking-tight leading-none animate-slide-up"
+            style={{ animationDelay: '0.2s', textShadow: '0 0 80px rgba(25,179,92,0.25)' }}
+          >
             Coming Soon
           </h2>
+
+          {/* Tagline */}
+          <p
+            className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-white/60 font-light leading-relaxed animate-slide-up"
+            style={{ animationDelay: '0.4s' }}
+          >
+            Dgen&apos;s kitchen is getting{' '}
+            <span className="text-primary font-semibold">very</span> busy.
+            <br />
+            <span className="text-white/40 text-sm sm:text-base">
+              New products. New experiences. A whole new era of Made&#8209;in&#8209;India tech.
+            </span>
+          </p>
+
+          {/* Decorative divider */}
+          <div
+            className="flex items-center justify-center gap-4 animate-slide-up"
+            style={{ animationDelay: '0.6s' }}
+          >
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
+            <span className="text-primary/60 font-mono text-xs tracking-[0.3em] uppercase">Innovation in progress</span>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
+          </div>
         </div>
       </section>
 
       {/* Hero Section with Parallax */}
-      <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
+      <section ref={heroRef} className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
         {/* Parallax Background Image */}
         <div 
           className="absolute inset-0 z-0 will-change-transform"

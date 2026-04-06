@@ -252,6 +252,39 @@ export function useScrollProgress(): number {
 }
 
 /**
+ * A hook that provides element-relative parallax scroll offset.
+ * Unlike useParallax, this computes offset based on the element's position in the viewport,
+ * so it works correctly regardless of how far down the page the element is.
+ */
+export function useElementParallax(elementRef: RefObject<HTMLElement | null>, speed: number = 0.3): number {
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    const adjustedSpeed = isMobile ? speed * 0.3 : speed;
+
+    const handleScroll = () => {
+      if (!elementRef.current) return;
+      const rect = elementRef.current.getBoundingClientRect();
+      // Compute offset relative to the section: 0 when section centre is centred in viewport
+      const viewportCentre = window.innerHeight / 2;
+      const sectionCentre = rect.top + rect.height / 2;
+      setOffset((viewportCentre - sectionCentre) * adjustedSpeed);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [speed, elementRef]);
+
+  return offset;
+}
+
+/**
  * A hook that provides parallax scroll offset for an element.
  * Automatically reduces or disables parallax on mobile devices for better performance.
  */

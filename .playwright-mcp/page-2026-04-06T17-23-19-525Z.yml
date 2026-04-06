@@ -1,0 +1,163 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "DGEN Technologies Logo" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "DGEN Technologies Logo" [ref=e6]
+      - generic [ref=e7]:
+        - navigation "Main navigation" [ref=e8]:
+          - link "Home" [ref=e9] [cursor=pointer]:
+            - /url: /
+          - link "About Us" [ref=e10] [cursor=pointer]:
+            - /url: /about
+          - link "Services" [ref=e11] [cursor=pointer]:
+            - /url: /services
+          - link "Products" [ref=e12] [cursor=pointer]:
+            - /url: /products
+          - link "Blog" [ref=e13] [cursor=pointer]:
+            - /url: /blog
+          - link "Careers" [ref=e14] [cursor=pointer]:
+            - /url: /careers
+          - link "Contact" [ref=e15] [cursor=pointer]:
+            - /url: /contact
+        - link "Get a Quote" [ref=e18] [cursor=pointer]:
+          - /url: /contact
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - img "Coming soon - Dgen Technologies" [ref=e23]
+        - generic [ref=e25]:
+          - generic [ref=e28]: Something Big is Cooking
+          - heading "Coming Soon" [level=2] [ref=e29]
+          - paragraph [ref=e30]:
+            - text: Dgen's kitchen is getting very busy.
+            - text: New products. New experiences. A whole new era of Made‑in‑India tech.
+          - generic [ref=e33]: Innovation in progress
+      - generic [ref=e35]:
+        - img "Dgen Technologies smart city infrastructure - Auralis Ecosystem IoT street lighting technology background" [ref=e37]
+        - generic [ref=e40]:
+          - generic [ref=e41]: Next-Gen Technology Partners
+          - heading "Build a Smarter Future with Advanced Technology" [level=1] [ref=e42]
+          - paragraph [ref=e43]: Dgen Technologies creates smart, advanced hardware and software solutions to help society. From pioneering urban infrastructure with the Auralis Ecosystem to bringing intelligent innovation into every home, we deliver Made in India technology that powers a smarter tomorrow.
+          - generic [ref=e44]:
+            - link "Explore Our Services" [ref=e45] [cursor=pointer]:
+              - /url: /services
+              - text: Explore Our Services
+              - img
+            - link "Request a Consultation" [ref=e46] [cursor=pointer]:
+              - /url: /contact
+      - generic [ref=e47]:
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: Our Core Capabilities
+            - heading "Engineering the Connected Future" [level=2] [ref=e52]
+            - paragraph [ref=e53]: We provide end-to-end hardware and software technology services designed to solve complex urban and residential challenges. Our expertise transforms smart city and smart home visions into reality.
+          - generic [ref=e54]:
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - img [ref=e59]
+                - generic [ref=e63]: Smart City Solutions
+              - paragraph [ref=e65]: Pioneering smart city infrastructure and contributing to the Smart Cities Mission in India with our "Auralis Ecosystem" smart street lighting platform.
+            - generic [ref=e67]:
+              - generic [ref=e68]:
+                - img [ref=e70]
+                - generic [ref=e74]: IoT & Connected Devices
+              - paragraph [ref=e76]: Developing and integrating IoT devices for large-scale urban projects, including affordable smart lighting systems using Hybrid Wireless Mesh Networks.
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - img [ref=e81]
+                - generic [ref=e93]: AI-Powered Analytics
+              - paragraph [ref=e95]: Leveraging AI to provide intelligent fault detection and predictive maintenance, central to smart cities efficiency and reliability.
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - img [ref=e100]
+                - generic [ref=e103]: Smart Home Integration
+              - paragraph [ref=e105]: Expanding our innovation from smart cities to the B2C market with a new range of smart home products to make every home smarter.
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]: The Dgen Advantage
+            - heading "Your Strategic Partner in Technology & Innovation" [level=2] [ref=e111]
+            - paragraph [ref=e112]: Choosing Dgen Technologies means partnering with a company that builds advanced hardware and software solutions to help society. Our Auralis Ecosystem delivers 80% energy savings and 98% reduction in cellular costs.
+            - generic [ref=e113]:
+              - generic [ref=e114]:
+                - img [ref=e116]
+                - generic [ref=e128]:
+                  - heading "Innovative Technology" [level=3] [ref=e129]
+                  - paragraph [ref=e130]: We deliver future-proof hardware and software solutions, from Hybrid Wireless Mesh Networks (ESP-MESH + 4G LTE) to smart home products, helping society build a smarter tomorrow.
+              - generic [ref=e131]:
+                - img [ref=e133]
+                - generic [ref=e138]:
+                  - heading "Made in India Manufacturing" [level=3] [ref=e139]
+                  - paragraph [ref=e140]: Our products are proudly designed and manufactured in India, supporting local economic growth and contributing to India's self-reliance in advanced technology.
+              - generic [ref=e141]:
+                - img [ref=e143]
+                - generic [ref=e146]:
+                  - heading "Proven Deployment Architecture" [level=3] [ref=e147]
+                  - paragraph [ref=e148]: Our Cluster Head architecture (1 Gateway per ~50 lights) delivers 80% energy savings while reducing hardware and cellular costs by 98%.
+          - img "Dgen Technologies Auralis smart street light system - Made in India urban IoT infrastructure" [ref=e150]
+        - generic [ref=e152]:
+          - heading "Ready to Build a Smarter Tomorrow?" [level=2] [ref=e153]
+          - paragraph [ref=e154]: Let's discuss how Dgen Technologies can help with your technology needs. Schedule a free, no-obligation consultation with our engineering experts today to explore the possibilities.
+          - link "Get in Touch" [ref=e156] [cursor=pointer]:
+            - /url: /contact
+            - text: Get in Touch
+            - img
+  - contentinfo [ref=e157]:
+    - generic [ref=e158]:
+      - generic [ref=e159]:
+        - generic [ref=e160]:
+          - link "DGEN Technologies Logo" [ref=e161] [cursor=pointer]:
+            - /url: /
+            - img "DGEN Technologies Logo" [ref=e162]
+          - paragraph [ref=e163]: Innovate. Integrate. Inspire.
+        - generic [ref=e164]:
+          - heading "Company" [level=3] [ref=e165]
+          - list [ref=e166]:
+            - listitem [ref=e167]:
+              - link "About Us" [ref=e168] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e169]:
+              - link "Services" [ref=e170] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e171]:
+              - link "Products" [ref=e172] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=e173]:
+              - link "Blog" [ref=e174] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e175]:
+              - link "Contact" [ref=e176] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e177]:
+          - heading "Legal" [level=3] [ref=e178]
+          - list [ref=e179]:
+            - listitem [ref=e180]:
+              - link "Privacy Policy" [ref=e181] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e182]:
+              - link "Terms of Service" [ref=e183] [cursor=pointer]:
+                - /url: /terms-of-service
+            - listitem [ref=e184]:
+              - link "FAQ" [ref=e185] [cursor=pointer]:
+                - /url: /faq
+        - generic [ref=e186]:
+          - heading "Connect" [level=3] [ref=e187]
+          - list [ref=e188]:
+            - listitem [ref=e189]:
+              - link "LinkedIn" [ref=e190] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/dgentechnologies
+                - img [ref=e191]
+                - text: LinkedIn
+            - listitem [ref=e195]:
+              - link "Twitter" [ref=e196] [cursor=pointer]:
+                - /url: https://x.com/dgen_tec
+                - img [ref=e197]
+                - text: Twitter
+            - listitem [ref=e199]:
+              - link "Instagram" [ref=e200] [cursor=pointer]:
+                - /url: https://www.instagram.com/dgen_technologies/
+                - img [ref=e201]
+                - text: Instagram
+      - generic [ref=e204]: © 2026 DGEN Technologies Pvt. Ltd. All rights reserved. Made in India.
+  - region "Notifications (F8)":
+    - list
