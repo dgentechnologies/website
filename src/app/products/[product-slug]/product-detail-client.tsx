@@ -1686,7 +1686,7 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-black"
+      className="relative w-full min-h-[70vh] flex flex-col items-center justify-center text-center overflow-hidden bg-black"
       onMouseMove={handleMouseMove}
     >
       {/* Animated dark gradient background */}
@@ -1716,35 +1716,35 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       />
 
       {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center gap-6 px-4 md:px-6 max-w-4xl mx-auto">
-        <Badge variant="default" className="py-1.5 px-5 text-sm font-bold tracking-widest uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
-          Coming Soon — DGEN B2C
+      <div className="relative z-10 flex flex-col items-center gap-4 px-4 md:px-6 max-w-4xl mx-auto py-8">
+        <Badge variant="default" className="py-1 px-4 text-xs font-bold tracking-widest uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
+          Coming Soon
         </Badge>
 
         <h1
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-headline font-black tracking-tight text-white leading-tight animate-slide-up"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-black tracking-tight text-white leading-tight animate-slide-up"
           style={{ animationDelay: '0.15s', textShadow: '0 0 60px rgba(25,179,92,0.3)' }}
         >
-          Something is waking up on your desk.
+          Something is waking up<br className="hidden sm:block" /> on your desk.
         </h1>
 
-        <p className="text-lg sm:text-xl md:text-2xl text-white/70 max-w-2xl animate-slide-up" style={{ animationDelay: '0.3s' }}>
-          DGEN Technologies&apos; most ambitious project yet isn&apos;t a street light.
-          <br />
-          It&apos;s something that talks back.
-        </p>
-
-        <p className="text-xs sm:text-sm tracking-[0.2em] uppercase text-white/40 font-mono animate-slide-up" style={{ animationDelay: '0.45s' }}>
+        <p className="text-sm sm:text-base text-white/50 tracking-[0.2em] uppercase font-mono animate-slide-up" style={{ animationDelay: '0.3s' }}>
           ADAM — Autonomous Desktop AI Module
         </p>
 
-        <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
+        <div className="flex flex-col sm:flex-row gap-3 animate-slide-up" style={{ animationDelay: '0.45s' }}>
+          <Link href="/products/adam/demo">
+            <button className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-primary/50 bg-primary/10 hover:bg-primary/20 text-primary font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-300 text-sm group">
+              See Demo
+              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
           <button
             onClick={scrollToWaitlist}
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-base group"
+            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-sm group"
           >
-            Be the First to Know
-            <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            Join Waiting List
+            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
@@ -1754,64 +1754,40 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
 
 function AdamSuspenseSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
+  const stats = [
+    { icon: '🧠', value: 'AI', label: 'On-device intelligence' },
+    { icon: '🎙️', value: 'Voice', label: 'Real-time interaction' },
+    { icon: '⚡', value: '2 yrs', label: 'In development' },
+  ];
   return (
-    <section className="w-full bg-gray-950 py-20 md:py-28 overflow-hidden">
-      <div className="container max-w-screen-md px-4 md:px-6">
-        <div
-          ref={ref}
-          className={`space-y-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
-            Meet ADAM. Almost.
-          </h2>
-          <div className="space-y-5 text-white/70 text-base sm:text-lg leading-relaxed">
-            <p>
-              For two years, DGEN has been making cities smarter — cutting energy waste by 80%, eliminating SIM costs by 98%, and wiring entire neighbourhoods with a single gateway.
-            </p>
-            <p>
-              Now we&apos;re bringing that same obsession with intelligent infrastructure to the one place that needs it most.
-            </p>
-            <p className="text-white font-semibold text-xl sm:text-2xl">
-              Your desk.
-            </p>
-            <p>
-              ADAM is DGEN&apos;s first B2C product. A compact AI companion built entirely in India — from the circuit board up. It doesn&apos;t just respond. It remembers. It reacts. It has opinions.
-            </p>
-            <p className="text-white/50 italic">
-              We&apos;re not ready to show you everything yet.
-              <br />
-              But we&apos;re ready to let you hear it.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function AdamDemoSection() {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
-  return (
-    <section className="w-full bg-black py-20 md:py-28 overflow-hidden">
+    <section className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden border-b border-white/5">
       <div className="container px-4 md:px-6">
         <div
           ref={ref}
-          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          className={`flex flex-col items-center gap-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
-          <div className="text-center space-y-3 max-w-2xl">
+          <div className="text-center space-y-3">
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">What ADAM is</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
-              ADAM Wants to Talk.
+              Meet ADAM. Almost.
             </h2>
-            <p className="text-white/60 text-base sm:text-lg">
-              The full demo experience — voice, face, and that signature attitude — is in the lab. Want first access?
-            </p>
           </div>
-          <Link href="/products/adam/demo">
-            <div className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-primary/50 bg-primary/10 hover:bg-primary/20 text-primary font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-300 text-base group">
-              See the Demo Preview
-              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-2xl">
+            {stats.map((s, i) => (
+              <div
+                key={i}
+                className={`flex flex-col items-center gap-3 p-8 rounded-3xl border border-white/8 bg-white/3 hover:border-primary/30 hover:bg-primary/5 transition-all duration-500 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+                style={{ transitionDelay: `${i * 100}ms` }}
+              >
+                <span className="text-5xl">{s.icon}</span>
+                <span className="text-3xl font-headline font-black text-white">{s.value}</span>
+                <span className="text-white/40 text-xs text-center font-mono uppercase tracking-wider">{s.label}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-white/40 text-sm text-center max-w-xs italic">
+            Same obsession that wired cities — now sitting on your desk.
+          </p>
         </div>
       </div>
     </section>
@@ -1824,47 +1800,162 @@ function AdamFeatureTease() {
     {
       emoji: '🧠',
       title: 'Memory',
-      description: "ADAM doesn't forget. Your name, your habits, the embarrassing question you asked last Tuesday — it's all in there.",
+      tag: 'Remembers everything',
     },
     {
       emoji: '🎙️',
       title: 'Voice',
-      description: 'Real-time voice interaction. Not a voice memo. Not a chatbot. A conversation.',
+      tag: 'Real conversations',
     },
     {
       emoji: '🤖',
       title: 'Presence',
-      description: 'It sits on your desk. It has a face. A neck. And an attitude that is entirely its own.',
+      tag: 'A face. A desk. An attitude.',
+    },
+    {
+      emoji: '🇮🇳',
+      title: 'Made in India',
+      tag: 'Board to firmware',
+    },
+    {
+      emoji: '🔒',
+      title: 'Private',
+      tag: 'On-device processing',
+    },
+    {
+      emoji: '⚡',
+      title: 'Instant',
+      tag: 'No cloud lag',
     },
   ];
 
   return (
-    <section className="w-full bg-gray-950 py-20 md:py-28 overflow-hidden">
-      <div className="container px-4 md:px-6">
+    <section className="w-full min-h-screen bg-black flex items-center justify-center overflow-hidden">
+      <div className="container px-4 md:px-6 py-12">
         <div
           ref={ref}
-          className={`flex flex-col items-center gap-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white text-center">
-            What We Can Tell You
-          </h2>
+          <div className="text-center space-y-1">
+            <p className="text-white/40 text-xs tracking-[0.3em] uppercase font-mono">What it can do</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold text-white">
+              Features
+            </h2>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-3xl">
             {features.map((f, i) => (
               <div
                 key={i}
-                className={`p-7 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-primary/40 hover:bg-white/10 transition-all duration-500 space-y-4 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-                style={{ transitionDelay: `${i * 120}ms` }}
+                className={`flex flex-col items-center gap-3 p-6 rounded-2xl border border-white/8 bg-white/4 hover:border-primary/40 hover:bg-primary/5 transition-all duration-400 text-center ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                style={{ transitionDelay: `${i * 80}ms` }}
               >
                 <span className="text-4xl">{f.emoji}</span>
-                <h3 className="text-xl font-headline font-bold text-white">{f.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{f.description}</p>
+                <div>
+                  <p className="text-white font-headline font-bold text-base">{f.title}</p>
+                  <p className="text-white/40 text-xs mt-0.5">{f.tag}</p>
+                </div>
               </div>
             ))}
           </div>
 
-          <p className="text-white/30 text-sm text-center max-w-md">
-            Full specifications, pricing, and launch date — when we&apos;re ready. Not before.
+          <p className="text-white/20 text-xs tracking-widest uppercase font-mono">
+            Full specs · when we&apos;re ready · not before.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdamCookingSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+
+  const steps = [
+    { icon: '🔬', label: 'Research', sublabel: 'Lab & Discovery', state: 'done' },
+    { icon: '📐', label: 'Design', sublabel: 'Circuit Architecture', state: 'done' },
+    { icon: '🧪', label: 'Prototype', sublabel: 'Hardware Testing', state: 'active' },
+    { icon: '🤖', label: 'AI Core', sublabel: 'Model Training', state: 'active' },
+    { icon: '🎤', label: 'Voice', sublabel: 'Tuning & Refinement', state: 'upcoming' },
+    { icon: '🚀', label: 'Launch', sublabel: 'Ship to the world', state: 'upcoming' },
+  ];
+
+  const stateStyles: Record<string, { card: string; badge: string; badgeText: string; glow: string }> = {
+    done: {
+      card: 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10',
+      badge: 'bg-green-500/15 border border-green-500/30 text-green-400',
+      badgeText: '✅ Done',
+      glow: 'shadow-[0_0_30px_-5px_rgba(34,197,94,0.3)]',
+    },
+    active: {
+      card: 'border-orange-400/40 bg-orange-400/5 hover:bg-orange-400/10 animate-pulse-subtle',
+      badge: 'bg-orange-400/15 border border-orange-400/30 text-orange-300',
+      badgeText: '🔥 Cooking',
+      glow: 'shadow-[0_0_40px_-5px_rgba(251,146,60,0.4)]',
+    },
+    upcoming: {
+      card: 'border-white/8 bg-white/3 hover:border-white/15',
+      badge: 'bg-white/8 border border-white/15 text-white/30',
+      badgeText: '⏳ Soon',
+      glow: '',
+    },
+  };
+
+  return (
+    <section className="w-full min-h-screen bg-black flex items-center justify-center overflow-hidden border-t border-white/5 relative">
+      {/* Background grid */}
+      <div className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(25,179,92,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(25,179,92,0.6) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+        }}
+      />
+      {/* Ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
+
+      <div className="container px-4 md:px-6 py-16 relative z-10">
+        <div
+          ref={ref}
+          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          {/* Header */}
+          <div className="text-center space-y-3">
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Build progress</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white">
+              Something&apos;s Cooking.
+            </h2>
+            <p className="text-white/40 text-sm max-w-xs mx-auto">We&apos;re deep in the kitchen. Here&apos;s the live status.</p>
+          </div>
+
+          {/* Steps grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-4xl">
+            {steps.map((step, i) => {
+              const s = stateStyles[step.state];
+              return (
+                <div
+                  key={i}
+                  className={`relative flex flex-col items-center gap-4 p-6 md:p-8 rounded-3xl border transition-all duration-500 ${s.card} ${s.glow} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                >
+                  {/* Active pulse ring */}
+                  {step.state === 'active' && (
+                    <div className="absolute inset-0 rounded-3xl border border-orange-400/20 animate-pulse pointer-events-none" />
+                  )}
+                  <span className="text-5xl">{step.icon}</span>
+                  <div className="text-center">
+                    <p className="text-white font-headline font-bold text-lg">{step.label}</p>
+                    <p className="text-white/40 text-xs mt-0.5">{step.sublabel}</p>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-mono ${s.badge}`}>
+                    {s.badgeText}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          <p className="text-white/20 text-xs font-mono italic">
+            👨‍🍳 Chef says: don&apos;t open the oven. Not yet.
           </p>
         </div>
       </div>
@@ -1903,8 +1994,8 @@ function AdamWaitlistSection() {
   };
 
   return (
-    <section id="waitlist" className="w-full bg-black py-20 md:py-28 overflow-hidden">
-      <div className="container max-w-screen-sm px-4 md:px-6">
+    <section id="waitlist" className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden">
+      <div className="container max-w-screen-sm px-4 md:px-6 py-16">
         <div
           ref={ref}
           className={`flex flex-col items-center gap-8 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
@@ -1959,8 +2050,8 @@ function AdamProductView({ parallaxOffset, floatOffset }: { parallaxOffset: numb
     <>
       <AdamHeroSection parallaxOffset={parallaxOffset} floatOffset={floatOffset} />
       <AdamSuspenseSection />
-      <AdamDemoSection />
       <AdamFeatureTease />
+      <AdamCookingSection />
       <AdamWaitlistSection />
     </>
   );

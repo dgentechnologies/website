@@ -211,7 +211,7 @@ export default function ProductsPage() {
                 { icon: <Radar className="h-4 w-4 text-primary" />, label: "Presence" },
               ]}
               keyPoints={[
-                "First DGEN B2C product",
+                "Compact AI companion for your desk",
                 "Built entirely in India",
                 "Coming soon — join the waitlist",
               ]}
