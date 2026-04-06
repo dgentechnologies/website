@@ -1686,7 +1686,7 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[70vh] flex flex-col items-center justify-center text-center overflow-hidden bg-black"
+      className="relative w-full h-screen min-h-[600px] flex flex-col items-center justify-center text-center overflow-hidden bg-black"
       onMouseMove={handleMouseMove}
     >
       {/* Animated dark gradient background */}
