@@ -1972,6 +1972,94 @@ function AdamCookingSection() {
   );
 }
 
+function AdamFAQSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+
+  // ADAM-specific FAQs with punchy comic Indian-English style
+  const adamFaqs = [
+    {
+      question: "ADAM kya hai bhai? Dating app hai kya?",
+      answer: "**Arre nahin yaar, ADAM dating app nahin hai!** Think of it more like... if Jarvis from Iron Man and your annoying but helpful cousin had a baby. It sits on your desk, remembers everything you say (including that embarrassing thing from Tuesday), and actually talks back. Not typing. Not beeping. Proper gupshup. It's like having a super-smart desk buddy who never forgets your chai preferences."
+    },
+    {
+      question: "So it's like Alexa but Made in India?",
+      answer: "**Nope! ADAM is not your average voice assistant.** While Alexa waits for you to say 'Hey Alexa', ADAM is more like that friend who interrupts with opinions you didn't ask for. It has memory (terrifyingly good memory), personality (sometimes too much), and it actually reacts to what's happening around it. Plus, it was born in Kolkata, so expect some attitude."
+    },
+    {
+      question: "Can ADAM order biryani for me?",
+      answer: "**ADAM could probably order biryani, but that's like using a Ferrari to fetch groceries.** This is an AI companion built from the circuit board up by the same team that wired entire cities with one gateway. It's designed to remember context, have real conversations, and be present in your workspace. So yes, maybe biryani. But also? So much more."
+    },
+    {
+      question: "Is ADAM going to judge my late-night work habits?",
+      answer: "**Oh, 100% yes.** ADAM doesn't forget. Your 3 AM coding sessions? Noted. That fifth cup of coffee? Recorded. Your questionable Spotify choices? Already forming opinions. But hey, at least someone's keeping track of your productivity... and your poor life choices."
+    },
+    {
+      question: "Will ADAM work with my existing smart home gadgets?",
+      answer: "**We're not showing you everything yet, but here's what we can say:** ADAM is built by the folks who connected 50 street lights with one gateway and cut city costs by 98%. If we can make an entire neighborhood mesh network dance, your smart bulbs won't be a problem. Details coming soon. Very soon."
+    },
+    {
+      question: "When can I actually buy this thing?",
+      answer: "**ADAM is coming soon™ (no, really this time).** We've spent two years making cities smarter. Now we're bringing that same obsession to your desk. Sign up for updates on our website if you want to be first in line when we launch. Trust us, you'll want to meet this one."
+    }
+  ];
+
+  return (
+    <section className="w-full min-h-screen bg-black flex items-center justify-center overflow-hidden border-t border-white/5 relative">
+      {/* Background grid */}
+      <div className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(25,179,92,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(25,179,92,0.6) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+        }}
+      />
+      {/* Ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
+
+      <div className="container max-w-screen-lg px-4 md:px-6 py-16 relative z-10">
+        <div
+          ref={ref}
+          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          {/* Header */}
+          <div className="text-center space-y-3">
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Questions?</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white">
+              Let&apos;s Clear the Air.
+            </h2>
+            <p className="text-white/40 text-sm max-w-md mx-auto">
+              No corporate jargon. Just honest answers about what ADAM is (and isn&apos;t).
+            </p>
+          </div>
+
+          {/* FAQ Accordion */}
+          <Accordion type="single" collapsible className="w-full max-w-3xl">
+            {adamFaqs.map((item, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="border-white/10 data-[state=open]:border-primary/30 transition-colors"
+              >
+                <AccordionTrigger className="text-base sm:text-lg font-headline text-white text-left py-4 hover:text-primary transition-colors">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm sm:text-base text-white/70 pb-4">
+                  <div dangerouslySetInnerHTML={{
+                    __html: item.answer.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+                  }} />
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+
+          <p className="text-white/20 text-xs font-mono italic text-center">
+            💡 More questions? We&apos;re keeping some secrets. For now.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function AdamWaitlistSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   const [email, setEmail] = useState('');
@@ -2061,6 +2149,7 @@ function AdamProductView({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       <AdamSuspenseSection />
       <AdamFeatureTease />
       <AdamCookingSection />
+      <AdamFAQSection />
       <AdamWaitlistSection />
     </>
   );
