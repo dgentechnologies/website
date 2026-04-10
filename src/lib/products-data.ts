@@ -245,7 +245,7 @@ export const products: Product[] = [
     shortDescription: "ADAM (Autonomous Desktop AI Module) — a compact AI companion built entirely in India, from the circuit board up. It doesn't just respond. It remembers. It reacts. It has opinions.",
     icon: Bot,
     images: [
-      { url: '/images/adam-product-shot.png', alt: 'ADAM — Autonomous Desktop AI Module by DGEN Technologies', hint: 'robot desk AI' },
+      { url: '/images/adam-desktop-ai-module.png', alt: 'ADAM — Autonomous Desktop AI Module by DGEN Technologies', hint: 'robot desk AI' },
     ],
     longDescription: "For two years, DGEN has been making cities smarter — cutting energy waste by 80%, eliminating SIM costs by 98%, and wiring entire neighbourhoods with a single gateway. Now we're bringing that same obsession with intelligent infrastructure to the one place that needs it most. Your desk. ADAM is a compact AI companion built entirely in India — from the circuit board up. It doesn't just respond. It remembers. It reacts. It has opinions. We're not ready to show you everything yet. But we're ready to let you hear it.",
     features: [

@@ -130,7 +130,6 @@ const advantages = [
 ];
 
 const heroImage = PlaceHolderImages.find(img => img.id === 'hero-home');
-const comingSoonImage = PlaceHolderImages.find(img => img.id === 'blog-fallback');
 const ctaImage = PlaceHolderImages.find(img => img.id === 'about-story');
 
 function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
@@ -205,16 +204,14 @@ export default function Home() {
       <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
         {/* Blurred Background Image */}
         <div className="absolute inset-0 z-0">
-          {comingSoonImage && (
-            <Image
-              src={comingSoonImage.imageUrl}
-              alt="Coming soon - Dgen Technologies"
-              fill
-              className="object-cover scale-110"
-              style={{ filter: 'blur(10px)' }}
-              priority
-            />
-          )}
+          <Image
+            src="/images/adam-desktop-ai-module.png"
+            alt="ADAM — Autonomous Desktop AI Module by DGEN Technologies — Coming Soon"
+            fill
+            className="object-cover scale-110"
+            style={{ filter: 'blur(10px)' }}
+            priority
+          />
           {/* Deep dark overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-black/85 to-black/90" />
           {/* Brand-green radial glow */}

@@ -1694,7 +1694,16 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
         className="absolute inset-0 z-0"
         style={{ transform: `translateY(${parallaxOffset}px) scale(1.08)` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-950 to-black" />
+        {/* ADAM product image with blur */}
+        <Image
+          src="/images/adam-desktop-ai-module.png"
+          alt="ADAM — Autonomous Desktop AI Module by DGEN Technologies"
+          fill
+          className="object-cover"
+          style={{ filter: 'blur(8px)' }}
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/85" />
         {/* Subtle animated grid lines */}
         <div className="absolute inset-0 opacity-10"
           style={{
