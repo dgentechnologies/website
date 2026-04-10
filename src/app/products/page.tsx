@@ -47,6 +47,7 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
               alt={product.title}
               fill
               className="object-cover object-center transition-all duration-900 ease-in-out group-hover:scale-105"
+              style={{ filter: 'blur(3px)' }}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             

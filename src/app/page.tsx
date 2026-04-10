@@ -209,7 +209,7 @@ export default function Home() {
             alt="ADAM — Autonomous Desktop AI Module by DGEN Technologies — Coming Soon"
             fill
             className="object-cover scale-110"
-            style={{ filter: 'blur(10px)' }}
+            style={{ filter: 'blur(6px)' }}
             priority
           />
           {/* Deep dark overlay */}

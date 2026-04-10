@@ -1700,7 +1700,7 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
           alt="ADAM — Autonomous Desktop AI Module by DGEN Technologies"
           fill
           className="object-cover"
-          style={{ filter: 'blur(8px)' }}
+          style={{ filter: 'blur(4px)' }}
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/85" />
