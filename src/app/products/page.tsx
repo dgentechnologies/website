@@ -19,9 +19,10 @@ interface ProductCardProps {
   features: Array<{ icon: React.ReactNode; label: string }>;
   keyPoints: string[];
   index: number;
+  blurImage?: boolean;
 }
 
-function ProductCard({ product, icon, features, keyPoints, index }: ProductCardProps) {
+function ProductCard({ product, icon, features, keyPoints, index, blurImage = false }: ProductCardProps) {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   
   return (
@@ -47,7 +48,7 @@ function ProductCard({ product, icon, features, keyPoints, index }: ProductCardP
               alt={product.title}
               fill
               className="object-cover object-center transition-all duration-900 ease-in-out group-hover:scale-105"
-              style={{ filter: 'blur(3px)' }}
+              style={blurImage ? { filter: 'blur(3px)' } : undefined}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             
@@ -217,6 +218,7 @@ export default function ProductsPage() {
                 "Coming soon — join the waitlist",
               ]}
               index={0}
+              blurImage={true}
             />
 
             <ProductCard
