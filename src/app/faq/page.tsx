@@ -50,6 +50,30 @@ const faqs = [
     {
         question: "Where is Dgen Technologies located and where are products manufactured?",
         answer: "**Dgen Technologies is headquartered in Kolkata, India, and all products are proudly Made in India.** We design and manufacture our Auralis Ecosystem hardware locally, supporting the Smart Cities Mission and contributing to India's self-reliance in IoT technology. Our products are engineered for Indian climate and power conditions."
+    },
+    {
+        question: "ADAM kya hai bhai? Dating app hai kya?",
+        answer: "**Arre nahin yaar, ADAM dating app nahin hai!** Think of it more like... if Jarvis from Iron Man and your annoying but helpful cousin had a baby. It sits on your desk, remembers everything you say (including that embarrassing thing from Tuesday), and actually talks back. Not typing. Not beeping. Proper gupshup. It's like having a super-smart desk buddy who never forgets your chai preferences."
+    },
+    {
+        question: "So it's like Alexa but Made in India?",
+        answer: "**Nope! ADAM is not your average voice assistant.** While Alexa waits for you to say 'Hey Alexa', ADAM is more like that friend who interrupts with opinions you didn't ask for. It has memory (terrifyingly good memory), personality (sometimes too much), and it actually reacts to what's happening around it. Plus, it was born in Kolkata, so expect some attitude."
+    },
+    {
+        question: "Can ADAM order biryani for me?",
+        answer: "**ADAM could probably order biryani, but that's like using a Ferrari to fetch groceries.** This is an AI companion built from the circuit board up by the same team that wired entire cities with one gateway. It's designed to remember context, have real conversations, and be present in your workspace. So yes, maybe biryani. But also? So much more."
+    },
+    {
+        question: "Is ADAM going to judge my late-night work habits?",
+        answer: "**Oh, 100% yes.** ADAM doesn't forget. Your 3 AM coding sessions? Noted. That fifth cup of coffee? Recorded. Your questionable Spotify choices? Already forming opinions. But hey, at least someone's keeping track of your productivity... and your poor life choices."
+    },
+    {
+        question: "Will ADAM work with my existing smart home gadgets?",
+        answer: "**We're not showing you everything yet, but here's what we can say:** ADAM is built by the folks who connected 50 street lights with one gateway and cut city costs by 98%. If we can make an entire neighborhood mesh network dance, your smart bulbs won't be a problem. Details coming soon. Very soon."
+    },
+    {
+        question: "When can I actually buy this thing?",
+        answer: "**ADAM is coming soon™ (no, really this time).** We've spent two years making cities smarter. Now we're bringing that same obsession to your desk. Sign up for updates on our website if you want to be first in line when we launch. Trust us, you'll want to meet this one."
     }
 ];
 
