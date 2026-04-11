@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'About Us - DGEN Technologies | Advanced Hardware & Software Solutions',
   description: 'Discover DGEN Technologies, a company that creates smart, advanced hardware and software solutions to help society. Meet our leadership team and learn about Auralis, our flagship IoT ecosystem.',
-  keywords: ['DGEN Technologies', 'technology company India', 'hardware software solutions', 'IoT company India', 'Auralis', 'smart street light', 'urban technology', 'Kolkata tech company', 'smart city solutions'],
+  keywords: ['DGEN Technologies', 'technology company India', 'hardware software solutions', 'IoT company India', 'Auralis', 'smart street light', 'ADAM AI', 'urban technology', 'Made in India tech company', 'smart city solutions'],
   openGraph: {
     title: 'About DGEN Technologies - Advanced Technology Solutions',
     description: 'Learn about DGEN Technologies, a company creating smart, advanced hardware and software solutions to help society, including our flagship Auralis product and B2C smart home technology.',
@@ -37,7 +37,9 @@ export default function AboutLayout({
     },
     "sameAs": [
       "https://www.linkedin.com/company/dgen-technologies/",
-      "https://x.com/DGEN_Tech"
+      "https://x.com/DGEN_Tech",
+      "https://www.instagram.com/dgentechnologies/",
+      "https://www.youtube.com/@DGENTECHNOLOGIES"
     ],
     "contactPoint": {
       "@type": "ContactPoint",

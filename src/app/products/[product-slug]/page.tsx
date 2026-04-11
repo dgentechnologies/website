@@ -33,24 +33,27 @@ export async function generateMetadata({ params }: { params: Promise<{ 'product-
   }
 
   const productUrl = `https://dgentechnologies.com/products/${product.slug}`;
-  const imageUrl = product.images[0]?.url || 'https://dgentechnologies.com/og-image.png';
+  const imageUrl = product.images[0]?.url?.startsWith('/')
+    ? `https://dgentechnologies.com${product.images[0].url}`
+    : product.images[0]?.url || 'https://dgentechnologies.com/og-image.png';
+
+  const isAdam = product.slug === 'adam';
+  const productTitle = isAdam
+    ? 'ADAM | Desktop AI Companion | DGEN Technologies'
+    : `${product.title} | Smart City Solutions | DGEN Technologies`;
+  const productKeywords = isAdam
+    ? ['ADAM', 'ADAM AI', 'desktop AI companion', 'autonomous desktop AI module', 'AI hardware India', 'Made in India AI', 'compact AI device', 'DGEN Technologies', 'AI companion', 'desk AI']
+    : [product.title, product.category, 'smart city', 'IoT', 'DGEN Technologies', 'Made in India'];
 
   return {
-    title: `${product.title} | Smart City Solutions | DGEN Technologies`,
+    title: productTitle,
     description: product.shortDescription,
-    keywords: [
-      product.title,
-      product.category,
-      'smart city',
-      'IoT',
-      'DGEN Technologies',
-      'Made in India',
-    ],
+    keywords: productKeywords,
     alternates: {
       canonical: productUrl,
     },
     openGraph: {
-      title: `${product.title} | DGEN Technologies`,
+      title: isAdam ? 'ADAM | Desktop AI Companion | DGEN Technologies' : `${product.title} | DGEN Technologies`,
       description: product.shortDescription,
       type: 'website',
       url: productUrl,
@@ -66,7 +69,7 @@ export async function generateMetadata({ params }: { params: Promise<{ 'product-
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${product.title} | DGEN Technologies`,
+      title: isAdam ? 'ADAM | Desktop AI Companion | DGEN Technologies' : `${product.title} | DGEN Technologies`,
       description: product.shortDescription,
       images: [imageUrl],
     },
