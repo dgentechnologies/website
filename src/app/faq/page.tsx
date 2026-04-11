@@ -53,27 +53,27 @@ const faqs = [
     },
     {
         question: "ADAM kya hai bhai? Dating app hai kya?",
-        answer: "**Arre nahin yaar, not a dating app!** But we're not revealing everything just yet. Let's just say it's hardware that sits on your desk... and it's nothing like what you've seen before. Made in Kolkata. Coming soon. Want the full story? Follow us on Instagram and LinkedIn for updates."
+        answer: "**Not a dating app.** AI hardware for your desk. Made in India. That's all we're saying for now. Follow us for the reveal."
     },
     {
         question: "So it's like Alexa but Made in India?",
-        answer: "**Nice guess, but no.** Think different. Think hardware. Think AI. Think... well, we can't tell you everything yet. But if you've seen what we did with Auralis (wiring entire cities), you know we don't do ordinary. Stay tuned on our socials for the reveal."
+        answer: "**Nope.** Think different. Think AI. But we're not spoiling it. Stay tuned."
     },
     {
         question: "Can ADAM order biryani for me?",
-        answer: "**Maybe. Maybe not. We're not spoiling it.** What we can say: it's built by the team that connected 50 street lights with one gateway and cut costs by 98%. So yeah, we know how to build things that work. For everything else? Wait for launch day. Follow us for updates!"
+        answer: "**Maybe. Maybe not.** We built tech that wired entire cities. This? Wait for launch."
     },
     {
         question: "Is ADAM going to judge my late-night work habits?",
-        answer: "**We'll tell you when we launch.** All we can say right now: it's an AI companion. Built from scratch. Hardware-first approach. Born in Kolkata. What it does exactly? That's the surprise. Join our waitlist and follow us on social media for first-hand updates."
+        answer: "**We'll tell you when we launch.** AI companion. Hardware-first. That's the hint."
     },
     {
         question: "Will ADAM work with my existing smart home gadgets?",
-        answer: "**Here's what we CAN say:** We connected 50 street lights with one gateway. We cut city costs by 98%. We know mesh networks inside out. Can ADAM integrate with your gadgets? We're keeping that under wraps. But we've done harder things. Details dropping soon on Instagram and LinkedIn!"
+        answer: "**We know mesh networks.** Can it integrate? We're keeping that secret. For now."
     },
     {
         question: "When can I actually buy this thing?",
-        answer: "**ADAM is coming soon™ (really).** We've spent two years making cities smarter. Now we're bringing that same engineering to your desk. Launch date? Not announced yet. But if you want to be first in line and get exclusive updates, sign up for the waitlist below and follow us on Instagram (@dgentechnologies) and LinkedIn (Dgen Technologies)!"
+        answer: "**Coming soon™** Join the waitlist at our product page and follow us on social media for launch updates!"
     }
 ];
 
