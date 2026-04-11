@@ -24,7 +24,7 @@ const Model3DViewer = dynamic(
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import {
@@ -1694,7 +1694,16 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
         className="absolute inset-0 z-0"
         style={{ transform: `translateY(${parallaxOffset}px) scale(1.08)` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-950 to-black" />
+        {/* ADAM product image with blur */}
+        <Image
+          src="/images/adam-desktop-ai-module.png"
+          alt="ADAM — Autonomous Desktop AI Module by DGEN Technologies"
+          fill
+          className="object-cover"
+          style={{ filter: 'blur(4px)' }}
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/85" />
         {/* Subtle animated grid lines */}
         <div className="absolute inset-0 opacity-10"
           style={{
@@ -1963,6 +1972,133 @@ function AdamCookingSection() {
   );
 }
 
+function AdamFAQSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
+
+  // ADAM-specific FAQs with punchy comic Indian-English style (mystery mode)
+  const adamFaqs = [
+    {
+      question: "ADAM kya hai bhai? Dating app hai kya?",
+      answer: "**Not a dating app.** AI hardware for your desk. Made in India. That's all we're saying for now. Follow us for the reveal."
+    },
+    {
+      question: "So it's like Alexa but Made in India?",
+      answer: "**Nope.** Think different. Think AI. But we're not spoiling it. Stay tuned."
+    },
+    {
+      question: "Can ADAM order biryani for me?",
+      answer: "**Maybe. Maybe not.** We built tech that wired entire cities. This? Wait for launch."
+    },
+    {
+      question: "Is ADAM going to judge my late-night work habits?",
+      answer: "**We'll tell you when we launch.** AI companion. Hardware-first. That's the hint."
+    },
+    {
+      question: "Will ADAM work with my existing smart home gadgets?",
+      answer: "**We know mesh networks.** Can it integrate? We're keeping that secret. For now."
+    },
+    {
+      question: "When can I actually buy this thing?",
+      answer: "**Coming soon™** Join the waitlist below and follow us on social media for launch updates!"
+    }
+  ];
+
+  return (
+    <section className="w-full min-h-screen bg-black flex items-center justify-center overflow-hidden border-t border-white/5 relative">
+      {/* Background grid */}
+      <div className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(25,179,92,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(25,179,92,0.6) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+        }}
+      />
+      {/* Ambient glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
+
+      <div className="container max-w-screen-lg px-4 md:px-6 py-16 relative z-10">
+        <div
+          ref={ref}
+          className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          {/* Header */}
+          <div className="text-center space-y-3">
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Questions?</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white">
+              Let&apos;s Clear the Air.
+            </h2>
+            <p className="text-white/40 text-sm max-w-md mx-auto">
+              No corporate jargon. Just honest answers about what ADAM is (and isn&apos;t).
+            </p>
+          </div>
+
+          {/* FAQ Accordion */}
+          <Accordion type="single" collapsible className="w-full max-w-3xl">
+            {adamFaqs.map((item, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="border-white/10 data-[state=open]:border-primary/30 transition-colors"
+              >
+                <AccordionTrigger className="text-base sm:text-lg font-headline text-white text-left py-4 hover:text-primary transition-colors">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm sm:text-base text-white/70 pb-4">
+                  <div dangerouslySetInnerHTML={{
+                    __html: item.answer.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+                  }} />
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+
+          <p className="text-white/20 text-xs font-mono italic text-center">
+            💡 More questions? We&apos;re keeping some secrets. For now.
+          </p>
+
+          {/* Social Media Links for Updates */}
+          <div className="flex flex-col items-center gap-6 pt-8 border-t border-white/5 w-full max-w-xl">
+            <p className="text-white/60 text-sm font-mono">
+              Want exclusive updates? Follow us on social media:
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <a
+                href="https://instagram.com/dgentechnologies"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all group"
+              >
+                <Instagram className="w-5 h-5 text-white/60 group-hover:text-primary transition-colors" />
+                <span className="text-white/80 group-hover:text-white font-medium">Instagram</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/company/dgentechnologies"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all group"
+              >
+                <Linkedin className="w-5 h-5 text-white/60 group-hover:text-primary transition-colors" />
+                <span className="text-white/80 group-hover:text-white font-medium">LinkedIn</span>
+              </a>
+              <a
+                href="https://www.youtube.com/@DGENTECHNOLOGIES"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all group"
+              >
+                <Youtube className="w-5 h-5 text-white/60 group-hover:text-primary transition-colors" />
+                <span className="text-white/80 group-hover:text-white font-medium">YouTube</span>
+              </a>
+            </div>
+            <p className="text-white/30 text-xs">
+              Get behind-the-scenes updates, launch announcements, and early access opportunities
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function AdamWaitlistSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   const [email, setEmail] = useState('');
@@ -2052,6 +2188,7 @@ function AdamProductView({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       <AdamSuspenseSection />
       <AdamFeatureTease />
       <AdamCookingSection />
+      <AdamFAQSection />
       <AdamWaitlistSection />
     </>
   );

@@ -50,6 +50,30 @@ const faqs = [
     {
         question: "Where is Dgen Technologies located and where are products manufactured?",
         answer: "**Dgen Technologies is headquartered in Kolkata, India, and all products are proudly Made in India.** We design and manufacture our Auralis Ecosystem hardware locally, supporting the Smart Cities Mission and contributing to India's self-reliance in IoT technology. Our products are engineered for Indian climate and power conditions."
+    },
+    {
+        question: "ADAM kya hai bhai? Dating app hai kya?",
+        answer: "**Not a dating app.** AI hardware for your desk. Made in India. That's all we're saying for now. Follow us for the reveal."
+    },
+    {
+        question: "So it's like Alexa but Made in India?",
+        answer: "**Nope.** Think different. Think AI. But we're not spoiling it. Stay tuned."
+    },
+    {
+        question: "Can ADAM order biryani for me?",
+        answer: "**Maybe. Maybe not.** We built tech that wired entire cities. This? Wait for launch."
+    },
+    {
+        question: "Is ADAM going to judge my late-night work habits?",
+        answer: "**We'll tell you when we launch.** AI companion. Hardware-first. That's the hint."
+    },
+    {
+        question: "Will ADAM work with my existing smart home gadgets?",
+        answer: "**We know mesh networks.** Can it integrate? We're keeping that secret. For now."
+    },
+    {
+        question: "When can I actually buy this thing?",
+        answer: "**Coming soon™** Join the waitlist at our product page and follow us on social media for launch updates!"
     }
 ];
 

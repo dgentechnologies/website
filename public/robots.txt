@@ -1,6 +1,19 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
 
+# Allow all search engines to crawl the entire site
 User-agent: *
 Allow: /
 
+# Block admin and api routes from being indexed
+Disallow: /admin/
+Disallow: /api/
+
+# Block common framework/build files
+Disallow: /_next/
+Disallow: /static/
+
+# Crawl-delay to prevent overloading (optional, can be removed if not needed)
+# Crawl-delay: 1
+
+# Sitemap location
 Sitemap: https://dgentechnologies.com/sitemap.xml
