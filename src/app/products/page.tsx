@@ -48,7 +48,7 @@ function ProductCard({ product, icon, features, keyPoints, index, blurImage = fa
               alt={product.title}
               fill
               className="object-cover object-center transition-all duration-900 ease-in-out group-hover:scale-105"
-              style={blurImage ? { filter: 'blur(3px)' } : undefined}
+              style={blurImage ? { filter: 'blur(8px)' } : undefined}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             
