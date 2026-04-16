@@ -24,7 +24,7 @@ const Model3DViewer = dynamic(
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube, Wind, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube, Wind, Users, Brain, Mic, Bot, Flag, Lock, FlaskConical, Ruler, Rocket, Microscope } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import {
@@ -1807,32 +1807,32 @@ function AdamFeatureTease() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
   const features = [
     {
-      emoji: '🧠',
+      icon: Brain,
       title: 'Memory',
       tag: 'Remembers everything',
     },
     {
-      emoji: '🎙️',
+      icon: Mic,
       title: 'Voice',
       tag: 'Real conversations',
     },
     {
-      emoji: '🤖',
+      icon: Bot,
       title: 'Presence',
       tag: 'A face. A desk. An attitude.',
     },
     {
-      emoji: '🇮🇳',
+      icon: Flag,
       title: 'Made in India',
       tag: 'Board to firmware',
     },
     {
-      emoji: '🔒',
+      icon: Lock,
       title: 'Private',
       tag: 'On-device processing',
     },
     {
-      emoji: '⚡',
+      icon: Zap,
       title: 'Instant',
       tag: 'No cloud lag',
     },
@@ -1853,19 +1853,22 @@ function AdamFeatureTease() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-3xl">
-            {features.map((f, i) => (
-              <div
-                key={i}
-                className={`flex flex-col items-center gap-3 p-6 rounded-2xl border border-white/8 bg-white/4 hover:border-primary/40 hover:bg-primary/5 transition-all duration-400 text-center ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-                style={{ transitionDelay: `${i * 80}ms` }}
-              >
-                <span className="text-4xl">{f.emoji}</span>
-                <div>
-                  <p className="text-white font-headline font-bold text-base">{f.title}</p>
-                  <p className="text-white/40 text-xs mt-0.5">{f.tag}</p>
+            {features.map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <div
+                  key={i}
+                  className={`flex flex-col items-center gap-3 p-6 rounded-2xl border border-white/8 bg-white/4 hover:border-primary/40 hover:bg-primary/5 transition-all duration-400 text-center ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                  style={{ transitionDelay: `${i * 80}ms` }}
+                >
+                  <Icon className="w-9 h-9 text-primary" strokeWidth={1.5} />
+                  <div>
+                    <p className="text-white font-headline font-bold text-base">{f.title}</p>
+                    <p className="text-white/40 text-xs mt-0.5">{f.tag}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <p className="text-white/20 text-xs tracking-widest uppercase font-mono">
@@ -1881,31 +1884,31 @@ function AdamCookingSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
 
   const steps = [
-    { icon: '🔬', label: 'Research', sublabel: 'Lab & Discovery', state: 'done' },
-    { icon: '📐', label: 'Design', sublabel: 'Circuit Architecture', state: 'done' },
-    { icon: '🧪', label: 'Prototype', sublabel: 'Hardware Testing', state: 'active' },
-    { icon: '🤖', label: 'AI Core', sublabel: 'Model Training', state: 'active' },
-    { icon: '🎤', label: 'Voice', sublabel: 'Tuning & Refinement', state: 'upcoming' },
-    { icon: '🚀', label: 'Launch', sublabel: 'Ship to the world', state: 'upcoming' },
+    { icon: Microscope, label: 'Research', sublabel: 'Lab & Discovery', state: 'done' },
+    { icon: Ruler, label: 'Design', sublabel: 'Circuit Architecture', state: 'done' },
+    { icon: FlaskConical, label: 'Prototype', sublabel: 'Hardware Testing', state: 'active' },
+    { icon: Cpu, label: 'AI Core', sublabel: 'Model Training', state: 'active' },
+    { icon: Mic, label: 'Voice', sublabel: 'Tuning & Refinement', state: 'upcoming' },
+    { icon: Rocket, label: 'Launch', sublabel: 'Ship to the world', state: 'upcoming' },
   ];
 
   const stateStyles: Record<string, { card: string; badge: string; badgeText: string; glow: string }> = {
     done: {
       card: 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10',
       badge: 'bg-green-500/15 border border-green-500/30 text-green-400',
-      badgeText: '✅ Done',
+      badgeText: 'Done',
       glow: 'shadow-[0_0_30px_-5px_rgba(34,197,94,0.3)]',
     },
     active: {
       card: 'border-orange-400/40 bg-orange-400/5 hover:bg-orange-400/10 animate-pulse-subtle',
       badge: 'bg-orange-400/15 border border-orange-400/30 text-orange-300',
-      badgeText: '🔥 Cooking',
+      badgeText: 'Cooking',
       glow: 'shadow-[0_0_40px_-5px_rgba(251,146,60,0.4)]',
     },
     upcoming: {
       card: 'border-white/8 bg-white/3 hover:border-white/15',
       badge: 'bg-white/8 border border-white/15 text-white/30',
-      badgeText: '⏳ Soon',
+      badgeText: 'Soon',
       glow: '',
     },
   };
@@ -1950,7 +1953,7 @@ function AdamCookingSection() {
                   {step.state === 'active' && (
                     <div className="absolute inset-0 rounded-3xl border border-orange-400/20 animate-pulse pointer-events-none" />
                   )}
-                  <span className="text-5xl">{step.icon}</span>
+                  {(() => { const StepIcon = step.icon; return <StepIcon className="w-10 h-10 text-primary" strokeWidth={1.5} />; })()}
                   <div className="text-center">
                     <p className="text-white font-headline font-bold text-lg">{step.label}</p>
                     <p className="text-white/40 text-xs mt-0.5">{step.sublabel}</p>
@@ -1964,7 +1967,7 @@ function AdamCookingSection() {
           </div>
 
           <p className="text-white/20 text-xs font-mono italic">
-            👨‍🍳 Chef says: don&apos;t open the oven. Not yet.
+            Chef says: don&apos;t open the oven. Not yet.
           </p>
         </div>
       </div>
