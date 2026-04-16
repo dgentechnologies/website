@@ -62,9 +62,10 @@ export default function ServicesLayout({
     "description": "DGEN Technologies creates smart, advanced hardware and software solutions to help society, including the flagship Auralis smart street lighting system.",
     "sameAs": [
       "https://www.linkedin.com/company/dgen-technologies/",
-      "https://x.com/DGEN_Tech"
-    ],
-    "contactPoint": {
+      "https://x.com/DGEN_Tech",
+      "https://www.instagram.com/dgentechnologies/",
+      "https://www.youtube.com/@DGENTECHNOLOGIES"
+    ],    "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "Sales",
       "email": "contact@dgentechnologies.com"

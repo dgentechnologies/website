@@ -33,15 +33,15 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Dgen Technologies | Advanced Hardware & Software Solutions | Auralis Ecosystem',
+    default: 'Dgen Technologies | Advanced Hardware & Software Solutions | Auralis Ecosystem | ADAM AI',
     template: '%s | Dgen Technologies',
   },
-  description: 'Dgen Technologies creates smart, advanced hardware and software solutions to help society. From our Auralis Ecosystem smart street lighting to cutting-edge IoT innovations, Made in India.',
-  keywords: ['smart city', 'IoT', 'Auralis Ecosystem', 'hardware solutions', 'software solutions', 'smart street light', 'India', 'Kolkata', 'ESP-MESH', 'Hybrid Wireless Mesh Network', 'Made in India', 'Smart Cities Mission', 'affordable smart lighting', 'predictive maintenance', 'technology for society'],
+  description: 'Dgen Technologies creates smart, advanced hardware and software solutions to help society. From our Auralis Ecosystem smart street lighting to ADAM AI companion, Made in India cutting-edge IoT and AI innovations.',
+  keywords: ['smart city', 'IoT', 'Auralis Ecosystem', 'hardware solutions', 'software solutions', 'smart street light', 'India', 'ESP-MESH', 'Hybrid Wireless Mesh Network', 'Made in India', 'Smart Cities Mission', 'affordable smart lighting', 'predictive maintenance', 'technology for society', 'ADAM AI', 'AI companion', 'desktop AI', 'AI hardware'],
   authors: [{ name: 'Dgen Technologies Private Limited' }],
   openGraph: {
-    title: 'Dgen Technologies | Advanced Technology Solutions & Auralis Ecosystem',
-    description: 'Dgen Technologies creates smart, advanced hardware and software solutions to help society, including our Auralis Ecosystem for intelligent street lighting.',
+    title: 'Dgen Technologies | Advanced Technology Solutions, Auralis Ecosystem & ADAM AI',
+    description: 'Dgen Technologies creates smart, advanced hardware and software solutions to help society, including our Auralis Ecosystem for intelligent street lighting and ADAM AI companion.',
     url: 'https://dgentechnologies.com',
     siteName: 'Dgen Technologies',
     images: [
@@ -56,8 +56,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Dgen Technologies | Advanced Technology Solutions & Auralis Ecosystem',
-    description: 'Dgen Technologies creates smart, advanced hardware and software solutions to help society, including our Auralis Ecosystem for intelligent street lighting.',
+    title: 'Dgen Technologies | Advanced Technology Solutions, Auralis Ecosystem & ADAM AI',
+    description: 'Dgen Technologies creates smart, advanced hardware and software solutions to help society, including our Auralis Ecosystem for intelligent street lighting and ADAM AI companion.',
     images: ['https://dgentechnologies.com/twitter-image.png'],
   },
   robots: {
@@ -92,7 +92,9 @@ export default function RootLayout({
     "description": "Dgen Technologies creates smart, advanced hardware and software solutions to help society. We specialize in cutting-edge IoT and AI-powered technologies, including the Auralis Ecosystem for intelligent urban infrastructure.",
     "sameAs": [
       "https://www.linkedin.com/company/dgen-technologies/",
-      "https://x.com/DGEN_Tech"
+      "https://x.com/DGEN_Tech",
+      "https://www.instagram.com/dgentechnologies/",
+      "https://www.youtube.com/@DGENTECHNOLOGIES"
     ],
     "contactPoint": {
       "@type": "ContactPoint",
