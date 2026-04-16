@@ -24,7 +24,7 @@ const Model3DViewer = dynamic(
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube, Wind, Users } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import {
@@ -1764,9 +1764,9 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
 function AdamSuspenseSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
   const stats = [
-    { icon: '🧠', value: 'Soul', label: 'On-device intelligence' },
-    { icon: '🎙️', value: 'Relaxant', label: 'Real-time interaction' },
-    { icon: '⚡', value: 'Companion', label: 'In development' },
+    { icon: Sparkles, value: 'Soul', label: 'Emotion-aware presence' },
+    { icon: Wind, value: 'Relaxant', label: 'Calm your day, effortlessly' },
+    { icon: Users, value: 'Companion', label: 'Always by your side' },
   ];
   return (
     <section className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden border-b border-white/5">
@@ -1788,7 +1788,7 @@ function AdamSuspenseSection() {
                 className={`flex flex-col items-center gap-3 p-8 rounded-3xl border border-white/8 bg-white/3 hover:border-primary/30 hover:bg-primary/5 transition-all duration-500 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
-                <span className="text-5xl">{s.icon}</span>
+                <s.icon className="w-10 h-10 text-primary" strokeWidth={1.5} />
                 <span className="text-3xl font-headline font-black text-white">{s.value}</span>
                 <span className="text-white/40 text-xs text-center font-mono uppercase tracking-wider">{s.label}</span>
               </div>
