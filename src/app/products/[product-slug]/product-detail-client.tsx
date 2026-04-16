@@ -1755,9 +1755,9 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
 function AdamSuspenseSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
   const stats = [
-    { icon: '🧠', value: 'AI', label: 'On-device intelligence' },
-    { icon: '🎙️', value: 'Voice', label: 'Real-time interaction' },
-    { icon: '⚡', value: '2 yrs', label: 'In development' },
+    { icon: '🧠', value: 'Soul', label: 'On-device intelligence' },
+    { icon: '🎙️', value: 'Relaxant', label: 'Real-time interaction' },
+    { icon: '⚡', value: 'Companion', label: 'In development' },
   ];
   return (
     <section className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden border-b border-white/5">
