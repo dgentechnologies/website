@@ -24,7 +24,7 @@ const Model3DViewer = dynamic(
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube, Wind, Users, Brain, Mic, Bot, Flag, Lock, FlaskConical, Ruler, Rocket, Microscope } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube, Wind, Users, Brain, Mic, Bot, Flag, Lock, FlaskConical, Ruler, Rocket, Microscope, Lightbulb, Feather, UserCircle } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import {
@@ -1807,34 +1807,34 @@ function AdamFeatureTease() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
   const features = [
     {
-      icon: Brain,
-      title: 'Memory',
-      tag: 'Remembers everything',
+      icon: Lightbulb,
+      title: 'Intellect',
+      tag: 'Thinks before it speaks',
     },
     {
-      icon: Mic,
-      title: 'Voice',
-      tag: 'Real conversations',
+      icon: Feather,
+      title: 'Essence',
+      tag: 'The spirit behind the machine',
     },
     {
-      icon: Bot,
-      title: 'Presence',
-      tag: 'A face. A desk. An attitude.',
+      icon: Wind,
+      title: 'Unwind',
+      tag: 'Decompress. Let ADAM handle it.',
     },
     {
-      icon: Flag,
-      title: 'Made in India',
-      tag: 'Board to firmware',
+      icon: Network,
+      title: 'Network',
+      tag: 'Always connected, never intrusive',
     },
     {
-      icon: Lock,
-      title: 'Private',
-      tag: 'On-device processing',
+      icon: Cpu,
+      title: 'Core',
+      tag: 'Raw processing, refined instincts',
     },
     {
-      icon: Zap,
-      title: 'Instant',
-      tag: 'No cloud lag',
+      icon: UserCircle,
+      title: 'Profile',
+      tag: 'Knows you like no one else',
     },
   ];
 
