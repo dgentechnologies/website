@@ -53,7 +53,25 @@ export default function AdminLoginPage() {
 
   useEffect(() => {
     if (error) {
-      toast({ variant: 'destructive', title: 'Login Failed', description: error.message });
+      const code = (error as { code?: string }).code;
+      let description = 'An unexpected error occurred. Please try again.';
+      if (
+        code === 'auth/invalid-credential' ||
+        code === 'auth/wrong-password' ||
+        code === 'auth/user-not-found' ||
+        code === 'auth/invalid-email'
+      ) {
+        description = 'Invalid email or password. Please check your credentials.';
+      } else if (code === 'auth/operation-not-allowed') {
+        description = 'Email/password sign-in is not enabled. Contact the developer.';
+      } else if (code === 'auth/too-many-requests') {
+        description = 'Too many failed attempts. Please wait a few minutes and try again.';
+      } else if (code === 'auth/user-disabled') {
+        description = 'This account has been disabled. Contact the developer.';
+      } else if (code === 'auth/network-request-failed') {
+        description = 'Network error. Check your internet connection and try again.';
+      }
+      toast({ variant: 'destructive', title: 'Login Failed', description });
     }
   }, [error, toast]);
 
