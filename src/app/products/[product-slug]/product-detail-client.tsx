@@ -1978,32 +1978,39 @@ function AdamCookingSection() {
 function AdamFAQSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
 
-  // ADAM-specific FAQs with punchy comic Indian-English style (mystery mode)
   const adamFaqs = [
     {
-      question: "What exactly is ADAM?",
-      answer: "**An Autonomous Desktop AI Module.** Precision-engineered hardware paired with an intelligent software core. Designed for your desk. Built in India. That is the full picture — for now."
+      question: "Bhai, seriously — ADAM kya hai?",
+      answer: "**An Autonomous Desktop AI Module.** Hardware. Intelligence. Desk. Made in India by the same people who wired entire smart cities. Beyond that — classified. You'll understand why at launch."
     },
     {
-      question: "How does ADAM differ from voice assistants like Alexa or Siri?",
-      answer: "**Fundamentally different category.** ADAM is a dedicated hardware device with an on-device intelligence architecture — not a cloud-dependent voice relay. The distinction is significant."
+      question: "Is this just another Alexa with a desi twist?",
+      answer: "**No. Hard no. Absolutely not.** Alexa is a speaker that occasionally understands you. ADAM is a dedicated intelligence device with on-device processing, persistent memory, and an architectural depth that a speaker simply cannot compete with. Different species entirely."
     },
     {
-      question: "What will ADAM be capable of at launch?",
-      answer: "**Voice interaction, contextual memory, ambient intelligence, and smart environment orchestration.** Comprehensive capability disclosure will follow at launch. Prematurely revealing the full scope would do it a disservice."
+      question: "What can ADAM actually do? Give us something!",
+      answer: "**Voice interaction. Contextual memory. Ambient intelligence. Smart environment orchestration.** That's the appetiser. The main course is being plated. Prematurely listing every capability would be like describing a symphony by its instrument count — technically accurate, entirely insufficient."
     },
     {
-      question: "Will ADAM adapt to my individual workflow over time?",
-      answer: "**By design, yes.** ADAM's intelligence architecture is built around persistent contextual learning. It refines its understanding of your patterns, preferences, and environment continuously."
+      question: "Will it actually remember me, or am I going to repeat myself every single time?",
+      answer: "**Remembering you is literally the point.** ADAM is built around persistent contextual learning. Your patterns, your preferences, your routines — it builds a model of you over time. Not session-by-session amnesia. Continuous, compounding intelligence."
     },
     {
-      question: "Does ADAM integrate with existing smart home systems?",
-      answer: "**DGEN built the mesh networks that power entire cities.** ADAM inherits that integration DNA. Detailed compatibility specifications will be released closer to launch."
+      question: "My house has 47 smart devices. Will ADAM handle them or give up?",
+      answer: "**DGEN's mesh networks manage thousands of street lights across cities.** 47 devices? That's a warm-up. Full integration specifications will be disclosed at launch — but the short answer is: it was built for this."
     },
     {
-      question: "When can I acquire ADAM?",
-      answer: "**Launch timeline is not yet public.** What we can confirm: early access members receive priority. Join the waitlist below and follow our channels for the announcement."
-    }
+      question: "How much will it cost? Give a ballpark at least.",
+      answer: "**Not yet.** But here's the intent: pricing that respects the intelligence of the person buying it. No subscription traps, no ecosystem lock-in nonsense. Early access members get first dibs on pricing. Waitlist is below — just saying."
+    },
+    {
+      question: "Will ADAM judge my 2am Netflix decisions?",
+      answer: "**ADAM is intelligent, not your mother.** It learns your patterns to assist you — not audit your life choices. Though if you're asking this question at 2am... it probably already knows."
+    },
+    {
+      question: "Okay, when is it actually launching?",
+      answer: "**When it's genuinely ready.** Not a day before. Not a press-release-first, fix-later situation. The team that engineered city-scale infrastructure doesn't ship half-baked. Join the waitlist — you'll be the first to know the moment it's time."
+    },
   ];
 
   return (
@@ -2025,12 +2032,14 @@ function AdamFAQSection() {
         >
           {/* Header */}
           <div className="text-center space-y-3">
-            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Frequently Asked</p>
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">You Asked. We&apos;ll Answer. Mostly.</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white">
-              Intelligent Answers.
+              Fair Questions.
+              <br />
+              <span className="text-primary">Honest Answers.</span>
             </h2>
             <p className="text-white/40 text-sm max-w-md mx-auto">
-              No corporate deflection. Precise, direct answers about ADAM&apos;s nature and ambition.
+              We&apos;ll tell you what we can. The rest? You&apos;ll appreciate the suspense at launch.
             </p>
           </div>
 
@@ -2045,7 +2054,7 @@ function AdamFAQSection() {
                 <AccordionTrigger className="text-base sm:text-lg font-headline text-white text-left py-4 hover:text-primary transition-colors">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm sm:text-base text-white/70 pb-4">
+                <AccordionContent className="text-sm sm:text-base text-white/70 pb-4 leading-relaxed">
                   <div dangerouslySetInnerHTML={{
                     __html: item.answer.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
                   }} />
@@ -2055,7 +2064,7 @@ function AdamFAQSection() {
           </Accordion>
 
           <p className="text-white/20 text-xs font-mono italic text-center">
-            Further enquiries will be addressed at the product reveal.
+            More questions? Good. Hold that curiosity. It&apos;ll make the launch even better.
           </p>
 
           {/* Social Media Links for Updates */}
