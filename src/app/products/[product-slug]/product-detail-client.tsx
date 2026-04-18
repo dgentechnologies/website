@@ -24,7 +24,7 @@ const Model3DViewer = dynamic(
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube, Wind, Users, Brain, Mic, Bot, Flag, Lock, FlaskConical, Ruler, Rocket, Microscope, Lightbulb, Feather, UserCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Zap, Shield, Settings, Wifi, AlertTriangle, Check, CircuitBoard, Signal, Cpu, Combine, GaugeCircle, Network, Router, ToyBrick, Radar, MapPin, BarChart3, Instagram, Linkedin, Youtube, Wind, Users, Brain, Mic, Bot, Flag, Lock, FlaskConical, Ruler, Rocket, Microscope, Lightbulb, Feather, UserCircle, Clock } from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import {
@@ -1907,23 +1907,26 @@ function AdamCookingSection() {
     { icon: Rocket, label: 'Launch', sublabel: 'When it\'s ready. Not before.', state: 'upcoming' },
   ];
 
-  const stateStyles: Record<string, { card: string; badge: string; badgeText: string; glow: string }> = {
+  const stateStyles: Record<string, { card: string; badge: string; badgeText: string; BadgeIcon: React.ComponentType<{ className?: string }>; glow: string }> = {
     done: {
       card: 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10',
       badge: 'bg-green-500/15 border border-green-500/30 text-green-400',
-      badgeText: '✓ Delivered',
+      badgeText: 'Delivered',
+      BadgeIcon: Check,
       glow: 'shadow-[0_0_30px_-5px_rgba(34,197,94,0.3)]',
     },
     active: {
       card: 'border-orange-400/40 bg-orange-400/5 hover:bg-orange-400/10 animate-pulse-subtle',
       badge: 'bg-orange-400/15 border border-orange-400/30 text-orange-300',
-      badgeText: '⚡ In Progress',
+      badgeText: 'In Progress',
+      BadgeIcon: Zap,
       glow: 'shadow-[0_0_40px_-5px_rgba(251,146,60,0.4)]',
     },
     upcoming: {
       card: 'border-white/8 bg-white/3 hover:border-white/15',
       badge: 'bg-white/8 border border-white/15 text-white/30',
-      badgeText: '◦ Queued',
+      badgeText: 'Queued',
+      BadgeIcon: Clock,
       glow: '',
     },
   };
@@ -1977,7 +1980,8 @@ function AdamCookingSection() {
                     <p className="text-white font-headline font-bold text-lg">{step.label}</p>
                     <p className="text-white/40 text-xs mt-0.5">{step.sublabel}</p>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-mono ${s.badge}`}>
+                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono ${s.badge}`}>
+                    <s.BadgeIcon className="w-3 h-3" />
                     {s.badgeText}
                   </span>
                 </div>
