@@ -1734,11 +1734,18 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-black tracking-tight text-white leading-tight animate-slide-up"
           style={{ animationDelay: '0.15s', textShadow: '0 0 60px rgba(25,179,92,0.3)' }}
         >
-          Intelligence is evolving.<br className="hidden sm:block" /> On your desk.
+          We built smart cities.
+          <br className="hidden sm:block" />
+          Now we&apos;re coming for your desk.
         </h1>
 
         <p className="text-sm sm:text-base text-white/50 tracking-[0.2em] uppercase font-mono animate-slide-up" style={{ animationDelay: '0.3s' }}>
-          ADAM — Autonomous Desktop AI Module
+          ADAM — Autonomous Desktop AI Module · Made in India
+        </p>
+
+        <p className="text-white/35 text-sm sm:text-base max-w-lg animate-slide-up leading-relaxed" style={{ animationDelay: '0.38s' }}>
+          The full picture? Classified. What we&apos;ll say: it&apos;s hardware. It&apos;s intelligent.
+          And it&apos;s unlike anything currently sitting on an Indian desk.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 animate-slide-up" style={{ animationDelay: '0.45s' }}>
@@ -1764,9 +1771,9 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
 function AdamSuspenseSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.15 });
   const stats = [
-    { icon: Sparkles, value: 'Soul', label: 'Emotion-aware presence' },
-    { icon: Wind, value: 'Relaxant', label: 'Calm your day, effortlessly' },
-    { icon: Users, value: 'Companion', label: 'Always by your side' },
+    { icon: Sparkles, value: 'Soul', label: 'It gets you. Disturbingly well.' },
+    { icon: Wind, value: 'Presence', label: 'The colleague you actually wanted.' },
+    { icon: Users, value: 'Companion', label: 'Never leaves. Never judges. Mostly.' },
   ];
   return (
     <section className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden border-b border-white/5">
@@ -1776,10 +1783,15 @@ function AdamSuspenseSection() {
           className={`flex flex-col items-center gap-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           <div className="text-center space-y-3">
-            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">The Nature of ADAM</p>
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">ADAM, In Three Words</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
-              Encounter ADAM. Presently.
+              Meet ADAM.
+              <br />
+              <span className="text-primary">Partially.</span>
             </h2>
+            <p className="text-white/35 text-sm max-w-sm mx-auto">
+              We can tell you what it <em>is</em>. The depth of what it <em>does</em> — that&apos;s the part we&apos;re saving for launch.
+            </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-2xl">
             {stats.map((s, i) => (
@@ -1794,8 +1806,8 @@ function AdamSuspenseSection() {
               </div>
             ))}
           </div>
-          <p className="text-white/40 text-sm text-center max-w-xs italic">
-            The precision that rewired cities — now refined to a single desk.
+          <p className="text-white/40 text-sm text-center max-w-sm italic">
+            City-scale engineering. Desk-scale ambition. Same team. Same obsession. Zero compromises.
           </p>
         </div>
       </div>
@@ -1809,32 +1821,32 @@ function AdamFeatureTease() {
     {
       icon: Lightbulb,
       title: 'Intellect',
-      tag: 'Thinks before it speaks',
+      tag: 'Thinks before it speaks. Unlike most.',
     },
     {
       icon: Feather,
       title: 'Essence',
-      tag: 'The spirit behind the machine',
+      tag: 'The soul we didn\'t expect to give it.',
     },
     {
       icon: Wind,
       title: 'Unwind',
-      tag: 'Decompress. Let ADAM handle it.',
+      tag: 'Your stress. ADAM\'s problem.',
     },
     {
       icon: Network,
       title: 'Network',
-      tag: 'Always connected, never intrusive',
+      tag: 'Knows when to talk. Knows when not to.',
     },
     {
       icon: Cpu,
       title: 'Core',
-      tag: 'Raw processing, refined instincts',
+      tag: 'City-grade processing. Desk-sized form.',
     },
     {
       icon: UserCircle,
       title: 'Profile',
-      tag: 'Knows you like no one else',
+      tag: 'Remembers everything. Judges nothing.',
     },
   ];
 
@@ -1845,11 +1857,14 @@ function AdamFeatureTease() {
           ref={ref}
           className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
-          <div className="text-center space-y-1">
-            <p className="text-white/40 text-xs tracking-[0.3em] uppercase font-mono">Core Capabilities</p>
+          <div className="text-center space-y-3">
+            <p className="text-white/40 text-xs tracking-[0.3em] uppercase font-mono">A Teaser. Just a Teaser.</p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold text-white">
-              Intelligence Suite
+              Six Reasons to Be Intrigued.
             </h2>
+            <p className="text-white/35 text-sm max-w-sm mx-auto">
+              This is not the full list. Not even close. But it&apos;s enough to make you curious — which is precisely the point.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-3xl">
@@ -1872,7 +1887,7 @@ function AdamFeatureTease() {
           </div>
 
           <p className="text-white/20 text-xs tracking-widest uppercase font-mono">
-            Full capability disclosure · at launch · not a moment earlier.
+            Full capability manifest · revealed at launch · patience is a virtue · etc.
           </p>
         </div>
       </div>
@@ -1884,31 +1899,31 @@ function AdamCookingSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
 
   const steps = [
-    { icon: Microscope, label: 'Research', sublabel: 'Lab & Discovery', state: 'done' },
-    { icon: Ruler, label: 'Design', sublabel: 'Circuit Architecture', state: 'done' },
-    { icon: FlaskConical, label: 'Prototype', sublabel: 'Hardware Testing', state: 'active' },
-    { icon: Cpu, label: 'AI Core', sublabel: 'Model Training', state: 'active' },
-    { icon: Mic, label: 'Voice', sublabel: 'Tuning & Refinement', state: 'upcoming' },
-    { icon: Rocket, label: 'Launch', sublabel: 'Ship to the world', state: 'upcoming' },
+    { icon: Microscope, label: 'Research', sublabel: '12 whiteboards. Zero sleep.', state: 'done' },
+    { icon: Ruler, label: 'Design', sublabel: 'Every micron. Deliberate.', state: 'done' },
+    { icon: FlaskConical, label: 'Prototype', sublabel: 'Making it real. Repeatedly.', state: 'active' },
+    { icon: Cpu, label: 'AI Core', sublabel: 'Teaching it everything. Almost.', state: 'active' },
+    { icon: Mic, label: 'Voice', sublabel: 'Finding the right tone. Literally.', state: 'upcoming' },
+    { icon: Rocket, label: 'Launch', sublabel: 'When it\'s ready. Not before.', state: 'upcoming' },
   ];
 
   const stateStyles: Record<string, { card: string; badge: string; badgeText: string; glow: string }> = {
     done: {
       card: 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10',
       badge: 'bg-green-500/15 border border-green-500/30 text-green-400',
-      badgeText: 'Done',
+      badgeText: '✓ Delivered',
       glow: 'shadow-[0_0_30px_-5px_rgba(34,197,94,0.3)]',
     },
     active: {
       card: 'border-orange-400/40 bg-orange-400/5 hover:bg-orange-400/10 animate-pulse-subtle',
       badge: 'bg-orange-400/15 border border-orange-400/30 text-orange-300',
-      badgeText: 'Cooking',
+      badgeText: '⚡ In Progress',
       glow: 'shadow-[0_0_40px_-5px_rgba(251,146,60,0.4)]',
     },
     upcoming: {
       card: 'border-white/8 bg-white/3 hover:border-white/15',
       badge: 'bg-white/8 border border-white/15 text-white/30',
-      badgeText: 'Soon',
+      badgeText: '◦ Queued',
       glow: '',
     },
   };
@@ -1932,11 +1947,15 @@ function AdamCookingSection() {
         >
           {/* Header */}
           <div className="text-center space-y-3">
-            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Development Milestones</p>
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Live Build Status</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white">
-              Precision in Progress.
+              We Don&apos;t Rush.
+              <br />
+              <span className="text-primary">Here&apos;s Proof.</span>
             </h2>
-            <p className="text-white/40 text-sm max-w-xs mx-auto">Engineering excellence takes time. Here&apos;s exactly where we stand.</p>
+            <p className="text-white/40 text-sm max-w-sm mx-auto">
+              Every stage earns the next one. Nothing ships until it&apos;s genuinely ready — a concept that&apos;s apparently revolutionary in the hardware industry.
+            </p>
           </div>
 
           {/* Steps grid */}
@@ -1967,7 +1986,7 @@ function AdamCookingSection() {
           </div>
 
           <p className="text-white/20 text-xs font-mono italic">
-            Excellence is non-negotiable. The timeline is a byproduct of that.
+            The oven is on. The chef is focused. Do not open the door.
           </p>
         </div>
       </div>
@@ -2149,10 +2168,13 @@ function AdamWaitlistSection() {
           className={`flex flex-col items-center gap-8 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
-            ADAM debuts once. Reserve your position.
+            ADAM debuts once.
+            <br />
+            <span className="text-primary">Reserve your position.</span>
           </h2>
-          <p className="text-white/60 text-base sm:text-lg">
-            Priority access. No noise. A single notification when ADAM is ready for you.
+          <p className="text-white/60 text-base sm:text-lg max-w-md mx-auto">
+            No spam. No weekly newsletters. One email — when ADAM is genuinely ready.
+            That&apos;s the deal. Join the list or don&apos;t. But the waitlist fills up either way.
           </p>
 
           {status === 'success' ? (
