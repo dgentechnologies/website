@@ -1727,14 +1727,14 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       {/* Hero Content */}
       <div className="relative z-10 flex flex-col items-center gap-4 px-4 md:px-6 max-w-4xl mx-auto py-8">
         <Badge variant="default" className="py-2 px-6 text-2xl sm:text-3xl md:text-4xl font-black tracking-widest uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
-          Coming Soon
+          Launching Soon
         </Badge>
 
         <h1
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-black tracking-tight text-white leading-tight animate-slide-up"
           style={{ animationDelay: '0.15s', textShadow: '0 0 60px rgba(25,179,92,0.3)' }}
         >
-          Something is waking up<br className="hidden sm:block" /> on your desk.
+          Intelligence is evolving.<br className="hidden sm:block" /> On your desk.
         </h1>
 
         <p className="text-sm sm:text-base text-white/50 tracking-[0.2em] uppercase font-mono animate-slide-up" style={{ animationDelay: '0.3s' }}>
@@ -1744,15 +1744,15 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
         <div className="flex flex-col sm:flex-row gap-3 animate-slide-up" style={{ animationDelay: '0.45s' }}>
           <Link href="/products/adam/demo">
             <button className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-primary/50 bg-primary/10 hover:bg-primary/20 text-primary font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-300 text-sm group">
-              See Demo
+              Preview Intelligence
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
           <button
             onClick={scrollToWaitlist}
-            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-sm group"
+            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-primary hover:bg-primary/90 text-black font-bold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-sm group"
           >
-            Join Waiting List
+            Secure Early Access
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -1776,9 +1776,9 @@ function AdamSuspenseSection() {
           className={`flex flex-col items-center gap-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           <div className="text-center space-y-3">
-            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">What ADAM is</p>
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">The Nature of ADAM</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
-              Meet ADAM. Almost.
+              Encounter ADAM. Presently.
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-2xl">
@@ -1795,7 +1795,7 @@ function AdamSuspenseSection() {
             ))}
           </div>
           <p className="text-white/40 text-sm text-center max-w-xs italic">
-            Same obsession that wired cities — now sitting on your desk.
+            The precision that rewired cities — now refined to a single desk.
           </p>
         </div>
       </div>
@@ -1846,9 +1846,9 @@ function AdamFeatureTease() {
           className={`flex flex-col items-center gap-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           <div className="text-center space-y-1">
-            <p className="text-white/40 text-xs tracking-[0.3em] uppercase font-mono">What it can do</p>
+            <p className="text-white/40 text-xs tracking-[0.3em] uppercase font-mono">Core Capabilities</p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold text-white">
-              Features
+              Intelligence Suite
             </h2>
           </div>
 
@@ -1872,7 +1872,7 @@ function AdamFeatureTease() {
           </div>
 
           <p className="text-white/20 text-xs tracking-widest uppercase font-mono">
-            Full specs · when we&apos;re ready · not before.
+            Full capability disclosure · at launch · not a moment earlier.
           </p>
         </div>
       </div>
@@ -1932,11 +1932,11 @@ function AdamCookingSection() {
         >
           {/* Header */}
           <div className="text-center space-y-3">
-            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Build progress</p>
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Development Milestones</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white">
-              Something&apos;s Cooking.
+              Precision in Progress.
             </h2>
-            <p className="text-white/40 text-sm max-w-xs mx-auto">We&apos;re deep in the kitchen. Here&apos;s the live status.</p>
+            <p className="text-white/40 text-sm max-w-xs mx-auto">Engineering excellence takes time. Here&apos;s exactly where we stand.</p>
           </div>
 
           {/* Steps grid */}
@@ -1967,7 +1967,7 @@ function AdamCookingSection() {
           </div>
 
           <p className="text-white/20 text-xs font-mono italic">
-            Chef says: don&apos;t open the oven. Not yet.
+            Excellence is non-negotiable. The timeline is a byproduct of that.
           </p>
         </div>
       </div>
@@ -1981,28 +1981,28 @@ function AdamFAQSection() {
   // ADAM-specific FAQs with punchy comic Indian-English style (mystery mode)
   const adamFaqs = [
     {
-      question: "ADAM kya hai bhai? Dating app hai kya?",
-      answer: "**Not a dating app.** AI hardware for your desk. Made in India. That's all we're saying for now. Follow us for the reveal."
+      question: "What exactly is ADAM?",
+      answer: "**An Autonomous Desktop AI Module.** Precision-engineered hardware paired with an intelligent software core. Designed for your desk. Built in India. That is the full picture — for now."
     },
     {
-      question: "So it's like Alexa but Made in India?",
-      answer: "**Nope.** Think different. Think AI. But we're not spoiling it. Stay tuned."
+      question: "How does ADAM differ from voice assistants like Alexa or Siri?",
+      answer: "**Fundamentally different category.** ADAM is a dedicated hardware device with an on-device intelligence architecture — not a cloud-dependent voice relay. The distinction is significant."
     },
     {
-      question: "Can ADAM order biryani for me?",
-      answer: "**Maybe. Maybe not.** We built tech that wired entire cities. This? Wait for launch."
+      question: "What will ADAM be capable of at launch?",
+      answer: "**Voice interaction, contextual memory, ambient intelligence, and smart environment orchestration.** Comprehensive capability disclosure will follow at launch. Prematurely revealing the full scope would do it a disservice."
     },
     {
-      question: "Is ADAM going to judge my late-night work habits?",
-      answer: "**We'll tell you when we launch.** AI companion. Hardware-first. That's the hint."
+      question: "Will ADAM adapt to my individual workflow over time?",
+      answer: "**By design, yes.** ADAM's intelligence architecture is built around persistent contextual learning. It refines its understanding of your patterns, preferences, and environment continuously."
     },
     {
-      question: "Will ADAM work with my existing smart home gadgets?",
-      answer: "**We know mesh networks.** Can it integrate? We're keeping that secret. For now."
+      question: "Does ADAM integrate with existing smart home systems?",
+      answer: "**DGEN built the mesh networks that power entire cities.** ADAM inherits that integration DNA. Detailed compatibility specifications will be released closer to launch."
     },
     {
-      question: "When can I actually buy this thing?",
-      answer: "**Coming soon™** Join the waitlist below and follow us on social media for launch updates!"
+      question: "When can I acquire ADAM?",
+      answer: "**Launch timeline is not yet public.** What we can confirm: early access members receive priority. Join the waitlist below and follow our channels for the announcement."
     }
   ];
 
@@ -2025,12 +2025,12 @@ function AdamFAQSection() {
         >
           {/* Header */}
           <div className="text-center space-y-3">
-            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Questions?</p>
+            <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-mono">Frequently Asked</p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white">
-              Let&apos;s Clear the Air.
+              Intelligent Answers.
             </h2>
             <p className="text-white/40 text-sm max-w-md mx-auto">
-              No corporate jargon. Just honest answers about what ADAM is (and isn&apos;t).
+              No corporate deflection. Precise, direct answers about ADAM&apos;s nature and ambition.
             </p>
           </div>
 
@@ -2055,13 +2055,13 @@ function AdamFAQSection() {
           </Accordion>
 
           <p className="text-white/20 text-xs font-mono italic text-center">
-            💡 More questions? We&apos;re keeping some secrets. For now.
+            Further enquiries will be addressed at the product reveal.
           </p>
 
           {/* Social Media Links for Updates */}
           <div className="flex flex-col items-center gap-6 pt-8 border-t border-white/5 w-full max-w-xl">
             <p className="text-white/60 text-sm font-mono">
-              Want exclusive updates? Follow us on social media:
+              Receive priority launch intelligence. Follow our channels:
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <a
@@ -2093,7 +2093,7 @@ function AdamFAQSection() {
               </a>
             </div>
             <p className="text-white/30 text-xs">
-              Get behind-the-scenes updates, launch announcements, and early access opportunities
+              Development milestones, launch announcements, and exclusive early access opportunities
             </p>
           </div>
         </div>
@@ -2140,15 +2140,15 @@ function AdamWaitlistSection() {
           className={`flex flex-col items-center gap-8 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
-            ADAM launches once. Be in the room.
+            ADAM debuts once. Reserve your position.
           </h2>
           <p className="text-white/60 text-base sm:text-lg">
-            Early access. No spam. Just one email when ADAM is ready for you.
+            Priority access. No noise. A single notification when ADAM is ready for you.
           </p>
 
           {status === 'success' ? (
             <div className="w-full p-6 rounded-2xl border border-primary/40 bg-primary/10 text-primary font-semibold text-lg">
-              You&apos;re on the list. ADAM will find you.
+              Access reserved. ADAM will reach you at launch.
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="w-full flex flex-col sm:flex-row gap-3">
@@ -2164,9 +2164,9 @@ function AdamWaitlistSection() {
               <button
                 type="submit"
                 disabled={status === 'loading' || !email.trim()}
-                className="px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold text-sm disabled:opacity-50 transition-colors whitespace-nowrap"
+                className="px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-black font-bold text-sm disabled:opacity-50 transition-colors whitespace-nowrap"
               >
-                {status === 'loading' ? 'Submitting…' : 'Notify Me'}
+                {status === 'loading' ? 'Reserving…' : 'Reserve Access'}
               </button>
             </form>
           )}
