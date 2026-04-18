@@ -250,10 +250,36 @@ export default function Home() {
             </span>
           </p>
 
+          {/* CTA Buttons */}
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 animate-slide-up"
+            style={{ animationDelay: '0.6s' }}
+          >
+            <Button
+              asChild
+              size="lg"
+              className="w-full sm:w-auto min-w-[160px] bg-primary hover:bg-primary/90 text-black font-bold shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 transition-all duration-300"
+            >
+              <Link href="/products/adam#waitlist">
+                Join Waitlist
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto min-w-[160px] border-white/30 text-white hover:bg-white/10 hover:border-white/60 hover:scale-105 transition-all duration-300 backdrop-blur-sm"
+            >
+              <Link href="/products/adam/demo">
+                See Demo <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+
           {/* Decorative divider */}
           <div
             className="flex items-center justify-center gap-4 animate-slide-up"
-            style={{ animationDelay: '0.6s' }}
+            style={{ animationDelay: '0.8s' }}
           >
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
             <span className="text-primary/60 font-mono text-xs tracking-[0.3em] uppercase">Innovation in progress</span>
