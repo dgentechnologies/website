@@ -268,10 +268,10 @@ export default function Home() {
               asChild
               size="lg"
               variant="outline"
-              className="w-full sm:w-auto min-w-[160px] border-white/30 text-white hover:bg-white/10 hover:border-white/60 hover:scale-105 transition-all duration-300 backdrop-blur-sm"
+              className="w-full sm:w-auto min-w-[160px] bg-transparent border-white/40 text-white hover:bg-white/10 hover:border-white/70 hover:scale-105 transition-all duration-300 backdrop-blur-sm"
             >
               <Link href="/products/adam/demo">
-                See Demo <ArrowRight className="ml-2 h-4 w-4" />
+                Experience ADAM <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           </div>
