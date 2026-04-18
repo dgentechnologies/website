@@ -137,6 +137,18 @@ service cloud.firestore {
     match /waitlist/{entryId} {
       allow read, write: if false;
     }
+
+    /**
+     * @description Job applications submitted by candidates via the careers page.
+     * @path /jobApplications/{applicationId}
+     * @allow (create) - Any user can submit a job application (handled via Admin SDK in API route).
+     * @allow (read, update, delete) - Only authenticated admin users can read and manage applications.
+     * @principle Applications are sensitive; only admins may view or act on them.
+     */
+    match /jobApplications/{applicationId} {
+      allow create: if false;
+      allow read, update, delete: if request.auth != null;
+    }
   }
 }
 

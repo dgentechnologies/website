@@ -202,7 +202,9 @@ export default function CareersPage() {
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <CardTitle className="text-lg font-headline leading-tight">
-                          {listing.position}
+                          <Link href={`/careers/${listing.id}`} className="hover:text-primary transition-colors">
+                            {listing.position}
+                          </Link>
                         </CardTitle>
                         <CardDescription className="mt-1">{listing.category}</CardDescription>
                       </div>
@@ -237,9 +239,9 @@ export default function CareersPage() {
                     )}
                     <p className="text-sm text-foreground/80 line-clamp-3">{listing.description}</p>
                   </CardContent>
-                  <div className="p-6 pt-0">
+                  <div className="p-6 pt-0 flex flex-col gap-2">
                     <Button asChild className="w-full" size="sm">
-                      <Link href="/contact">Apply Now</Link>
+                      <Link href={`/careers/${listing.id}`}>View & Apply</Link>
                     </Button>
                   </div>
                 </Card>
