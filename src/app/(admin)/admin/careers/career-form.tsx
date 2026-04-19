@@ -345,7 +345,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                         <SelectContent>
                           <SelectItem value="paid">Paid</SelectItem>
                           <SelectItem value="unpaid">Unpaid</SelectItem>
-                          <SelectItem value="intern-paid">Intern Paid (Intern Pays)</SelectItem>
+                          <SelectItem value="intern-paid">Certification Fees</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
