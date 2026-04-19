@@ -1,0 +1,18 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    /**
+     * Candidate resumes are sensitive.
+     * All client-side reads/writes are blocked.
+     * Upload/download is handled server-side via Firebase Admin SDK and signed URLs.
+     */
+    match /resumes/{listingId}/{fileName} {
+      allow read, write: if false;
+    }
+
+    // Default deny for all other storage paths.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

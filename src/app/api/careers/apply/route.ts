@@ -94,7 +94,8 @@ export async function POST(request: NextRequest) {
   }
 
   // ── Upload resume to Firebase Storage ─────────────────────────────────────
-  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+  const storageBucket =
+    process.env.FIREBASE_STORAGE_BUCKET || process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
   if (!storageBucket) {
     return NextResponse.json(
       { error: 'Storage is not configured. Please contact support.' },
