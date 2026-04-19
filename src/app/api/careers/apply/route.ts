@@ -20,6 +20,69 @@ function sanitizeText(value: unknown, maxLength: number): string {
   return value.trim().slice(0, maxLength);
 }
 
+function normalizeBucketName(bucket: string): string {
+  // Accept values like "gs://my-bucket" and strip protocol/path.
+  return bucket.replace(/^gs:\/\//, '').replace(/\/.*$/, '').trim();
+}
+
+function isBucketNotFoundError(err: unknown): boolean {
+  if (!err || typeof err !== 'object') return false;
+  const e = err as { status?: number; code?: number | string; message?: string };
+  if (e.status === 404 || e.code === 404) return true;
+  if (typeof e.message === 'string' && e.message.toLowerCase().includes('bucket does not exist')) {
+    return true;
+  }
+  return false;
+}
+
+async function saveToResolvedBucket(
+  storagePath: string,
+  fileBuffer: Buffer,
+  contentType: string,
+  metadata: Record<string, string>
+) {
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const configured =
+    process.env.FIREBASE_STORAGE_BUCKET || process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || '';
+
+  const candidates = new Set<string>();
+  if (configured) candidates.add(normalizeBucketName(configured));
+  if (projectId) {
+    candidates.add(`${projectId}.firebasestorage.app`);
+    candidates.add(`${projectId}.appspot.com`);
+  }
+
+  if (candidates.size === 0) {
+    throw new Error('No Firebase Storage bucket is configured.');
+  }
+
+  const storage = getStorage(adminApp);
+  let lastError: unknown = null;
+
+  for (const bucketName of candidates) {
+    const bucket = storage.bucket(bucketName);
+    const fileRef = bucket.file(storagePath);
+
+    try {
+      await fileRef.save(fileBuffer, {
+        metadata: {
+          contentType,
+          metadata,
+        },
+      });
+      return { fileRef, bucketName };
+    } catch (err) {
+      lastError = err;
+      if (isBucketNotFoundError(err)) {
+        continue;
+      }
+      throw err;
+    }
+  }
+
+  throw lastError ?? new Error('Unable to find a valid Firebase Storage bucket.');
+}
+
 export async function POST(request: NextRequest) {
   let formData: FormData;
   try {
@@ -94,15 +157,6 @@ export async function POST(request: NextRequest) {
   }
 
   // ── Upload resume to Firebase Storage ─────────────────────────────────────
-  const storageBucket =
-    process.env.FIREBASE_STORAGE_BUCKET || process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
-  if (!storageBucket) {
-    return NextResponse.json(
-      { error: 'Storage is not configured. Please contact support.' },
-      { status: 500 }
-    );
-  }
-
   let resumeUrl: string;
   let resumeFileName: string;
 
@@ -114,19 +168,17 @@ export async function POST(request: NextRequest) {
     const storagePath = `resumes/${listingId}/${Date.now()}-${safeOriginalName}`;
     resumeFileName = safeOriginalName;
 
-    const bucket = getStorage(adminApp).bucket(storageBucket);
-    const fileRef = bucket.file(storagePath);
-
-    await fileRef.save(buffer, {
-      metadata: {
-        contentType: resumeFile.type,
-        metadata: {
-          originalName: safeOriginalName,
-          listingId,
-          applicantEmail,
-        },
-      },
-    });
+    const { fileRef, bucketName } = await saveToResolvedBucket(
+      storagePath,
+      buffer,
+      resumeFile.type,
+      {
+        originalName: safeOriginalName,
+        listingId,
+        applicantEmail,
+      }
+    );
+    console.log(`Resume saved to bucket: ${bucketName}`);
 
     // Generate a long-lived signed URL (10 years) so admins can always download
     const [signedUrl] = await fileRef.getSignedUrl({
