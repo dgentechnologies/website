@@ -38,7 +38,7 @@ const AMOUNT_SPAN_LABELS: Record<string, string> = {
 const COMPENSATION_LABELS: Record<string, string> = {
   paid: 'Paid',
   unpaid: 'Unpaid',
-  'intern-paid': 'Intern Paid',
+  'intern-paid': 'Certification Fee',
 };
 
 export default function CareersPage() {
@@ -150,7 +150,7 @@ export default function CareersPage() {
                 <SelectItem value="all">All</SelectItem>
                 <SelectItem value="paid">Paid</SelectItem>
                 <SelectItem value="unpaid">Unpaid</SelectItem>
-                <SelectItem value="intern-paid">Intern Paid</SelectItem>
+                <SelectItem value="intern-paid">Certification Fee</SelectItem>
               </SelectContent>
             </Select>
 

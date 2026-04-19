@@ -14,13 +14,23 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Upload, FileText, X, CheckCircle2, Send } from 'lucide-react';
+import { Loader2, Upload, FileText, X, CheckCircle2, Send, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface JobApplicationDialogProps {
   listingId: string;
   listingTitle: string;
+  compensation?: string;
+  amount?: string;
+  amountSpan?: string;
 }
+
+const AMOUNT_SPAN_LABELS: Record<string, string> = {
+  'per month': '/month',
+  'per year': '/year',
+  'per week': '/week',
+  fixed: ' (fixed)',
+};
 
 const ACCEPTED_TYPES = [
   'application/pdf',
@@ -33,6 +43,9 @@ const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 export default function JobApplicationDialog({
   listingId,
   listingTitle,
+  compensation,
+  amount,
+  amountSpan,
 }: JobApplicationDialogProps) {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -147,6 +160,11 @@ export default function JobApplicationDialog({
     }
   }
 
+  const isInternPaid = compensation === 'intern-paid';
+  const feeText = amount
+    ? `₹${amount}${amountSpan ? AMOUNT_SPAN_LABELS[amountSpan] ?? ` ${amountSpan}` : ''}`
+    : 'a certification fee';
+
   return (
     <Dialog open={open} onOpenChange={handleDialogOpen}>
       <DialogTrigger asChild>
@@ -186,6 +204,17 @@ export default function JobApplicationDialog({
             </DialogHeader>
 
             <form onSubmit={handleSubmit} className="space-y-5 mt-2" noValidate>
+              {/* Fee notice for intern-paid listings */}
+              {isInternPaid && (
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-sm">
+                  <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
+                  <p className="text-amber-700 dark:text-amber-400 leading-relaxed">
+                    <strong>Fee-based internship:</strong> A certification fee of{' '}
+                    <strong>{feeText}</strong> is applicable for this role. You will be informed
+                    about the payment process after shortlisting.
+                  </p>
+                </div>
+              )}
               {/* Full Name */}
               <div className="space-y-1.5">
                 <Label htmlFor="app-name">

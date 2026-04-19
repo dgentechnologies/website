@@ -14,6 +14,7 @@ import {
   Users,
   Lightbulb,
   Globe,
+  Receipt,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -42,7 +43,7 @@ const AMOUNT_SPAN_LABELS: Record<string, string> = {
 const COMPENSATION_LABELS: Record<string, string> = {
   paid: 'Paid',
   unpaid: 'Unpaid',
-  'intern-paid': 'Stipend Provided',
+  'intern-paid': 'Certification Fee',
 };
 
 const ABOUT_DGEN_PERKS = [
@@ -91,10 +92,11 @@ export default async function CareerDetailPage({
     ? listing.requirements.split('\n').filter((r) => r.trim())
     : [];
 
+  const isInternPaid = listing.compensation === 'intern-paid';
   const compensationText =
-    listing.compensation === 'paid' || listing.compensation === 'intern-paid'
+    listing.compensation === 'paid' || isInternPaid
       ? listing.amount
-        ? `₹${listing.amount}${listing.amountSpan ? AMOUNT_SPAN_LABELS[listing.amountSpan] ?? `/${listing.amountSpan}` : ''}`
+        ? `${isInternPaid ? 'Fee: ' : ''}₹${listing.amount}${listing.amountSpan ? AMOUNT_SPAN_LABELS[listing.amountSpan] ?? `/${listing.amountSpan}` : ''}`
         : COMPENSATION_LABELS[listing.compensation]
       : COMPENSATION_LABELS[listing.compensation];
 
@@ -145,10 +147,17 @@ export default async function CareerDetailPage({
                 <Clock className="h-3.5 w-3.5 text-primary" />
                 {listing.duration}
               </span>
-              <span className="flex items-center gap-1.5 bg-background/60 border border-border/50 rounded-full px-3 py-1">
-                <IndianRupee className="h-3.5 w-3.5 text-primary" />
-                {compensationText}
-              </span>
+              {isInternPaid ? (
+                <span className="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 rounded-full px-3 py-1 text-amber-700 dark:text-amber-400">
+                  <Receipt className="h-3.5 w-3.5" />
+                  {compensationText}
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5 bg-background/60 border border-border/50 rounded-full px-3 py-1">
+                  <IndianRupee className="h-3.5 w-3.5 text-primary" />
+                  {compensationText}
+                </span>
+              )}
               <span className="flex items-center gap-1.5 bg-background/60 border border-border/50 rounded-full px-3 py-1">
                 <Briefcase className="h-3.5 w-3.5 text-primary" />
                 {listing.category || 'Technology'}
@@ -156,7 +165,13 @@ export default async function CareerDetailPage({
             </div>
 
             <div className="mt-8">
-              <JobApplicationDialog listingId={listing.id!} listingTitle={listing.position} />
+              <JobApplicationDialog
+                listingId={listing.id!}
+                listingTitle={listing.position}
+                compensation={listing.compensation}
+                amount={listing.amount}
+                amountSpan={listing.amountSpan}
+              />
             </div>
           </div>
         </div>
@@ -308,11 +323,17 @@ export default async function CareerDetailPage({
                       <span className="font-medium text-foreground">{listing.duration}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Compensation</span>
-                      <span className="font-medium text-foreground">{compensationText}</span>
+                      <span>{isInternPaid ? 'Certification Fee' : 'Compensation'}</span>
+                      <span className={`font-medium ${isInternPaid ? 'text-amber-700 dark:text-amber-400' : 'text-foreground'}`}>{compensationText}</span>
                     </div>
                   </div>
-                  <JobApplicationDialog listingId={listing.id!} listingTitle={listing.position} />
+                  <JobApplicationDialog
+                    listingId={listing.id!}
+                    listingTitle={listing.position}
+                    compensation={listing.compensation}
+                    amount={listing.amount}
+                    amountSpan={listing.amountSpan}
+                  />
                   <p className="text-xs text-muted-foreground text-center">
                     We typically respond within 3-5 business days.
                   </p>
@@ -361,7 +382,13 @@ export default async function CareerDetailPage({
             Submit your application below. We review every submission carefully and get back to promising candidates within a week.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <JobApplicationDialog listingId={listing.id!} listingTitle={listing.position} />
+            <JobApplicationDialog
+              listingId={listing.id!}
+              listingTitle={listing.position}
+              compensation={listing.compensation}
+              amount={listing.amount}
+              amountSpan={listing.amountSpan}
+            />
             <Button variant="outline" asChild>
               <Link href="/careers">Browse All Openings</Link>
             </Button>
