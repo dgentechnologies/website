@@ -37,7 +37,7 @@ const AMOUNT_SPAN_LABELS: Record<string, string> = {
   'per month': '/month',
   'per year': '/year',
   'per week': '/week',
-  fixed: ' (Fixed)',
+  fixed: ' (One-time)',
 };
 
 const COMPENSATION_LABELS: Record<string, string> = {

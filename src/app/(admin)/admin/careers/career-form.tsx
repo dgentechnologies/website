@@ -359,10 +359,13 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                       name="amount"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Amount</FormLabel>
+                          <FormLabel>{compensation === 'intern-paid' ? 'Fee Amount' : 'Amount'}</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. ₹15,000" {...field} />
+                            <Input placeholder="e.g. 5000" {...field} />
                           </FormControl>
+                          {compensation === 'intern-paid' && (
+                            <FormDescription>Amount the intern pays (in ₹, numbers only).</FormDescription>
+                          )}
                           <FormMessage />
                         </FormItem>
                       )}
@@ -372,7 +375,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                       name="amountSpan"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Pay Period</FormLabel>
+                          <FormLabel>{compensation === 'intern-paid' ? 'Fee Type' : 'Pay Period'}</FormLabel>
                           <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
                               <SelectTrigger>
@@ -381,11 +384,18 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="per month">Per Month</SelectItem>
-                              <SelectItem value="per year">Per Year</SelectItem>
-                              <SelectItem value="per week">Per Week</SelectItem>
-                              <SelectItem value="fixed">Fixed / One-time</SelectItem>
+                              {compensation !== 'intern-paid' && (
+                                <>
+                                  <SelectItem value="per year">Per Year</SelectItem>
+                                  <SelectItem value="per week">Per Week</SelectItem>
+                                </>
+                              )}
+                              <SelectItem value="fixed">{compensation === 'intern-paid' ? 'One-time (for certificate)' : 'Fixed / One-time'}</SelectItem>
                             </SelectContent>
                           </Select>
+                          {compensation === 'intern-paid' && (
+                            <FormDescription>Choose Per Month for recurring fee, or One-time for a single certification payment.</FormDescription>
+                          )}
                           <FormMessage />
                         </FormItem>
                       )}

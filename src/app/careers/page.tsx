@@ -29,10 +29,10 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const AMOUNT_SPAN_LABELS: Record<string, string> = {
-  'per month': 'month',
-  'per year': 'year',
-  'per week': 'week',
-  'fixed': 'fixed',
+  'per month': '/month',
+  'per year': '/year',
+  'per week': '/week',
+  fixed: ' (One-time)',
 };
 
 const COMPENSATION_LABELS: Record<string, string> = {
@@ -226,7 +226,7 @@ export default function CareersPage() {
                       {(listing.compensation === 'paid' || listing.compensation === 'intern-paid') && listing.amount ? (
                         <span className="flex items-center gap-1">
                           <IndianRupee className="h-3.5 w-3.5" />
-                          {`${listing.compensation === 'intern-paid' ? 'Fee: ' : ''}${listing.amount}${listing.amountSpan ? ` / ${AMOUNT_SPAN_LABELS[listing.amountSpan] ?? listing.amountSpan}` : ''}`}
+                          {`${listing.compensation === 'intern-paid' ? 'Fee: ₹' : '₹'}${listing.amount}${listing.amountSpan ? AMOUNT_SPAN_LABELS[listing.amountSpan] ?? `/${listing.amountSpan}` : ''}`}
                         </span>
                       ) : (
                         <Badge variant="outline" className="text-xs font-normal">

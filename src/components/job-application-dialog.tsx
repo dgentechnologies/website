@@ -29,7 +29,7 @@ const AMOUNT_SPAN_LABELS: Record<string, string> = {
   'per month': '/month',
   'per year': '/year',
   'per week': '/week',
-  fixed: ' (fixed)',
+  fixed: ' (one-time)',
 };
 
 const ACCEPTED_TYPES = [
