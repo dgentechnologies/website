@@ -23,6 +23,10 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
     /**
      * @description Allows any user to create, read, update and delete blog posts.
      * @path /blogPosts/{postId}
@@ -147,7 +151,7 @@ service cloud.firestore {
      */
     match /jobApplications/{applicationId} {
       allow create: if false;
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if isAdmin();
     }
   }
 }

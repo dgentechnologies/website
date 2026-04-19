@@ -58,6 +58,8 @@ export default function JobApplicationDialog({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [linkedinUrl, setLinkedinUrl] = useState('');
+  const [portfolioUrl, setPortfolioUrl] = useState('');
+  const [githubUrl, setGithubUrl] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumeError, setResumeError] = useState('');
@@ -67,6 +69,8 @@ export default function JobApplicationDialog({
     setEmail('');
     setPhone('');
     setLinkedinUrl('');
+    setPortfolioUrl('');
+    setGithubUrl('');
     setCoverLetter('');
     setResumeFile(null);
     setResumeError('');
@@ -138,6 +142,8 @@ export default function JobApplicationDialog({
       formData.append('applicantEmail', email.trim().toLowerCase());
       formData.append('applicantPhone', phone.trim());
       if (linkedinUrl.trim()) formData.append('linkedinUrl', linkedinUrl.trim());
+      if (portfolioUrl.trim()) formData.append('portfolioUrl', portfolioUrl.trim());
+      if (githubUrl.trim()) formData.append('githubUrl', githubUrl.trim());
       if (coverLetter.trim()) formData.append('coverLetter', coverLetter.trim());
       formData.append('resume', resumeFile, resumeFile.name);
 
@@ -274,6 +280,32 @@ export default function JobApplicationDialog({
                   placeholder="https://linkedin.com/in/yourprofile"
                   value={linkedinUrl}
                   onChange={(e) => setLinkedinUrl(e.target.value)}
+                  maxLength={500}
+                  autoComplete="url"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="app-portfolio">Portfolio URL</Label>
+                <Input
+                  id="app-portfolio"
+                  type="url"
+                  placeholder="https://yourportfolio.com"
+                  value={portfolioUrl}
+                  onChange={(e) => setPortfolioUrl(e.target.value)}
+                  maxLength={500}
+                  autoComplete="url"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="app-github">GitHub URL</Label>
+                <Input
+                  id="app-github"
+                  type="url"
+                  placeholder="https://github.com/yourusername"
+                  value={githubUrl}
+                  onChange={(e) => setGithubUrl(e.target.value)}
                   maxLength={500}
                   autoComplete="url"
                 />

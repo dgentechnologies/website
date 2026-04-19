@@ -45,6 +45,7 @@ import { BlogPost } from '@/types/blog';
 import { CareerListing } from '@/types/career';
 import PerformanceView from '@/components/performance-view';
 import SettingsView from '@/components/settings-view';
+import JobApplicationsView from '@/components/job-applications-view';
 
 import {
   AreaChart,
@@ -680,7 +681,7 @@ const CareerView = () => {
 export default function AdminRootPage() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications'>('dashboard');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -715,6 +716,8 @@ export default function AdminRootPage() {
         return <SettingsView />;
       case 'careers':
         return <CareerView />;
+      case 'applications':
+        return <JobApplicationsView />;
       case 'dashboard':
       default:
         return <DashboardView />;

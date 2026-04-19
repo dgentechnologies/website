@@ -2,7 +2,7 @@
 'use client';
 
 import { signOut } from 'firebase/auth';
-import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings, Briefcase } from 'lucide-react';
+import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings, Briefcase, ClipboardList } from 'lucide-react';
 import Image from 'next/image';
 import {
   Sidebar,
@@ -22,8 +22,8 @@ import Link from 'next/link';
 
 type AdminDashboardLayoutProps = {
   children: React.ReactNode;
-  activeView: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers';
-  setActiveView: (view: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers') => void;
+  activeView: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications';
+  setActiveView: (view: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications') => void;
 };
 
 export default function AdminDashboardLayout({ children, activeView, setActiveView }: AdminDashboardLayoutProps) {
@@ -86,6 +86,16 @@ export default function AdminDashboardLayout({ children, activeView, setActiveVi
               >
                 <Briefcase className="h-4 w-4" />
                 <span>Careers</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                isActive={activeView === 'applications'}
+                onClick={() => setActiveView('applications')}
+                tooltip="Applications"
+              >
+                <ClipboardList className="h-4 w-4" />
+                <span>Applications</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>

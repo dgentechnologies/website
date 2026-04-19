@@ -6,6 +6,8 @@ export interface JobApplication {
   applicantEmail: string;
   applicantPhone: string;
   linkedinUrl?: string;
+  portfolioUrl?: string;
+  githubUrl?: string;
   coverLetter?: string;
   resumeUrl: string;
   resumeFileName: string;

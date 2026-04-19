@@ -98,6 +98,8 @@ export async function POST(request: NextRequest) {
   const applicantEmail = sanitizeText(formData.get('applicantEmail'), 254);
   const applicantPhone = sanitizeText(formData.get('applicantPhone'), 20);
   const linkedinUrl = sanitizeText(formData.get('linkedinUrl'), 500);
+  const portfolioUrl = sanitizeText(formData.get('portfolioUrl'), 500);
+  const githubUrl = sanitizeText(formData.get('githubUrl'), 500);
   const coverLetter = sanitizeText(formData.get('coverLetter'), 2000);
 
   if (!listingId || !listingTitle || !applicantName || !applicantEmail || !applicantPhone) {
@@ -114,6 +116,14 @@ export async function POST(request: NextRequest) {
 
   if (linkedinUrl && !URL_REGEX.test(linkedinUrl)) {
     return NextResponse.json({ error: 'LinkedIn/Portfolio URL must start with http:// or https://.' }, { status: 400 });
+  }
+
+  if (portfolioUrl && !URL_REGEX.test(portfolioUrl)) {
+    return NextResponse.json({ error: 'Portfolio URL must start with http:// or https://.' }, { status: 400 });
+  }
+
+  if (githubUrl && !URL_REGEX.test(githubUrl)) {
+    return NextResponse.json({ error: 'GitHub URL must start with http:// or https://.' }, { status: 400 });
   }
 
   // ── Validate the career listing exists ────────────────────────────────────
@@ -203,6 +213,8 @@ export async function POST(request: NextRequest) {
       applicantEmail,
       applicantPhone,
       ...(linkedinUrl && { linkedinUrl }),
+      ...(portfolioUrl && { portfolioUrl }),
+      ...(githubUrl && { githubUrl }),
       ...(coverLetter && { coverLetter }),
       resumeUrl,
       resumeFileName,
