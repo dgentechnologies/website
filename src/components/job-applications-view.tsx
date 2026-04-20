@@ -96,12 +96,8 @@ export default function JobApplicationsView() {
   }, [applications, searchText, statusFilter]);
 
   const selectedApplication = useMemo(() => {
-    if (filteredApplications.length === 0) return null;
-
-    const found = filteredApplications.find((application) => application.id === selectedId);
-    if (found) return found;
-
-    return filteredApplications[0];
+    if (!selectedId) return null;
+    return filteredApplications.find((application) => application.id === selectedId) ?? null;
   }, [filteredApplications, selectedId]);
 
   const selectedDate = toDate(selectedApplication?.createdAt);
