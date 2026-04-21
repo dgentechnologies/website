@@ -3,6 +3,14 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  env: {
+    NEXT_PUBLIC_FIREBASE_DATABASE_ID:
+      process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID ||
+      process.env.NEXT_PUBLIC_FIREBASE_WEBSITE_DATABASE_ID ||
+      process.env.FIREBASE_WEBSITE_DATABASE_ID ||
+      process.env.FIREBASE_DATABASE_ID ||
+      '(default)',
+  },
   transpilePackages: ['@splinetool/react-spline', '@splinetool/runtime'],
   async redirects() {
     return [
