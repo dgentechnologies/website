@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from '@/firebase/client';
 import { CareerListing } from '@/types/career';
 import { Briefcase, MapPin, Clock, IndianRupee, Filter, Loader2 } from 'lucide-react';
@@ -41,9 +41,27 @@ const COMPENSATION_LABELS: Record<string, string> = {
   'intern-paid': 'Certification Fee',
 };
 
+function getCreatedAtMillis(createdAt: CareerListing['createdAt']): number {
+  if (!createdAt) return 0;
+  if (createdAt instanceof Date) return createdAt.getTime();
+  if (typeof createdAt === 'object' && 'seconds' in createdAt && typeof createdAt.seconds === 'number') {
+    return createdAt.seconds * 1000;
+  }
+  return 0;
+}
+
+function isListingActive(listing: CareerListing): boolean {
+  // Backward compatibility: older records may have missing isActive.
+  if ((listing as any).isActive === false || (listing as any).isActive === 'false') {
+    return false;
+  }
+  return true;
+}
+
 export default function CareersPage() {
   const [listings, setListings] = useState<CareerListing[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<string>('all');
   const [filterWorkMode, setFilterWorkMode] = useState<string>('all');
   const [filterCompensation, setFilterCompensation] = useState<string>('all');
@@ -52,17 +70,17 @@ export default function CareersPage() {
   useEffect(() => {
     const fetchListings = async () => {
       setLoading(true);
+      setFetchError(null);
       try {
-        const q = query(
-          collection(firestore, 'careerListings'),
-          where('isActive', '==', true),
-          orderBy('createdAt', 'desc')
-        );
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(collection(firestore, 'careerListings'));
         const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as CareerListing));
-        setListings(data);
+        const activeListings = data
+          .filter(isListingActive)
+          .sort((a, b) => getCreatedAtMillis(b.createdAt) - getCreatedAtMillis(a.createdAt));
+        setListings(activeListings);
       } catch (e) {
         console.error('Error fetching career listings:', e);
+        setFetchError('Unable to load career listings right now. Please try again shortly.');
       } finally {
         setLoading(false);
       }
@@ -116,6 +134,11 @@ export default function CareersPage() {
       {/* Listings Section */}
       <section className="w-full py-12 md:py-16 lg:py-24">
         <div className="container max-w-screen-xl px-4 md:px-6">
+          {fetchError && (
+            <div className="mb-6 rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              {fetchError}
+            </div>
+          )}
           {/* Filters */}
           <div className="flex flex-wrap items-center gap-3 mb-8">
             <Filter className="h-4 w-4 text-muted-foreground shrink-0" />
