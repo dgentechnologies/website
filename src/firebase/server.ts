@@ -104,6 +104,11 @@ if (!getApps().length) {
   app = getApp();
 }
 
-firestore = getFirestore(app);
+const databaseId =
+  process.env.FIREBASE_WEBSITE_DATABASE_ID ||
+  process.env.FIREBASE_DATABASE_ID ||
+  '(default)';
+
+firestore = getFirestore(app, databaseId);
 
 export { app as adminApp, firestore as adminFirestore };
