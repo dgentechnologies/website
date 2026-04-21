@@ -7,6 +7,14 @@ import 'dotenv/config';
 let app: App;
 let firestore: Firestore;
 
+function getEnvFirst(keys: string[]): string | undefined {
+  for (const key of keys) {
+    const value = process.env[key];
+    if (value) return value;
+  }
+  return undefined;
+}
+
 /**
  * Read and normalize service account values from environment variables.
  * - Remove surrounding quotes (single/double) if present.
@@ -14,9 +22,9 @@ let firestore: Firestore;
  * - Validate the key contains PEM BEGIN/END markers.
  */
 function buildServiceAccountFromEnv() {
-  const projectId = process.env.FIREBASE_PROJECT_ID;
-  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-  let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+  const projectId = getEnvFirst(['FIREBASE_PROJECT_ID', 'FIREBASE_WEBSITE_PROJECT_ID']);
+  const clientEmail = getEnvFirst(['FIREBASE_CLIENT_EMAIL', 'FIREBASE_WEBSITE_CLIENT_EMAIL']);
+  let privateKey = getEnvFirst(['FIREBASE_PRIVATE_KEY', 'FIREBASE_WEBSITE_PRIVATE_KEY']);
 
   if (!projectId || !clientEmail || !privateKey) {
     return null;
@@ -66,7 +74,7 @@ if (!getApps().length) {
       // (we don't log the private key; we only log presence/length info)
       console.log('Initializing Firebase Admin using service account from environment variables.');
       // Optional: basic sanity log (no secrets)
-      console.log(`FIREBASE_PROJECT_ID present: ${Boolean(process.env.FIREBASE_PROJECT_ID)}; privateKey length: ${serviceAccount.privateKey.length}`);
+      console.log(`Firebase service account projectId present: ${Boolean(serviceAccount.projectId)}; privateKey length: ${serviceAccount.privateKey.length}`);
 
       app = initializeApp({
         credential: cert({
@@ -78,7 +86,7 @@ if (!getApps().length) {
       });
     } else {
       // Fallback to Application Default Credentials (GCP environment)
-      console.warn('FIREBASE_PROJECT_ID/CLIENT_EMAIL/PRIVATE_KEY not found — using Application Default Credentials.');
+      console.warn('Firebase service account env vars not found — using Application Default Credentials.');
       app = initializeApp();
     }
   } catch (err) {

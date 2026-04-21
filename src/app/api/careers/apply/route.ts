@@ -41,9 +41,13 @@ async function saveToResolvedBucket(
   contentType: string,
   metadata: Record<string, string>
 ) {
-  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const projectId = process.env.FIREBASE_PROJECT_ID || process.env.FIREBASE_WEBSITE_PROJECT_ID;
   const configured =
-    process.env.FIREBASE_STORAGE_BUCKET || process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || '';
+    process.env.FIREBASE_STORAGE_BUCKET ||
+    process.env.FIREBASE_WEBSITE_STORAGE_BUCKET ||
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
+    process.env.NEXT_PUBLIC_FIREBASE_WEBSITE_STORAGE_BUCKET ||
+    '';
 
   const candidates = new Set<string>();
   if (configured) candidates.add(normalizeBucketName(configured));
@@ -175,7 +179,7 @@ export async function POST(request: NextRequest) {
 
     // Sanitize original filename before storing
     const safeOriginalName = resumeFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const storagePath = `resumes/${listingId}/${Date.now()}-${safeOriginalName}`;
+    const storagePath = `website/resumes/${listingId}/${Date.now()}-${safeOriginalName}`;
     resumeFileName = safeOriginalName;
 
     const { fileRef, bucketName } = await saveToResolvedBucket(
