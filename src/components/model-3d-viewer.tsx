@@ -216,7 +216,7 @@ export default function Model3DViewer({
             width: '100%',
             height: '100%',
             display: 'block',
-            opacity: isLoading ? 0 : 1,
+            opacity: isLoading ? '0' : '1',
             transition: 'opacity 0.5s ease-in-out'
           }}
         />
