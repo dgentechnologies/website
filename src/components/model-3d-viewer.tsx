@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Maximum timeout to wait before forcing scene load (in milliseconds)
 const IDLE_CALLBACK_TIMEOUT_MS = 2000;
@@ -218,7 +218,7 @@ export default function Model3DViewer({
             display: 'block',
             opacity: isLoading ? '0' : '1',
             transition: 'opacity 0.5s ease-in-out'
-          }}
+          } as React.CSSProperties}
         />
       )}
     </div>
