@@ -239,11 +239,20 @@ interface ModelViewerElement extends HTMLElement {
 
 declare global {
   namespace JSX {
+    type ModelViewerProps = Omit<React.HTMLAttributes<ModelViewerElement>, 'ref'> & {
+      ref?: React.Ref<ModelViewerElement>;
+      src: string;
+      alt?: string;
+      'auto-rotate'?: string;
+      'camera-controls'?: string;
+      'shadow-intensity'?: string;
+      'camera-orbit'?: string;
+      'orientation'?: string;
+      'scale'?: string;
+    };
+
     interface IntrinsicElements {
-      'model-viewer': Partial<ModelViewerElement> & {
-        ref?: React.Ref<any>;
-        style?: React.CSSProperties;
-      };
+      'model-viewer': ModelViewerProps;
     }
   }
 }
