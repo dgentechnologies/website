@@ -407,7 +407,7 @@ export default function JobApplicationsView() {
               )}
 
               {error && (
-                <p className="text-sm text-destructive">Failed to load applications: {error.message}</p>
+                <p className="text-sm text-destructive">Failed to load applications. Please refresh.</p>
               )}
             </CardContent>
           </Card>

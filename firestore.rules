@@ -28,13 +28,14 @@ service cloud.firestore {
     }
 
     /**
-     * @description Allows any user to create, read, update and delete blog posts.
+     * @description Blog posts are publicly readable; only authenticated admins can create, update or delete.
      * @path /blogPosts/{postId}
-     * @allow (read, write) - Open access for prototyping purposes.
-     * @principle Enables rapid prototyping by allowing any user to interact with blog data.
+     * @allow (read) - Open public read for blog pages.
+     * @allow (write) - Only authenticated admin users with the custom claim.
      */
     match /blogPosts/{postId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     /**

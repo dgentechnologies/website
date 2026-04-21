@@ -328,7 +328,7 @@ const BlogView = () => {
                   <TableCell><Skeleton className="h-8 w-8 ml-auto" /></TableCell>
                 </TableRow>
               ))}
-              {blogError && <TableRow><TableCell colSpan={4} className="text-center text-destructive">Error: {blogError.message}</TableCell></TableRow>}
+              {blogError && <TableRow><TableCell colSpan={4} className="text-center text-destructive">Failed to load posts. Please refresh.</TableCell></TableRow>}
               {!blogLoading && blogPosts?.docs.map((doc) => {
                 const post = { slug: doc.id, ...doc.data() } as BlogPost;
                 return (
@@ -445,7 +445,7 @@ const MessagesView = () => {
                   <TableCell><Skeleton className="h-8 w-8" /></TableCell>
                 </TableRow>
               ))}
-              {error && <TableRow><TableCell colSpan={4} className="text-center text-destructive py-10">Error loading messages: {error.message}</TableCell></TableRow>}
+              {error && <TableRow><TableCell colSpan={4} className="text-center text-destructive py-10">Failed to load messages. Please refresh.</TableCell></TableRow>}
               {!isLoading && messages?.docs.length === 0 && <TableRow><TableCell colSpan={4} className="text-center text-foreground/70 py-10">Your inbox is empty.</TableCell></TableRow>}
               {!isLoading && messages?.docs.map((doc) => {
                 const message = { id: doc.id, ...doc.data() } as ContactMessage;
@@ -593,7 +593,7 @@ const CareerView = () => {
               {listingsError && (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center text-destructive">
-                    Error: {listingsError.message}
+                    Failed to load listings. Please refresh.
                   </TableCell>
                 </TableRow>
               )}

@@ -9,8 +9,14 @@ service firebase.storage {
      * Candidate resumes are sensitive.
      * Client-side reads are restricted to authenticated admins with a custom claim.
      * Client-side writes are blocked. Upload is handled server-side via Firebase Admin SDK.
+     * Covers both the legacy path and the new website-namespaced path.
      */
     match /resumes/{listingId}/{fileName} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /website/resumes/{listingId}/{fileName} {
       allow read: if isAdmin();
       allow write: if false;
     }
