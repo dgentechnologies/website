@@ -187,6 +187,7 @@ function AdvantageItem({ advantage, index }: { advantage: typeof advantages[0]; 
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const parallaxOffset = useElementParallax(heroRef, 0.3);
+  const [careersRef, careersVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   const [servicesRef, servicesVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
   const [advantagesImageRef, advantagesImageVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
   const [ctaRef, ctaVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.3 });
@@ -300,7 +301,7 @@ export default function Home() {
               src={heroImage.imageUrl}
               alt="Dgen Technologies smart city infrastructure - Auralis Ecosystem IoT street lighting technology background"
               fill
-              className="object-cover"
+              className="object-cover object-[center_32%]"
               data-ai-hint={heroImage.imageHint}
               priority
             />
@@ -410,6 +411,53 @@ export default function Home() {
                     data-ai-hint={ctaImage.imageHint}
                   />
                 )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Careers Section */}
+        <section className="w-full py-12 md:py-16 lg:py-24 xl:py-32 overflow-hidden bg-background">
+          <div
+            ref={careersRef}
+            className={`container max-w-screen-xl px-4 md:px-6 transition-all duration-700 ${
+              careersVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-card/70 backdrop-blur-sm">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(25,179,92,0.18),transparent_45%),linear-gradient(135deg,rgba(255,255,255,0.04),transparent_60%)]" />
+              <div className="relative grid gap-8 px-6 py-8 sm:px-8 md:px-10 md:py-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-12 lg:px-12 lg:py-14">
+                <div className="space-y-4 md:space-y-5 text-center lg:text-left">
+                  <Badge variant="outline" className="border-primary/50 text-primary">
+                    Careers
+                  </Badge>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold tracking-tighter text-gradient">
+                    Build smart systems with a team that ships real work.
+                  </h2>
+                  <p className="max-w-2xl text-sm sm:text-base md:text-lg text-foreground/80 mx-auto lg:mx-0">
+                    Join DGEN Technologies to work on smart city infrastructure, IoT products, AI-driven systems, and practical engineering challenges built for the Indian market.
+                  </p>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                  <div className="rounded-2xl border border-primary/20 bg-background/80 p-5 text-center lg:text-left">
+                    <p className="text-xs font-mono uppercase tracking-[0.25em] text-primary/80">Open Roles</p>
+                    <p className="mt-2 text-sm text-foreground/75">
+                      Explore internships and full-time roles across strategy, product, engineering, and operations.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <Button asChild size="lg" className="group w-full min-h-11">
+                      <Link href="/careers">
+                        Explore Careers <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="w-full min-h-11 border-primary/30 hover:border-primary/60">
+                      <Link href="/careers">
+                        View Open Positions
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
