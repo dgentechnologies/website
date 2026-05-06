@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useMemo, useState } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -13,6 +13,14 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -20,6 +28,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
+  ArrowLeft,
   Mail,
   Phone,
   FileText,
@@ -29,6 +38,7 @@ import {
   Github,
   Globe,
   RefreshCw,
+  Users,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
@@ -68,6 +78,7 @@ export default function JobApplicationsView() {
     query(collection(firestore, 'jobApplications'), orderBy('createdAt', 'desc'))
   );
   const [selectedId, setSelectedId] = useState<string>('');
+  const [viewMode, setViewMode] = useState<'list' | 'detail'>('list');
   const [statusFilter, setStatusFilter] = useState<'all' | ApplicationStatus>('all');
   const [searchText, setSearchText] = useState('');
   const [updatingStatus, setUpdatingStatus] = useState(false);
@@ -90,25 +101,24 @@ export default function JobApplicationsView() {
         application.applicantName.toLowerCase().includes(normalizedSearch) ||
         application.applicantEmail.toLowerCase().includes(normalizedSearch) ||
         application.listingTitle.toLowerCase().includes(normalizedSearch);
-
       return statusMatches && searchMatches;
     });
   }, [applications, searchText, statusFilter]);
 
   const selectedApplication = useMemo(() => {
     if (!selectedId) return null;
-    return filteredApplications.find((application) => application.id === selectedId) ?? null;
-  }, [filteredApplications, selectedId]);
+    return applications.find((application) => application.id === selectedId) ?? null;
+  }, [applications, selectedId]);
 
   const selectedDate = toDate(selectedApplication?.createdAt);
 
+  const totalApplications = applications.length;
+  const pendingCount = applications.filter((a) => a.status === 'pending').length;
+  const shortlistedCount = applications.filter((a) => a.status === 'shortlisted').length;
+
   async function updateApplicationStatus(nextStatus: ApplicationStatus) {
     if (!selectedApplication?.id) return;
-
-    if (selectedApplication.status === nextStatus) {
-      return;
-    }
-
+    if (selectedApplication.status === nextStatus) return;
     setUpdatingStatus(true);
     try {
       await updateDoc(doc(firestore, 'jobApplications', selectedApplication.id), {
@@ -129,12 +139,183 @@ export default function JobApplicationsView() {
     }
   }
 
-  const totalApplications = applications.length;
-  const pendingCount = applications.filter((application) => application.status === 'pending').length;
-  const shortlistedCount = applications.filter((application) => application.status === 'shortlisted').length;
+  // ── DETAIL VIEW ──────────────────────────────────────────────────────────────
+  if (viewMode === 'detail' && selectedApplication) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => { setViewMode('list'); setSelectedId(''); }}
+            className="gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Applications
+          </Button>
+          <span className="text-sm text-foreground/50">/</span>
+          <span className="text-sm text-foreground/70 truncate">
+            {selectedApplication.applicantName} &mdash; {selectedApplication.listingTitle}
+          </span>
+        </div>
 
+        <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
+          {/* Resume Preview */}
+          <Card className="overflow-hidden border-border/70">
+            <CardHeader className="border-b bg-muted/30">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <FileText className="h-5 w-5 text-primary" />
+                Resume Preview
+              </CardTitle>
+              <CardDescription>
+                {selectedApplication.resumeFileName} &mdash; {selectedApplication.applicantName}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0 min-h-[660px] bg-gradient-to-b from-muted/30 to-background">
+              {isPdfFile(selectedApplication.resumeFileName) ? (
+                <iframe
+                  title={`Resume preview for ${selectedApplication.applicantName}`}
+                  src={selectedApplication.resumeUrl}
+                  className="w-full h-[660px] border-0"
+                />
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center text-center p-8 gap-4 min-h-[400px]">
+                  <FileText className="h-14 w-14 text-muted-foreground" />
+                  <div>
+                    <p className="font-medium">Preview unavailable for this format</p>
+                    <p className="text-sm text-foreground/70 mt-1">
+                      This resume is a Word document. Use the download or open actions to review it.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    <Button asChild>
+                      <a href={selectedApplication.resumeUrl} target="_blank" rel="noreferrer">
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Open Resume
+                      </a>
+                    </Button>
+                    <Button variant="outline" asChild>
+                      <a href={selectedApplication.resumeUrl} download={selectedApplication.resumeFileName}>
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Applicant Details */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Applicant Details</CardTitle>
+              <CardDescription>Quick actions and full applicant profile.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-lg font-semibold">{selectedApplication.applicantName}</p>
+                  <p className="text-sm text-foreground/70">Applied for {selectedApplication.listingTitle}</p>
+                  <p className="text-xs text-foreground/60 mt-1">
+                    Submitted {selectedDate ? formatDistanceToNow(selectedDate, { addSuffix: true }) : 'recently'}
+                  </p>
+                </div>
+                <Badge className={cn('font-medium', STATUS_BADGE_CLASS[selectedApplication.status])}>
+                  {STATUS_LABELS[selectedApplication.status]}
+                </Badge>
+              </div>
+
+              <div className="grid gap-2 sm:grid-cols-2">
+                <Button asChild variant="outline" className="justify-start">
+                  <a href={`mailto:${selectedApplication.applicantEmail}`}>
+                    <Mail className="h-4 w-4 mr-2" /> Direct Mail
+                  </a>
+                </Button>
+                <Button asChild variant="outline" className="justify-start">
+                  <a href={`tel:${selectedApplication.applicantPhone}`}>
+                    <Phone className="h-4 w-4 mr-2" /> Call Applicant
+                  </a>
+                </Button>
+                {selectedApplication.linkedinUrl && (
+                  <Button asChild variant="outline" className="justify-start">
+                    <a href={selectedApplication.linkedinUrl} target="_blank" rel="noreferrer">
+                      <Linkedin className="h-4 w-4 mr-2" /> LinkedIn
+                    </a>
+                  </Button>
+                )}
+                {selectedApplication.portfolioUrl && (
+                  <Button asChild variant="outline" className="justify-start">
+                    <a href={selectedApplication.portfolioUrl} target="_blank" rel="noreferrer">
+                      <Globe className="h-4 w-4 mr-2" /> Portfolio
+                    </a>
+                  </Button>
+                )}
+                {selectedApplication.githubUrl && (
+                  <Button asChild variant="outline" className="justify-start">
+                    <a href={selectedApplication.githubUrl} target="_blank" rel="noreferrer">
+                      <Github className="h-4 w-4 mr-2" /> GitHub
+                    </a>
+                  </Button>
+                )}
+                <Button asChild variant="outline" className="justify-start">
+                  <a href={selectedApplication.resumeUrl} target="_blank" rel="noreferrer">
+                    <Download className="h-4 w-4 mr-2" /> Download Resume
+                  </a>
+                </Button>
+              </div>
+
+              <div className="grid gap-2 md:grid-cols-[1fr_auto] md:items-end">
+                <div className="space-y-1.5">
+                  <Label htmlFor="application-status">Application status</Label>
+                  <Select
+                    value={selectedApplication.status}
+                    onValueChange={(value) => updateApplicationStatus(value as ApplicationStatus)}
+                  >
+                    <SelectTrigger id="application-status" disabled={updatingStatus}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="reviewed">Reviewed</SelectItem>
+                      <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                      <SelectItem value="rejected">Rejected</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button variant="ghost" disabled={updatingStatus} className="justify-start md:justify-center">
+                  <RefreshCw className={cn('h-4 w-4 mr-2', updatingStatus && 'animate-spin')} />
+                  {updatingStatus ? 'Updating...' : 'Auto-save on change'}
+                </Button>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Applicant email</Label>
+                <Input value={selectedApplication.applicantEmail} readOnly />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Phone number</Label>
+                <Input value={selectedApplication.applicantPhone} readOnly />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Cover letter</Label>
+                <Textarea
+                  value={selectedApplication.coverLetter || 'No cover letter was provided.'}
+                  readOnly
+                  className="min-h-24"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  // ── LIST VIEW ────────────────────────────────────────────────────────────────
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-headline font-bold">Job Applications</h1>
@@ -146,273 +327,164 @@ export default function JobApplicationsView() {
           <Card className="border-primary/20 bg-primary/5">
             <CardContent className="p-3 text-center">
               <p className="text-xs text-foreground/70">Total</p>
-              <p className="text-xl font-semibold">{totalApplications}</p>
+              <p className="text-xl font-semibold">{loading ? '—' : totalApplications}</p>
             </CardContent>
           </Card>
           <Card className="border-amber-500/25 bg-amber-500/10">
             <CardContent className="p-3 text-center">
               <p className="text-xs text-foreground/70">Pending</p>
-              <p className="text-xl font-semibold">{pendingCount}</p>
+              <p className="text-xl font-semibold">{loading ? '—' : pendingCount}</p>
             </CardContent>
           </Card>
           <Card className="border-emerald-500/25 bg-emerald-500/10">
             <CardContent className="p-3 text-center">
               <p className="text-xs text-foreground/70">Shortlisted</p>
-              <p className="text-xl font-semibold">{shortlistedCount}</p>
+              <p className="text-xl font-semibold">{loading ? '—' : shortlistedCount}</p>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_1fr]">
-        <Card className="overflow-hidden border-border/70">
-          <CardHeader className="border-b bg-muted/30">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <FileText className="h-5 w-5 text-primary" />
-              Resume Preview
-            </CardTitle>
-            <CardDescription>
-              {selectedApplication
-                ? `${selectedApplication.resumeFileName} - ${selectedApplication.applicantName}`
-                : 'Select an application to preview the resume.'}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-0 min-h-[660px] bg-gradient-to-b from-muted/30 to-background">
-            {loading ? (
-              <div className="p-6 space-y-4">
-                <Skeleton className="h-6 w-2/5" />
-                <Skeleton className="h-[560px] w-full" />
-              </div>
-            ) : !selectedApplication ? (
-              <div className="h-full flex items-center justify-center p-8 text-center text-foreground/70">
-                No application selected.
-              </div>
-            ) : isPdfFile(selectedApplication.resumeFileName) ? (
-              <iframe
-                title={`Resume preview for ${selectedApplication.applicantName}`}
-                src={selectedApplication.resumeUrl}
-                className="w-full h-[660px] border-0"
-              />
-            ) : (
-              <div className="h-full flex flex-col items-center justify-center text-center p-8 gap-4">
-                <FileText className="h-14 w-14 text-muted-foreground" />
-                <div>
-                  <p className="font-medium">Preview unavailable for this format</p>
-                  <p className="text-sm text-foreground/70 mt-1">
-                    This resume is a Word document. Use download or open actions to review it.
-                  </p>
-                </div>
-                <div className="flex flex-wrap justify-center gap-2">
-                  <Button asChild>
-                    <a href={selectedApplication.resumeUrl} target="_blank" rel="noreferrer">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Open Resume
-                    </a>
-                  </Button>
-                  <Button variant="outline" asChild>
-                    <a href={selectedApplication.resumeUrl} download={selectedApplication.resumeFileName}>
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </a>
-                  </Button>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+      {/* Search + Filter */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Input
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              placeholder="Search by name, email, or role..."
+              className="flex-1"
+            />
+            <Select
+              value={statusFilter}
+              onValueChange={(value) => setStatusFilter(value as 'all' | ApplicationStatus)}
+            >
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All statuses</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="reviewed">Reviewed</SelectItem>
+                <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                <SelectItem value="rejected">Rejected</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
 
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Application Queue</CardTitle>
-              <CardDescription>Search and filter applications to quickly find candidates.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid gap-3 md:grid-cols-2">
-                <Input
-                  value={searchText}
-                  onChange={(event) => setSearchText(event.target.value)}
-                  placeholder="Search by name, email, role..."
-                />
-                <Select
-                  value={statusFilter}
-                  onValueChange={(value) => setStatusFilter(value as 'all' | ApplicationStatus)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All statuses</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="reviewed">Reviewed</SelectItem>
-                    <SelectItem value="shortlisted">Shortlisted</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2 max-h-[260px] overflow-auto pr-1">
-                {loading && Array.from({ length: 4 }).map((_, index) => (
-                  <Skeleton key={index} className="h-16 w-full" />
+      {/* Applications Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>All Applications</CardTitle>
+          <CardDescription>
+            {loading
+              ? 'Loading applications...'
+              : `${filteredApplications.length} application(s) found. Click a row to view details.`}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Applicant</TableHead>
+                <TableHead className="hidden md:table-cell">Position</TableHead>
+                <TableHead className="hidden sm:table-cell">Status</TableHead>
+                <TableHead className="hidden lg:table-cell">Applied</TableHead>
+                <TableHead><span className="sr-only">View</span></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading &&
+                Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <Skeleton className="h-4 w-36 mb-1" />
+                      <Skeleton className="h-3 w-44" />
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <Skeleton className="h-4 w-40" />
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <Skeleton className="h-5 w-24" />
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      <Skeleton className="h-4 w-28" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-8 w-14 ml-auto" />
+                    </TableCell>
+                  </TableRow>
                 ))}
 
-                {!loading && filteredApplications.length === 0 && (
-                  <p className="text-sm text-foreground/70 py-6 text-center">No applications found for this filter.</p>
-                )}
+              {error && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-destructive py-10">
+                    Failed to load applications. Please refresh.
+                  </TableCell>
+                </TableRow>
+              )}
 
-                {!loading && filteredApplications.map((application) => {
+              {!loading && filteredApplications.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-12">
+                    <Users className="h-10 w-10 mx-auto mb-3 text-muted-foreground/40" />
+                    <p className="text-foreground/70 font-medium">No applications found.</p>
+                    {(searchText || statusFilter !== 'all') && (
+                      <p className="text-sm text-foreground/50 mt-1">
+                        Try adjusting your search or filter.
+                      </p>
+                    )}
+                  </TableCell>
+                </TableRow>
+              )}
+
+              {!loading &&
+                filteredApplications.map((application) => {
                   const createdAt = toDate(application.createdAt);
-                  const isSelected = selectedApplication?.id === application.id;
-
                   return (
-                    <button
+                    <TableRow
                       key={application.id}
-                      type="button"
-                      onClick={() => setSelectedId(application.id || '')}
-                      className={cn(
-                        'w-full text-left rounded-lg border px-3 py-2 transition-colors',
-                        isSelected
-                          ? 'border-primary/40 bg-primary/10'
-                          : 'border-border hover:border-primary/30 hover:bg-muted/40'
-                      )}
+                      className="cursor-pointer hover:bg-muted/50 transition-colors"
+                      onClick={() => {
+                        setSelectedId(application.id || '');
+                        setViewMode('detail');
+                      }}
                     >
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="font-medium truncate">{application.applicantName}</p>
-                        <Badge className={cn('font-medium', STATUS_BADGE_CLASS[application.status])}>
+                      <TableCell>
+                        <p className="font-medium">{application.applicantName}</p>
+                        <p className="text-xs text-foreground/60 mt-0.5">
+                          {application.applicantEmail}
+                        </p>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        {application.listingTitle}
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">
+                        <Badge
+                          className={cn('font-medium', STATUS_BADGE_CLASS[application.status])}
+                        >
                           {STATUS_LABELS[application.status]}
                         </Badge>
-                      </div>
-                      <p className="text-xs text-foreground/70 truncate mt-1">{application.listingTitle}</p>
-                      <p className="text-xs text-foreground/60 mt-1">
-                        {createdAt ? formatDistanceToNow(createdAt, { addSuffix: true }) : 'Recently'}
-                      </p>
-                    </button>
+                      </TableCell>
+                      <TableCell className="hidden lg:table-cell text-sm text-foreground/70">
+                        {createdAt
+                          ? formatDistanceToNow(createdAt, { addSuffix: true })
+                          : 'Recently'}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="sm">
+                          View
+                        </Button>
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Applicant Details</CardTitle>
-              <CardDescription>
-                {selectedApplication ? 'Professional quick actions for outreach and profile review.' : 'Select an application to view details.'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {!selectedApplication ? (
-                <p className="text-sm text-foreground/70">No applicant selected.</p>
-              ) : (
-                <>
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <p className="text-lg font-semibold">{selectedApplication.applicantName}</p>
-                      <p className="text-sm text-foreground/70">Applied for {selectedApplication.listingTitle}</p>
-                      <p className="text-xs text-foreground/60 mt-1">
-                        Submitted {selectedDate ? formatDistanceToNow(selectedDate, { addSuffix: true }) : 'recently'}
-                      </p>
-                    </div>
-                    <Badge className={cn('font-medium', STATUS_BADGE_CLASS[selectedApplication.status])}>
-                      {STATUS_LABELS[selectedApplication.status]}
-                    </Badge>
-                  </div>
-
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    <Button asChild variant="outline" className="justify-start">
-                      <a href={`mailto:${selectedApplication.applicantEmail}`}>
-                        <Mail className="h-4 w-4 mr-2" />
-                        Direct Mail
-                      </a>
-                    </Button>
-                    <Button asChild variant="outline" className="justify-start">
-                      <a href={`tel:${selectedApplication.applicantPhone}`}>
-                        <Phone className="h-4 w-4 mr-2" />
-                        Call Applicant
-                      </a>
-                    </Button>
-                    {selectedApplication.linkedinUrl && (
-                      <Button asChild variant="outline" className="justify-start">
-                        <a href={selectedApplication.linkedinUrl} target="_blank" rel="noreferrer">
-                          <Linkedin className="h-4 w-4 mr-2" />
-                          LinkedIn
-                        </a>
-                      </Button>
-                    )}
-                    {selectedApplication.portfolioUrl && (
-                      <Button asChild variant="outline" className="justify-start">
-                        <a href={selectedApplication.portfolioUrl} target="_blank" rel="noreferrer">
-                          <Globe className="h-4 w-4 mr-2" />
-                          Portfolio
-                        </a>
-                      </Button>
-                    )}
-                    {selectedApplication.githubUrl && (
-                      <Button asChild variant="outline" className="justify-start">
-                        <a href={selectedApplication.githubUrl} target="_blank" rel="noreferrer">
-                          <Github className="h-4 w-4 mr-2" />
-                          GitHub
-                        </a>
-                      </Button>
-                    )}
-                    <Button asChild variant="outline" className="justify-start">
-                      <a href={selectedApplication.resumeUrl} target="_blank" rel="noreferrer">
-                        <Download className="h-4 w-4 mr-2" />
-                        Download Resume
-                      </a>
-                    </Button>
-                  </div>
-
-                  <div className="grid gap-2 md:grid-cols-[1fr_auto] md:items-end">
-                    <div className="space-y-1.5">
-                      <Label htmlFor="application-status">Application status</Label>
-                      <Select
-                        value={selectedApplication.status}
-                        onValueChange={(value) => updateApplicationStatus(value as ApplicationStatus)}
-                      >
-                        <SelectTrigger id="application-status" disabled={updatingStatus}>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="pending">Pending</SelectItem>
-                          <SelectItem value="reviewed">Reviewed</SelectItem>
-                          <SelectItem value="shortlisted">Shortlisted</SelectItem>
-                          <SelectItem value="rejected">Rejected</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button variant="ghost" disabled={updatingStatus} className="justify-start md:justify-center">
-                      <RefreshCw className={cn('h-4 w-4 mr-2', updatingStatus && 'animate-spin')} />
-                      {updatingStatus ? 'Updating...' : 'Auto-save on change'}
-                    </Button>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <Label>Applicant email</Label>
-                    <Input value={selectedApplication.applicantEmail} readOnly />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label>Phone number</Label>
-                    <Input value={selectedApplication.applicantPhone} readOnly />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label>Cover letter</Label>
-                    <Textarea
-                      value={selectedApplication.coverLetter || 'No cover letter was provided.'}
-                      readOnly
-                      className="min-h-24"
-                    />
-                  </div>
-                </>
-              )}
-
-              {error && (
-                <p className="text-sm text-destructive">Failed to load applications. Please refresh.</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

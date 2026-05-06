@@ -678,10 +678,23 @@ const CareerView = () => {
 };
 
 
+const VALID_TABS = ['dashboard', 'blog', 'messages', 'performance', 'settings', 'careers', 'applications'] as const;
+type AdminView = typeof VALID_TABS[number];
+
 export default function AdminRootPage() {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-  const [activeView, setActiveView] = useState<'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications'>('dashboard');
+
+  const [activeView, setActiveView] = useState<AdminView>(() => {
+    if (typeof window === 'undefined') return 'dashboard';
+    const tab = new URLSearchParams(window.location.search).get('tab') as AdminView;
+    return VALID_TABS.includes(tab) ? tab : 'dashboard';
+  });
+
+  const handleSetActiveView = (view: AdminView) => {
+    setActiveView(view);
+    router.replace(`/admin?tab=${view}`, { scroll: false });
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -725,7 +738,7 @@ export default function AdminRootPage() {
   };
 
   return (
-    <AdminDashboardLayout activeView={activeView} setActiveView={setActiveView}>
+    <AdminDashboardLayout activeView={activeView} setActiveView={handleSetActiveView}>
       {renderContent()}
     </AdminDashboardLayout>
   );
