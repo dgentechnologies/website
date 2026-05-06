@@ -47,7 +47,7 @@ const formSchema = z.object({
   position: z.string().min(2, 'Position must be at least 2 characters.'),
   category: z.string().min(2, 'Category is required.'),
   topic: z.string().min(2, 'Topic is required.'),
-  type: z.enum(['job', 'internship']),
+  type: z.enum(['job', 'internship', 'apprenticeship']),
   workMode: z.enum(['remote', 'onsite', 'hybrid']),
   compensation: z.enum(['paid', 'unpaid', 'intern-paid']),
   amount: z.string().optional(),
@@ -298,6 +298,7 @@ export default function CareerForm({ mode, listingId, defaultValues }: CareerFor
                         <SelectContent>
                           <SelectItem value="job">Full-Time Job</SelectItem>
                           <SelectItem value="internship">Internship</SelectItem>
+                          <SelectItem value="apprenticeship">Apprenticeship</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

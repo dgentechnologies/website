@@ -3,7 +3,7 @@ export interface CareerListing {
   position: string;
   category: string;
   topic: string;
-  type: 'job' | 'internship';
+  type: 'job' | 'internship' | 'apprenticeship';
   workMode: 'remote' | 'onsite' | 'hybrid';
   compensation: 'paid' | 'unpaid' | 'intern-paid';
   amount?: string;

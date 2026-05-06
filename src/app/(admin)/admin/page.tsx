@@ -519,6 +519,7 @@ const WORK_MODE_LABELS: Record<string, string> = {
 const TYPE_LABELS: Record<string, string> = {
   job: 'Full-Time Job',
   internship: 'Internship',
+  apprenticeship: 'Apprenticeship',
 };
 
 const CareerView = () => {

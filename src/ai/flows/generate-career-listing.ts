@@ -21,7 +21,9 @@ const CareerListingOutputSchema = z.object({
   position: z.string().describe('The job title or position name.'),
   category: z.string().describe('The department or category, e.g. "Engineering", "Marketing", "Finance".'),
   topic: z.string().describe('The specific area of work or technology, e.g. "IoT, Web Development", "React, Node.js".'),
-  type: z.enum(['job', 'internship']).describe('"job" for full-time roles, "internship" for internship positions.'),
+  type: z
+    .enum(['job', 'internship', 'apprenticeship'])
+    .describe('"job" for full-time roles, "internship" for internship positions, "apprenticeship" for apprenticeship roles.'),
   workMode: z.enum(['remote', 'onsite', 'hybrid']).describe('The work mode: remote, onsite, or hybrid.'),
   compensation: z.enum(['paid', 'unpaid', 'intern-paid']).describe(
     '"paid" = company pays the candidate; "unpaid" = no payment; "intern-paid" = intern pays a fee to join.'
@@ -60,7 +62,7 @@ Generate all required fields for the listing and return ONLY a single, valid JSO
 - "position": string — Job title (e.g. "Frontend Developer Intern", "Senior Backend Engineer")
 - "category": string — Department (e.g. "Engineering", "Design", "Marketing", "Finance", "Operations")
 - "topic": string — Specific technologies or area (e.g. "React, IoT Dashboard", "Python, Machine Learning")
-- "type": "job" | "internship" — "internship" if the role is for a limited period/training, otherwise "job"
+- "type": "job" | "internship" | "apprenticeship" — "internship" for internship roles, "apprenticeship" for apprenticeship roles, otherwise "job"
 - "workMode": "remote" | "onsite" | "hybrid" — based on the brief; default to "onsite" if not specified
 - "compensation": "paid" | "unpaid" | "intern-paid" — "paid" means company pays, "unpaid" means no payment, "intern-paid" means intern pays a fee
 - "amount": string (optional) — Amount in INR format with ₹ symbol, e.g. "₹15,000". Only include if compensation is "paid" or "intern-paid". Omit for "unpaid".

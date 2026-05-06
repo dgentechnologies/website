@@ -26,6 +26,7 @@ const WORK_MODE_LABELS: Record<string, string> = {
 const TYPE_LABELS: Record<string, string> = {
   job: 'Full-Time Job',
   internship: 'Internship',
+  apprenticeship: 'Apprenticeship',
 };
 
 const AMOUNT_SPAN_LABELS: Record<string, string> = {
@@ -150,6 +151,7 @@ export default function CareersPage() {
                 <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="job">Full-Time Job</SelectItem>
                 <SelectItem value="internship">Internship</SelectItem>
+                <SelectItem value="apprenticeship">Apprenticeship</SelectItem>
               </SelectContent>
             </Select>
 

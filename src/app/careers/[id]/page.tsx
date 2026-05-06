@@ -31,6 +31,7 @@ const WORK_MODE_LABELS: Record<string, string> = {
 const TYPE_LABELS: Record<string, string> = {
   job: 'Full-Time Job',
   internship: 'Internship',
+  apprenticeship: 'Apprenticeship',
 };
 
 const AMOUNT_SPAN_LABELS: Record<string, string> = {
@@ -235,11 +236,11 @@ export default async function CareerDetailPage({
                       Exposure to IoT hardware, cloud infrastructure, and AI integrations.
                     </span>
                   </li>
-                  {listing.type === 'internship' && (
+                  {listing.type !== 'job' && (
                     <li className="flex items-start gap-3">
                       <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                       <span className="text-foreground/80">
-                        Certificate of completion and a strong referral letter upon successful internship.
+                        Certificate of completion and a strong referral letter upon successful program completion.
                       </span>
                     </li>
                   )}
