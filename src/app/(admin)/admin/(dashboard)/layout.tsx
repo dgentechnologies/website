@@ -2,7 +2,7 @@
 'use client';
 
 import { signOut } from 'firebase/auth';
-import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings, Briefcase, ClipboardList } from 'lucide-react';
+import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings, Briefcase, ClipboardList, PanelsTopLeft } from 'lucide-react';
 import Image from 'next/image';
 import {
   Sidebar,
@@ -22,8 +22,8 @@ import Link from 'next/link';
 
 type AdminDashboardLayoutProps = {
   children: React.ReactNode;
-  activeView: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications';
-  setActiveView: (view: 'dashboard' | 'blog' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications') => void;
+  activeView: 'dashboard' | 'blog' | 'cms' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications';
+  setActiveView: (view: 'dashboard' | 'blog' | 'cms' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications') => void;
 };
 
 export default function AdminDashboardLayout({ children, activeView, setActiveView }: AdminDashboardLayoutProps) {
@@ -56,6 +56,16 @@ export default function AdminDashboardLayout({ children, activeView, setActiveVi
               >
                 <FileText className="h-4 w-4" />
                 <span>Blog</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                isActive={activeView === 'cms'}
+                onClick={() => setActiveView('cms')}
+                tooltip="CMS"
+              >
+                <PanelsTopLeft className="h-4 w-4" />
+                <span>CMS</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>

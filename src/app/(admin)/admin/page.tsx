@@ -46,6 +46,7 @@ import { CareerListing } from '@/types/career';
 import PerformanceView from '@/components/performance-view';
 import SettingsView from '@/components/settings-view';
 import JobApplicationsView from '@/components/job-applications-view';
+import CMSView from '@/components/cms-view';
 
 import {
   AreaChart,
@@ -679,7 +680,7 @@ const CareerView = () => {
 };
 
 
-const VALID_TABS = ['dashboard', 'blog', 'messages', 'performance', 'settings', 'careers', 'applications'] as const;
+const VALID_TABS = ['dashboard', 'blog', 'cms', 'messages', 'performance', 'settings', 'careers', 'applications'] as const;
 type AdminView = typeof VALID_TABS[number];
 
 export default function AdminRootPage() {
@@ -722,6 +723,8 @@ export default function AdminRootPage() {
     switch (activeView) {
       case 'blog':
         return <BlogView />;
+      case 'cms':
+        return <CMSView />;
       case 'messages':
         return <MessagesView />;
       case 'performance':
