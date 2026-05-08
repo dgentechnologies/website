@@ -1,10 +1,10 @@
-# **App Name**: DGEN Technologies
+# **App Name**: Dgen Technologies
 
 ## Core Features:
 
-- Homepage: An engaging landing page providing an overview of DGEN Technologies and its services.
+- Homepage: An engaging landing page providing an overview of Dgen Technologies and its services.
 - About Us: Detailed information about the company's mission, vision, values, and team.
-- Services: Comprehensive listing and description of the services offered by DGEN Technologies.
+- Services: Comprehensive listing and description of the services offered by Dgen Technologies.
 - Contact Form: An interactive form for users to submit inquiries and contact the company.
 
 ## Style Guidelines:

@@ -32,7 +32,7 @@ export function Header() {
       <div className="container flex h-14 sm:h-16 max-w-screen-2xl items-center px-4 md:px-6">
         <Link href="/" className="mr-4 sm:mr-6 flex items-center space-x-2">
           <div className={isAdamPage ? 'bg-white rounded-lg px-2 py-1' : ''}>
-            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={120} height={40} className="h-8 sm:h-10 w-auto" />
+            <Image src="/images/logo.png" alt="Dgen Technologies Logo" width={120} height={40} className="h-8 sm:h-10 w-auto" />
           </div>
         </Link>
 
@@ -75,10 +75,10 @@ export function Header() {
               </SheetTrigger>
               <SheetContent side="left" className="w-[280px] sm:w-[320px] p-0">
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                <SheetDescription className="sr-only">Main navigation links for DGEN Technologies website</SheetDescription>
+                <SheetDescription className="sr-only">Main navigation links for Dgen Technologies website</SheetDescription>
                 <div className="flex items-center justify-between p-4 border-b">
                   <Link href="/" className="flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={100} height={30} className="h-8 w-auto"/>
+                    <Image src="/images/logo.png" alt="Dgen Technologies Logo" width={100} height={30} className="h-8 w-auto"/>
                   </Link>
                 </div>
                 <nav className="my-6 h-[calc(100vh-8rem)] pb-10 px-2" aria-label="Mobile navigation">

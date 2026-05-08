@@ -44,12 +44,12 @@ export default function TermsOfServicePage() {
           
           <h2>5. Disclaimer of Warranties</h2>
           <p>
-            The Site and its Content are provided on an "as-is" and "as-available" basis. DGEN Technologies makes no warranties, expressed or implied, and hereby disclaims all other warranties, including without limitation, implied warranties of merchantability, fitness for a particular purpose, or non-infringement of intellectual property. We do not warrant that the Site will be uninterrupted, secure, or error-free.
+            The Site and its Content are provided on an "as-is" and "as-available" basis. Dgen Technologies makes no warranties, expressed or implied, and hereby disclaims all other warranties, including without limitation, implied warranties of merchantability, fitness for a particular purpose, or non-infringement of intellectual property. We do not warrant that the Site will be uninterrupted, secure, or error-free.
           </p>
 
           <h2>6. Limitation of Liability</h2>
           <p>
-            In no event shall DGEN Technologies or its directors, employees, or agents be liable for any direct, indirect, incidental, special, or consequential damages arising out of, or in any way connected with, the use of the Site or with the delay or inability to use the Site, or for any information, software, products, and services obtained through the Site.
+            In no event shall Dgen Technologies or its directors, employees, or agents be liable for any direct, indirect, incidental, special, or consequential damages arising out of, or in any way connected with, the use of the Site or with the delay or inability to use the Site, or for any information, software, products, and services obtained through the Site.
           </p>
 
           <h2>7. Modifications and Interruptions</h2>
@@ -66,7 +66,7 @@ export default function TermsOfServicePage() {
           <p>
             To resolve a complaint regarding the Site or to receive further information regarding use of the Site, please contact us at:
             <br/>
-            DGEN Technologies Pvt. Ltd.
+            Dgen Technologies Pvt. Ltd.
             <br/>
             Email: <a href="mailto:contact@dgentechnologies.com">contact@dgentechnologies.com</a>
           </p>

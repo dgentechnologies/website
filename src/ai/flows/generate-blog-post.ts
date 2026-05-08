@@ -80,7 +80,7 @@ const generateBlogPostFlow = ai.defineFlow(
     const authorPosition = authorRoles[input.author] || 'a key team member';
 
     const prompt = `
-You are an expert content creator for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is well-organized, informative, engaging, and optimized for SEO, AEO, and GEO, reflecting the unique voice and perspective of the specified author.
+You are an expert content creator for Dgen Technologies, a tech company specializing in Smart City & IoT Solutions. Your task is to write a blog post that is well-organized, informative, engaging, and optimized for SEO, AEO, and GEO, reflecting the unique voice and perspective of the specified author.
 
 The blog post MUST be about the following topic: **${input.topic}**.
 The author is **${input.author}**, the **${authorPosition}** of the company.

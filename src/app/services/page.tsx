@@ -137,7 +137,7 @@ export default function ServicesPage() {
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
-              alt="DGEN Technologies smart city services - Auralis smart street light infrastructure"
+              alt="Dgen Technologies smart city services - Auralis smart street light infrastructure"
               fill
               className="object-cover"
               priority
@@ -218,7 +218,7 @@ export default function ServicesPage() {
                 <Badge variant="default">National Initiative</Badge>
                 <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter md:text-4xl px-2">Powering the Smart Cities Mission India</h2>
                 <p className="max-w-3xl mx-auto text-foreground/80 text-sm sm:text-base md:text-lg px-2">
-                   The Smart Cities Mission India is a visionary initiative by the Government to drive economic growth and improve quality of life. Adhering to the Smart Cities Mission guidelines, DGEN Technologies is proud to contribute by building the foundational infrastructure that will power the smart cities of tomorrow.
+                   The Smart Cities Mission India is a visionary initiative by the Government to drive economic growth and improve quality of life. Adhering to the Smart Cities Mission guidelines, Dgen Technologies is proud to contribute by building the foundational infrastructure that will power the smart cities of tomorrow.
                 </p>
             </div>
         </section>
@@ -254,7 +254,7 @@ export default function ServicesPage() {
             </div>
         </section>
 
-        {/* Why Choose DGEN Section */}
+        {/* Why Choose Dgen Section */}
         <section className="w-full py-12 md:py-16 lg:py-24 overflow-hidden">
            <div className="container px-4 md:px-6">
             <div 
@@ -263,7 +263,7 @@ export default function ServicesPage() {
                 whyVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
             >
-                <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter md:text-4xl">Why Choose DGEN Technologies?</h2>
+                <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter md:text-4xl">Why Choose Dgen Technologies?</h2>
                 <p className="max-w-3xl mx-auto text-foreground/80 text-sm sm:text-base md:text-lg px-2">
                   Partner with us for unparalleled quality, innovation, and a steadfast commitment to advancing technology for the benefit of society.
                 </p>

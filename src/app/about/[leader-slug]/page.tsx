@@ -32,7 +32,7 @@ export default async function LeaderDetailPage({ params }: { params: Promise<{ '
     url: `https://dgentechnologies.com/about/${member.slug}`,
     worksFor: {
       '@type': 'Organization',
-      name: 'DGEN Technologies',
+      name: 'Dgen Technologies',
       url: 'https://dgentechnologies.com',
     },
     sameAs: [
@@ -108,8 +108,8 @@ export async function generateMetadata({ params }: { params: Promise<{ 'leader-s
     };
   }
 
-  const pageTitle = `${member.name} - ${member.role} | DGEN Technologies`;
-  const description = `Learn more about ${member.name}, the ${member.role} at DGEN Technologies. ${member.bio.substring(0, 150)}...`;
+  const pageTitle = `${member.name} - ${member.role} | Dgen Technologies`;
+  const description = `Learn more about ${member.name}, the ${member.role} at Dgen Technologies. ${member.bio.substring(0, 150)}...`;
   const url = `https://dgentechnologies.com/about/${member.slug}`;
 
   return {
@@ -118,7 +118,7 @@ export async function generateMetadata({ params }: { params: Promise<{ 'leader-s
     keywords: [
       member.name,
       member.role,
-      'DGEN Technologies',
+      'Dgen Technologies',
       'leadership',
       'team',
       'smart city',
@@ -141,7 +141,7 @@ export async function generateMetadata({ params }: { params: Promise<{ 'leader-s
           alt: `${member.name} - ${member.role}`,
         },
       ],
-      siteName: 'DGEN Technologies',
+      siteName: 'Dgen Technologies',
     },
     twitter: {
       card: 'summary_large_image',

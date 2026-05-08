@@ -1,6 +1,6 @@
 # Documentation Index
 
-Welcome to the DGEN Technologies website documentation. Use this index to explore the system, admin UI, and integrations.
+Welcome to the Dgen Technologies website documentation. Use this index to explore the system, admin UI, and integrations.
 
 ## Table of Contents
 

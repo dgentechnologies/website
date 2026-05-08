@@ -32,7 +32,7 @@ export default function AdminDashboardLayout({ children, activeView, setActiveVi
       <Sidebar collapsible="icon" className="bg-background shadow-xl border-r border-border">
         <SidebarHeader>
           <div className="flex items-center gap-2 p-4 group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:justify-center">
-            <Image src="/images/logo.png" alt="DGEN Technologies Logo" width={120} height={28} className="h-8 w-auto group-data-[collapsible=icon]:hidden" />
+            <Image src="/images/logo.png" alt="Dgen Technologies Logo" width={120} height={28} className="h-8 w-auto group-data-[collapsible=icon]:hidden" />
             <LayoutDashboard className="h-6 w-6 text-primary hidden group-data-[collapsible=icon]:block" />
           </div>
         </SidebarHeader>

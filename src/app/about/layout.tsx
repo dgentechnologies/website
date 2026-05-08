@@ -1,19 +1,19 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us - DGEN Technologies | Advanced Hardware & Software Solutions',
-  description: 'Discover DGEN Technologies, a company that creates smart, advanced hardware and software solutions to help society. Meet our leadership team and learn about Auralis, our flagship IoT ecosystem.',
-  keywords: ['DGEN Technologies', 'technology company India', 'hardware software solutions', 'IoT company India', 'Auralis', 'smart street light', 'ADAM AI', 'urban technology', 'Made in India tech company', 'smart city solutions'],
+  title: 'About Us - Dgen Technologies | Advanced Hardware & Software Solutions',
+  description: 'Discover Dgen Technologies, a company that creates smart, advanced hardware and software solutions to help society. Meet our leadership team and learn about Auralis, our flagship IoT ecosystem.',
+  keywords: ['Dgen Technologies', 'technology company India', 'hardware software solutions', 'IoT company India', 'Auralis', 'smart street light', 'ADAM AI', 'urban technology', 'Made in India tech company', 'smart city solutions'],
   openGraph: {
-    title: 'About DGEN Technologies - Advanced Technology Solutions',
-    description: 'Learn about DGEN Technologies, a company creating smart, advanced hardware and software solutions to help society, including our flagship Auralis product and B2C smart home technology.',
+    title: 'About Dgen Technologies - Advanced Technology Solutions',
+    description: 'Learn about Dgen Technologies, a company creating smart, advanced hardware and software solutions to help society, including our flagship Auralis product and B2C smart home technology.',
     type: 'website',
     locale: 'en_IN',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About DGEN Technologies - Advanced Technology Solutions',
-    description: 'Learn about DGEN Technologies, creating smart, advanced hardware and software solutions to help society with innovative IoT products.',
+    title: 'About Dgen Technologies - Advanced Technology Solutions',
+    description: 'Learn about Dgen Technologies, creating smart, advanced hardware and software solutions to help society with innovative IoT products.',
   },
 };
 
@@ -25,11 +25,11 @@ export default function AboutLayout({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "DGEN Technologies",
-    "alternateName": ["Dgen Technologies Private Limited", "DGEN Tech"],
+    "name": "Dgen Technologies",
+    "alternateName": ["Dgen Technologies Private Limited", "Dgen Tech"],
     "url": "https://dgentechnologies.com",
     "logo": "https://dgentechnologies.com/logo.png",
-    "description": "DGEN Technologies creates smart, advanced hardware and software solutions to help society, including the flagship Auralis IoT ecosystem for intelligent street lighting and smart homes.",
+    "description": "Dgen Technologies creates smart, advanced hardware and software solutions to help society, including the flagship Auralis IoT ecosystem for intelligent street lighting and smart homes.",
     "foundingDate": "2025",
     "foundingLocation": {
       "@type": "Place",
@@ -37,9 +37,9 @@ export default function AboutLayout({
     },
     "sameAs": [
       "https://www.linkedin.com/company/dgen-technologies/",
-      "https://x.com/DGEN_Tech",
+      "https://x.com/Dgen_Tech",
       "https://www.instagram.com/dgentechnologies/",
-      "https://www.youtube.com/@DGENTECHNOLOGIES"
+      "https://www.youtube.com/@DgenTECHNOLOGIES"
     ],
     "contactPoint": {
       "@type": "ContactPoint",

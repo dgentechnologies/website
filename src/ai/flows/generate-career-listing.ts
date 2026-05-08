@@ -50,7 +50,7 @@ export async function generateCareerListing(input: CareerListingInput): Promise<
   const { text } = await ai.generate({
     model: 'googleai/gemini-3.1-flash-lite-preview',
     prompt: `
-You are an expert HR content writer for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions based in India.
+You are an expert HR content writer for Dgen Technologies, a tech company specializing in Smart City & IoT Solutions based in India.
 
 Your task is to generate a complete, professional career listing based on the following brief description provided by the admin:
 
@@ -68,13 +68,13 @@ Generate all required fields for the listing and return ONLY a single, valid JSO
 - "amount": string (optional) — Amount in INR format with ₹ symbol, e.g. "₹15,000". Only include if compensation is "paid" or "intern-paid". Omit for "unpaid".
 - "amountSpan": "per month" | "per year" | "per week" | "fixed" (optional) — Pay period. Only include if compensation is "paid" or "intern-paid". Omit for "unpaid".
 - "duration": string — How long the role lasts (e.g. "3 months", "6 months", "Full-time permanent")
-- "description": string — At least 3-4 sentences describing the role, key responsibilities, and what the candidate will work on at DGEN Technologies
+- "description": string — At least 3-4 sentences describing the role, key responsibilities, and what the candidate will work on at Dgen Technologies
 - "requirements": string — Newline-separated list of 5-7 specific skills and qualifications needed
 
 **Rules:**
 1. All currency amounts MUST be in INR (₹). Never use USD ($) or any other currency.
 2. Write "requirements" as a plain newline-separated list (e.g. "Proficiency in React.js\\nStrong understanding of REST APIs\\nGood communication skills"). Do NOT use bullet characters or markdown.
-3. Keep "description" professional and specific to DGEN Technologies' domain (Smart Cities, IoT, sustainability).
+3. Keep "description" professional and specific to Dgen Technologies' domain (Smart Cities, IoT, sustainability).
 4. If the brief mentions a salary or fee, use that amount in INR in the "amount" field. Otherwise, leave "amount" and "amountSpan" out.
 5. Output ONLY a valid JSON object. No markdown. No extra text.
 `,

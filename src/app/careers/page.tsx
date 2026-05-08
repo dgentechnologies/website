@@ -122,7 +122,7 @@ export default function CareersPage() {
               Careers
             </Badge>
             <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter md:text-5xl lg:text-6xl text-gradient px-2">
-              Join DGEN Technologies
+              Join Dgen Technologies
             </h1>
             <p className="mx-auto max-w-[700px] text-foreground/80 text-sm sm:text-base md:text-xl px-4">
               Be part of a team building the future of smart cities, IoT, and sustainable technology.

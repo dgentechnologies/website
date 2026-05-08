@@ -37,7 +37,7 @@ export async function suggestBlogTopic(input: SuggestBlogTopicInput): Promise<Su
   const { text } = await ai.generate({
     model: 'googleai/gemini-3.1-flash-lite-preview',
     prompt: `
-You are a senior content strategist for DGEN Technologies, a tech company specializing in Smart City & IoT Solutions.
+You are a senior content strategist for Dgen Technologies, a tech company specializing in Smart City & IoT Solutions.
 
 Your task is to generate exactly 3 concise, trending, and distinct blog post topics that are perfectly suited for the following author: **${input.author}**.
 

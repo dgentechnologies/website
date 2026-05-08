@@ -1,8 +1,8 @@
-# DGEN Technologies Admin Panel Documentation
+# Dgen Technologies Admin Panel Documentation
 
 ## 1. Overview
 
-The admin panel is a desktop-only, Firebase-authenticated CMS for the DGEN Technologies website. It is implemented inside the Next.js App Router under `/admin` and is designed to manage content, users, analytics, and operational workflows from a single dashboard.
+The admin panel is a desktop-only, Firebase-authenticated CMS for the Dgen Technologies website. It is implemented inside the Next.js App Router under `/admin` and is designed to manage content, users, analytics, and operational workflows from a single dashboard.
 
 Primary objectives:
 - Manage blog publishing with AI-assisted authoring
@@ -331,4 +331,4 @@ Server-only secrets:
 
 ## 13. Summary
 
-The admin panel is a full operational control center for DGEN Technologies, combining secure Firebase-backed administration, AI-assisted content generation, analytics intelligence, and structured workflow management for blogs, careers, and applications. Its architecture balances speed (real-time hooks), safety (server-validated APIs), and maintainability (typed models + modular route/component design).
+The admin panel is a full operational control center for Dgen Technologies, combining secure Firebase-backed administration, AI-assisted content generation, analytics intelligence, and structured workflow management for blogs, careers, and applications. Its architecture balances speed (real-time hooks), safety (server-validated APIs), and maintainability (typed models + modular route/component design).

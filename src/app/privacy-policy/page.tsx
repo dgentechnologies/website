@@ -24,7 +24,7 @@ export default function PrivacyPolicyPage() {
         <div className="container max-w-screen-lg px-4 md:px-6 prose prose-invert prose-lg mx-auto">
           <h2>1. Introduction</h2>
           <p>
-            DGEN Technologies Pvt. Ltd. ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, https://dgentechnologies.com (the "Site"). Please read this policy carefully. By using the Site, you consent to the data practices described in this statement.
+            Dgen Technologies Pvt. Ltd. ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, https://dgentechnologies.com (the "Site"). Please read this policy carefully. By using the Site, you consent to the data practices described in this statement.
           </p>
 
           <h2>2. Information We Collect</h2>
@@ -83,7 +83,7 @@ export default function PrivacyPolicyPage() {
           <p>
             If you have questions or comments about this Privacy Policy, please contact us at:
             <br/>
-            DGEN Technologies Pvt. Ltd.
+            Dgen Technologies Pvt. Ltd.
             <br/>
             Email: <a href="mailto:contact@dgentechnologies.com">contact@dgentechnologies.com</a>
           </p>

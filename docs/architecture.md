@@ -4,7 +4,7 @@
 
 ```mermaid
 C4Context
-title DGEN Website - System Context
+title Dgen Website - System Context
 
 Person(admin, "Admin User")
 Person(visitor, "Site Visitor")

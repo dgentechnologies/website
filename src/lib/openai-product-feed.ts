@@ -8,7 +8,7 @@ import {
 type ProductFeedOverrides = {
   item_id: string;
   availability: FeedAvailability;
-  price: string;
+  price?: string;
   is_eligible_search: boolean;
   is_eligible_checkout: boolean;
   product_category?: string;
@@ -27,53 +27,55 @@ type ProductFeedOverrides = {
 };
 
 const BASE_URL = 'https://dgentechnologies.com';
-const BRAND_NAME = 'DGEN Technologies';
-const SELLER_NAME = 'DGEN Technologies Private Limited';
+const BRAND_NAME = 'Dgen Technologies';
+const SELLER_NAME = 'Dgen Technologies Private Limited';
 
 const productFeedOverrides: Record<Product['slug'], ProductFeedOverrides> = {
   'auralis-ecosystem': {
-    item_id: 'DGEN-AURALIS-ECOSYSTEM-001',
+    item_id: 'Dgen-AURALIS-ECOSYSTEM-001',
     availability: 'in_stock',
-    price: '24999.00 INR',
     is_eligible_search: true,
     is_eligible_checkout: false,
     product_category: 'Business & Industrial > Smart City Infrastructure > Street Lighting Control',
     condition: 'new',
-    related_product_id: 'DGEN-SOLAR-STREET-LIGHT-001',
+    warning: 'B2B/B2G contact-sales product. Request a quote from Dgen Technologies sales team.',
+    warning_url: `${BASE_URL}/contact`,
+    related_product_id: 'Dgen-SOLAR-STREET-LIGHT-001',
     relationship_type: 'frequently_bought_together',
   },
   'solar-street-light': {
-    item_id: 'DGEN-SOLAR-STREET-LIGHT-001',
+    item_id: 'Dgen-SOLAR-STREET-LIGHT-001',
     availability: 'in_stock',
-    price: '17999.00 INR',
     is_eligible_search: true,
     is_eligible_checkout: false,
     product_category: 'Home & Garden > Lighting > Outdoor Lighting > Solar Lights',
     condition: 'new',
-    related_product_id: 'DGEN-LED-STREET-LIGHT-001',
+    warning: 'B2B/B2G contact-sales product. Request a quote from Dgen Technologies sales team.',
+    warning_url: `${BASE_URL}/contact`,
+    related_product_id: 'Dgen-LED-STREET-LIGHT-001',
     relationship_type: 'similar',
   },
   'led-street-light': {
-    item_id: 'DGEN-LED-STREET-LIGHT-001',
+    item_id: 'Dgen-LED-STREET-LIGHT-001',
     availability: 'in_stock',
-    price: '8999.00 INR',
     is_eligible_search: true,
     is_eligible_checkout: false,
     product_category: 'Home & Garden > Lighting > Outdoor Lighting > Street Lights',
     condition: 'new',
-    related_product_id: 'DGEN-AURALIS-ECOSYSTEM-001',
+    warning: 'B2B/B2G contact-sales product. Request a quote from Dgen Technologies sales team.',
+    warning_url: `${BASE_URL}/contact`,
+    related_product_id: 'Dgen-AURALIS-ECOSYSTEM-001',
     relationship_type: 'accessory',
   },
   adam: {
-    item_id: 'DGEN-ADAM-001',
-    availability: 'pre_order',
-    availability_date: '2026-12-01',
-    price: '9999.00 INR',
-    is_eligible_search: true,
+    item_id: 'Dgen-ADAM-001',
+    availability: 'out_of_stock',
+    is_eligible_search: false,
     is_eligible_checkout: false,
     product_category: 'Electronics > Artificial Intelligence Devices > Desktop AI Assistant',
     condition: 'new',
-    warning: 'Prototype hardware. Features and timelines may change before full launch.',
+    warning: 'ADAM is not launched yet. Join the waitlist for launch updates.',
+    warning_url: `${BASE_URL}/products/adam`,
     age_restriction: 13,
     model_3d_url: `${BASE_URL}/models/auralis-desktop.mtl`,
   },
@@ -115,7 +117,7 @@ function buildFeedItem(product: Product): OpenAIProductFeedItem {
     .slice(1)
     .map((img) => absoluteUrl(img.url));
 
-  return {
+  const item: OpenAIProductFeedItem = {
     // OpenAI flags
     is_eligible_search: overrides.is_eligible_search,
     is_eligible_checkout: overrides.is_eligible_checkout,
@@ -136,9 +138,6 @@ function buildFeedItem(product: Product): OpenAIProductFeedItem {
     additional_image_urls: additionalImages.length > 0 ? additionalImages.join(',') : undefined,
     video_url: overrides.video_url,
     model_3d_url: overrides.model_3d_url,
-
-    // Price and promotions
-    price: overrides.price,
 
     // Availability and inventory
     availability: overrides.availability,
@@ -183,6 +182,12 @@ function buildFeedItem(product: Product): OpenAIProductFeedItem {
     target_countries: ['IN'],
     store_country: 'IN',
   };
+
+  if (overrides.price) {
+    item.price = overrides.price;
+  }
+
+  return item;
 }
 
 function validateFeedItem(item: OpenAIProductFeedItem): string[] {
@@ -195,7 +200,6 @@ function validateFeedItem(item: OpenAIProductFeedItem): string[] {
     'url',
     'brand',
     'image_url',
-    'price',
     'availability',
     'seller_name',
     'seller_url',
@@ -214,8 +218,12 @@ function validateFeedItem(item: OpenAIProductFeedItem): string[] {
     errors.push('Missing required field: target_countries');
   }
 
-  if (!isCurrencyAmount(item.price)) {
+  if (item.price && !isCurrencyAmount(item.price)) {
     errors.push('Invalid price format. Expected: "123.45 CUR"');
+  }
+
+  if (item.is_eligible_checkout && !item.price) {
+    errors.push('is_eligible_checkout=true requires price');
   }
 
   if (!isValidUrl(item.url)) {

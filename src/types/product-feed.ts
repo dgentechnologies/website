@@ -58,7 +58,7 @@ export type OpenAIProductFeedItem = {
   model_3d_url?: string;
 
   // Price and promotions
-  price: string;
+  price?: string;
   sale_price?: string;
   sale_price_start_date?: string;
   sale_price_end_date?: string;

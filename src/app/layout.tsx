@@ -85,16 +85,16 @@ export default function RootLayout({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "DGEN Technologies",
-    "alternateName": ["Dgen Technologies Private Limited", "DGEN Technologies", "Dgen Tech"],
+    "name": "Dgen Technologies",
+    "alternateName": ["Dgen Technologies Private Limited", "Dgen Technologies", "Dgen Tech"],
     "url": "https://dgentechnologies.com",
     "logo": "https://dgentechnologies.com/logo.png",
     "description": "Dgen Technologies creates smart, advanced hardware and software solutions to help society. We specialize in cutting-edge IoT and AI-powered technologies, including the Auralis Ecosystem for intelligent urban infrastructure.",
     "sameAs": [
       "https://www.linkedin.com/company/dgen-technologies/",
-      "https://x.com/DGEN_Tech",
+      "https://x.com/Dgen_Tech",
       "https://www.instagram.com/dgentechnologies/",
-      "https://www.youtube.com/@DGENTECHNOLOGIES"
+      "https://www.youtube.com/@DgenTECHNOLOGIES"
     ],
     "contactPoint": {
       "@type": "ContactPoint",

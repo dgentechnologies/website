@@ -28,7 +28,7 @@ export default async function BlogPage() {
           <div className="flex flex-col items-center space-y-3 sm:space-y-4 text-center">
             <Badge variant="outline" className="py-1 px-3 border-primary/50 text-primary">Insights</Badge>
             <h1 className="text-3xl sm:text-4xl font-headline font-bold tracking-tighter md:text-5xl lg:text-6xl text-gradient px-2">
-              DGEN Technologies Blog
+              Dgen Technologies Blog
             </h1>
             <p className="mx-auto max-w-[700px] text-foreground/80 text-sm sm:text-base md:text-xl px-4">
               Exploring the future of smart cities, IoT, and sustainable technology.

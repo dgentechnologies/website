@@ -1,18 +1,18 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Services - Advanced Technology & IoT Solutions | DGEN Technologies',
-  description: 'Discover advanced hardware and software technology services from DGEN Technologies. Auralis smart street lighting, IoT solutions, and smart home products for India.',
+  title: 'Services - Advanced Technology & IoT Solutions | Dgen Technologies',
+  description: 'Discover advanced hardware and software technology services from Dgen Technologies. Auralis smart street lighting, IoT solutions, and smart home products for India.',
   keywords: ['technology services', 'IoT solutions India', 'Auralis smart street light', 'Smart Cities Mission India', 'urban infrastructure', 'smart home lighting', 'city management systems', 'energy efficient lighting', 'hardware solutions', 'software solutions'],
   openGraph: {
-    title: 'Advanced Technology & IoT Services | DGEN Technologies',
+    title: 'Advanced Technology & IoT Services | Dgen Technologies',
     description: 'Explore our comprehensive hardware and software technology services — from Auralis smart street lighting to IoT infrastructure. Powering India\'s future.',
     type: 'website',
     locale: 'en_IN',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Advanced Technology & IoT Services | DGEN Technologies',
+    title: 'Advanced Technology & IoT Services | Dgen Technologies',
     description: 'Explore our comprehensive hardware and software technology services — from Auralis smart street lighting to IoT infrastructure.',
   },
   alternates: {
@@ -38,11 +38,11 @@ export default function ServicesLayout({
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "DGEN Technologies Technology Services",
+    "name": "Dgen Technologies Technology Services",
     "description": "Comprehensive hardware and software technology solutions including Auralis smart street lighting, IoT infrastructure, and smart home technology.",
     "provider": {
       "@type": "Organization",
-      "name": "DGEN Technologies",
+      "name": "Dgen Technologies",
       "url": "https://dgentechnologies.com"
     },
     "serviceType": ["Advanced Technology Solutions", "Hardware & Software Development", "IoT Services", "Smart Street Lighting", "Smart Home Solutions"],
@@ -55,16 +55,16 @@ export default function ServicesLayout({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "DGEN Technologies",
-    "alternateName": ["Dgen Technologies Private Limited", "DGEN Tech"],
+    "name": "Dgen Technologies",
+    "alternateName": ["Dgen Technologies Private Limited", "Dgen Tech"],
     "url": "https://dgentechnologies.com",
     "logo": "https://dgentechnologies.com/logo.png",
-    "description": "DGEN Technologies creates smart, advanced hardware and software solutions to help society, including the flagship Auralis smart street lighting system.",
+    "description": "Dgen Technologies creates smart, advanced hardware and software solutions to help society, including the flagship Auralis smart street lighting system.",
     "sameAs": [
       "https://www.linkedin.com/company/dgen-technologies/",
-      "https://x.com/DGEN_Tech",
+      "https://x.com/Dgen_Tech",
       "https://www.instagram.com/dgentechnologies/",
-      "https://www.youtube.com/@DGENTECHNOLOGIES"
+      "https://www.youtube.com/@DgenTECHNOLOGIES"
     ],    "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "Sales",

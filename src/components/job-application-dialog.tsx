@@ -187,7 +187,7 @@ export default function JobApplicationDialog({
             <DialogHeader>
               <DialogTitle className="text-xl font-headline">Application Submitted!</DialogTitle>
               <DialogDescription className="text-base leading-relaxed">
-                Thanks for applying for the <strong>{listingTitle}</strong> role at DGEN
+                Thanks for applying for the <strong>{listingTitle}</strong> role at Dgen
                 Technologies. We&apos;ll review your application and get back to you within
                 3&ndash;5 business days.
               </DialogDescription>

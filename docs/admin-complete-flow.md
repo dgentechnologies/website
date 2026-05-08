@@ -1,6 +1,6 @@
-﻿# Admin Complete Flow Documentation
+# Admin Complete Flow Documentation
 
-This document explains the end-to-end operational flow of the admin system for the DGEN Technologies website.
+This document explains the end-to-end operational flow of the admin system for the Dgen Technologies website.
 
 ## 1. Entry and Authentication Flow
 

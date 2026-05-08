@@ -38,15 +38,15 @@ export default function ProductsLayout({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "DGEN Technologies",
+    "name": "Dgen Technologies",
     "url": "https://dgentechnologies.com",
     "logo": "https://dgentechnologies.com/logo.png",
-    "description": "DGEN Technologies provides smart city solutions and AI products including Auralis Ecosystem for intelligent street lighting and ADAM desktop AI companion.",
+    "description": "Dgen Technologies provides smart city solutions and AI products including Auralis Ecosystem for intelligent street lighting and ADAM desktop AI companion.",
     "sameAs": [
       "https://www.linkedin.com/company/dgen-technologies/",
-      "https://x.com/DGEN_Tech",
+      "https://x.com/Dgen_Tech",
       "https://www.instagram.com/dgentechnologies/",
-      "https://www.youtube.com/@DGENTECHNOLOGIES"
+      "https://www.youtube.com/@DgenTECHNOLOGIES"
     ]
   };
 

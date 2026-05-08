@@ -51,7 +51,7 @@ function TeamMemberCard({ member, index }: { member: typeof teamMembers[0]; inde
           : 'opacity-0 translate-y-10'
       }`}
       style={{ transitionDelay: `${index * 150}ms` }}
-      aria-label={`Learn more about ${member.name}, ${member.role} at DGEN Technologies`}
+      aria-label={`Learn more about ${member.name}, ${member.role} at Dgen Technologies`}
     >
       <div className="flex flex-col items-center text-center p-4 sm:p-6 bg-card rounded-lg transition-all transform group-hover:-translate-y-2 group-hover:shadow-primary/10 group-hover:shadow-lg h-full">
         <Avatar className="w-24 h-24 sm:w-32 sm:h-32 mb-3 sm:mb-4 border-2 border-primary">
@@ -116,7 +116,7 @@ export default function AboutPage() {
           >
             <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter">Our Journey in Technology & Innovation</h2>
             <p className="text-foreground/70 text-sm sm:text-base">
-              Founded in 2025, DGEN Technologies began with a mission to create smart, advanced technologies that help society. We work with both hardware and software, delivering intelligent solutions across urban and residential domains. Our flagship B2B product, &quot;Auralis,&quot; a smart street light with an advanced fault detection system, set the standard for urban innovation. From our headquarters in Kolkata, we have been dedicated to solving complex challenges through IoT technology.
+              Founded in 2025, Dgen Technologies began with a mission to create smart, advanced technologies that help society. We work with both hardware and software, delivering intelligent solutions across urban and residential domains. Our flagship B2B product, &quot;Auralis,&quot; a smart street light with an advanced fault detection system, set the standard for urban innovation. From our headquarters in Kolkata, we have been dedicated to solving complex challenges through IoT technology.
             </p>
             <p className="text-foreground/70 text-sm sm:text-base">
               As we continue to transform cityscapes across India, we are also expanding our vision to the B2C market. Our goal is to bring the same level of intelligence and connectivity to every home, making daily life smarter and more efficient. We are committed to leading India&apos;s technological revolution — creating new technologies for the benefit of society, one smart device at a time.
@@ -133,7 +133,7 @@ export default function AboutPage() {
             {storyImage && (
               <Image
                 src={storyImage.imageUrl}
-                alt="DGEN Technologies team working on smart city infrastructure - Auralis smart street light development"
+                alt="Dgen Technologies team working on smart city infrastructure - Auralis smart street light development"
                 fill
                 className="object-cover rounded-lg shadow-lg transition-transform duration-500 hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -155,7 +155,7 @@ export default function AboutPage() {
           >
             <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter">Our Core Values</h2>
             <p className="mt-3 md:mt-4 text-foreground/70 max-w-2xl mx-auto text-sm sm:text-base px-2">
-              The principles that guide DGEN Technologies in building smart hardware and software solutions for society.
+              The principles that guide Dgen Technologies in building smart hardware and software solutions for society.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
@@ -177,7 +177,7 @@ export default function AboutPage() {
           >
             <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-tighter">Meet the Leadership Team</h2>
             <p className="mt-3 md:mt-4 text-foreground/70 max-w-2xl mx-auto text-sm sm:text-base px-2">
-              The experienced leaders driving DGEN Technologies&apos; vision for advanced technology and IoT innovation in India.
+              The experienced leaders driving Dgen Technologies&apos; vision for advanced technology and IoT innovation in India.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 lg:gap-12">

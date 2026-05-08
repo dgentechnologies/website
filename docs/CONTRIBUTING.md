@@ -1,6 +1,6 @@
 # Contributing Guide
 
-Thank you for considering contributing to the DGEN Technologies website.
+Thank you for considering contributing to the Dgen Technologies website.
 
 ## Branching Strategy
 

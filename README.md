@@ -1,9 +1,9 @@
 
 <p align="center">
-    <img src="public/images/logo.png" alt="DGEN Technologies" height="60" />
+    <img src="public/images/logo.png" alt="Dgen Technologies" height="60" />
 </p>
 
-<h1 align="center">DGEN Technologies — Smart City & IoT Website</h1>
+<h1 align="center">Dgen Technologies — Smart City & IoT Website</h1>
 
 <p align="center">
     <a href="https://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-    A premium, performant Next.js app powering DGEN's brand, AI-driven blog, and smart city product showcase.
+    A premium, performant Next.js app powering Dgen's brand, AI-driven blog, and smart city product showcase.
 </p>
 
 ---
@@ -36,7 +36,7 @@
 
 ## Overview
 
-This repository contains the official website for **DGEN Technologies**, a forward-thinking technology company specializing in B2B smart city solutions and an expanding line of B2C smart home products. This Next.js application showcases our brand, products, and insights, featuring a dynamic, AI-powered blog.
+This repository contains the official website for **Dgen Technologies**, a forward-thinking technology company specializing in B2B smart city solutions and an expanding line of B2C smart home products. This Next.js application showcases our brand, products, and insights, featuring a dynamic, AI-powered blog.
 
 ## ✨ Features
 
@@ -179,4 +179,4 @@ flowchart LR
 
 ---
 
-Thank you for exploring the DGEN Technologies website project. We are committed to innovating and building the future of smart technology.
+Thank you for exploring the Dgen Technologies website project. We are committed to innovating and building the future of smart technology.

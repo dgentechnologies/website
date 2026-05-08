@@ -1,6 +1,6 @@
 
 /**
- * @file Firestore Security Rules for the DGEN Technologies website.
+ * @file Firestore Security Rules for the Dgen Technologies website.
  *
  * Core Philosophy:
  * This ruleset prioritizes ease of access for public content (blog posts) and

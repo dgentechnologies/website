@@ -17,7 +17,7 @@ const localBusinessSchema = {
   "@type": "LocalBusiness",
   "@id": "https://www.dgentechnologies.com/#organization",
   "name": "Dgen Technologies Private Limited",
-  "alternateName": ["Dgen Technologies", "DGEN Technologies", "Dgen Tech"],
+  "alternateName": ["Dgen Technologies", "Dgen Technologies", "Dgen Tech"],
   "description": "Dgen Technologies is a technology company based in Kolkata, India that creates smart, advanced hardware and software solutions to help society. We specialize in the Auralis Ecosystem, a smart street lighting platform utilizing Hybrid Wireless Mesh Network technology with ESP-MESH and 4G LTE connectivity for intelligent urban infrastructure.",
   "url": "https://www.dgentechnologies.com",
   "logo": "https://www.dgentechnologies.com/images/logo.png",
@@ -207,7 +207,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/adam-desktop-ai-module.png"
-            alt="ADAM — Autonomous Desktop AI Module by DGEN Technologies — Coming Soon"
+            alt="ADAM — Autonomous Desktop AI Module by Dgen Technologies — Coming Soon"
             fill
             className="object-cover scale-110"
             style={{ filter: 'blur(3px)' }}
@@ -435,7 +435,7 @@ export default function Home() {
                     Build smart systems with a team that ships real work.
                   </h2>
                   <p className="max-w-2xl text-sm sm:text-base md:text-lg text-foreground/80 mx-auto lg:mx-0">
-                    Join DGEN Technologies to work on smart city infrastructure, IoT products, AI-driven systems, and practical engineering challenges built for the Indian market.
+                    Join Dgen Technologies to work on smart city infrastructure, IoT products, AI-driven systems, and practical engineering challenges built for the Indian market.
                   </p>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
