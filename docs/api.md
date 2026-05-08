@@ -18,6 +18,17 @@ Fetches an image from Unsplash using provided `query` hints.
 }
 ```
 
+### `GET /api/products/feed`
+Returns an OpenAI-compatible product feed for ChatGPT discovery and checkout integrations.
+
+- Response:
+  - `schema_version` (string): Feed schema identifier.
+  - `generated_at` (ISO string): Feed generation timestamp.
+  - `item_count` (number): Number of products in feed.
+  - `items` (array): Product feed records.
+
+See `docs/product-feed.md` for full attribute reference and validation rules.
+
 ## Genkit Flows
 
 - `src/ai/flows/suggest-blog-topic.ts`

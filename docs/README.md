@@ -10,6 +10,8 @@ Welcome to the DGEN Technologies website documentation. Use this index to explor
   - [`admin.md`](./admin.md): Layout, views, authentication, file references
 - API & AI Flows
   - [`api.md`](./api.md): Next.js API routes and Genkit flows
+- Product Feed (ChatGPT)
+  - [`product-feed.md`](./product-feed.md): OpenAI product feed schema, required fields, and validation rules
 - Contribution Guide
   - [`CONTRIBUTING.md`](./CONTRIBUTING.md): Branching, PRs, standards
 
