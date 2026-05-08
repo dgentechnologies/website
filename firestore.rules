@@ -1,6 +1,6 @@
 
 /**
- * @file Firestore Security Rules for the Dgen Technologies website.
+ * @file Firestore Security Rules for the DGEN Technologies website.
  *
  * Core Philosophy:
  * This ruleset prioritizes ease of access for public content (blog posts) and
@@ -27,15 +27,19 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.admin == true;
     }
 
+    function isSuperAdminDashboard() {
+      return request.auth != null &&
+        (request.auth.token.superadmin == true || request.auth.token.admin == true);
+    }
+
     /**
-     * @description Blog posts are publicly readable; only authenticated admins can create, update or delete.
+     * @description Allows any user to create, read, update and delete blog posts.
      * @path /blogPosts/{postId}
-     * @allow (read) - Open public read for blog pages.
-     * @allow (write) - Only authenticated admin users with the custom claim.
+     * @allow (read, write) - Open access for prototyping purposes.
+     * @principle Enables rapid prototyping by allowing any user to interact with blog data.
      */
     match /blogPosts/{postId} {
-      allow read: if true;
-      allow write: if isAdmin();
+      allow read, write: if true;
     }
 
     /**
@@ -95,21 +99,71 @@ service cloud.firestore {
 
     // ──────────────────────────────────────────────────────────────────────────
     // ADAM Demo App Collections
-    // All write-heavy operations (session caps, upserts) are performed
-    // server-side via the Admin SDK (relay server + Next.js API routes) and
-    // therefore bypass these rules entirely.
+    // Session management and server-owned writes are performed via the Admin SDK
+    // (relay server + Next.js API routes). Client-side access is limited to the
+    // onboarding flow and user-owned profile fields explicitly allowed below.
     // ──────────────────────────────────────────────────────────────────────────
 
     /**
-     * @description ADAM demo user profiles — session caps, last-seen timestamps.
+     * @description ADAM demo user profiles — session caps, last-seen timestamps,
+     *   and user-supplied onboarding profile fields.
      * @path /adamUsers/{uid}
      * @allow (read) - Authenticated users can read only their own document.
-     * @allow (write) - Denied to all clients; managed exclusively by Admin SDK
-     *   (relay-token API route and relay server upsertUser/incrementSessionsToday).
+     * @allow (create, update) - Authenticated users can write only their own
+     *   safe profile fields used by the onboarding flow. Session cap fields
+     *   remain server-managed via Admin SDK.
+     * @allow (delete) - Denied to all clients.
      */
     match /adamUsers/{uid} {
       allow read: if request.auth != null && request.auth.uid == uid;
-      allow write: if false;
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly([
+          'uid',
+          'email',
+          'name',
+          'displayName',
+          'photoURL',
+          'phoneNumber',
+          'emailVerified',
+          'providerIds',
+          'primaryProvider',
+          'authSource',
+          'whereHeard',
+          'jobTitle',
+          'dob',
+          'useCase',
+          'onboardingCompleted',
+          'onboardingCompletedAt',
+          'accountCreatedAtRaw',
+          'lastSignInAtRaw',
+          'lastSeenAt'
+        ]);
+      allow update: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'email',
+          'name',
+          'displayName',
+          'photoURL',
+          'phoneNumber',
+          'emailVerified',
+          'providerIds',
+          'primaryProvider',
+          'authSource',
+          'whereHeard',
+          'jobTitle',
+          'dob',
+          'useCase',
+          'onboardingCompleted',
+          'onboardingCompletedAt',
+          'accountCreatedAtRaw',
+          'lastSignInAtRaw',
+          'lastSeenAt'
+        ]);
+      allow delete: if false;
     }
 
     /**
@@ -154,7 +208,32 @@ service cloud.firestore {
       allow create: if false;
       allow read, update, delete: if request.auth != null;
     }
+
+    // SuperAdmin dashboard collections
+    match /posts/{postId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /careers/{careerId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /messages/{messageId} {
+      allow create: if true;
+      allow read, delete: if request.auth != null;
+      allow update: if false;
+    }
+
+    match /applications/{applicationId} {
+      allow create: if false;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // SuperAdmin fallback access for operational management across this database.
+    match /{document=**} {
+      allow read, write: if isSuperAdminDashboard();
+    }
   }
 }
-
-    
