@@ -323,6 +323,7 @@ export default function AdamInsightsView() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Email</TableHead>
+                    <TableHead className="hidden md:table-cell">Source</TableHead>
                     <TableHead className="hidden md:table-cell">Joined</TableHead>
                     <TableHead className="hidden lg:table-cell">Feedback Items</TableHead>
                     <TableHead>Details</TableHead>
@@ -333,13 +334,14 @@ export default function AdamInsightsView() {
                     <TableRow key={`waitlist-skeleton-${index}`}>
                       <TableCell><Skeleton className="h-4 w-48" /></TableCell>
                       <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-24" /></TableCell>
+                      <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-24" /></TableCell>
                       <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-12" /></TableCell>
                       <TableCell><Skeleton className="h-8 w-20" /></TableCell>
                     </TableRow>
                   ))}
                   {!loading && filteredWaitlist.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                      <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
                         No waitlist entries match your search.
                       </TableCell>
                     </TableRow>
@@ -358,6 +360,9 @@ export default function AdamInsightsView() {
                             <Copy className="h-3.5 w-3.5" />
                           </button>
                         </div>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        <Badge variant="outline" className="capitalize">{entry.source || 'unknown'}</Badge>
                       </TableCell>
                       <TableCell className="hidden md:table-cell">{formatRelativeTime(entry.createdAt)}</TableCell>
                       <TableCell className="hidden lg:table-cell">
@@ -383,6 +388,7 @@ export default function AdamInsightsView() {
                   </div>
                   <div className="flex gap-2">
                     <Badge variant="secondary">Feedback {selectedWaitlistEntry.allFeedback.length}</Badge>
+                    <Badge variant="outline" className="capitalize">{selectedWaitlistEntry.source || 'unknown'}</Badge>
                   </div>
                 </div>
 

@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { DecodedIdToken, getAuth } from 'firebase-admin/auth';
 import { adminApp, adminFirestore } from '@/firebase/server';
 
+type MaybeTimestamp = {
+  toDate?: () => Date;
+};
+
 type AdamUserItem = {
   id: string;
   identifier: string;
@@ -40,6 +44,17 @@ function toIsoDate(rawTimestamp: unknown): string | null {
   return maybeTimestamp.toDate().toISOString();
 }
 
+function readPossibleDate(data: Record<string, unknown>, keys: string[]): string | null {
+  for (const key of keys) {
+    const value = data[key] as MaybeTimestamp | unknown;
+    const asIso = toIsoDate(value);
+    if (asIso) {
+      return asIso;
+    }
+  }
+  return null;
+}
+
 async function verifyAdmin(request: NextRequest): Promise<DecodedIdToken> {
   const authHeader = request.headers.get('Authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -62,25 +77,66 @@ export async function GET(request: NextRequest) {
   try {
     await verifyAdmin(request);
 
-    const [adamUsersSnapshot, websiteWaitlistSnapshot, demoWaitlistSnapshot, feedbackSnapshot] = await Promise.all([
-      adminFirestore.collection('adamUsers').orderBy('lastSeenAt', 'desc').limit(100).get(),
-      adminFirestore.collection('adam-waitlist').orderBy('createdAt', 'desc').limit(100).get(),
-      adminFirestore.collection('waitlist').orderBy('createdAt', 'desc').limit(100).get(),
-      adminFirestore.collection('adamFeedback').orderBy('createdAt', 'desc').limit(100).get(),
+    const [adamUsersSnapshot, onboardingSnapshot, websiteWaitlistSnapshot, demoWaitlistSnapshot, feedbackSnapshot] = await Promise.all([
+      adminFirestore.collection('adamUsers').limit(300).get(),
+      adminFirestore.collection('onboarding').limit(300).get(),
+      adminFirestore.collection('adam-waitlist').limit(300).get(),
+      adminFirestore.collection('waitlist').limit(300).get(),
+      adminFirestore.collection('adamFeedback').limit(300).get(),
     ]);
 
-    const users: AdamUserItem[] = adamUsersSnapshot.docs.map((doc) => {
+    const usersMap = new Map<string, AdamUserItem>();
+
+    adamUsersSnapshot.docs.forEach((doc) => {
       const data = doc.data();
-      return {
+      const key = doc.id;
+      usersMap.set(key, {
         id: doc.id,
-        identifier: typeof data.identifier === 'string' ? data.identifier : doc.id,
+        identifier: typeof data.identifier === 'string' ? data.identifier : (typeof data.uid === 'string' ? data.uid : doc.id),
         email: typeof data.email === 'string' ? data.email : null,
-        name: typeof data.name === 'string' ? data.name : null,
+        name: typeof data.name === 'string' ? data.name : (typeof data.displayName === 'string' ? data.displayName : null),
         interactionCount: typeof data.interactionCount === 'number' ? data.interactionCount : 0,
         lastMessage: typeof data.lastMessage === 'string' ? data.lastMessage : null,
         lastReply: typeof data.lastReply === 'string' ? data.lastReply : null,
-        lastSeenAt: toIsoDate(data.lastSeenAt),
-      };
+        lastSeenAt: readPossibleDate(data, ['lastSeenAt', 'updatedAt', 'lastSignInAtRaw', 'onboardingCompletedAt']),
+      });
+    });
+
+    onboardingSnapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      const key = doc.id;
+      const existing = usersMap.get(key);
+      const derivedName = typeof data.name === 'string'
+        ? data.name
+        : (typeof data.displayName === 'string' ? data.displayName : null);
+      const derivedLastSeen = readPossibleDate(data, ['updatedAt', 'createdAt', 'onboardingCompletedAt']);
+
+      if (!existing) {
+        usersMap.set(key, {
+          id: key,
+          identifier: key,
+          email: typeof data.email === 'string' ? data.email : null,
+          name: derivedName,
+          interactionCount: 0,
+          lastMessage: null,
+          lastReply: null,
+          lastSeenAt: derivedLastSeen,
+        });
+        return;
+      }
+
+      usersMap.set(key, {
+        ...existing,
+        email: existing.email ?? (typeof data.email === 'string' ? data.email : null),
+        name: existing.name ?? derivedName,
+        lastSeenAt: existing.lastSeenAt ?? derivedLastSeen,
+      });
+    });
+
+    const users = Array.from(usersMap.values()).sort((a, b) => {
+      const aTime = a.lastSeenAt ? new Date(a.lastSeenAt).getTime() : 0;
+      const bTime = b.lastSeenAt ? new Date(b.lastSeenAt).getTime() : 0;
+      return bTime - aTime;
     });
 
     const websiteWaitlist: WaitlistItem[] = websiteWaitlistSnapshot.docs.map((doc) => {
@@ -90,7 +146,7 @@ export async function GET(request: NextRequest) {
         email: typeof data.email === 'string' ? data.email : doc.id,
         feedback: typeof data.feedback === 'string' ? data.feedback : null,
         source: 'adam-waitlist',
-        createdAt: toIsoDate(data.createdAt),
+        createdAt: readPossibleDate(data, ['createdAt', 'updatedAt', 'timestamp']),
       };
     });
 
@@ -102,7 +158,7 @@ export async function GET(request: NextRequest) {
         email: typeof data.email === 'string' ? data.email : fallbackEmail,
         feedback: typeof data.feedback === 'string' ? data.feedback : null,
         source: 'waitlist',
-        createdAt: toIsoDate(data.createdAt),
+        createdAt: readPossibleDate(data, ['createdAt', 'submittedAt', 'updatedAt', 'timestamp']),
       };
     });
 
@@ -121,8 +177,12 @@ export async function GET(request: NextRequest) {
         email: typeof data.email === 'string' ? data.email : null,
         name: typeof data.name === 'string' ? data.name : null,
         feedback: typeof data.feedback === 'string' ? data.feedback : '',
-        createdAt: toIsoDate(data.createdAt),
+        createdAt: readPossibleDate(data, ['createdAt', 'updatedAt', 'timestamp']),
       };
+    }).sort((a, b) => {
+      const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return bTime - aTime;
     });
 
     return NextResponse.json({
