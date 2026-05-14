@@ -1,83 +1,13 @@
-'use client';
-
-import Link from 'next/link';
-import { ArrowLeft, ArrowRight, FlaskConical } from 'lucide-react';
-
 export default function AdamPreviewPage() {
 	return (
-		<main className="min-h-screen bg-black flex flex-col items-center justify-center px-4 py-20 text-center relative overflow-hidden">
-			{/* Layered glows */}
-			<div className="absolute inset-0 pointer-events-none">
-				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-primary/8 blur-[120px]" />
-				<div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-primary/5 blur-3xl" />
-			</div>
-
-			{/* Subtle grid */}
-			<div
-				className="absolute inset-0 opacity-[0.03] pointer-events-none"
-				style={{
-					backgroundImage:
-						'linear-gradient(rgba(25,179,92,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(25,179,92,0.6) 1px, transparent 1px)',
-					backgroundSize: '80px 80px',
-				}}
+		<section className="h-screen w-full bg-black overflow-hidden">
+			<iframe
+				src="https://adam-demo-frontend.vercel.app/"
+				title="ADAM Demo"
+				className="h-full w-full border-0"
+				allow="clipboard-read; clipboard-write; microphone; camera; fullscreen"
+				allowFullScreen
 			/>
-
-			<div className="relative z-10 max-w-2xl mx-auto space-y-8">
-				<div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/35 bg-primary/10">
-					<FlaskConical className="h-3.5 w-3.5 text-primary" />
-					<span className="text-primary font-mono text-xs tracking-[0.25em] uppercase">
-						ADAM — Intelligence Preview
-					</span>
-				</div>
-
-				<h1 className="text-5xl sm:text-6xl md:text-7xl font-headline font-bold text-white leading-tight">
-					Precision
-					<br />
-					<span className="text-primary">Takes Time.</span>
-				</h1>
-
-				<div className="space-y-4 text-white/55 text-base sm:text-lg leading-relaxed max-w-xl mx-auto">
-					<p>
-						The ADAM intelligence preview is currently under refinement. Our engineers are finalising the kind of
-						experience that doesn&apos;t ship until it&apos;s{' '}
-						<span className="text-white/80 font-medium">genuinely extraordinary</span>.
-					</p>
-					<p className="text-white/35 text-sm">
-						No half-measures. No early shortcuts. ADAM arrives once - and it will be worth the anticipation.
-					</p>
-				</div>
-
-				<div className="flex items-center justify-center gap-3 py-2">
-					<div className="h-px w-12 bg-gradient-to-r from-transparent to-primary/40" />
-					<div className="flex items-center gap-2">
-						<span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-						<span className="text-primary/60 font-mono text-xs tracking-[0.3em] uppercase">Refinement in progress</span>
-						<span className="w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: '0.5s' }} />
-					</div>
-					<div className="h-px w-12 bg-gradient-to-l from-transparent to-primary/40" />
-				</div>
-
-				<div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-					<Link
-						href="/products/adam"
-						className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-black font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:scale-105 transition-all duration-300 text-sm group"
-					>
-						Explore ADAM
-						<ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-					</Link>
-					<Link
-						href="/products"
-						className="inline-flex items-center gap-2 px-6 py-4 rounded-full border border-white/15 hover:border-white/30 text-white/45 hover:text-white/75 transition-all duration-300 text-sm"
-					>
-						<ArrowLeft className="h-4 w-4" />
-						Return to Products
-					</Link>
-				</div>
-
-				<p className="text-white/18 text-xs tracking-widest uppercase font-mono pt-4">
-					Made in India · Dgen Technologies · Kolkata
-				</p>
-			</div>
-		</main>
+		</section>
 	);
 }
