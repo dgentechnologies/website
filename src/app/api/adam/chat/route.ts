@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ai } from '@/ai/genkit';
+import { adminFirestore } from '@/firebase/server';
+import { FieldValue } from 'firebase-admin/firestore';
 
 const ADAM_SYSTEM_PROMPT = `You are ADAM — Autonomous Desktop AI Module. You are Dgen Technologies' first B2C product: a compact AI companion built entirely in India, from the circuit board up.
 
@@ -15,7 +17,12 @@ Your personality:
 
 export async function POST(request: NextRequest) {
   try {
-    const { message } = await request.json();
+    const body = await request.json();
+    const message = typeof body.message === 'string' ? body.message : '';
+    const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+    const name = typeof body.name === 'string' ? body.name.trim() : '';
+    const sessionId = typeof body.sessionId === 'string' ? body.sessionId.trim() : '';
+    const feedback = typeof body.feedback === 'string' ? body.feedback.trim() : '';
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
@@ -35,6 +42,47 @@ export async function POST(request: NextRequest) {
     if (!text) {
       return NextResponse.json({ error: 'No response generated.' }, { status: 500 });
     }
+
+    const cleanMessage = message.trim();
+    const identifier = email || sessionId || 'anonymous';
+    const userDocId = encodeURIComponent(identifier);
+
+    await Promise.all([
+      adminFirestore.collection('adamUsers').doc(userDocId).set(
+        {
+          identifier,
+          email: email || null,
+          name: name || null,
+          lastMessage: cleanMessage,
+          lastReply: text,
+          interactionCount: FieldValue.increment(1),
+          lastSeenAt: FieldValue.serverTimestamp(),
+          updatedAt: FieldValue.serverTimestamp(),
+        },
+        { merge: true }
+      ),
+      adminFirestore.collection('adamChatLogs').add({
+        identifier,
+        email: email || null,
+        name: name || null,
+        sessionId: sessionId || null,
+        message: cleanMessage,
+        reply: text,
+        createdAt: FieldValue.serverTimestamp(),
+      }),
+      ...(feedback
+        ? [
+            adminFirestore.collection('adamFeedback').add({
+              source: 'chat',
+              identifier,
+              email: email || null,
+              name: name || null,
+              feedback,
+              createdAt: FieldValue.serverTimestamp(),
+            }),
+          ]
+        : []),
+    ]);
 
     return NextResponse.json({ reply: text });
   } catch {

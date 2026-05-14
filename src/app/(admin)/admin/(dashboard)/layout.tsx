@@ -2,7 +2,7 @@
 'use client';
 
 import { signOut } from 'firebase/auth';
-import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings, Briefcase, ClipboardList, PanelsTopLeft } from 'lucide-react';
+import { LayoutDashboard, FileText, MessageSquare, LogOut, BarChart2, Settings, Briefcase, ClipboardList, PanelsTopLeft, Bot } from 'lucide-react';
 import Image from 'next/image';
 import {
   Sidebar,
@@ -22,8 +22,8 @@ import Link from 'next/link';
 
 type AdminDashboardLayoutProps = {
   children: React.ReactNode;
-  activeView: 'dashboard' | 'blog' | 'cms' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications';
-  setActiveView: (view: 'dashboard' | 'blog' | 'cms' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications') => void;
+  activeView: 'dashboard' | 'blog' | 'cms' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications' | 'adam-insights';
+  setActiveView: (view: 'dashboard' | 'blog' | 'cms' | 'messages' | 'performance' | 'settings' | 'careers' | 'applications' | 'adam-insights') => void;
 };
 
 export default function AdminDashboardLayout({ children, activeView, setActiveView }: AdminDashboardLayoutProps) {
@@ -106,6 +106,16 @@ export default function AdminDashboardLayout({ children, activeView, setActiveVi
               >
                 <ClipboardList className="h-4 w-4" />
                 <span>Applications</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                isActive={activeView === 'adam-insights'}
+                onClick={() => setActiveView('adam-insights')}
+                tooltip="ADAM Insights"
+              >
+                <Bot className="h-4 w-4" />
+                <span>ADAM Insights</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>

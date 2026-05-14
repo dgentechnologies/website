@@ -1672,17 +1672,6 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
     return () => { if (rafId.current !== null) cancelAnimationFrame(rafId.current); };
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash === '#waitlist') {
-      window.history.replaceState(null, '', window.location.pathname);
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-  }, []);
-
-  const scrollToWaitlist = () => {
-    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section
       ref={sectionRef}
@@ -1755,13 +1744,6 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
-          <button
-            onClick={scrollToWaitlist}
-            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-primary hover:bg-primary/90 text-black font-bold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-sm group"
-          >
-            Secure Early Access
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </button>
         </div>
       </div>
     </section>
@@ -2024,7 +2006,7 @@ function AdamFAQSection() {
     },
     {
       question: "How much will it cost? Give a ballpark at least.",
-      answer: "**Not yet.** But here's the intent: pricing that respects the intelligence of the person buying it. No subscription traps, no ecosystem lock-in nonsense. Early access members get first dibs on pricing. Waitlist is below — just saying."
+      answer: "**Not yet.** But here's the intent: pricing that respects the intelligence of the person buying it. No subscription traps, no ecosystem lock-in nonsense. We will announce pricing publicly once launch details are finalized."
     },
     {
       question: "Will ADAM judge my 2am Netflix decisions?",
@@ -2032,7 +2014,7 @@ function AdamFAQSection() {
     },
     {
       question: "Okay, when is it actually launching?",
-      answer: "**When it's genuinely ready.** Not a day before. Not a press-release-first, fix-later situation. The team that engineered city-scale infrastructure doesn't ship half-baked. Join the waitlist — you'll be the first to know the moment it's time."
+      answer: "**When it's genuinely ready.** Not a day before. Not a press-release-first, fix-later situation. The team that engineered city-scale infrastructure doesn't ship half-baked. Follow our channels and product updates for launch announcements."
     },
   ];
 
@@ -2125,94 +2107,9 @@ function AdamFAQSection() {
               </a>
             </div>
             <p className="text-white/30 text-xs">
-              Development milestones, launch announcements, and exclusive early access opportunities
+              Development milestones and official launch announcements
             </p>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function AdamWaitlistSection() {
-  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim() || status === 'loading') return;
-    setStatus('loading');
-    setErrorMsg('');
-    try {
-      const res = await fetch('/api/adam/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        setErrorMsg(data.error || 'Something went wrong.');
-        setStatus('error');
-      } else {
-        setStatus('success');
-      }
-    } catch {
-      setErrorMsg('Failed to submit. Please try again.');
-      setStatus('error');
-    }
-  };
-
-  return (
-    <section id="waitlist" className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden">
-      <div className="container max-w-screen-sm px-4 md:px-6 py-16">
-        <div
-          ref={ref}
-          className={`flex flex-col items-center gap-8 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white">
-            ADAM debuts once.
-            <br />
-            <span className="text-primary">Reserve your position.</span>
-          </h2>
-          <p className="text-white/60 text-base sm:text-lg max-w-md mx-auto">
-            No spam. No weekly newsletters. One email — when ADAM is genuinely ready.
-            That&apos;s the deal. Join the list or don&apos;t. But the waitlist fills up either way.
-          </p>
-
-          {status === 'success' ? (
-            <div className="w-full p-6 rounded-2xl border border-primary/40 bg-primary/10 text-primary font-semibold text-lg">
-              Access reserved. ADAM will reach you at launch.
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="w-full flex flex-col sm:flex-row gap-3">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                className="flex-1 px-5 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/30 text-sm outline-none focus:border-primary/60 transition-colors"
-                disabled={status === 'loading'}
-              />
-              <button
-                type="submit"
-                disabled={status === 'loading' || !email.trim()}
-                className="px-8 py-4 rounded-full bg-primary hover:bg-primary/90 text-black font-bold text-sm disabled:opacity-50 transition-colors whitespace-nowrap"
-              >
-                {status === 'loading' ? 'Reserving…' : 'Reserve Access'}
-              </button>
-            </form>
-          )}
-
-          {status === 'error' && (
-            <p className="text-red-400 text-sm">{errorMsg}</p>
-          )}
-
-          <p className="text-white/25 text-xs tracking-widest uppercase">
-            Made in India · Built by DGEN Technologies · Kolkata
-          </p>
         </div>
       </div>
     </section>
@@ -2227,7 +2124,6 @@ function AdamProductView({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       <AdamFeatureTease />
       <AdamCookingSection />
       <AdamFAQSection />
-      <AdamWaitlistSection />
     </>
   );
 }

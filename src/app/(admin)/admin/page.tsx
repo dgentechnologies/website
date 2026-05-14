@@ -10,7 +10,7 @@ import AdminDashboardLayout from './(dashboard)/layout';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { MessageSquare, Users, FileText, ArrowRight, List, MoreHorizontal, Eye, Pencil, Trash2, Copy, Briefcase, PlusCircle } from 'lucide-react';
+import { MessageSquare, Users, FileText, ArrowRight, List, MoreHorizontal, Eye, Pencil, Trash2, Copy, Briefcase, PlusCircle, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -47,6 +47,7 @@ import PerformanceView from '@/components/performance-view';
 import SettingsView from '@/components/settings-view';
 import JobApplicationsView from '@/components/job-applications-view';
 import CMSView from '@/components/cms-view';
+import AdamInsightsView from '@/components/adam-insights-view';
 
 import {
   AreaChart,
@@ -67,7 +68,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-const DashboardView = () => {
+const DashboardView = ({ onOpenAdamInsights }: { onOpenAdamInsights: () => void }) => {
   const [messages, messagesLoading] = useCollection(collection(firestore, 'contactMessages'));
   const [posts, postsLoading] = useCollection(collection(firestore, 'blogPosts'));
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
@@ -117,6 +118,10 @@ const DashboardView = () => {
           <p className="text-foreground/70 mt-1">An overview of your website's activity.</p>
         </div>
         <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={onOpenAdamInsights} className="gap-2">
+            <Bot className="h-4 w-4" />
+            ADAM Insights
+          </Button>
           <Select value={dateRange} onValueChange={(value) => setDateRange(value as DateRange)}>
             <SelectTrigger className="w-[160px]">
               <SelectValue placeholder="Select range" />
@@ -680,7 +685,7 @@ const CareerView = () => {
 };
 
 
-const VALID_TABS = ['dashboard', 'blog', 'cms', 'messages', 'performance', 'settings', 'careers', 'applications'] as const;
+const VALID_TABS = ['dashboard', 'blog', 'cms', 'messages', 'performance', 'settings', 'careers', 'applications', 'adam-insights'] as const;
 type AdminView = typeof VALID_TABS[number];
 
 export default function AdminRootPage() {
@@ -735,9 +740,11 @@ export default function AdminRootPage() {
         return <CareerView />;
       case 'applications':
         return <JobApplicationsView />;
+      case 'adam-insights':
+        return <AdamInsightsView />;
       case 'dashboard':
       default:
-        return <DashboardView />;
+        return <DashboardView onOpenAdamInsights={() => handleSetActiveView('adam-insights')} />;
     }
   };
 
