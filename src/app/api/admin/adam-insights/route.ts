@@ -27,7 +27,7 @@ type WaitlistItem = {
 
 type FeedbackItem = {
   id: string;
-  source: string;
+  source: 'waitlist' | 'chat' | 'other';
   identifier: string | null;
   email: string | null;
   name: string | null;
@@ -53,6 +53,37 @@ function readPossibleDate(data: Record<string, unknown>, keys: string[]): string
     }
   }
   return null;
+}
+
+function readPossibleNumber(data: Record<string, unknown>, keys: string[]): number {
+  for (const key of keys) {
+    const value = data[key];
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value;
+    }
+    if (typeof value === 'string') {
+      const parsed = Number(value);
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+    }
+  }
+  return 0;
+}
+
+function normalizeFeedbackSource(source: unknown): 'waitlist' | 'chat' | 'other' {
+  if (typeof source !== 'string') {
+    return 'other';
+  }
+
+  const value = source.toLowerCase();
+  if (value.includes('waitlist')) {
+    return 'waitlist';
+  }
+  if (value.includes('chat') || value.includes('adam')) {
+    return 'chat';
+  }
+  return 'other';
 }
 
 async function verifyAdmin(request: NextRequest): Promise<DecodedIdToken> {
@@ -95,7 +126,7 @@ export async function GET(request: NextRequest) {
         identifier: typeof data.identifier === 'string' ? data.identifier : (typeof data.uid === 'string' ? data.uid : doc.id),
         email: typeof data.email === 'string' ? data.email : null,
         name: typeof data.name === 'string' ? data.name : (typeof data.displayName === 'string' ? data.displayName : null),
-        interactionCount: typeof data.interactionCount === 'number' ? data.interactionCount : 0,
+        interactionCount: readPossibleNumber(data, ['interactionCount', 'totalDemoSessions', 'demoSessions', 'totalSessions']),
         lastMessage: typeof data.lastMessage === 'string' ? data.lastMessage : null,
         lastReply: typeof data.lastReply === 'string' ? data.lastReply : null,
         lastSeenAt: readPossibleDate(data, ['lastSeenAt', 'updatedAt', 'lastSignInAtRaw', 'onboardingCompletedAt']),
@@ -129,6 +160,9 @@ export async function GET(request: NextRequest) {
         ...existing,
         email: existing.email ?? (typeof data.email === 'string' ? data.email : null),
         name: existing.name ?? derivedName,
+        interactionCount: existing.interactionCount > 0
+          ? existing.interactionCount
+          : readPossibleNumber(data, ['interactionCount', 'totalDemoSessions', 'demoSessions', 'totalSessions']),
         lastSeenAt: existing.lastSeenAt ?? derivedLastSeen,
       });
     });
@@ -168,22 +202,52 @@ export async function GET(request: NextRequest) {
       return bTime - aTime;
     });
 
-    const feedback: FeedbackItem[] = feedbackSnapshot.docs.map((doc) => {
+    const collectionFeedback: FeedbackItem[] = feedbackSnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
         id: doc.id,
-        source: typeof data.source === 'string' ? data.source : 'unknown',
+        source: normalizeFeedbackSource(data.source),
         identifier: typeof data.identifier === 'string' ? data.identifier : null,
         email: typeof data.email === 'string' ? data.email : null,
         name: typeof data.name === 'string' ? data.name : null,
         feedback: typeof data.feedback === 'string' ? data.feedback : '',
         createdAt: readPossibleDate(data, ['createdAt', 'updatedAt', 'timestamp']),
       };
-    }).sort((a, b) => {
+    });
+
+    const syntheticWaitlistFeedback: FeedbackItem[] = waitlist
+      .filter((entry) => typeof entry.feedback === 'string' && entry.feedback.trim().length > 0)
+      .map((entry) => ({
+        id: `inline-${entry.source}-${entry.id}`,
+        source: 'waitlist' as const,
+        identifier: entry.email,
+        email: entry.email,
+        name: null,
+        feedback: entry.feedback!.trim(),
+        createdAt: entry.createdAt,
+      }));
+
+    const seen = new Set<string>();
+    const feedback = [...collectionFeedback, ...syntheticWaitlistFeedback]
+      .filter((item) => {
+        const dedupeKey = `${(item.email || item.identifier || '').toLowerCase()}|${item.feedback.trim().toLowerCase()}`;
+        if (!dedupeKey || dedupeKey === '|') {
+          return false;
+        }
+        if (seen.has(dedupeKey)) {
+          return false;
+        }
+        seen.add(dedupeKey);
+        return true;
+      })
+      .sort((a, b) => {
       const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
       const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
       return bTime - aTime;
     });
+
+    const waitlistFeedbackCount = feedback.filter((item) => item.source === 'waitlist').length;
+    const chatFeedbackCount = feedback.filter((item) => item.source === 'chat').length;
 
     return NextResponse.json({
       users,
@@ -193,6 +257,8 @@ export async function GET(request: NextRequest) {
         users: users.length,
         waitlist: waitlist.length,
         feedback: feedback.length,
+        waitlistFeedback: waitlistFeedbackCount,
+        chatFeedback: chatFeedbackCount,
       },
     });
   } catch (error: unknown) {

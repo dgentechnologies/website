@@ -55,6 +55,8 @@ type AdamInsightsResponse = {
     users: number;
     waitlist: number;
     feedback: number;
+    waitlistFeedback?: number;
+    chatFeedback?: number;
   };
 };
 
@@ -93,6 +95,7 @@ export default function AdamInsightsView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [feedbackSourceFilter, setFeedbackSourceFilter] = useState<'all' | 'waitlist' | 'chat'>('all');
   const [lastUpdatedAt, setLastUpdatedAt] = useState<string | null>(null);
   const [selectedWaitlistId, setSelectedWaitlistId] = useState<string | null>(null);
 
@@ -201,10 +204,28 @@ export default function AdamInsightsView() {
     }
   };
 
+  const filteredFeedback = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    if (feedbackSourceFilter === 'all') {
+      return data.feedback;
+    }
+
+    return data.feedback.filter((item) => item.source === feedbackSourceFilter);
+  }, [data, feedbackSourceFilter]);
+
+  const waitlistFeedbackTotal = data?.totals.waitlistFeedback ?? data?.feedback.filter((item) => item.source === 'waitlist').length ?? 0;
+  const chatFeedbackTotal = data?.totals.chatFeedback ?? data?.feedback.filter((item) => item.source === 'chat').length ?? 0;
+
   return (
     <div>
       <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <h1 className="text-3xl font-headline font-bold">ADAM Insights</h1>
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Admin Intelligence Panel</p>
+          <h1 className="text-3xl font-headline font-bold">ADAM Insights</h1>
+        </div>
         <div>
           <p className="text-foreground/70 mt-1">Track ADAM users, waitlist entries, and product feedback in one place.</p>
           <p className="text-xs text-muted-foreground mt-1">Last updated: {formatAbsoluteTime(lastUpdatedAt)}</p>
@@ -215,30 +236,33 @@ export default function AdamInsightsView() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3 mb-8">
-        <Card>
+        <Card className="border-primary/20 bg-gradient-to-br from-card to-card/70">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">ADAM Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Active ADAM Users</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{data?.totals.users ?? 0}</div>}
+            <p className="text-xs text-muted-foreground mt-1">Unified view across main and demo datasets</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-primary/20 bg-gradient-to-br from-card to-card/70">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Waitlist Entries</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Waitlist</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{data?.totals.waitlist ?? 0}</div>}
+            <p className="text-xs text-muted-foreground mt-1">Combined from website and demo experience</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-primary/20 bg-gradient-to-br from-card to-card/70">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Feedback Items</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Feedback</CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{data?.totals.feedback ?? 0}</div>}
+            <p className="text-xs text-muted-foreground mt-1">Waitlist {waitlistFeedbackTotal} • Chat {chatFeedbackTotal}</p>
           </CardContent>
         </Card>
       </div>
@@ -290,7 +314,13 @@ export default function AdamInsightsView() {
                   <TableRow key={user.id}>
                     <TableCell className="font-medium">{user.name || user.identifier}</TableCell>
                     <TableCell className="hidden md:table-cell">{user.email || '-'}</TableCell>
-                    <TableCell className="hidden lg:table-cell">{user.interactionCount}</TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      {user.interactionCount > 0 ? (
+                        <Badge variant="secondary">{user.interactionCount}</Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-muted-foreground">No sessions yet</Badge>
+                      )}
+                    </TableCell>
                     <TableCell className="hidden lg:table-cell">{formatRelativeTime(user.lastSeenAt)}</TableCell>
                     <TableCell className="max-w-[380px] truncate">{user.lastMessage || '-'}</TableCell>
                   </TableRow>
@@ -424,7 +454,30 @@ export default function AdamInsightsView() {
             <CardTitle>Feedback</CardTitle>
             <CardDescription>Collected feedback from ADAM users and waitlist forms.</CardDescription>
           </CardHeader>
-          <CardContent className="p-0">
+          <CardContent className="space-y-4 p-0">
+            <div className="px-6 pt-4 flex flex-wrap gap-2">
+              <Button
+                variant={feedbackSourceFilter === 'all' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFeedbackSourceFilter('all')}
+              >
+                All ({data?.feedback.length ?? 0})
+              </Button>
+              <Button
+                variant={feedbackSourceFilter === 'waitlist' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFeedbackSourceFilter('waitlist')}
+              >
+                Waitlist ({waitlistFeedbackTotal})
+              </Button>
+              <Button
+                variant={feedbackSourceFilter === 'chat' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFeedbackSourceFilter('chat')}
+              >
+                Chat ({chatFeedbackTotal})
+              </Button>
+            </div>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -443,14 +496,14 @@ export default function AdamInsightsView() {
                     <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-24" /></TableCell>
                   </TableRow>
                 ))}
-                {!loading && (data?.feedback.length ?? 0) === 0 ? (
+                {!loading && filteredFeedback.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
                       No feedback submitted yet.
                     </TableCell>
                   </TableRow>
                 ) : null}
-                {!loading && data?.feedback.map((item) => (
+                {!loading && filteredFeedback.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell className="font-medium capitalize">{item.source}</TableCell>
                     <TableCell className="hidden md:table-cell">{item.email || item.name || item.identifier || '-'}</TableCell>
