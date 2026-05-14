@@ -202,7 +202,7 @@ export default function Home() {
       />
       
       {/* ADAM Experience Section */}
-      <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
+      <section className="relative w-full h-screen min-h-[540px] overflow-hidden flex items-center justify-center text-center py-6 md:py-8">
         {/* Blurred Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -223,7 +223,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6 text-center flex flex-col items-center gap-5">
+        <div className="relative z-10 container max-w-screen-xl px-4 md:px-6 text-center flex flex-col items-center gap-3 md:gap-4">
           {/* Pill label */}
           <div className="inline-flex items-center gap-2 border border-primary/40 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-1.5 animate-slide-down">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse-subtle inline-block" />
@@ -232,7 +232,7 @@ export default function Home() {
 
           {/* Main heading */}
           <h2
-            className="text-[clamp(3.5rem,12vw,10rem)] font-headline font-black text-white tracking-tight leading-none animate-slide-up"
+            className="text-[clamp(2.75rem,8vw,6.75rem)] font-headline font-black text-white tracking-tight leading-[0.95] animate-slide-up"
             style={{ animationDelay: '0.2s', textShadow: '0 0 80px rgba(25,179,92,0.25)' }}
           >
             Experience ADAM
@@ -240,19 +240,19 @@ export default function Home() {
 
           {/* Tagline */}
           <p
-            className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-white/60 font-light leading-relaxed animate-slide-up"
+            className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-white/60 font-light leading-relaxed animate-slide-up"
             style={{ animationDelay: '0.4s' }}
           >
             Dgen&apos;s flagship Autonomous Desktop AI Module is ready for its first public experience.
             <br />
-            <span className="text-white/40 text-sm sm:text-base">
+            <span className="text-white/40 text-xs sm:text-sm md:text-base">
               Desk-scale intelligence, thoughtfully designed and built in India for work, presence, and connected living.
             </span>
           </p>
 
           {/* CTA Buttons */}
           <div
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 animate-slide-up"
+            className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 animate-slide-up"
             style={{ animationDelay: '0.6s' }}
           >
             <Button
@@ -278,12 +278,12 @@ export default function Home() {
 
           {/* Decorative divider */}
           <div
-            className="flex items-center justify-center gap-4 animate-slide-up"
+            className="flex items-center justify-center gap-3 animate-slide-up"
             style={{ animationDelay: '0.8s' }}
           >
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
-            <span className="text-primary/60 font-mono text-xs tracking-[0.3em] uppercase">Flagship launch preview</span>
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
+            <div className="h-px w-12 sm:w-14 bg-gradient-to-r from-transparent to-primary/50" />
+            <span className="text-primary/60 font-mono text-[10px] sm:text-xs tracking-[0.24em] uppercase">Flagship launch preview</span>
+            <div className="h-px w-12 sm:w-14 bg-gradient-to-l from-transparent to-primary/50" />
           </div>
         </div>
       </section>

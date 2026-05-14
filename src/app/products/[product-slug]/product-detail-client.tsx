@@ -1675,7 +1675,7 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen min-h-[600px] flex flex-col items-center justify-center text-center overflow-hidden bg-black"
+      className="relative w-full h-screen min-h-[540px] flex flex-col items-center justify-center text-center overflow-hidden bg-black py-6 md:py-8"
       onMouseMove={handleMouseMove}
     >
       {/* Animated dark gradient background */}
@@ -1714,13 +1714,13 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       />
 
       {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center gap-4 px-4 md:px-6 max-w-4xl mx-auto py-8">
-        <Badge variant="default" className="py-2 px-6 text-2xl sm:text-3xl md:text-4xl font-black tracking-widest uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
+      <div className="relative z-10 flex flex-col items-center gap-3 md:gap-4 px-4 md:px-6 max-w-4xl mx-auto py-4 md:py-6">
+        <Badge variant="default" className="py-1.5 px-4 sm:px-5 text-xs sm:text-sm md:text-base font-black tracking-[0.22em] uppercase animate-slide-down bg-primary/20 text-primary border border-primary/40">
           Flagship Preview
         </Badge>
 
         <h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-black tracking-tight text-white leading-tight animate-slide-up"
+          className="text-[clamp(2.1rem,5.7vw,4.8rem)] font-headline font-black tracking-tight text-white leading-[1.03] animate-slide-up"
           style={{ animationDelay: '0.15s', textShadow: '0 0 60px rgba(25,179,92,0.3)' }}
         >
           Made-in-India flagship AI hardware,
@@ -1728,22 +1728,22 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
           engineered for the modern desk.
         </h1>
 
-        <p className="text-sm sm:text-base text-white/50 tracking-[0.2em] uppercase font-mono animate-slide-up" style={{ animationDelay: '0.3s' }}>
+        <p className="text-xs sm:text-sm text-white/50 tracking-[0.18em] uppercase font-mono animate-slide-up" style={{ animationDelay: '0.3s' }}>
           ADAM — Autonomous Desktop AI Module · Made in India
         </p>
 
-        <p className="text-white/35 text-sm sm:text-base max-w-lg animate-slide-up leading-relaxed" style={{ animationDelay: '0.38s' }}>
+        <p className="text-white/35 text-sm sm:text-base max-w-xl animate-slide-up leading-relaxed" style={{ animationDelay: '0.38s' }}>
           ADAM brings desk-scale intelligence into a refined hardware form factor, combining presence, voice, and on-device capability in a product built to represent Dgen&apos;s next chapter.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 animate-slide-up" style={{ animationDelay: '0.45s' }}>
+        <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 animate-slide-up" style={{ animationDelay: '0.45s' }}>
           <Link href="/products/adam/demo">
-            <button className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full border border-primary/50 bg-primary/10 hover:bg-primary/20 text-primary font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-300 text-sm group">
+            <button className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-primary/50 bg-primary/10 hover:bg-primary/20 text-primary font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-300 text-sm group">
               Experience ADAM
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
-          <Link href="#waitlist" className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-primary hover:bg-primary/90 text-black font-bold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-sm group">
+          <Link href="#waitlist" className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary hover:bg-primary/90 text-black font-bold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-sm group">
             Join Waitlist
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Link>
