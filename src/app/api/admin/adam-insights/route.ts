@@ -15,6 +15,10 @@ type AdamUserItem = {
   lastMessage: string | null;
   lastReply: string | null;
   lastSeenAt: string | null;
+  country: string | null;
+  city: string | null;
+  region: string | null;
+  timezone: string | null;
 };
 
 type WaitlistItem = {
@@ -130,6 +134,10 @@ export async function GET(request: NextRequest) {
         lastMessage: typeof data.lastMessage === 'string' ? data.lastMessage : null,
         lastReply: typeof data.lastReply === 'string' ? data.lastReply : null,
         lastSeenAt: readPossibleDate(data, ['lastSeenAt', 'updatedAt', 'lastSignInAtRaw', 'onboardingCompletedAt']),
+        country: typeof data.country === 'string' ? data.country : (typeof data.location?.country === 'string' ? data.location.country : null),
+        city: typeof data.city === 'string' ? data.city : (typeof data.location?.city === 'string' ? data.location.city : null),
+        region: typeof data.region === 'string' ? data.region : (typeof data.location?.region === 'string' ? data.location.region : null),
+        timezone: typeof data.timezone === 'string' ? data.timezone : (typeof data.location?.timezone === 'string' ? data.location.timezone : null),
       });
     });
 
@@ -141,6 +149,10 @@ export async function GET(request: NextRequest) {
         ? data.name
         : (typeof data.displayName === 'string' ? data.displayName : null);
       const derivedLastSeen = readPossibleDate(data, ['updatedAt', 'createdAt', 'onboardingCompletedAt']);
+      const derivedCountry = typeof data.country === 'string' ? data.country : (typeof data.location?.country === 'string' ? data.location.country : null);
+      const derivedCity = typeof data.city === 'string' ? data.city : (typeof data.location?.city === 'string' ? data.location.city : null);
+      const derivedRegion = typeof data.region === 'string' ? data.region : (typeof data.location?.region === 'string' ? data.location.region : null);
+      const derivedTimezone = typeof data.timezone === 'string' ? data.timezone : (typeof data.location?.timezone === 'string' ? data.location.timezone : null);
 
       if (!existing) {
         usersMap.set(key, {
@@ -152,6 +164,10 @@ export async function GET(request: NextRequest) {
           lastMessage: null,
           lastReply: null,
           lastSeenAt: derivedLastSeen,
+          country: derivedCountry,
+          city: derivedCity,
+          region: derivedRegion,
+          timezone: derivedTimezone,
         });
         return;
       }
@@ -164,6 +180,10 @@ export async function GET(request: NextRequest) {
           ? existing.interactionCount
           : readPossibleNumber(data, ['interactionCount', 'totalDemoSessions', 'demoSessions', 'totalSessions']),
         lastSeenAt: existing.lastSeenAt ?? derivedLastSeen,
+        country: existing.country ?? derivedCountry,
+        city: existing.city ?? derivedCity,
+        region: existing.region ?? derivedRegion,
+        timezone: existing.timezone ?? derivedTimezone,
       });
     });
 
@@ -249,6 +269,16 @@ export async function GET(request: NextRequest) {
     const waitlistFeedbackCount = feedback.filter((item) => item.source === 'waitlist').length;
     const chatFeedbackCount = feedback.filter((item) => item.source === 'chat').length;
 
+    const locationBreakdown: Record<string, number> = {};
+    for (const user of users) {
+      const key = user.country ?? 'Unknown';
+      locationBreakdown[key] = (locationBreakdown[key] ?? 0) + 1;
+    }
+    const topLocations = Object.entries(locationBreakdown)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([country, count]) => ({ country, count }));
+
     return NextResponse.json({
       users,
       waitlist,
@@ -260,6 +290,7 @@ export async function GET(request: NextRequest) {
         waitlistFeedback: waitlistFeedbackCount,
         chatFeedback: chatFeedbackCount,
       },
+      topLocations,
     });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to fetch ADAM insights';

@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Copy, RefreshCw } from 'lucide-react';
+import { Copy, MapPin, RefreshCw } from 'lucide-react';
 
 type AdamUserItem = {
   id: string;
@@ -27,6 +27,10 @@ type AdamUserItem = {
   lastMessage: string | null;
   lastReply: string | null;
   lastSeenAt: string | null;
+  country: string | null;
+  city: string | null;
+  region: string | null;
+  timezone: string | null;
 };
 
 type WaitlistItem = {
@@ -58,12 +62,61 @@ type AdamInsightsResponse = {
     waitlistFeedback?: number;
     chatFeedback?: number;
   };
+  topLocations: { country: string; count: number }[];
 };
 
 type WaitlistDetail = WaitlistItem & {
   allFeedback: FeedbackItem[];
   uniqueFeedbackCount: number;
 };
+
+const countryNames: Record<string, string> = {
+  Unknown: 'Unknown',
+  US: 'United States',
+  IN: 'India',
+  GB: 'United Kingdom',
+  CA: 'Canada',
+  AU: 'Australia',
+  DE: 'Germany',
+  FR: 'France',
+  JP: 'Japan',
+  BR: 'Brazil',
+  CN: 'China',
+  RU: 'Russia',
+  SG: 'Singapore',
+  AE: 'UAE',
+  NL: 'Netherlands',
+  IT: 'Italy',
+  ES: 'Spain',
+  SE: 'Sweden',
+  CH: 'Switzerland',
+  KR: 'South Korea',
+  PK: 'Pakistan',
+  BD: 'Bangladesh',
+  NG: 'Nigeria',
+  ZA: 'South Africa',
+  MX: 'Mexico',
+  ID: 'Indonesia',
+  PH: 'Philippines',
+  MY: 'Malaysia',
+  TH: 'Thailand',
+  VN: 'Vietnam',
+};
+
+function getCountryName(code: string): string {
+  return countryNames[code] ?? code;
+}
+
+function getCountryFlag(code: string): string {
+  try {
+    if (!code || code === 'Unknown' || code.length !== 2) return '🌍';
+    const upper = code.toUpperCase();
+    if (!/^[A-Z]{2}$/.test(upper)) return '🌍';
+    return String.fromCodePoint(...upper.split('').map((c) => 127397 + c.charCodeAt(0)));
+  } catch {
+    return '🌍';
+  }
+}
 
 function normalizeText(value: string | null): string {
   return (value ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
@@ -298,8 +351,9 @@ export default function AdamInsightsView() {
                 <TableRow>
                   <TableHead>Identifier</TableHead>
                   <TableHead className="hidden md:table-cell">Email</TableHead>
+                  <TableHead className="hidden lg:table-cell">Location</TableHead>
                   <TableHead className="hidden lg:table-cell">Interactions</TableHead>
-                  <TableHead className="hidden lg:table-cell">Last Seen</TableHead>
+                  <TableHead className="hidden xl:table-cell">Last Seen</TableHead>
                   <TableHead>Last Message</TableHead>
                 </TableRow>
               </TableHeader>
@@ -308,14 +362,15 @@ export default function AdamInsightsView() {
                   <TableRow key={`adam-user-skeleton-${index}`}>
                     <TableCell><Skeleton className="h-4 w-32" /></TableCell>
                     <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-40" /></TableCell>
+                    <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-28" /></TableCell>
                     <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-10" /></TableCell>
-                    <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-20" /></TableCell>
+                    <TableCell className="hidden xl:table-cell"><Skeleton className="h-4 w-20" /></TableCell>
                     <TableCell><Skeleton className="h-4 w-48" /></TableCell>
                   </TableRow>
                 ))}
                 {!loading && (data?.users.length ?? 0) === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                    <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
                       No ADAM usage records yet.
                     </TableCell>
                   </TableRow>
@@ -325,18 +380,72 @@ export default function AdamInsightsView() {
                     <TableCell className="font-medium">{user.name || user.identifier}</TableCell>
                     <TableCell className="hidden md:table-cell">{user.email || '-'}</TableCell>
                     <TableCell className="hidden lg:table-cell">
+                      {user.country ? (
+                        <span className="inline-flex items-center gap-1.5 text-sm">
+                          <span>{getCountryFlag(user.country)}</span>
+                          <span>{user.city ? `${user.city}, ` : ''}{getCountryName(user.country)}</span>
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">—</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
                       {user.interactionCount > 0 ? (
                         <Badge variant="secondary">{user.interactionCount}</Badge>
                       ) : (
                         <Badge variant="outline" className="text-muted-foreground">No sessions yet</Badge>
                       )}
                     </TableCell>
-                    <TableCell className="hidden lg:table-cell">{formatRelativeTime(user.lastSeenAt)}</TableCell>
-                    <TableCell className="max-w-[380px] truncate">{user.lastMessage || '-'}</TableCell>
+                    <TableCell className="hidden xl:table-cell">{formatRelativeTime(user.lastSeenAt)}</TableCell>
+                    <TableCell className="max-w-[320px] truncate">{user.lastMessage || '-'}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center gap-2">
+            <MapPin className="h-5 w-5 text-primary" />
+            <div>
+              <CardTitle>User Locations</CardTitle>
+              <CardDescription>Geographic distribution of ADAM users by country.</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton key={`loc-sk-${i}`} className="h-14 rounded-lg" />
+                ))}
+              </div>
+            ) : !data?.topLocations?.length || data.topLocations.every((l) => l.country === 'Unknown') ? (
+              <p className="text-sm text-muted-foreground py-4 text-center">No location data recorded yet.</p>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {data.topLocations.filter((l) => l.country !== 'Unknown').map((loc) => (
+                  <div
+                    key={loc.country}
+                    className="flex flex-col items-center gap-1 rounded-lg border border-border/60 bg-card p-3 text-center hover:border-primary/40 transition-colors"
+                  >
+                    <span className="text-2xl">{getCountryFlag(loc.country)}</span>
+                    <span className="text-xs font-medium leading-tight">{getCountryName(loc.country)}</span>
+                    <Badge variant="secondary" className="text-xs px-1.5">{loc.count}</Badge>
+                  </div>
+                ))}
+                {data.topLocations.filter((l) => l.country === 'Unknown').map((loc) => (
+                  <div
+                    key="unknown"
+                    className="flex flex-col items-center gap-1 rounded-lg border border-border/40 bg-muted/30 p-3 text-center"
+                  >
+                    <span className="text-2xl">🌍</span>
+                    <span className="text-xs text-muted-foreground">Unknown</span>
+                    <Badge variant="outline" className="text-xs px-1.5">{loc.count}</Badge>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
