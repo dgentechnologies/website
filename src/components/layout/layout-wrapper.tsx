@@ -13,13 +13,15 @@ interface LayoutWrapperProps {
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith('/admin');
+  const isAdamDemoRoute = pathname?.startsWith('/products/adam/demo');
+  const hideGlobalChrome = isAdminRoute || isAdamDemoRoute;
 
   return (
     <>
       <PageTracker />
-      {!isAdminRoute && <Header />}
+      {!hideGlobalChrome && <Header />}
       <main className="min-h-screen flex flex-col">{children}</main>
-      {!isAdminRoute && <Footer />}
+      {!hideGlobalChrome && <Footer />}
     </>
   );
 }
