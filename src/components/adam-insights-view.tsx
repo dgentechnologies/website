@@ -62,7 +62,12 @@ type AdamInsightsResponse = {
 
 type WaitlistDetail = WaitlistItem & {
   allFeedback: FeedbackItem[];
+  uniqueFeedbackCount: number;
 };
+
+function normalizeText(value: string | null): string {
+  return (value ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
+}
 
 function formatRelativeTime(value: string | null): string {
   if (!value) {
@@ -153,6 +158,7 @@ export default function AdamInsightsView() {
 
     return data.waitlist.map((entry) => {
       const normalizedEmail = entry.email.toLowerCase();
+      const normalizedWaitlistNote = normalizeText(entry.feedback);
       const matchedFeedback = data.feedback
         .filter((item) => item.source === 'waitlist')
         .filter((item) => {
@@ -160,15 +166,19 @@ export default function AdamInsightsView() {
           const byIdentifier = typeof item.identifier === 'string' && item.identifier.toLowerCase() === normalizedEmail;
           return byEmail || byIdentifier;
         })
+        .filter((item) => normalizeText(item.feedback) !== normalizedWaitlistNote)
         .sort((a, b) => {
           const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
           const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
           return bTime - aTime;
         });
 
+      const uniqueFeedbackCount = matchedFeedback.length + (normalizedWaitlistNote ? 1 : 0);
+
       return {
         ...entry,
         allFeedback: matchedFeedback,
+        uniqueFeedbackCount,
       };
     });
   }, [data]);
@@ -396,7 +406,7 @@ export default function AdamInsightsView() {
                       </TableCell>
                       <TableCell className="hidden md:table-cell">{formatRelativeTime(entry.createdAt)}</TableCell>
                       <TableCell className="hidden lg:table-cell">
-                        <Badge variant="outline">{entry.allFeedback.length}</Badge>
+                        <Badge variant="outline">{entry.uniqueFeedbackCount}</Badge>
                       </TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm" onClick={() => setSelectedWaitlistId(entry.id)}>View</Button>
@@ -417,7 +427,7 @@ export default function AdamInsightsView() {
                     <p className="text-xs text-muted-foreground mt-1">Entry ID: {selectedWaitlistEntry.id}</p>
                   </div>
                   <div className="flex gap-2">
-                    <Badge variant="secondary">Feedback {selectedWaitlistEntry.allFeedback.length}</Badge>
+                    <Badge variant="secondary">Feedback {selectedWaitlistEntry.uniqueFeedbackCount}</Badge>
                     <Badge variant="outline" className="capitalize">{selectedWaitlistEntry.source || 'unknown'}</Badge>
                   </div>
                 </div>
