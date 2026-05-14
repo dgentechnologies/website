@@ -1744,6 +1744,10 @@ function AdamHeroSection({ parallaxOffset, floatOffset }: { parallaxOffset: numb
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
+          <Link href="#waitlist" className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-primary hover:bg-primary/90 text-black font-bold shadow-2xl hover:shadow-primary/40 transition-all duration-300 text-sm group">
+            Join Waitlist
+            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
     </section>
@@ -1980,6 +1984,173 @@ function AdamCookingSection() {
   );
 }
 
+function AdamWaitlistSection() {
+  const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const [email, setEmail] = useState('');
+  const [feedback, setFeedback] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
+  const [countLoading, setCountLoading] = useState(true);
+
+  const fetchWaitlistCount = async () => {
+    try {
+      const response = await fetch('/api/adam/waitlist-count');
+      const payload = await response.json();
+      if (response.ok && typeof payload.count === 'number') {
+        setWaitlistCount(payload.count);
+      }
+    } catch {
+      // Ignore count fetch errors and keep existing value.
+    } finally {
+      setCountLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWaitlistCount();
+    const intervalId = window.setInterval(fetchWaitlistCount, 30000);
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!email.trim() || isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError('');
+    setSubmitSuccess(false);
+
+    try {
+      const response = await fetch('/api/adam/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), feedback: feedback.trim() }),
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        setSubmitError(typeof payload.error === 'string' ? payload.error : 'Unable to submit waitlist request.');
+        return;
+      }
+
+      setSubmitSuccess(true);
+      setEmail('');
+      setFeedback('');
+      setWaitlistCount((current) => (typeof current === 'number' ? current + 1 : current));
+    } catch {
+      setSubmitError('Unable to submit right now. Please try again in a moment.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section id="waitlist" className="w-full min-h-screen bg-gray-950 flex items-center justify-center overflow-hidden border-t border-white/5 relative">
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(25,179,92,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(25,179,92,0.6) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+        }}
+      />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[300px] bg-primary/5 blur-[110px] rounded-full pointer-events-none" />
+
+      <div className="container max-w-screen-lg px-4 md:px-6 py-16 relative z-10">
+        <div
+          ref={ref}
+          className={`grid gap-8 lg:grid-cols-2 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          <div className="space-y-5">
+            <p className="text-white/35 text-xs tracking-[0.3em] uppercase font-mono">Priority Access</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-black text-white leading-tight">
+              ADAM Waitlist
+              <br />
+              <span className="text-primary">Reserve your place.</span>
+            </h2>
+            <p className="text-white/60 text-sm sm:text-base max-w-md">
+              Join the launch list to receive official ADAM release updates first. You can also share what you want ADAM to solve for you.
+            </p>
+            <div className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border border-primary/30 bg-primary/10">
+              <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+              <span className="text-white/75 text-sm">
+                {countLoading ? (
+                  'Loading waitlist count...'
+                ) : (
+                  <>
+                    <span className="text-white font-semibold">{waitlistCount?.toLocaleString() ?? 0}</span> builders already on the waitlist
+                  </>
+                )}
+              </span>
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-5 sm:p-6">
+            {submitSuccess ? (
+              <div className="h-full min-h-[280px] flex flex-col items-start justify-center gap-3">
+                <Badge variant="outline" className="border-primary/50 text-primary">Submission Received</Badge>
+                <h3 className="text-2xl font-headline font-bold text-white">You are on the list.</h3>
+                <p className="text-white/60 text-sm sm:text-base">
+                  Thanks for joining the ADAM waitlist. We will notify you the moment launch updates are announced.
+                </p>
+                <button
+                  className="mt-2 text-primary text-sm font-medium hover:text-primary/80 transition-colors"
+                  onClick={() => setSubmitSuccess(false)}
+                >
+                  Add another email
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-white/70 text-sm mb-2">Email Address</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="you@company.com"
+                    required
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/15 text-white placeholder:text-white/30 outline-none focus:border-primary/60 transition-colors"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <label className="block text-white/70 text-sm mb-2">What should ADAM help you with? (Optional)</label>
+                  <textarea
+                    value={feedback}
+                    onChange={(event) => setFeedback(event.target.value)}
+                    placeholder="Tell us your use case or feedback..."
+                    maxLength={1000}
+                    rows={4}
+                    className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/15 text-white placeholder:text-white/30 outline-none focus:border-primary/60 transition-colors resize-none"
+                    disabled={isSubmitting}
+                  />
+                  <p className="text-white/35 text-xs mt-1 text-right">{feedback.length}/1000</p>
+                </div>
+
+                {submitError ? <p className="text-red-400 text-sm">{submitError}</p> : null}
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !email.trim()}
+                  className="w-full inline-flex justify-center items-center gap-2 px-6 py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-black font-semibold disabled:opacity-50 transition-colors"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Join ADAM Waitlist'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function AdamFAQSection() {
   const [ref, isVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.1 });
 
@@ -2123,6 +2294,7 @@ function AdamProductView({ parallaxOffset, floatOffset }: { parallaxOffset: numb
       <AdamSuspenseSection />
       <AdamFeatureTease />
       <AdamCookingSection />
+      <AdamWaitlistSection />
       <AdamFAQSection />
     </>
   );

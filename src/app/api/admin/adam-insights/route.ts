@@ -16,6 +16,8 @@ type AdamUserItem = {
 type WaitlistItem = {
   id: string;
   email: string;
+  feedback: string | null;
+  source: 'adam-waitlist' | 'waitlist';
   createdAt: string | null;
 };
 
@@ -60,9 +62,10 @@ export async function GET(request: NextRequest) {
   try {
     await verifyAdmin(request);
 
-    const [adamUsersSnapshot, waitlistSnapshot, feedbackSnapshot] = await Promise.all([
+    const [adamUsersSnapshot, websiteWaitlistSnapshot, demoWaitlistSnapshot, feedbackSnapshot] = await Promise.all([
       adminFirestore.collection('adamUsers').orderBy('lastSeenAt', 'desc').limit(100).get(),
       adminFirestore.collection('adam-waitlist').orderBy('createdAt', 'desc').limit(100).get(),
+      adminFirestore.collection('waitlist').orderBy('createdAt', 'desc').limit(100).get(),
       adminFirestore.collection('adamFeedback').orderBy('createdAt', 'desc').limit(100).get(),
     ]);
 
@@ -80,13 +83,33 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    const waitlist: WaitlistItem[] = waitlistSnapshot.docs.map((doc) => {
+    const websiteWaitlist: WaitlistItem[] = websiteWaitlistSnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
         id: doc.id,
         email: typeof data.email === 'string' ? data.email : doc.id,
+        feedback: typeof data.feedback === 'string' ? data.feedback : null,
+        source: 'adam-waitlist',
         createdAt: toIsoDate(data.createdAt),
       };
+    });
+
+    const demoWaitlist: WaitlistItem[] = demoWaitlistSnapshot.docs.map((doc) => {
+      const data = doc.data();
+      const fallbackEmail = typeof data.identifier === 'string' ? data.identifier : doc.id;
+      return {
+        id: doc.id,
+        email: typeof data.email === 'string' ? data.email : fallbackEmail,
+        feedback: typeof data.feedback === 'string' ? data.feedback : null,
+        source: 'waitlist',
+        createdAt: toIsoDate(data.createdAt),
+      };
+    });
+
+    const waitlist = [...websiteWaitlist, ...demoWaitlist].sort((a, b) => {
+      const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return bTime - aTime;
     });
 
     const feedback: FeedbackItem[] = feedbackSnapshot.docs.map((doc) => {
