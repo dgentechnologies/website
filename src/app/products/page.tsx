@@ -215,7 +215,7 @@ export default function ProductsPage() {
               keyPoints={[
                 "Compact AI companion for your desk",
                 "Built entirely in India",
-                "Coming soon — join the waitlist",
+                "Early access registration now open",
               ]}
               index={0}
               blurImage={true}

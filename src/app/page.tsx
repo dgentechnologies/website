@@ -201,13 +201,13 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
       
-      {/* Coming Soon Section */}
+      {/* ADAM Experience Section */}
       <section className="relative w-full h-screen min-h-[600px] overflow-hidden flex items-center justify-center text-center">
         {/* Blurred Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/adam-desktop-ai-module.png"
-            alt="ADAM — Autonomous Desktop AI Module by Dgen Technologies — Coming Soon"
+            alt="ADAM — Autonomous Desktop AI Module by Dgen Technologies"
             fill
             className="object-cover scale-110"
             style={{ filter: 'blur(3px)' }}
@@ -227,7 +227,7 @@ export default function Home() {
           {/* Pill label */}
           <div className="inline-flex items-center gap-2 border border-primary/40 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-1.5 animate-slide-down">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse-subtle inline-block" />
-            <span className="text-primary text-xs font-bold tracking-[0.25em] uppercase">Something Big is Cooking</span>
+            <span className="text-primary text-xs font-bold tracking-[0.25em] uppercase">Flagship Preview</span>
           </div>
 
           {/* Main heading */}
@@ -235,7 +235,7 @@ export default function Home() {
             className="text-[clamp(3.5rem,12vw,10rem)] font-headline font-black text-white tracking-tight leading-none animate-slide-up"
             style={{ animationDelay: '0.2s', textShadow: '0 0 80px rgba(25,179,92,0.25)' }}
           >
-            Coming Soon
+            Experience ADAM
           </h2>
 
           {/* Tagline */}
@@ -243,11 +243,10 @@ export default function Home() {
             className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-white/60 font-light leading-relaxed animate-slide-up"
             style={{ animationDelay: '0.4s' }}
           >
-            Dgen&apos;s kitchen is getting{' '}
-            <span className="text-primary font-semibold">very</span> busy.
+            Dgen&apos;s flagship Autonomous Desktop AI Module is ready for its first public experience.
             <br />
             <span className="text-white/40 text-sm sm:text-base">
-              New products. New experiences. A whole new era of Made&#8209;in&#8209;India tech.
+              Desk-scale intelligence, thoughtfully designed and built in India for work, presence, and connected living.
             </span>
           </p>
 
@@ -261,8 +260,8 @@ export default function Home() {
               size="lg"
               className="w-full sm:w-auto min-w-[160px] bg-primary hover:bg-primary/90 text-black font-bold shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 transition-all duration-300"
             >
-              <Link href="/products/adam#waitlist">
-                Join Waitlist
+              <Link href="/products/adam/demo">
+                Experience ADAM
               </Link>
             </Button>
             <Button
@@ -271,8 +270,8 @@ export default function Home() {
               variant="outline"
               className="w-full sm:w-auto min-w-[160px] bg-transparent border-white/40 text-white hover:bg-white/10 hover:border-white/70 hover:scale-105 transition-all duration-300 backdrop-blur-sm"
             >
-              <Link href="/products/adam/demo">
-                Experience ADAM <ArrowRight className="ml-2 h-4 w-4" />
+              <Link href="/products/adam#waitlist">
+                Join Waitlist <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           </div>
@@ -283,7 +282,7 @@ export default function Home() {
             style={{ animationDelay: '0.8s' }}
           >
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
-            <span className="text-primary/60 font-mono text-xs tracking-[0.3em] uppercase">Innovation in progress</span>
+            <span className="text-primary/60 font-mono text-xs tracking-[0.3em] uppercase">Flagship launch preview</span>
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
           </div>
         </div>
