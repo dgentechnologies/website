@@ -126,6 +126,7 @@ service cloud.firestore {
           'displayName',
           'photoURL',
           'phoneNumber',
+          'phone_number',
           'emailVerified',
           'providerIds',
           'primaryProvider',
@@ -134,6 +135,7 @@ service cloud.firestore {
           'jobTitle',
           'dob',
           'useCase',
+          'intent',
           'onboardingCompleted',
           'onboardingCompletedAt',
           'accountCreatedAtRaw',
@@ -149,6 +151,7 @@ service cloud.firestore {
           'displayName',
           'photoURL',
           'phoneNumber',
+          'phone_number',
           'emailVerified',
           'providerIds',
           'primaryProvider',
@@ -157,6 +160,7 @@ service cloud.firestore {
           'jobTitle',
           'dob',
           'useCase',
+          'intent',
           'onboardingCompleted',
           'onboardingCompletedAt',
           'accountCreatedAtRaw',
@@ -237,3 +241,5 @@ service cloud.firestore {
     }
   }
 }
+
+    
