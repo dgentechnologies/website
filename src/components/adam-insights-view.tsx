@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { auth } from '@/firebase/client';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
@@ -33,8 +33,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Copy, RefreshCw, MapPin, BarChart3, Users, ChevronDown, Trash2 } from 'lucide-react';
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { RefreshCw, MapPin, BarChart3, Users, ChevronDown, Trash2, TrendingUp } from 'lucide-react';
 
 type LastKnownLocation = {
   latitude: number;
@@ -49,6 +49,7 @@ type LastKnownLocation = {
 
 type AdamUserItem = {
   id: string;
+  uid: string | null;
   identifier: string;
   email: string | null;
   name: string | null;
@@ -57,6 +58,11 @@ type AdamUserItem = {
   city: string | null;
   region: string | null;
   timezone: string | null;
+  dob: string | null;
+  age: number | null;
+  intent: string | null;
+  useCase: string | null;
+  accountCreatedAt: string | null;
   lastKnownLocation: LastKnownLocation | null;
   interactionCount: number;
   lastMessage: string | null;
@@ -69,6 +75,7 @@ type AdamInsightsResponse = {
   topLocations: Array<{ country: string; count: number }>;
   topJobTitles: Array<{ jobTitle: string; count: number }>;
   topTimezones: Array<{ timezone: string; count: number }>;
+  ageGroups?: Array<{ ageGroup: string; count: number }>;
 };
 
 type ChartDataPoint = {
@@ -132,6 +139,20 @@ function formatAbsoluteTime(value: string | null): string {
   return date.toLocaleString();
 }
 
+function toTimezoneValue(user: AdamUserItem): string {
+  return user.timezone || user.lastKnownLocation?.timezone || 'Unknown';
+}
+
+function toAgeBand(age: number | null): string {
+  if (age === null) return 'Unknown';
+  if (age < 18) return '<18';
+  if (age <= 24) return '18-24';
+  if (age <= 34) return '25-34';
+  if (age <= 44) return '35-44';
+  if (age <= 54) return '45-54';
+  return '55+';
+}
+
 
 // ===== Dashboard View Component =====
 type DashboardViewProps = {
@@ -140,22 +161,47 @@ type DashboardViewProps = {
 };
 
 function DashboardView({ data, loading }: DashboardViewProps) {
-  // Generate mock 30-day trend data
+  // Build a real 30-day cumulative signup trend from account creation timestamps.
   const chartData = useMemo<ChartDataPoint[]>(() => {
     if (!data) return [];
+
     const days = 30;
+    const startDate = new Date();
+    startDate.setHours(0, 0, 0, 0);
+    startDate.setDate(startDate.getDate() - days);
+
+    const dailyNewUsers = new Map<string, number>();
+    data.users.forEach((user) => {
+      const sourceDate = user.accountCreatedAt || user.lastSeenAt;
+      if (!sourceDate) {
+        return;
+      }
+
+      const parsed = new Date(sourceDate);
+      if (Number.isNaN(parsed.getTime())) {
+        return;
+      }
+
+      parsed.setHours(0, 0, 0, 0);
+      const key = parsed.toISOString().slice(0, 10);
+      dailyNewUsers.set(key, (dailyNewUsers.get(key) ?? 0) + 1);
+    });
+
+    let cumulativeUsers = 0;
     const result: ChartDataPoint[] = [];
-    const baseCount = Math.max(1, Math.floor(data.users.length / days));
-    
-    for (let i = days; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      const variance = Math.floor(Math.random() * (baseCount * 0.5));
+
+    for (let offset = 0; offset <= days; offset += 1) {
+      const current = new Date(startDate);
+      current.setDate(startDate.getDate() + offset);
+      const key = current.toISOString().slice(0, 10);
+      cumulativeUsers += dailyNewUsers.get(key) ?? 0;
+
       result.push({
-        date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        users: Math.max(0, baseCount + variance),
+        date: current.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        users: cumulativeUsers,
       });
     }
+
     return result;
   }, [data]);
 
@@ -180,7 +226,7 @@ function DashboardView({ data, loading }: DashboardViewProps) {
 
   const uniqueTimezones = useMemo(() => {
     if (!data) return 0;
-    return new Set(data.users.map(u => u.timezone).filter(Boolean)).size;
+    return new Set(data.users.map((u) => toTimezoneValue(u)).filter((tz) => tz !== 'Unknown')).size;
   }, [data]);
 
   const avgInteractions = useMemo(() => {
@@ -264,10 +310,10 @@ function DashboardView({ data, loading }: DashboardViewProps) {
         <Card>
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
-              <LineChart className="h-4 w-4" />
+              <TrendingUp className="h-4 w-4" />
               30-Day User Growth
             </CardTitle>
-            <CardDescription>New signups over time</CardDescription>
+            <CardDescription>Cumulative signups over time</CardDescription>
           </CardHeader>
           <CardContent className="h-80">
             {loading ? (
@@ -406,7 +452,7 @@ function DashboardView({ data, loading }: DashboardViewProps) {
                           <span className="text-muted-foreground">-</span>
                         )}
                       </TableCell>
-                      <TableCell className="hidden lg:table-cell text-sm">{user.timezone || '-'}</TableCell>
+                      <TableCell className="hidden lg:table-cell text-sm">{toTimezoneValue(user)}</TableCell>
                       <TableCell className="hidden sm:table-cell text-sm">
                         <Badge variant="secondary">{user.interactionCount}</Badge>
                       </TableCell>
@@ -437,6 +483,63 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [jobTitleFilter, setJobTitleFilter] = useState<string>('all');
   const [timezoneFilter, setTimezoneFilter] = useState<string>('all');
+  const [ageBandFilter, setAgeBandFilter] = useState<string>('all');
+  const [intentFilter, setIntentFilter] = useState<string>('all');
+
+  const locationOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    (data?.users || []).forEach((user) => {
+      const value = user.country || 'Unknown';
+      counts.set(value, (counts.get(value) ?? 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([country, count]) => ({ country, count }))
+      .sort((a, b) => b.count - a.count || a.country.localeCompare(b.country));
+  }, [data]);
+
+  const jobOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    (data?.users || []).forEach((user) => {
+      const value = user.jobTitle || 'Unknown';
+      counts.set(value, (counts.get(value) ?? 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([jobTitle, count]) => ({ jobTitle, count }))
+      .sort((a, b) => b.count - a.count || a.jobTitle.localeCompare(b.jobTitle));
+  }, [data]);
+
+  const timezoneOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    (data?.users || []).forEach((user) => {
+      const value = toTimezoneValue(user);
+      counts.set(value, (counts.get(value) ?? 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([timezone, count]) => ({ timezone, count }))
+      .sort((a, b) => b.count - a.count || a.timezone.localeCompare(b.timezone));
+  }, [data]);
+
+  const ageBandOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    (data?.users || []).forEach((user) => {
+      const value = toAgeBand(user.age);
+      counts.set(value, (counts.get(value) ?? 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([ageBand, count]) => ({ ageBand, count }))
+      .sort((a, b) => b.count - a.count || a.ageBand.localeCompare(b.ageBand));
+  }, [data]);
+
+  const intentOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    (data?.users || []).forEach((user) => {
+      const value = user.intent || user.useCase || 'Unknown';
+      counts.set(value, (counts.get(value) ?? 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([intent, count]) => ({ intent, count }))
+      .sort((a, b) => b.count - a.count || a.intent.localeCompare(b.intent));
+  }, [data]);
 
   const filteredUsers = useMemo(() => {
     if (!data) return [];
@@ -450,7 +553,9 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
           user.email?.toLowerCase().includes(query) ||
           user.name?.toLowerCase().includes(query) ||
           user.identifier?.toLowerCase().includes(query) ||
-          user.jobTitle?.toLowerCase().includes(query)
+          user.jobTitle?.toLowerCase().includes(query) ||
+          user.intent?.toLowerCase().includes(query) ||
+          user.useCase?.toLowerCase().includes(query)
       );
     }
 
@@ -466,7 +571,17 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
 
     // Timezone filter
     if (timezoneFilter !== 'all') {
-      result = result.filter((user) => user.timezone === timezoneFilter);
+      result = result.filter((user) => toTimezoneValue(user) === timezoneFilter);
+    }
+
+    // Age filter
+    if (ageBandFilter !== 'all') {
+      result = result.filter((user) => toAgeBand(user.age) === ageBandFilter);
+    }
+
+    // Intent filter
+    if (intentFilter !== 'all') {
+      result = result.filter((user) => (user.intent || user.useCase || 'Unknown') === intentFilter);
     }
 
     return result.sort((a, b) => {
@@ -474,7 +589,7 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
       const bTime = b.lastSeenAt ? new Date(b.lastSeenAt).getTime() : 0;
       return bTime - aTime;
     });
-  }, [data, searchQuery, locationFilter, jobTitleFilter, timezoneFilter]);
+  }, [data, searchQuery, locationFilter, jobTitleFilter, timezoneFilter, ageBandFilter, intentFilter]);
 
   const handleDeleteUser = async () => {
     if (!deleteUserId) return;
@@ -529,22 +644,22 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
   return (
     <div className="space-y-6">
       {/* Search and Filters */}
-      <div className="space-y-4">
+      <div className="space-y-4 rounded-2xl border border-primary/10 bg-gradient-to-br from-background via-background to-primary/5 p-4 md:p-5">
         <Input
-          placeholder="Search by email, name, or job title..."
+          placeholder="Search by email, name, profession, intent, or use case..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full"
+          className="w-full border-primary/20 bg-background/70"
         />
 
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
           <Select value={locationFilter} onValueChange={setLocationFilter}>
-            <SelectTrigger>
+            <SelectTrigger className="border-primary/20 bg-background/80">
               <SelectValue placeholder="Location" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Locations</SelectItem>
-              {(data?.topLocations || []).map((loc) => (
+              {locationOptions.map((loc) => (
                 <SelectItem key={loc.country} value={loc.country}>
                   {getCountryFlag(loc.country)} {getCountryName(loc.country)} ({loc.count})
                 </SelectItem>
@@ -553,12 +668,12 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
           </Select>
 
           <Select value={jobTitleFilter} onValueChange={setJobTitleFilter}>
-            <SelectTrigger>
+            <SelectTrigger className="border-primary/20 bg-background/80">
               <SelectValue placeholder="Job Title" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Professions</SelectItem>
-              {(data?.topJobTitles || []).map((job) => (
+              {jobOptions.map((job) => (
                 <SelectItem key={job.jobTitle} value={job.jobTitle}>
                   {job.jobTitle} ({job.count})
                 </SelectItem>
@@ -567,14 +682,42 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
           </Select>
 
           <Select value={timezoneFilter} onValueChange={setTimezoneFilter}>
-            <SelectTrigger>
+            <SelectTrigger className="border-primary/20 bg-background/80">
               <SelectValue placeholder="Timezone" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Timezones</SelectItem>
-              {(data?.topTimezones || []).map((tz) => (
+              {timezoneOptions.map((tz) => (
                 <SelectItem key={tz.timezone} value={tz.timezone}>
                   {tz.timezone} ({tz.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={ageBandFilter} onValueChange={setAgeBandFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Age Group" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Ages</SelectItem>
+              {ageBandOptions.map((group) => (
+                <SelectItem key={group.ageBand} value={group.ageBand}>
+                  {group.ageBand} ({group.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={intentFilter} onValueChange={setIntentFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Intent / Use Case" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Intent</SelectItem>
+              {intentOptions.map((entry) => (
+                <SelectItem key={entry.intent} value={entry.intent}>
+                  {entry.intent} ({entry.count})
                 </SelectItem>
               ))}
             </SelectContent>
@@ -588,17 +731,17 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
       </div>
 
       {/* Users Table with Expandable Rows */}
-      <Card>
+      <Card className="border-primary/15 bg-gradient-to-b from-card via-card to-primary/5 shadow-[0_12px_40px_-24px_hsl(var(--primary)/0.5)]">
         <CardContent className="p-0">
-          <div className="rounded-lg border overflow-hidden">
+          <div className="overflow-x-auto rounded-xl border border-primary/15">
             <Table>
-              <TableHeader>
+              <TableHeader className="bg-muted/30 backdrop-blur supports-[backdrop-filter]:bg-muted/20">
                 <TableRow>
                   <TableHead className="w-[40px]">Expand</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead className="hidden md:table-cell">Email</TableHead>
                   <TableHead className="hidden lg:table-cell">Location</TableHead>
-                  <TableHead className="hidden xl:table-cell">Timezone</TableHead>
+                  <TableHead className="hidden md:table-cell">Timezone</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -610,7 +753,7 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                       <TableCell><Skeleton className="h-4 w-32" /></TableCell>
                       <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-40" /></TableCell>
                       <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-24" /></TableCell>
-                      <TableCell className="hidden xl:table-cell"><Skeleton className="h-4 w-28" /></TableCell>
+                      <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-28" /></TableCell>
                       <TableCell><Skeleton className="h-8 w-12" /></TableCell>
                     </TableRow>
                   ))}
@@ -623,7 +766,7 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                 ) : null}
                 {!loading &&
                   filteredUsers.map((user) => (
-                    <div key={user.id}>
+                    <Fragment key={user.id}>
                       <TableRow
                         className={`cursor-pointer hover:bg-muted/50 ${
                           expandedUserId === user.id ? 'bg-muted/40' : ''
@@ -646,14 +789,18 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                             <span className="text-muted-foreground">-</span>
                           )}
                         </TableCell>
-                        <TableCell className="hidden xl:table-cell text-sm">{user.timezone || '-'}</TableCell>
+                        <TableCell className="hidden md:table-cell text-sm">
+                          <Badge variant="outline" className="border-primary/30 bg-primary/5">
+                            {toTimezoneValue(user)}
+                          </Badge>
+                        </TableCell>
                         <TableCell className="text-right">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setDeleteUserId(user.id);
+                              setDeleteUserId(user.uid || user.id);
                             }}
                             className="text-destructive hover:text-destructive hover:bg-destructive/10"
                           >
@@ -678,7 +825,7 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                                 </div>
                                 <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Timezone</p>
-                                  <p className="text-sm font-medium">{user.timezone || '-'}</p>
+                                  <p className="text-sm font-medium">{toTimezoneValue(user)}</p>
                                 </div>
                                 <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Location</p>
@@ -695,12 +842,24 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                                   </p>
                                 </div>
                                 <div>
+                                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Age</p>
+                                  <p className="text-sm font-medium">{user.age ?? '-'}</p>
+                                </div>
+                                <div>
+                                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Intent</p>
+                                  <p className="text-sm font-medium">{user.intent || user.useCase || '-'}</p>
+                                </div>
+                                <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Last Seen</p>
                                   <p className="text-sm font-medium">{formatRelativeTime(user.lastSeenAt)}</p>
                                 </div>
                                 <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Interactions</p>
                                   <p className="text-sm font-medium">{user.interactionCount}</p>
+                                </div>
+                                <div>
+                                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Account Created</p>
+                                  <p className="text-sm font-medium">{formatAbsoluteTime(user.accountCreatedAt)}</p>
                                 </div>
                               </div>
 
@@ -746,7 +905,7 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                           </TableCell>
                         </TableRow>
                       )}
-                    </div>
+                    </Fragment>
                   ))}
               </TableBody>
             </Table>
