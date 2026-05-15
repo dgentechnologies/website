@@ -24,6 +24,7 @@ type AdamUserItem = {
   email: string | null;
   name: string | null;
   jobTitle: string | null;
+  whereHeard: string | null;
   country: string | null;
   city: string | null;
   region: string | null;
@@ -34,6 +35,9 @@ type AdamUserItem = {
   useCase: string | null;
   accountCreatedAt: string | null;
   lastKnownLocation: LastKnownLocation | null;
+  isDeleted: boolean;
+  deletedAt: string | null;
+  deletedBy: string | null;
   interactionCount: number;
   lastMessage: string | null;
   lastReply: string | null;
@@ -226,6 +230,7 @@ function mergeUser(existing: AdamUserItem | undefined, incoming: AdamUserItem): 
     email: existing.email ?? incoming.email,
     name: existing.name ?? incoming.name,
     jobTitle: existing.jobTitle ?? incoming.jobTitle,
+    whereHeard: existing.whereHeard ?? incoming.whereHeard,
     country: existing.country ?? incoming.country,
     city: existing.city ?? incoming.city,
     region: existing.region ?? incoming.region,
@@ -236,6 +241,9 @@ function mergeUser(existing: AdamUserItem | undefined, incoming: AdamUserItem): 
     useCase: existing.useCase ?? incoming.useCase,
     accountCreatedAt: existing.accountCreatedAt ?? incoming.accountCreatedAt,
     lastKnownLocation: existing.lastKnownLocation ?? incoming.lastKnownLocation,
+    isDeleted: existing.isDeleted || incoming.isDeleted,
+    deletedAt: existing.deletedAt ?? incoming.deletedAt,
+    deletedBy: existing.deletedBy ?? incoming.deletedBy,
     interactionCount: Math.max(existing.interactionCount, incoming.interactionCount),
     lastMessage: existing.lastMessage ?? incoming.lastMessage,
     lastReply: existing.lastReply ?? incoming.lastReply,
@@ -297,6 +305,7 @@ export async function GET(request: NextRequest) {
         email: readPossibleString(data, ['email']),
         name: readPossibleString(data, ['name', 'displayName']),
         jobTitle: readPossibleString(data, ['jobTitle']),
+        whereHeard: readPossibleString(data, ['whereHeard']),
         country,
         city: readPossibleString(data, ['city']),
         region: readPossibleString(data, ['region']),
@@ -307,6 +316,9 @@ export async function GET(request: NextRequest) {
         useCase: readPossibleString(data, ['useCase']),
         accountCreatedAt: readPossibleDate(data, ['accountCreatedAt', 'createdAt', 'accountCreatedAtRaw', 'lastSignInAtRaw']),
         lastKnownLocation,
+        isDeleted: Boolean(data.isDeleted),
+        deletedAt: readPossibleDate(data, ['deletedAt']),
+        deletedBy: readPossibleString(data, ['deletedBy']),
         interactionCount: readPossibleNumber(data, ['interactionCount', 'totalDemoSessions', 'demoSessions', 'totalSessions']),
         lastMessage: readPossibleString(data, ['lastMessage']),
         lastReply: readPossibleString(data, ['lastReply']),
@@ -326,6 +338,7 @@ export async function GET(request: NextRequest) {
         email: readPossibleString(data, ['email']),
         name: readPossibleString(data, ['name', 'displayName']),
         jobTitle: readPossibleString(data, ['jobTitle']),
+        whereHeard: readPossibleString(data, ['whereHeard']),
         country: readPossibleString(data, ['country'])?.toUpperCase() ?? null,
         city: readPossibleString(data, ['city']),
         region: readPossibleString(data, ['region']),
@@ -336,6 +349,9 @@ export async function GET(request: NextRequest) {
         useCase: readPossibleString(data, ['useCase']),
         accountCreatedAt: readPossibleDate(data, ['createdAt', 'accountCreatedAt', 'accountCreatedAtRaw']),
         lastKnownLocation: null,
+        isDeleted: Boolean(data.isDeleted),
+        deletedAt: readPossibleDate(data, ['deletedAt']),
+        deletedBy: readPossibleString(data, ['deletedBy']),
         interactionCount: readPossibleNumber(data, ['interactionCount', 'totalDemoSessions', 'demoSessions', 'totalSessions']),
         lastMessage: null,
         lastReply: null,
@@ -349,23 +365,33 @@ export async function GET(request: NextRequest) {
       return bTime - aTime;
     });
 
-    const topLocations = buildTopItems(users.map((user) => user.country), 10, 'Unknown')
+    const activeUsers = users.filter((user) => !user.isDeleted);
+    const archivedUsers = users.filter((user) => user.isDeleted);
+
+    const topLocations = buildTopItems(activeUsers.map((user) => user.country), 10, 'Unknown')
       .map((item) => ({ country: item.label, count: item.count }));
-    const topJobTitles = buildTopItems(users.map((user) => user.jobTitle), 10, 'Unknown')
+    const topJobTitles = buildTopItems(activeUsers.map((user) => user.jobTitle), 10, 'Unknown')
       .map((item) => ({ jobTitle: item.label, count: item.count }));
-    const topTimezones = buildTopItems(users.map((user) => user.timezone), 12, 'Unknown')
+    const topTimezones = buildTopItems(activeUsers.map((user) => user.timezone), 12, 'Unknown')
       .map((item) => ({ timezone: item.label, count: item.count }));
-    const ageGroups = buildTopItems(users.map((user) => ageBand(user.age)), 10, 'Unknown')
+    const ageGroups = buildTopItems(activeUsers.map((user) => ageBand(user.age)), 10, 'Unknown')
       .map((item) => ({ ageGroup: item.label, count: item.count }));
+    const whereHeard = buildTopItems(activeUsers.map((user) => user.whereHeard), 12, 'Unknown')
+      .map((item) => ({ whereHeard: item.label, count: item.count }));
 
     return NextResponse.json({
       users,
+      activeUsers,
+      archivedUsers,
       topLocations,
       topJobTitles,
       topTimezones,
       ageGroups,
+      whereHeard,
       totals: {
         users: users.length,
+        activeUsers: activeUsers.length,
+        archivedUsers: archivedUsers.length,
         timezones: new Set(users.map((user) => user.timezone).filter(Boolean)).size,
         jobTitles: new Set(users.map((user) => user.jobTitle).filter(Boolean)).size,
       },
@@ -398,21 +424,28 @@ export async function DELETE(request: NextRequest) {
       adminFirestore.collection('onboarding').doc(uid).get(),
     ]);
 
-    const refs = new Map<string, FirebaseFirestore.DocumentReference>();
+    const batch = adminFirestore.batch();
+    const archivedAt = new Date().toISOString();
+
+    const archiveRef = (ref: any) => {
+      batch.set(ref, {
+        isDeleted: true,
+        deletedAt: archivedAt,
+        deletedBy: 'admin-dashboard',
+      }, { merge: true });
+    };
 
     if (adamUserById.exists) {
-      refs.set(adamUserById.ref.path, adamUserById.ref);
+      archiveRef(adamUserById.ref);
     }
     if (onboardingById.exists) {
-      refs.set(onboardingById.ref.path, onboardingById.ref);
+      archiveRef(onboardingById.ref);
     }
 
-    adamUsersByUid.docs.forEach((doc) => refs.set(doc.ref.path, doc.ref));
-    onboardingByUid.docs.forEach((doc) => refs.set(doc.ref.path, doc.ref));
-    demoSessionsByUid.docs.forEach((doc) => refs.set(doc.ref.path, doc.ref));
+    adamUsersByUid.docs.forEach((doc) => archiveRef(doc.ref));
+    onboardingByUid.docs.forEach((doc) => archiveRef(doc.ref));
+    demoSessionsByUid.docs.forEach((doc) => archiveRef(doc.ref));
 
-    const batch = adminFirestore.batch();
-    refs.forEach((ref) => batch.delete(ref));
     await batch.commit();
 
     const auth = getAuth(adminApp);
@@ -427,11 +460,64 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({
       success: true,
       uid,
-      deletedDocuments: refs.size,
+      deletedDocuments: adamUsersByUid.size + onboardingByUid.size + demoSessionsByUid.size + (adamUserById.exists ? 1 : 0) + (onboardingById.exists ? 1 : 0),
       deletedAuthUser,
+      softDeleted: true,
     });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to delete ADAM user';
+    const status = message === 'Unauthorized' ? 401 : 500;
+    return NextResponse.json({ error: message }, { status });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    await verifyAdmin(request);
+
+    const uid = request.nextUrl.searchParams.get('uid')?.trim();
+    if (!uid) {
+      return NextResponse.json({ error: 'uid is required' }, { status: 400 });
+    }
+
+    const [adamUsersByUid, onboardingByUid, demoSessionsByUid, adamUserById, onboardingById] = await Promise.all([
+      adminFirestore.collection('adamUsers').where('uid', '==', uid).get(),
+      adminFirestore.collection('onboarding').where('uid', '==', uid).get(),
+      adminFirestore.collection('demoSessions').where('uid', '==', uid).get(),
+      adminFirestore.collection('adamUsers').doc(uid).get(),
+      adminFirestore.collection('onboarding').doc(uid).get(),
+    ]);
+
+    const batch = adminFirestore.batch();
+    const restoreRef = (ref: any) => {
+      batch.set(ref, {
+        isDeleted: false,
+        deletedAt: null,
+        deletedBy: null,
+      }, { merge: true });
+    };
+
+    if (adamUserById.exists) {
+      restoreRef(adamUserById.ref);
+    }
+    if (onboardingById.exists) {
+      restoreRef(onboardingById.ref);
+    }
+
+    adamUsersByUid.docs.forEach((doc) => restoreRef(doc.ref));
+    onboardingByUid.docs.forEach((doc) => restoreRef(doc.ref));
+    demoSessionsByUid.docs.forEach((doc) => restoreRef(doc.ref));
+
+    await batch.commit();
+
+    return NextResponse.json({
+      success: true,
+      uid,
+      restoredDocuments: adamUsersByUid.size + onboardingByUid.size + demoSessionsByUid.size + (adamUserById.exists ? 1 : 0) + (onboardingById.exists ? 1 : 0),
+      softDeleted: false,
+    });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Failed to restore ADAM user';
     const status = message === 'Unauthorized' ? 401 : 500;
     return NextResponse.json({ error: message }, { status });
   }

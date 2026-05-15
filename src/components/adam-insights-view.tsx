@@ -9,148 +9,178 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { RefreshCw, MapPin, BarChart3, Users, ChevronDown, Trash2, TrendingUp } from 'lucide-react';
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-6">
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="active">Active users</SelectItem>
+              <SelectItem value="archived">Archived users</SelectItem>
+              <SelectItem value="all">All users</SelectItem>
+            </SelectContent>
+          </Select>
 
-type LastKnownLocation = {
-  latitude: number;
-  longitude: number;
-  timezone: string;
-  locale: string;
-  permission: string;
-  accuracyMeters: number;
-  capturedAtClient: string;
-  lastKnownLocationCapturedAt: string;
-};
+          <Select value={locationFilter} onValueChange={setLocationFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Location" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Locations</SelectItem>
+              {locationOptions.map((loc) => (
+                <SelectItem key={loc.country} value={loc.country}>
+                  {getCountryFlag(loc.country)} {getCountryName(loc.country)} ({loc.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-type AdamUserItem = {
-  id: string;
-  uid: string | null;
-  identifier: string;
-  email: string | null;
-  name: string | null;
-  jobTitle: string | null;
-  country: string | null;
-  city: string | null;
-  region: string | null;
-  timezone: string | null;
-  dob: string | null;
-  age: number | null;
-  intent: string | null;
-  useCase: string | null;
-  accountCreatedAt: string | null;
-  lastKnownLocation: LastKnownLocation | null;
-  interactionCount: number;
-  lastMessage: string | null;
-  lastReply: string | null;
-  lastSeenAt: string | null;
-};
+          <Select value={jobTitleFilter} onValueChange={setJobTitleFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Job Title" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Professions</SelectItem>
+              {jobOptions.map((job) => (
+                <SelectItem key={job.jobTitle} value={job.jobTitle}>
+                  {job.jobTitle} ({job.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-type AdamInsightsResponse = {
-  users: AdamUserItem[];
-  topLocations: Array<{ country: string; count: number }>;
-  topJobTitles: Array<{ jobTitle: string; count: number }>;
-  topTimezones: Array<{ timezone: string; count: number }>;
-  ageGroups?: Array<{ ageGroup: string; count: number }>;
-};
+          <Select value={timezoneFilter} onValueChange={setTimezoneFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Timezone" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Timezones</SelectItem>
+              {timezoneOptions.map((tz) => (
+                <SelectItem key={tz.timezone} value={tz.timezone}>
+                  {tz.timezone} ({tz.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-type ChartDataPoint = {
-  date: string;
-  users: number;
-};
+          <Select value={ageBandFilter} onValueChange={setAgeBandFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Age Group" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Ages</SelectItem>
+              {ageBandOptions.map((group) => (
+                <SelectItem key={group.ageBand} value={group.ageBand}>
+                  {group.ageBand} ({group.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-type TimezoneChartData = {
-  timezone: string;
-  count: number;
-};
+          <Select value={intentFilter} onValueChange={setIntentFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Intent / Use Case" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Intent</SelectItem>
+              {intentOptions.map((entry) => (
+                <SelectItem key={entry.intent} value={entry.intent}>
+                  {entry.intent} ({entry.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
+          <Select value={whereHeardFilter} onValueChange={setWhereHeardFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Where heard" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Sources</SelectItem>
+              {whereHeardOptions.map((entry) => (
+                <SelectItem key={entry.whereHeard} value={entry.whereHeard}>
+                  {entry.whereHeard} ({entry.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-function getCountryFlag(countryCode: string): string {
-  if (!countryCode || countryCode.length !== 2) return '🌍';
-  const codePoints = [...countryCode.toUpperCase()].map((char) => 127397 + char.charCodeAt(0));
-  return String.fromCodePoint(...codePoints);
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+            <Badge variant="outline" className="border-primary/20 bg-primary/5">
+              {statusFilter === 'active' ? 'Active only' : statusFilter === 'archived' ? 'Archived only' : 'All users'}
+            </Badge>
+            <Badge variant="outline" className="border-primary/20 bg-primary/5">
+              Sort: {sortBy === 'recent' ? 'Most recent' : sortBy === 'mostInteractions' ? 'Most interactions' : sortBy === 'oldestAccount' ? 'Oldest account' : 'Newest account'}
+            </Badge>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <Select value={sortBy} onValueChange={(value) => setSortBy(value as typeof sortBy)}>
+              <SelectTrigger className="border-primary/20 bg-background/80 sm:w-[220px]">
+                <SelectValue placeholder="Sort" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="recent">Most recent</SelectItem>
+                <SelectItem value="mostInteractions">Most interactions</SelectItem>
+                <SelectItem value="oldestAccount">Oldest account</SelectItem>
+                <SelectItem value="newestAccount">Newest account</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button type="button" variant="outline" className="gap-2 w-full sm:w-auto" onClick={exportCsv}>
+              <Download className="h-4 w-4" /> Export CSV
+            </Button>
+          </div>
+        </div>
 }
 
-function getCountryName(countryCode: string): string {
-  const countries: Record<string, string> = {
-    US: 'United States',
-    IN: 'India',
-    GB: 'United Kingdom',
-    CA: 'Canada',
-    AU: 'Australia',
-    DE: 'Germany',
-    FR: 'France',
-    JP: 'Japan',
-    CN: 'China',
-    BR: 'Brazil',
-    MX: 'Mexico',
-    SG: 'Singapore',
-    NZ: 'New Zealand',
-    IE: 'Ireland',
-    NL: 'Netherlands',
-    SE: 'Sweden',
-    CH: 'Switzerland',
-    UA: 'Ukraine',
-    PK: 'Pakistan',
-    BD: 'Bangladesh',
-    LK: 'Sri Lanka',
-    NG: 'Nigeria',
-    KE: 'Kenya',
-    ZA: 'South Africa',
-  };
-  return countries[countryCode] || countryCode || 'Unknown';
+function formatStatusLabel(isDeleted: boolean): string {
+  return isDeleted ? 'Archived' : 'Active';
 }
 
-function formatRelativeTime(value: string | null): string {
-  if (!value) return '-';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '-';
-  return formatDistanceToNow(date, { addSuffix: true });
+function escapeCsvValue(value: string): string {
+  const normalized = value.replace(/"/g, '""');
+  return /[",\n\r]/.test(normalized) ? `"${normalized}"` : normalized;
 }
 
-function formatAbsoluteTime(value: string | null): string {
-  if (!value) return '-';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '-';
-  return date.toLocaleString();
-}
+function toCsv(users: AdamUserItem[]): string {
+  const headers = [
+    'Name',
+    'Email',
+    'Profession',
+    'Where Heard',
+    'Country',
+    'City',
+    'Region',
+    'Timezone',
+    'Age',
+    'Intent',
+    'Use Case',
+    'Status',
+    'Interactions',
+    'Last Seen',
+    'Account Created',
+  ];
 
-function toTimezoneValue(user: AdamUserItem): string {
-  return user.timezone || user.lastKnownLocation?.timezone || 'Unknown';
-}
+  const rows = users.map((user) => [
+    user.name || user.identifier || 'Anonymous',
+    user.email || '',
+    user.jobTitle || '',
+    user.whereHeard || '',
+    user.country || '',
+    user.city || '',
+    user.region || '',
+    user.timezone || user.lastKnownLocation?.timezone || '',
+    user.age?.toString() || '',
+    user.intent || '',
+    user.useCase || '',
+    formatStatusLabel(user.isDeleted),
+    user.interactionCount.toString(),
+    user.lastSeenAt || '',
+    user.accountCreatedAt || '',
+  ]);
 
-function toAgeBand(age: number | null): string {
-  if (age === null) return 'Unknown';
-  if (age < 18) return '<18';
-  if (age <= 24) return '18-24';
-  if (age <= 34) return '25-34';
-  if (age <= 44) return '35-44';
-  if (age <= 54) return '45-54';
-  return '55+';
+  return [headers, ...rows].map((row) => row.map(escapeCsvValue).join(',')).join('\n');
 }
 
 
@@ -471,79 +501,105 @@ function DashboardView({ data, loading }: DashboardViewProps) {
 type UserDirectoryViewProps = {
   data: AdamInsightsResponse | null;
   loading: boolean;
-  onDeleteUser: (uid: string) => Promise<void>;
+  onRefreshUsers: () => Promise<void>;
 };
 
-function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewProps) {
+function UserDirectoryView({ data, loading, onRefreshUsers }: UserDirectoryViewProps) {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedUserId, setExpandedUserId] = useState<string | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string>('active');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [jobTitleFilter, setJobTitleFilter] = useState<string>('all');
   const [timezoneFilter, setTimezoneFilter] = useState<string>('all');
   const [ageBandFilter, setAgeBandFilter] = useState<string>('all');
   const [intentFilter, setIntentFilter] = useState<string>('all');
+  const [whereHeardFilter, setWhereHeardFilter] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'recent' | 'mostInteractions' | 'oldestAccount' | 'newestAccount'>('recent');
+
+  const users = useMemo(() => data?.users ?? [], [data]);
+
+  const visibleUsers = useMemo(() => {
+    if (statusFilter === 'active') {
+      return users.filter((user) => !user.isDeleted);
+    }
+    if (statusFilter === 'archived') {
+      return users.filter((user) => user.isDeleted);
+    }
+    return users;
+  }, [users, statusFilter]);
 
   const locationOptions = useMemo(() => {
     const counts = new Map<string, number>();
-    (data?.users || []).forEach((user) => {
+    visibleUsers.forEach((user) => {
       const value = user.country || 'Unknown';
       counts.set(value, (counts.get(value) ?? 0) + 1);
     });
     return Array.from(counts.entries())
       .map(([country, count]) => ({ country, count }))
       .sort((a, b) => b.count - a.count || a.country.localeCompare(b.country));
-  }, [data]);
+  }, [visibleUsers]);
 
   const jobOptions = useMemo(() => {
     const counts = new Map<string, number>();
-    (data?.users || []).forEach((user) => {
+    visibleUsers.forEach((user) => {
       const value = user.jobTitle || 'Unknown';
       counts.set(value, (counts.get(value) ?? 0) + 1);
     });
     return Array.from(counts.entries())
       .map(([jobTitle, count]) => ({ jobTitle, count }))
       .sort((a, b) => b.count - a.count || a.jobTitle.localeCompare(b.jobTitle));
-  }, [data]);
+  }, [visibleUsers]);
 
   const timezoneOptions = useMemo(() => {
     const counts = new Map<string, number>();
-    (data?.users || []).forEach((user) => {
+    visibleUsers.forEach((user) => {
       const value = toTimezoneValue(user);
       counts.set(value, (counts.get(value) ?? 0) + 1);
     });
     return Array.from(counts.entries())
       .map(([timezone, count]) => ({ timezone, count }))
       .sort((a, b) => b.count - a.count || a.timezone.localeCompare(b.timezone));
-  }, [data]);
+  }, [visibleUsers]);
 
   const ageBandOptions = useMemo(() => {
     const counts = new Map<string, number>();
-    (data?.users || []).forEach((user) => {
+    visibleUsers.forEach((user) => {
       const value = toAgeBand(user.age);
       counts.set(value, (counts.get(value) ?? 0) + 1);
     });
     return Array.from(counts.entries())
       .map(([ageBand, count]) => ({ ageBand, count }))
       .sort((a, b) => b.count - a.count || a.ageBand.localeCompare(b.ageBand));
-  }, [data]);
+  }, [visibleUsers]);
 
   const intentOptions = useMemo(() => {
     const counts = new Map<string, number>();
-    (data?.users || []).forEach((user) => {
+    visibleUsers.forEach((user) => {
       const value = user.intent || user.useCase || 'Unknown';
       counts.set(value, (counts.get(value) ?? 0) + 1);
     });
     return Array.from(counts.entries())
       .map(([intent, count]) => ({ intent, count }))
       .sort((a, b) => b.count - a.count || a.intent.localeCompare(b.intent));
-  }, [data]);
+  }, [visibleUsers]);
+
+  const whereHeardOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    visibleUsers.forEach((user) => {
+      const value = user.whereHeard || 'Unknown';
+      counts.set(value, (counts.get(value) ?? 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .map(([whereHeard, count]) => ({ whereHeard, count }))
+      .sort((a, b) => b.count - a.count || a.whereHeard.localeCompare(b.whereHeard));
+  }, [visibleUsers]);
 
   const filteredUsers = useMemo(() => {
-    if (!data) return [];
-    let result = [...data.users];
+    let result = [...visibleUsers];
 
     // Search filter
     const query = searchQuery.toLowerCase();
@@ -584,12 +640,47 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
       result = result.filter((user) => (user.intent || user.useCase || 'Unknown') === intentFilter);
     }
 
+    if (whereHeardFilter !== 'all') {
+      result = result.filter((user) => (user.whereHeard || 'Unknown') === whereHeardFilter);
+    }
+
     return result.sort((a, b) => {
-      const aTime = a.lastSeenAt ? new Date(a.lastSeenAt).getTime() : 0;
-      const bTime = b.lastSeenAt ? new Date(b.lastSeenAt).getTime() : 0;
-      return bTime - aTime;
+      const aRecent = a.lastSeenAt ? new Date(a.lastSeenAt).getTime() : 0;
+      const bRecent = b.lastSeenAt ? new Date(b.lastSeenAt).getTime() : 0;
+      const aCreated = a.accountCreatedAt ? new Date(a.accountCreatedAt).getTime() : 0;
+      const bCreated = b.accountCreatedAt ? new Date(b.accountCreatedAt).getTime() : 0;
+
+      switch (sortBy) {
+        case 'mostInteractions':
+          return b.interactionCount - a.interactionCount || bRecent - aRecent;
+        case 'oldestAccount':
+          return aCreated - bCreated || bRecent - aRecent;
+        case 'newestAccount':
+          return bCreated - aCreated || bRecent - aRecent;
+        case 'recent':
+        default:
+          return bRecent - aRecent || bCreated - aCreated;
+      }
     });
-  }, [data, searchQuery, locationFilter, jobTitleFilter, timezoneFilter, ageBandFilter, intentFilter]);
+  }, [visibleUsers, searchQuery, locationFilter, jobTitleFilter, timezoneFilter, ageBandFilter, intentFilter, whereHeardFilter, sortBy]);
+
+  const exportCsv = () => {
+    if (filteredUsers.length === 0) {
+      toast({
+        title: 'No users to export',
+        description: 'Apply a broader filter set to export users.',
+      });
+      return;
+    }
+
+    const blob = new Blob([toCsv(filteredUsers)], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `adam-users-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
   const handleDeleteUser = async () => {
     if (!deleteUserId) return;
@@ -621,23 +712,61 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
 
       toast({
         title: 'Success',
-        description: 'User deleted successfully',
+        description: 'User archived successfully',
       });
 
-      // Optimistic UI update
-      await onDeleteUser(deleteUserId);
       if (expandedUserId === deleteUserId) {
         setExpandedUserId(null);
       }
+
+      await onRefreshUsers();
     } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to delete user',
+        description: error instanceof Error ? error.message : 'Failed to archive user',
       });
     } finally {
       setIsDeleting(false);
       setDeleteUserId(null);
+    }
+  };
+
+  const handleRestoreUser = async (uid: string) => {
+    setIsRestoring(true);
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error('You must be logged in');
+      }
+
+      const token = await user.getIdToken();
+      const response = await fetch(`/api/admin/adam-insights?uid=${encodeURIComponent(uid)}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const payload = await response.json();
+      if (!response.ok) {
+        throw new Error(typeof payload.error === 'string' ? payload.error : 'Failed to restore user');
+      }
+
+      toast({
+        title: 'Success',
+        description: 'User restored successfully',
+      });
+
+      await onRefreshUsers();
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to restore user',
+      });
+    } finally {
+      setIsRestoring(false);
     }
   };
 
@@ -652,7 +781,18 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
           className="w-full border-primary/20 bg-background/70"
         />
 
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-6">
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="active">Active users</SelectItem>
+              <SelectItem value="archived">Archived users</SelectItem>
+              <SelectItem value="all">All users</SelectItem>
+            </SelectContent>
+          </Select>
+
           <Select value={locationFilter} onValueChange={setLocationFilter}>
             <SelectTrigger className="border-primary/20 bg-background/80">
               <SelectValue placeholder="Location" />
@@ -722,11 +862,52 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
               ))}
             </SelectContent>
           </Select>
+
+          <Select value={whereHeardFilter} onValueChange={setWhereHeardFilter}>
+            <SelectTrigger className="border-primary/20 bg-background/80">
+              <SelectValue placeholder="Where heard" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Sources</SelectItem>
+              {whereHeardOptions.map((entry) => (
+                <SelectItem key={entry.whereHeard} value={entry.whereHeard}>
+                  {entry.whereHeard} ({entry.count})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+            <Badge variant="outline" className="border-primary/20 bg-primary/5">
+              {statusFilter === 'active' ? 'Active only' : statusFilter === 'archived' ? 'Archived only' : 'All users'}
+            </Badge>
+            <Badge variant="outline" className="border-primary/20 bg-primary/5">
+              Sort: {sortBy === 'recent' ? 'Most recent' : sortBy === 'mostInteractions' ? 'Most interactions' : sortBy === 'oldestAccount' ? 'Oldest account' : 'Newest account'}
+            </Badge>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <Select value={sortBy} onValueChange={(value) => setSortBy(value as typeof sortBy)}>
+              <SelectTrigger className="border-primary/20 bg-background/80 sm:w-[220px]">
+                <SelectValue placeholder="Sort" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="recent">Most recent</SelectItem>
+                <SelectItem value="mostInteractions">Most interactions</SelectItem>
+                <SelectItem value="oldestAccount">Oldest account</SelectItem>
+                <SelectItem value="newestAccount">Newest account</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button type="button" variant="outline" className="gap-2 w-full sm:w-auto" onClick={exportCsv}>
+              <Download className="h-4 w-4" /> Export CSV
+            </Button>
+          </div>
         </div>
 
         <p className="text-sm text-muted-foreground">
           Showing <span className="font-semibold text-foreground">{filteredUsers.length}</span> of{' '}
-          <span className="font-semibold text-foreground">{data?.users.length || 0}</span> users
+          <span className="font-semibold text-foreground">{visibleUsers.length}</span> visible users
         </p>
       </div>
 
@@ -780,7 +961,17 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                             }`}
                           />
                         </TableCell>
-                        <TableCell className="font-medium">{user.name || user.identifier || 'Anonymous'}</TableCell>
+                        <TableCell className="font-medium">
+                          <div className="flex flex-col gap-1">
+                            <span>{user.name || user.identifier || 'Anonymous'}</span>
+                            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                              <Badge variant={user.isDeleted ? 'secondary' : 'outline'} className={user.isDeleted ? 'bg-muted text-muted-foreground' : 'border-primary/30 bg-primary/5'}>
+                                {formatStatusLabel(user.isDeleted)}
+                              </Badge>
+                              {user.whereHeard ? <span>Heard via {user.whereHeard}</span> : null}
+                            </div>
+                          </div>
+                        </TableCell>
                         <TableCell className="hidden md:table-cell text-sm">{user.email || '-'}</TableCell>
                         <TableCell className="hidden lg:table-cell text-sm">
                           {user.country ? (
@@ -795,17 +986,34 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setDeleteUserId(user.uid || user.id);
-                            }}
-                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                          {user.isDeleted ? (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              disabled={isRestoring}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                await handleRestoreUser(user.uid || user.id);
+                              }}
+                              className="gap-2 text-primary hover:text-primary hover:bg-primary/10"
+                            >
+                              <RotateCcw className="h-4 w-4" />
+                              Restore
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDeleteUserId(user.uid || user.id);
+                              }}
+                              className="gap-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            >
+                              <Archive className="h-4 w-4" />
+                              Archive
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
 
@@ -822,6 +1030,10 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                                 <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Job Title</p>
                                   <p className="text-sm font-medium">{user.jobTitle || '-'}</p>
+                                </div>
+                                <div>
+                                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Where Heard</p>
+                                  <p className="text-sm font-medium">{user.whereHeard || '-'}</p>
                                 </div>
                                 <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Timezone</p>
@@ -860,6 +1072,10 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
                                 <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Account Created</p>
                                   <p className="text-sm font-medium">{formatAbsoluteTime(user.accountCreatedAt)}</p>
+                                </div>
+                                <div>
+                                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Status</p>
+                                  <p className="text-sm font-medium">{formatStatusLabel(user.isDeleted)}</p>
                                 </div>
                               </div>
 
@@ -917,9 +1133,9 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
       <AlertDialog open={!!deleteUserId} onOpenChange={(open) => !open && setDeleteUserId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete User</AlertDialogTitle>
+            <AlertDialogTitle>Archive User</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this user? This action cannot be undone.
+              Are you sure you want to archive this user? You can restore it later from the archived users filter.
               <div className="mt-3 p-3 rounded-lg bg-muted">
                 <p className="text-xs text-muted-foreground">User ID:</p>
                 <p className="text-sm font-mono font-semibold break-all text-foreground">{deleteUserId}</p>
@@ -932,7 +1148,7 @@ function UserDirectoryView({ data, loading, onDeleteUser }: UserDirectoryViewPro
             disabled={isDeleting}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {isDeleting ? 'Deleting...' : 'Delete User'}
+            {isDeleting ? 'Archiving...' : 'Archive User'}
           </AlertDialogAction>
         </AlertDialogContent>
       </AlertDialog>
@@ -984,13 +1200,9 @@ export default function AdamInsightsView() {
     }
   }, []);
 
-  const handleDeleteUser = async (uid: string) => {
-    if (!data) return;
-    setData({
-      ...data,
-      users: data.users.filter((u) => u.id !== uid),
-    });
-  };
+  const refreshUsers = useCallback(async () => {
+    await fetchInsights(true);
+  }, [fetchInsights]);
 
   useEffect(() => {
     fetchInsights();
@@ -1052,7 +1264,7 @@ export default function AdamInsightsView() {
       {activeView === 'dashboard' ? (
         <DashboardView data={data} loading={loading} />
       ) : (
-        <UserDirectoryView data={data} loading={loading} onDeleteUser={handleDeleteUser} />
+        <UserDirectoryView data={data} loading={loading} onRefreshUsers={refreshUsers} />
       )}
     </div>
   );
