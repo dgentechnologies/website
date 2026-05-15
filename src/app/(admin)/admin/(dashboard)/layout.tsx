@@ -15,9 +15,9 @@ import {
   SidebarProvider,
   SidebarMenuButton,
   SidebarRail
-} from "@/components/ui/sidebar";
-import { Button } from '@/components/ui/button';
-import { auth } from '@/firebase/client';
+} from "../../../../components/ui/sidebar";
+import { Button } from '../../../../components/ui/button';
+import { auth } from '../../../../firebase/client';
 import Link from 'next/link';
 
 type AdminDashboardLayoutProps = {

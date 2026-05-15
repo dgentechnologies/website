@@ -9,129 +9,162 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-6">
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="border-primary/20 bg-background/80">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="active">Active users</SelectItem>
-              <SelectItem value="archived">Archived users</SelectItem>
-              <SelectItem value="all">All users</SelectItem>
-            </SelectContent>
-          </Select>
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { RefreshCw, MapPin, BarChart3, Users, ChevronDown, TrendingUp, Download, RotateCcw, Archive } from 'lucide-react';
 
-          <Select value={locationFilter} onValueChange={setLocationFilter}>
-            <SelectTrigger className="border-primary/20 bg-background/80">
-              <SelectValue placeholder="Location" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Locations</SelectItem>
-              {locationOptions.map((loc) => (
-                <SelectItem key={loc.country} value={loc.country}>
-                  {getCountryFlag(loc.country)} {getCountryName(loc.country)} ({loc.count})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+type LastKnownLocation = {
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  locale: string;
+  permission: string;
+  accuracyMeters: number;
+  capturedAtClient: string;
+  lastKnownLocationCapturedAt: string;
+};
 
-          <Select value={jobTitleFilter} onValueChange={setJobTitleFilter}>
-            <SelectTrigger className="border-primary/20 bg-background/80">
-              <SelectValue placeholder="Job Title" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Professions</SelectItem>
-              {jobOptions.map((job) => (
-                <SelectItem key={job.jobTitle} value={job.jobTitle}>
-                  {job.jobTitle} ({job.count})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+type AdamUserItem = {
+  id: string;
+  uid: string | null;
+  identifier: string;
+  email: string | null;
+  name: string | null;
+  jobTitle: string | null;
+  whereHeard: string | null;
+  country: string | null;
+  city: string | null;
+  region: string | null;
+  timezone: string | null;
+  dob: string | null;
+  age: number | null;
+  intent: string | null;
+  useCase: string | null;
+  accountCreatedAt: string | null;
+  lastKnownLocation: LastKnownLocation | null;
+  isDeleted: boolean;
+  deletedAt: string | null;
+  deletedBy: string | null;
+  interactionCount: number;
+  lastMessage: string | null;
+  lastReply: string | null;
+  lastSeenAt: string | null;
+};
 
-          <Select value={timezoneFilter} onValueChange={setTimezoneFilter}>
-            <SelectTrigger className="border-primary/20 bg-background/80">
-              <SelectValue placeholder="Timezone" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Timezones</SelectItem>
-              {timezoneOptions.map((tz) => (
-                <SelectItem key={tz.timezone} value={tz.timezone}>
-                  {tz.timezone} ({tz.count})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+type AdamInsightsResponse = {
+  users: AdamUserItem[];
+  topLocations: Array<{ country: string; count: number }>;
+  topJobTitles: Array<{ jobTitle: string; count: number }>;
+  topTimezones: Array<{ timezone: string; count: number }>;
+  ageGroups?: Array<{ ageGroup: string; count: number }>;
+  whereHeard?: Array<{ whereHeard: string; count: number }>;
+  professions?: Array<{ jobTitle: string; count: number }>;
+  activeUsers?: AdamUserItem[];
+  archivedUsers?: AdamUserItem[];
+  totals?: {
+    users: number;
+    activeUsers?: number;
+    archivedUsers?: number;
+    timezones: number;
+    jobTitles: number;
+  };
+};
 
-          <Select value={ageBandFilter} onValueChange={setAgeBandFilter}>
-            <SelectTrigger className="border-primary/20 bg-background/80">
-              <SelectValue placeholder="Age Group" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Ages</SelectItem>
-              {ageBandOptions.map((group) => (
-                <SelectItem key={group.ageBand} value={group.ageBand}>
-                  {group.ageBand} ({group.count})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+type ChartDataPoint = {
+  date: string;
+  users: number;
+};
 
-          <Select value={intentFilter} onValueChange={setIntentFilter}>
-            <SelectTrigger className="border-primary/20 bg-background/80">
-              <SelectValue placeholder="Intent / Use Case" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Intent</SelectItem>
-              {intentOptions.map((entry) => (
-                <SelectItem key={entry.intent} value={entry.intent}>
-                  {entry.intent} ({entry.count})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+type TimezoneChartData = {
+  timezone: string;
+  count: number;
+};
 
-          <Select value={whereHeardFilter} onValueChange={setWhereHeardFilter}>
-            <SelectTrigger className="border-primary/20 bg-background/80">
-              <SelectValue placeholder="Where heard" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Sources</SelectItem>
-              {whereHeardOptions.map((entry) => (
-                <SelectItem key={entry.whereHeard} value={entry.whereHeard}>
-                  {entry.whereHeard} ({entry.count})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+function getCountryFlag(countryCode: string): string {
+  if (!countryCode || countryCode.length !== 2) return '🌍';
+  const codePoints = [...countryCode.toUpperCase()].map((char) => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+}
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <Badge variant="outline" className="border-primary/20 bg-primary/5">
-              {statusFilter === 'active' ? 'Active only' : statusFilter === 'archived' ? 'Archived only' : 'All users'}
-            </Badge>
-            <Badge variant="outline" className="border-primary/20 bg-primary/5">
-              Sort: {sortBy === 'recent' ? 'Most recent' : sortBy === 'mostInteractions' ? 'Most interactions' : sortBy === 'oldestAccount' ? 'Oldest account' : 'Newest account'}
-            </Badge>
-          </div>
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <Select value={sortBy} onValueChange={(value) => setSortBy(value as typeof sortBy)}>
-              <SelectTrigger className="border-primary/20 bg-background/80 sm:w-[220px]">
-                <SelectValue placeholder="Sort" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="recent">Most recent</SelectItem>
-                <SelectItem value="mostInteractions">Most interactions</SelectItem>
-                <SelectItem value="oldestAccount">Oldest account</SelectItem>
-                <SelectItem value="newestAccount">Newest account</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button type="button" variant="outline" className="gap-2 w-full sm:w-auto" onClick={exportCsv}>
-              <Download className="h-4 w-4" /> Export CSV
-            </Button>
-          </div>
-        </div>
+function getCountryName(countryCode: string): string {
+  const countries: Record<string, string> = {
+    US: 'United States',
+    IN: 'India',
+    GB: 'United Kingdom',
+    CA: 'Canada',
+    AU: 'Australia',
+    DE: 'Germany',
+    FR: 'France',
+    JP: 'Japan',
+    CN: 'China',
+    BR: 'Brazil',
+    MX: 'Mexico',
+    SG: 'Singapore',
+    NZ: 'New Zealand',
+    IE: 'Ireland',
+    NL: 'Netherlands',
+    SE: 'Sweden',
+    CH: 'Switzerland',
+    UA: 'Ukraine',
+    PK: 'Pakistan',
+    BD: 'Bangladesh',
+    LK: 'Sri Lanka',
+    NG: 'Nigeria',
+    KE: 'Kenya',
+    ZA: 'South Africa',
+  };
+  return countries[countryCode] || countryCode || 'Unknown';
+}
+
+function formatRelativeTime(value: string | null): string {
+  if (!value) return '-';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '-';
+  return formatDistanceToNow(date, { addSuffix: true });
+}
+
+function formatAbsoluteTime(value: string | null): string {
+  if (!value) return '-';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '-';
+  return date.toLocaleString();
+}
+
+function toTimezoneValue(user: AdamUserItem): string {
+  return user.timezone || user.lastKnownLocation?.timezone || 'Unknown';
+}
+
+function toAgeBand(age: number | null): string {
+  if (age === null) return 'Unknown';
+  if (age < 18) return '<18';
+  if (age <= 24) return '18-24';
+  if (age <= 34) return '25-34';
+  if (age <= 44) return '35-44';
+  if (age <= 54) return '45-54';
+  return '55+';
 }
 
 function formatStatusLabel(isDeleted: boolean): string {
@@ -182,7 +215,6 @@ function toCsv(users: AdamUserItem[]): string {
 
   return [headers, ...rows].map((row) => row.map(escapeCsvValue).join(',')).join('\n');
 }
-
 
 // ===== Dashboard View Component =====
 type DashboardViewProps = {

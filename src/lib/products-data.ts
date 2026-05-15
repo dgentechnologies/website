@@ -1,7 +1,10 @@
-import { Cpu, Sun, Lightbulb, LucideIcon, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine, Router, ToyBrick, Network, Bot } from 'lucide-react';
+import { Cpu, Sun, Lightbulb, Wifi, Zap, ShieldCheck, GaugeCircle, Waves, Radar, Combine, Router, ToyBrick, Network, Bot } from 'lucide-react';
+import type { ComponentType, SVGProps } from 'react';
+
+type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 export type ProductFeature = {
-  icon: LucideIcon;
+  icon: IconComponent;
   title: string;
   description: string;
 };
@@ -26,7 +29,7 @@ export type SubProduct = {
 export type EcosystemDetail = {
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: IconComponent;
 };
 
 export type Product = {
@@ -34,7 +37,7 @@ export type Product = {
   title: string;
   category: string;
   shortDescription: string;
-  icon: LucideIcon;
+  icon: IconComponent;
   images: { url: string; alt: string; hint: string }[];
   longDescription: string;
   features: ProductFeature[];

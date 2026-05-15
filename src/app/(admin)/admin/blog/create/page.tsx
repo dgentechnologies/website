@@ -8,7 +8,7 @@ import { collection, query } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { useRouter } from 'next/navigation';
 
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../../components/ui/button";
 import {
   Form,
   FormControl,
@@ -17,8 +17,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "../../../../../components/ui/form";
+import { Input } from "../../../../../components/ui/input";
 import {
     Select,
     SelectContent,
@@ -29,7 +29,7 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Sparkles, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { firestore } from '@/firebase/client';
+import { firestore } from "../../../../../firebase/client";
 import { suggestBlogTopic } from '@/ai/flows/suggest-blog-topic';
 import { BlogPost } from "@/types/blog";
 import { useToast } from "@/hooks/use-toast";
