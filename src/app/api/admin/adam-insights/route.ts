@@ -22,6 +22,7 @@ type AdamUserItem = {
   uid: string | null;
   identifier: string;
   email: string | null;
+  phoneNumber: string | null;
   name: string | null;
   jobTitle: string | null;
   whereHeard: string | null;
@@ -228,6 +229,7 @@ function mergeUser(existing: AdamUserItem | undefined, incoming: AdamUserItem): 
     uid: existing.uid ?? incoming.uid,
     identifier: existing.identifier || incoming.identifier,
     email: existing.email ?? incoming.email,
+    phoneNumber: existing.phoneNumber ?? incoming.phoneNumber,
     name: existing.name ?? incoming.name,
     jobTitle: existing.jobTitle ?? incoming.jobTitle,
     whereHeard: existing.whereHeard ?? incoming.whereHeard,
@@ -303,6 +305,7 @@ export async function GET(request: NextRequest) {
         uid,
         identifier: readPossibleString(data, ['identifier']) ?? uid ?? doc.id,
         email: readPossibleString(data, ['email']),
+        phoneNumber: readPossibleString(data, ['phoneNumber', 'phone_number', 'phone']),
         name: readPossibleString(data, ['name', 'displayName']),
         jobTitle: readPossibleString(data, ['jobTitle']),
         whereHeard: readPossibleString(data, ['whereHeard']),
@@ -336,6 +339,7 @@ export async function GET(request: NextRequest) {
         uid,
         identifier: uid,
         email: readPossibleString(data, ['email']),
+        phoneNumber: readPossibleString(data, ['phoneNumber', 'phone_number', 'phone']),
         name: readPossibleString(data, ['name', 'displayName']),
         jobTitle: readPossibleString(data, ['jobTitle']),
         whereHeard: readPossibleString(data, ['whereHeard']),

@@ -52,6 +52,7 @@ type AdamUserItem = {
   uid: string | null;
   identifier: string;
   email: string | null;
+  phoneNumber: string | null;
   name: string | null;
   jobTitle: string | null;
   whereHeard: string | null;
@@ -180,6 +181,7 @@ function toCsv(users: AdamUserItem[]): string {
   const headers = [
     'Name',
     'Email',
+    'Phone Number',
     'Profession',
     'Where Heard',
     'Country',
@@ -198,6 +200,7 @@ function toCsv(users: AdamUserItem[]): string {
   const rows = users.map((user) => [
     user.name || user.identifier || 'Anonymous',
     user.email || '',
+    user.phoneNumber || '',
     user.jobTitle || '',
     user.whereHeard || '',
     user.country || '',
@@ -639,6 +642,7 @@ function UserDirectoryView({ data, loading, onRefreshUsers }: UserDirectoryViewP
       result = result.filter(
         (user) =>
           user.email?.toLowerCase().includes(query) ||
+          user.phoneNumber?.toLowerCase().includes(query) ||
           user.name?.toLowerCase().includes(query) ||
           user.identifier?.toLowerCase().includes(query) ||
           user.jobTitle?.toLowerCase().includes(query) ||
@@ -1058,6 +1062,10 @@ function UserDirectoryView({ data, loading, onRefreshUsers }: UserDirectoryViewP
                                 <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Email</p>
                                   <p className="text-sm font-medium break-all">{user.email || '-'}</p>
+                                </div>
+                                <div>
+                                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Phone Number</p>
+                                  <p className="text-sm font-medium">{user.phoneNumber || '-'}</p>
                                 </div>
                                 <div>
                                   <p className="text-xs uppercase tracking-wider text-muted-foreground">Job Title</p>
