@@ -55,10 +55,35 @@ export function ContactForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSending(true);
     try {
+      // Save to Firestore
       await addDoc(collection(firestore, 'contactMessages'), {
         ...values,
         createdAt: serverTimestamp(),
       });
+
+      // Send confirmation email
+      try {
+        const emailResponse = await fetch('/api/contact/send-confirmation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: values.name,
+            email: values.email,
+            subject: values.subject,
+            message: values.message,
+          }),
+        });
+
+        if (!emailResponse.ok) {
+          console.warn('Failed to send confirmation email:', await emailResponse.text());
+          // Don't fail the submission if email fails - just warn
+        }
+      } catch (emailError) {
+        console.warn('Error sending confirmation email:', emailError);
+        // Don't fail the submission if email fails - just warn
+      }
 
       toast({
         title: "Message Sent!",
