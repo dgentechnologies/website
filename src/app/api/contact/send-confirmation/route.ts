@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
         userEmail: email,
         companyName: 'Dgen Technologies'
       }),
+    }, {
       idempotencyKey: `contact-${email}-${Date.now()}`,
     });
 
